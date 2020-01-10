@@ -4,7 +4,9 @@ import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.Transmission.TransmissionBase;
 import frc.HardwareInterfaces.Transmission.TransmissionBase.MotorPosition;
 import edu.wpi.first.wpilibj.GyroBase;
-import edu.wpi.first.wpilibj.SendableBase;
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -658,15 +660,17 @@ public class DrivePID extends Drive {
          */
         public PIDTuner(String name) {
             sendable.setName(name);
+            //TODO implement new SendableBuilder to allow PID tuning, Im too lazy to do this right now.
         }
 
-        public SendableBase getSendable() {
+        public Sendable getSendable() {
             return sendable;
         }
 
+
         // Creating the sendable creates the widget and sends the values to the
         // shuffleboard.
-        SendableBase sendable = new SendableBase() {
+        Sendable sendable = new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
                 // Telling shuffleboard we want this specific widget
