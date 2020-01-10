@@ -38,115 +38,132 @@ import frc.Hardware.Hardware;
  * @author Nathanial Lydick
  * @written Jan 13, 2015
  */
-public class Teleop
-{
+public class Teleop {
 
-/**
- * User Initialization code for teleop mode should go here. Will be called once
- * when the robot enters teleop mode.
- *
- * @author Nathanial Lydick
- * @written Jan 13, 2015
- */
-public static void init ()
-{
+    /**
+     * User Initialization code for teleop mode should go here. Will be called once
+     * when the robot enters teleop mode.
+     *
+     * @author Nathanial Lydick
+     * @written Jan 13, 2015
+     */
+    public static void init() {
 
-} // end Init
+    } // end Init
 
+    /**
+     * User Periodic code for teleop mode should go here. Will be called
+     * periodically at a regular rate while the robot is in teleop mode.
+     *
+     * @author Nathanial Lydick
+     * @written Jan 13, 2015
+     */
 
-/**
- * User Periodic code for teleop mode should go here. Will be called
- * periodically at a regular rate while the robot is in teleop mode.
- *
- * @author Nathanial Lydick
- * @written Jan 13, 2015
- */
+    public static void periodic() {
+        // =============== AUTOMATED SUBSYSTEMS ===============
 
-public static void periodic ()
-{
-    // =============== AUTOMATED SUBSYSTEMS ===============
+        // ================= OPERATOR CONTROLS ================
 
-    // ================= OPERATOR CONTROLS ================
+        // ================== DRIVER CONTROLS =================
 
-    // ================== DRIVER CONTROLS =================
+        Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
-    Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
+        individualTest();
+    } // end Periodic()
 
+    public static void individualTest() {
+        // people test functions
+    }
 
-} // end Periodic()
+    public static void printStatements() {
+        // ========== INPUTS ==========
 
-public static void printStatements()
-{
-    // ========== INPUTS ==========
+        // ---------- DIGITAL ----------
 
-    // ---------- DIGITAL ----------
+        // Encoder Distances
+        // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
+        // Hardware.leftEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
+        // Hardware.rightEncoder.getDistance());
 
-    // Encoder Distances
-    // Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftEncoder.getDistance());
-    // Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightEncoder.getDistance());
-    
-    // Encoder Raw Values
-    // Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftEncoder.get());
-    // Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightEncoder.get());
+        // Encoder Raw Values
+        // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
+        // Hardware.leftEncoder.get());
+        // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
+        // Hardware.rightEncoder.get());
 
-    // Switch Values
-    // Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
-    // Hardware.telemetry.printToConsole("Auto Disable Sw: " + Hardware.autoDisableSwitch.isOn());
+        // Switch Values
+        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
+        // Hardware.autoSixPosSwitch.getPosition());
+        // Hardware.telemetry.printToConsole("Auto Disable Sw: " +
+        // Hardware.autoDisableSwitch.isOn());
 
-    // ---------- ANALOG -----------
+        // ---------- ANALOG -----------
 
-    // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
+        // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
 
-    // Hardware.telemetry.printToConsole("Delay Pot: " + Hardware.delayPot.get());
+        // Hardware.telemetry.printToConsole("Delay Pot: " + Hardware.delayPot.get());
 
-    // ----------- CAN -------------
+        // ----------- CAN -------------
 
-    // -------- SUBSYSTEMS ---------
+        // -------- SUBSYSTEMS ---------
 
-    // ---------- OTHER ------------
+        // ---------- OTHER ------------
 
-    // Left Driver
-    // Hardware.telemetry.printToConsole("Left Driver X: " + Hardware.leftDriver.getX());
-    // Hardware.telemetry.printToConsole("Left Driver Y: " + Hardware.leftDriver.getY());
-    // Hardware.telemetry.printToConsole("Left Driver Z: " + Hardware.leftDriver.getZ());
+        // Left Driver
+        // Hardware.telemetry.printToConsole("Left Driver X: " +
+        // Hardware.leftDriver.getX());
+        // Hardware.telemetry.printToConsole("Left Driver Y: " +
+        // Hardware.leftDriver.getY());
+        // Hardware.telemetry.printToConsole("Left Driver Z: " +
+        // Hardware.leftDriver.getZ());
 
-    // Right Driver
-    // Hardware.telemetry.printToConsole("Right Driver X: " + Hardware.rightDriver.getX());
-    // Hardware.telemetry.printToConsole("Right Driver Y: " + Hardware.rightDriver.getY());
-    // Hardware.telemetry.printToConsole("Right Driver Z: " + Hardware.rightDriver.getZ());
+        // Right Driver
+        // Hardware.telemetry.printToConsole("Right Driver X: " +
+        // Hardware.rightDriver.getX());
+        // Hardware.telemetry.printToConsole("Right Driver Y: " +
+        // Hardware.rightDriver.getY());
+        // Hardware.telemetry.printToConsole("Right Driver Z: " +
+        // Hardware.rightDriver.getZ());
 
-    // Left Operator
-    // Hardware.telemetry.printToConsole("Left Op X: " + Hardware.leftOperator.getX());
-    // Hardware.telemetry.printToConsole("Left Op Y: " + Hardware.leftOperator.getY());
-    // Hardware.telemetry.printToConsole("Left Op Z: " + Hardware.leftOperator.getZ());
+        // Left Operator
+        // Hardware.telemetry.printToConsole("Left Op X: " +
+        // Hardware.leftOperator.getX());
+        // Hardware.telemetry.printToConsole("Left Op Y: " +
+        // Hardware.leftOperator.getY());
+        // Hardware.telemetry.printToConsole("Left Op Z: " +
+        // Hardware.leftOperator.getZ());
 
-    // Right Operator
-    // Hardware.telemetry.printToConsole("Right Op X: " + Hardware.rightOperator.getX());
-    // Hardware.telemetry.printToConsole("Right Op Y: " + Hardware.rightOperator.getY());
-    // Hardware.telemetry.printToConsole("Right Op Z: " + Hardware.rightOperator.getZ());
+        // Right Operator
+        // Hardware.telemetry.printToConsole("Right Op X: " +
+        // Hardware.rightOperator.getX());
+        // Hardware.telemetry.printToConsole("Right Op Y: " +
+        // Hardware.rightOperator.getY());
+        // Hardware.telemetry.printToConsole("Right Op Z: " +
+        // Hardware.rightOperator.getZ());
 
-    
-    // ========== OUTPUTS ==========
+        // ========== OUTPUTS ==========
 
-    // ---------- DIGITAL ----------
+        // ---------- DIGITAL ----------
 
-    // ---------- ANALOG -----------
+        // ---------- ANALOG -----------
 
-    // ----------- CAN -------------
+        // ----------- CAN -------------
 
-    // Motor Percentages
-    // Hardware.telemetry.printToConsole("L.R. Motor: " + Hardware.leftRearMotor.get());
-    // Hardware.telemetry.printToConsole("R.R. Motor: " + Hardware.rightRearMotor.get());
-    // Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
-    // Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
+        // Motor Percentages
+        // Hardware.telemetry.printToConsole("L.R. Motor: " +
+        // Hardware.leftRearMotor.get());
+        // Hardware.telemetry.printToConsole("R.R. Motor: " +
+        // Hardware.rightRearMotor.get());
+        // Hardware.telemetry.printToConsole("L.F. Motor: " +
+        // Hardware.leftFrontMotor.get());
+        // Hardware.telemetry.printToConsole("R.F. Motor: " +
+        // Hardware.rightFrontMotor.get());
 
+        // -------- SUBSYSTEMS ---------
 
-    // -------- SUBSYSTEMS ---------
+        // ---------- OTHER ------------
 
-    // ---------- OTHER ------------
-
-}
-
-
+    }
 
 } // end class

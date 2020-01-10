@@ -19,6 +19,7 @@ import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.Potentiometer;
 import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
+import frc.vision.*;
 import frc.Utils.drive.Drive;
 import frc.Utils.drive.DrivePID;
 import frc.Utils.Telemetry;
@@ -34,7 +35,6 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
-
 /**
  * ------------------------------------------------------- puts all of the
  * hardware declarations into one place. In addition, it makes them available to
@@ -42,138 +42,145 @@ import edu.wpi.first.wpilibj.Timer;
  *
  * @class HardwareDeclarations
  * @author Bob Brown
- * 
+ *
  * @written Jan 2, 2011 -------------------------------------------------------
  */
 
-public class Hardware
-{
+public class Hardware {
 
-enum Identifier {CurrentYear, PrevYear};
+    enum Identifier {
+        CurrentYear, PrevYear
+    };
 
-public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.CurrentYear;
 
-public static void initialize()
-{
-        if(robotIdentity == Identifier.CurrentYear)
-        {
-        // ==============DIO INIT=============
-                autoDisableSwitch = new SingleThrowSwitch(0);
-                autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
+    public static void initialize() {
+        if (robotIdentity == Identifier.CurrentYear) {
+            // ==============DIO INIT=============
+            autoDisableSwitch = new SingleThrowSwitch(0);
+            autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
-        // ============ANALOG INIT============
-                delayPot = new Potentiometer(0);
+            // ============ANALOG INIT============
+            delayPot = new Potentiometer(0);
 
-        // ==============CAN INIT=============
-                //Motor Controllers
-                leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
-                rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
-                leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
-                rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
-                
-                //Encoders
-                leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-                rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+            // ==============CAN INIT=============
+            // Motor Controllers
+            leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
+            leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
+            rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
-        // ==============RIO INIT==============
-                gyro = new KilroySPIGyro(false);
-        // =============OTHER INIT============
-                transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-                drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
-                drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
+            // Encoders
+            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
-        }else if(robotIdentity == Identifier.PrevYear)
-        {
-        // ==============DIO INIT=============
+            // ==============RIO INIT==============
+            gyro = new KilroySPIGyro(false);
+            // =============OTHER INIT============
+            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
+            drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
 
-        // ============ANALOG INIT============
+        } else if (robotIdentity == Identifier.PrevYear) {
+            // ==============DIO INIT=============
 
-        // ==============CAN INIT=============
+            // ============ANALOG INIT============
 
-        // ==============RIO INIT=============
+            // ==============CAN INIT=============
 
-        // =============OTHER INIT============
+            // ==============RIO INIT=============
+
+            // =============OTHER INIT============
+            visionInterface = new NewVisionInterface();
+            visionDriving = new NewDriveWithVision();
         }
-}
+    }
 
-// **********************************************************
-// CAN DEVICES
-// **********************************************************
+    // **********************************************************
+    // CAN DEVICES
+    // **********************************************************
 
-public static SpeedController leftRearMotor = null;
-public static SpeedController rightRearMotor = null;
-public static SpeedController leftFrontMotor = null;
-public static SpeedController rightFrontMotor = null;
+    public static SpeedController leftRearMotor = null;
+    public static SpeedController rightRearMotor = null;
+    public static SpeedController leftFrontMotor = null;
+    public static SpeedController rightFrontMotor = null;
 
-public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
-public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+    public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
+    public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
 
-public static KilroyEncoder leftEncoder = null;
-public static KilroyEncoder rightEncoder = null;
+    public static KilroyEncoder leftEncoder = null;
+    public static KilroyEncoder rightEncoder = null;
 
-// **********************************************************
-// DIGITAL I/O 
-// **********************************************************
+    // **********************************************************
+    // DIGITAL I/O
+    // **********************************************************
 
-public static SixPositionSwitch autoSixPosSwitch = null;
-public static SingleThrowSwitch autoDisableSwitch = null;
+    public static SixPositionSwitch autoSixPosSwitch = null;
+    public static SingleThrowSwitch autoDisableSwitch = null;
 
-// **********************************************************
-// ANALOG I/O 
-// **********************************************************
+    // **********************************************************
+    // ANALOG I/O
+    // **********************************************************
 
-public static Potentiometer delayPot = null;
+    public static Potentiometer delayPot = null;
 
-// **********************************************************
-// PNEUMATIC DEVICES
-// **********************************************************
+    // **********************************************************
+    // PNEUMATIC DEVICES
+    // **********************************************************
 
-// **********************************************************
-// roboRIO CONNECTIONS CLASSES
-// **********************************************************
+    // **********************************************************
+    // roboRIO CONNECTIONS CLASSES
+    // **********************************************************
 
-public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+    public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
-public static KilroySPIGyro gyro = null;
+    public static KilroySPIGyro gyro = null;
 
-// **********************************************************
-// DRIVER STATION CLASSES
-// **********************************************************
+    // **********************************************************
+    // DRIVER STATION CLASSES
+    // **********************************************************
 
-public static DriverStation driverStation = DriverStation.getInstance();
+    public static DriverStation driverStation = DriverStation.getInstance();
 
-public static Joystick leftDriver = new Joystick(0);
-public static Joystick rightDriver = new Joystick(1);
-public static Joystick leftOperator = new Joystick(2);
-public static Joystick rightOperator = new Joystick(3);
+    public static Joystick leftDriver = new Joystick(0);
+    public static Joystick rightDriver = new Joystick(1);
+    public static Joystick leftOperator = new Joystick(2);
+    public static Joystick rightOperator = new Joystick(3);
 
-// **********************************************************
-// Kilroy's Ancillary classes
-// **********************************************************
+    // **********************************************************
+    // Kilroy's Ancillary classes
+    // **********************************************************
 
-UsbCamera usbCam0 = new UsbCamera("USB Cam 0", 0);
-UsbCamera usbCam1 = new UsbCamera("USB Cam 1", 1);
+    UsbCamera usbCam0 = new UsbCamera("USB Cam 0", 0);
+    UsbCamera usbCam1 = new UsbCamera("USB Cam 1", 1);
 
-// ------------------------------------
-// Utility classes
-// ------------------------------------
-public static Timer autoTimer = new Timer();
+    // ------------------------------------
+    // Utility classes
+    // ------------------------------------
+    public static Timer autoTimer = new Timer();
 
-public static Timer telopTimer = new Timer();
+    public static Timer telopTimer = new Timer();
 
-public static Telemetry telemetry = new Telemetry(driverStation);
+    public static Telemetry telemetry = new Telemetry(driverStation);
 
-// ------------------------------------
-// Drive system
-// ------------------------------------
-public static Drive drive = null;
+    // ------------------------------------
+    // Drive system
+    // ------------------------------------
+    public static Drive drive = null;
 
-public static DrivePID drivePID = null;
+    public static DrivePID drivePID = null;
 
-public static TankTransmission transmission = null;
+    public static TankTransmission transmission = null;
 
-// -------------------
-// Subassemblies
-// -------------------
+    // ------------------------------------------
+    // Vision stuff
+    // ----------------------------
+
+    public static NewDriveWithVision visionDriving = null;
+
+    public static NewVisionInterface visionInterface = null;
+    // -------------------
+    // Subassemblies
+    // -------------------
 
 } // end class
