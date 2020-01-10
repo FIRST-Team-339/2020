@@ -57,6 +57,20 @@ public class Hardware {
     public static void initialize() {
         if (robotIdentity == Identifier.CurrentYear) {
             // ==============DIO INIT=============
+
+            // ============ANALOG INIT============
+
+            // ==============CAN INIT=============
+
+            // ==============RIO INIT=============
+
+            // =============OTHER INIT============
+            visionInterface = new NewVisionInterface();
+            visionDriving = new NewDriveWithVision();
+
+        } else if (robotIdentity == Identifier.PrevYear) {
+
+            // ==============DIO INIT=============
             autoDisableSwitch = new SingleThrowSwitch(0);
             autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
@@ -80,17 +94,7 @@ public class Hardware {
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
             drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
-
-        } else if (robotIdentity == Identifier.PrevYear) {
-            // ==============DIO INIT=============
-
-            // ============ANALOG INIT============
-
-            // ==============CAN INIT=============
-
-            // ==============RIO INIT=============
-
-            // =============OTHER INIT============
+           
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
         }

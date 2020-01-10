@@ -1,11 +1,6 @@
 package frc.vision;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.*;
 import frc.Hardware.Hardware;
-import frc.HardwareInterfaces.Transmission.TransmissionBase;
-import frc.HardwareInterfaces.Transmission.TransmissionBase.MotorPosition;
-import frc.Utils.drive.Drive;
 import frc.vision.NewVisionInterface;
 
 public class NewDriveWithVision {
