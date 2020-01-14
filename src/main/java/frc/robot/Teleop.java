@@ -71,6 +71,10 @@ public class Teleop {
         individualTest();
     } // end Periodic()
 
+    public void teleopDrive(){
+
+        
+    }
     public static void individualTest() {
         // people test functions
     }

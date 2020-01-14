@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
+
 /**
  * ------------------------------------------------------- puts all of the
  * hardware declarations into one place. In addition, it makes them available to
@@ -118,6 +119,8 @@ public class Hardware {
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
+
+public static Talon motor
 
     public static SixPositionSwitch autoSixPosSwitch = null;
     public static SingleThrowSwitch autoDisableSwitch = null;
