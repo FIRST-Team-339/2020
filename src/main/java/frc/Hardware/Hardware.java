@@ -24,6 +24,8 @@ import frc.Utils.drive.Drive;
 import frc.Utils.drive.DrivePID;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -97,12 +99,15 @@ public class Hardware {
            
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
+
         }
     }
 
     // **********************************************************
     // CAN DEVICES
     // **********************************************************
+
+   
 
     public static SpeedController leftRearMotor = null;
     public static SpeedController rightRearMotor = null;
