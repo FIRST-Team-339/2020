@@ -24,6 +24,8 @@ import frc.Utils.drive.Drive;
 import frc.Utils.drive.DrivePID;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
+
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -34,6 +36,8 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.VictorSP;
 
 
 /**
@@ -59,10 +63,11 @@ public class Hardware {
         if (robotIdentity == Identifier.CurrentYear) {
             // ==============DIO INIT=============
 
+
             // ============ANALOG INIT============
 
             // ==============CAN INIT=============
-
+        boardMotor = new Victor(0);
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
@@ -120,7 +125,7 @@ public class Hardware {
     // DIGITAL I/O
     // **********************************************************
 
-public static Talon motor
+    public static SpeedController boardMotor = null;
 
     public static SixPositionSwitch autoSixPosSwitch = null;
     public static SingleThrowSwitch autoDisableSwitch = null;

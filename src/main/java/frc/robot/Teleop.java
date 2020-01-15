@@ -65,8 +65,8 @@ public class Teleop {
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-
-        Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
+        Hardware.boardMotor.set(.5);
+        //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         individualTest();
     } // end Periodic()
