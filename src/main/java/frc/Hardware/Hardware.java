@@ -26,6 +26,7 @@ import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -67,7 +68,7 @@ public class Hardware {
             // ============ANALOG INIT============
 
             // ==============CAN INIT=============
-        boardMotor = new Victor(0);
+        boardMotor = new WPI_VictorSPX(21);
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
@@ -125,7 +126,7 @@ public class Hardware {
     // DIGITAL I/O
     // **********************************************************
 
-    public static SpeedController boardMotor = null;
+    public static WPI_VictorSPX boardMotor = null;
 
     public static SixPositionSwitch autoSixPosSwitch = null;
     public static SingleThrowSwitch autoDisableSwitch = null;
