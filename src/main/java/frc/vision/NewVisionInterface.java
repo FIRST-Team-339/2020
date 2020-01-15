@@ -288,8 +288,10 @@ public double getDistanceFromTarget ()
     // / Math.sin(Math.abs(getYOffSet())))
     // * Math.sin(90 - Math.abs(getYOffSet()));
 
-    distance = 16.15 / Math.tan(Math.toRadians(Math.abs(getYOffSet())));
-
+   
+    distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
+    / Math.tan(Math.toRadians(MOUNTING_ANGLE) -  Math.toRadians(Math.abs(getYOffSet())));
+  
     if (hasTargets == true)
         {
 
@@ -302,11 +304,11 @@ public double getDistanceFromTarget ()
 }
 
 
-public final double CAMERA_HEIGHT = 44.5;// TODO
+public final double CAMERA_HEIGHT = 34.5;// TODO
 
-final double TARGET_HEIGHT_LOW = 29;// TODO
 
-final double TARGET_HEIGHT_HIGH = 35;// TODO
 
-final double MOUNTING_ANGLE = 0;// TODO
+final double TARGET_HEIGHT = 94;// TODO
+
+final double MOUNTING_ANGLE = 35;// TODO
 }

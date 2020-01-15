@@ -29,7 +29,7 @@
 // ====================================================================
 package frc.robot;
 
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 
 /**
@@ -60,17 +60,25 @@ public class Teleop {
      * @written Jan 13, 2015
      */
 
+    
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
+        Hardware.visionInterface.updateValues();
+
 
         // ================= OPERATOR CONTROLS ================
 
+if(Hardware.rightDriver.getRawButton(4)){
+    Hardware.visionDriving.driveToTarget();
+}
+
+
         // ================== DRIVER CONTROLS =================
-        Hardware.boardMotor.set(Hardware.rightDriver.getY());
-         System.out.println("New Motor Ticks: " + Hardware.boardEncoder.getPosition());
+      
         //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         individualTest();
+        printStatements();
     } // end Periodic()
 
     public void teleopDrive(){
@@ -115,6 +123,8 @@ public class Teleop {
         // Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("Auto Disable Sw: " +
         // Hardware.autoDisableSwitch.isOn());
+
+        SmartDashboard.putNumber("Distance from blob", Hardware.visionInterface.getDistanceFromTarget());
 
         // ---------- ANALOG -----------
 
