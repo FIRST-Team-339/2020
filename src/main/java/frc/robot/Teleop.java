@@ -63,6 +63,10 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
+<<<<<<< HEAD
+=======
+
+>>>>>>> Staged Changes
 
         // ================= OPERATOR CONTROLS ================
 
