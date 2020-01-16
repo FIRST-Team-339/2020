@@ -39,6 +39,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -62,6 +63,9 @@ public class Hardware {
 
     public static void initialize() {
         if (robotIdentity == Identifier.CurrentYear) {
+
+            // ==============Buttons=============
+            cancelAuto = new JoystickButton(leftDriver,10);
             // ==============DIO INIT=============
 
 
@@ -106,6 +110,12 @@ public class Hardware {
             visionDriving = new NewDriveWithVision();
         }
     }
+
+
+    // **********************************************************
+    // Buttons
+    // **********************************************************
+public static JoystickButton cancelAuto = null;
 
     // **********************************************************
     // CAN DEVICES

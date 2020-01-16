@@ -63,7 +63,7 @@ public class Teleop {
     
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-      //  Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.updateValues();
 
 
         // ================= OPERATOR CONTROLS ================
