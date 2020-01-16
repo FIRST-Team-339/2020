@@ -86,7 +86,7 @@ INIT, DELAY, CHOOSE_PATH, FINISH
 public static State autoState = State.INIT;
 public static void periodic ()
 {
-    if(Hardware.cancelAuto.get()){
+    if(/*Hardware.cancelAuto.get()*/true){
         autoState = State.FINISH;
     }
 
