@@ -68,7 +68,7 @@ public class Hardware {
             // ============ANALOG INIT============
 
             // ==============CAN INIT=============
-        boardMotor = new WPI_VictorSPX(21);
+        //boardMotor = new WPI_VictorSPX(21);
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
@@ -82,14 +82,14 @@ public class Hardware {
             autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
             // ============ANALOG INIT============
-            delayPot = new Potentiometer(0);
+             delayPot = new Potentiometer(0);
 
             // ==============CAN INIT=============
             // Motor Controllers
-            leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
-            leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
-            rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+            //leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
+           // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
             // Encoders
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
@@ -98,9 +98,9 @@ public class Hardware {
             // ==============RIO INIT==============
             gyro = new KilroySPIGyro(false);
             // =============OTHER INIT============
-            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
-            drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
+           transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+           drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
+           drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
            
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
@@ -116,8 +116,8 @@ public class Hardware {
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
 
-    public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
-    public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+    public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/ leftFrontMotor);
+    public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
 
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
@@ -126,7 +126,7 @@ public class Hardware {
     // DIGITAL I/O
     // **********************************************************
 
-    public static WPI_VictorSPX boardMotor = null;
+    // public static WPI_VictorSPX boardMotor = null;
 
     public static SixPositionSwitch autoSixPosSwitch = null;
     public static SingleThrowSwitch autoDisableSwitch = null;
@@ -145,9 +145,9 @@ public class Hardware {
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
 
-    public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
-    public static KilroySPIGyro gyro = null;
+     public static KilroySPIGyro gyro = null;
 
     // **********************************************************
     // DRIVER STATION CLASSES
@@ -164,8 +164,8 @@ public class Hardware {
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    UsbCamera usbCam0 = new UsbCamera("USB Cam 0", 0);
-    UsbCamera usbCam1 = new UsbCamera("USB Cam 1", 1);
+    // UsbCamera usbCam0 = new UsbCamera("USB Cam 0", 0);
+    // UsbCamera usbCam1 = new UsbCamera("USB Cam 1", 1);
 
     // ------------------------------------
     // Utility classes
