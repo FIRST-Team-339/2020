@@ -66,14 +66,31 @@ public class Teleop {
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
+        Hardware.boardMotor.set(Hardware.rightDriver.getY());
+         System.out.println("New Motor Ticks: " + Hardware.boardEncoder.getPosition());
+        //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
-        Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
-        
         individualTest();
     } // end Periodic()
 
+    public void teleopDrive(){
+
+
+        
+    }
     public static void individualTest() {
         // people test functions
+        connerTest();
+        craigTest();
+    }
+
+    public static void connerTest(){
+
+
+    }
+
+    public static void craigTest(){
+
     }
 
     public static void printStatements() {

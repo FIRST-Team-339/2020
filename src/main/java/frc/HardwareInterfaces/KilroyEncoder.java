@@ -322,7 +322,7 @@ public class KilroyEncoder implements PIDSource {
             talonSensor.setSensorPhase(inverted);
             break;
         case FALC_ENC:
-            falcon500Encoder.
+          //
             break;
         default:
             return;

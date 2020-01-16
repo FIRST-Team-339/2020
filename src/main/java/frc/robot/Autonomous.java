@@ -72,15 +72,47 @@ public static void init ()
  *
  */
 
+public static enum State {
+INIT, DELAY, CHOOSE_PATH, FINISH
+}
+
+public static State autoState = State.INIT;
 public static void periodic ()
 {
+
+    switch(autoState){
+
+        case INIT:
+
+            break;
+
+        case DELAY:
+
+            break;
+
+         case CHOOSE_PATH:
+            choosePath();
+            break;
+
+        case FINISH: 
+
+             break;
+
+        default: 
+        autoState = State.FINISH;
+             break;
+
+}
+
 
 }
 
 // =====================================================================
 // Path Methods
 // =====================================================================
+private static void choosePath(){
 
+}
 
 /*
  * ==============================================================

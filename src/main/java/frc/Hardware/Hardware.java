@@ -26,6 +26,11 @@ import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -36,6 +41,9 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.VictorSP;
+
 
 /**
  * ------------------------------------------------------- puts all of the
@@ -60,10 +68,11 @@ public class Hardware {
         if (robotIdentity == Identifier.CurrentYear) {
             // ==============DIO INIT=============
 
+
             // ============ANALOG INIT============
 
             // ==============CAN INIT=============
-
+        boardMotor = new WPI_TalonFX(18);//Can ID 18
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
@@ -81,14 +90,20 @@ public class Hardware {
 
             // ==============CAN INIT=============
             // Motor Controllers
-            leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
-            leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
-            rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+            // leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
+            // rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
+            // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
+            // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+
+            boardMotor = new WPI_TalonFX(18);
 
             // Encoders
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+
+        
+            boardEncoder = new CANCoder(0);
+           
 
             // ==============RIO INIT==============
             gyro = new KilroySPIGyro(false);
@@ -116,6 +131,9 @@ public class Hardware {
 
     public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
     public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+    
+    public static CANCoder boardEncoder = null;
+ 
 
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
@@ -123,6 +141,8 @@ public class Hardware {
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
+
+    public static WPI_TalonFX boardMotor = null;//Can ID 18 in Initilization
 
     public static SixPositionSwitch autoSixPosSwitch = null;
     public static SingleThrowSwitch autoDisableSwitch = null;
