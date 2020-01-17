@@ -62,6 +62,8 @@ public class Hardware {
     public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
+
+        
         if (robotIdentity == Identifier.CurrentYear) {
 
             // ==============Buttons=============
@@ -99,6 +101,8 @@ public class Hardware {
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
+            leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/ leftFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
             // ==============RIO INIT==============
             gyro = new KilroySPIGyro(false);
             // =============OTHER INIT============
@@ -126,8 +130,8 @@ public static JoystickButton cancelAuto = null;
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
 
-    public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/ leftFrontMotor);
-    public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
+    public static SpeedControllerGroup leftDriveGroup = null;
+    public static SpeedControllerGroup rightDriveGroup = null;  
 
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
