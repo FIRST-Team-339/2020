@@ -304,11 +304,11 @@ public double getDistanceFromTarget ()
 }
 
 
-public final double CAMERA_HEIGHT = 34.5;// TODO
+public final double CAMERA_HEIGHT = 35.25;// TODO
 
 
 
-final double TARGET_HEIGHT = 94;// TODO
+final double TARGET_HEIGHT = 83.5;// TODO
 
-final double MOUNTING_ANGLE = 35;// TODO
+final double MOUNTING_ANGLE = 37;//35;// TODO
 }
