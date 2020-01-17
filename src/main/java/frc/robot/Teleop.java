@@ -29,7 +29,7 @@
 // ====================================================================
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.Hardware.Hardware;
 
 /**
@@ -56,13 +56,14 @@ public class Teleop {
      * User Periodic code for teleop mode should go here. Will be called
      * periodically at a regular rate while the robot is in teleop mode.
      *
+     
      * @author Nathanial Lydick
      * @written Jan 13, 2015
      */
 
-    
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
+<<<<<<< HEAD
       //  Hardware.visionInterface.updateValues();
         int x = 0;
         if(Hardware.leftDriver.getRawButton(6)){
@@ -70,28 +71,37 @@ public class Teleop {
                 x++;
             }
         }
+=======
+>>>>>>> 5f41b90bf4200139844dcc0657bb68f06b73cc1e
 
         // ================= OPERATOR CONTROLS ================
 
-if(Hardware.rightDriver.getRawButton(4)){
-    Hardware.visionDriving.driveToTarget();
-}
-
-
         // ================== DRIVER CONTROLS =================
-      
-        //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
+       // Hardware.boardMotor.set(Hardware.rightDriver.getY());
+        System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
+        //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);$
 
         individualTest();
-        printStatements();
     } // end Periodic()
  
     public void teleopDrive(){
+
 
         
     }
     public static void individualTest() {
         // people test functions
+        connerTest();
+        craigTest();
+    }
+
+    public static void connerTest(){
+
+
+    }
+
+    public static void craigTest(){
+
     }
 
     public static void printStatements() {
@@ -116,8 +126,6 @@ if(Hardware.rightDriver.getRawButton(4)){
         // Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("Auto Disable Sw: " +
         // Hardware.autoDisableSwitch.isOn());
-
-        SmartDashboard.putNumber("Distance from blob", Hardware.visionInterface.getDistanceFromTarget());
 
         // ---------- ANALOG -----------
 

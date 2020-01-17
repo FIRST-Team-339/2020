@@ -97,7 +97,7 @@ public void updateValues ()
         pipeline = getpipe.getDouble(0);
         led_Mode = Led_Mode.getDouble(0);
         // filterBlobs();
-        publishValues();
+        //publishValues();
         }
     catch (NullPointerException exception)
         {
@@ -289,8 +289,13 @@ public double getDistanceFromTarget ()
     // * Math.sin(90 - Math.abs(getYOffSet()));
 
    
-    distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
-    / Math.tan(Math.toRadians(Math.abs(getYOffSet())));
+    // distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
+    // / Math.tan(Math.toRadians(MOUNTING_ANGLE) -  Math.toRadians(Math.abs(getYOffSet())));
+
+    distance = ((TARGET_HEIGHT -CAMERA_HEIGHT)
+            / (Math.sin(MOUNTING_ANGLE +  getYOffSet() ))) 
+             * (Math.sin(90 - MOUNTING_ANGLE +  getYOffSet() ));
+  
     if (hasTargets == true)
         {
 
@@ -303,11 +308,11 @@ public double getDistanceFromTarget ()
 }
 
 
-public final double CAMERA_HEIGHT = 34.5;// TODO
+public final double CAMERA_HEIGHT = 35.25;// TODO
 
 
 
-final double TARGET_HEIGHT = 94;// TODO
+final double TARGET_HEIGHT = 83.5;// TODO
 
-final double MOUNTING_ANGLE = 0;// TODO
+final double MOUNTING_ANGLE = 35;//35;// TODO
 }

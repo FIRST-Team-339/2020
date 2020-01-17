@@ -31,6 +31,8 @@
 // ====================================================================
 package frc.robot;
 
+import frc.Hardware.Hardware;
+
 /**
  * An Autonomous class. This class <b>beautifully</b> uses state machines in
  * order to periodically execute instructions during the Autonomous period.
@@ -72,6 +74,11 @@ public static void init ()
  *
  */
 
+public static enum Path{
+     NOTHING, LEAVE_LINE
+}
+
+public static Path path = Path.NOTHING;
 public static enum State {
 INIT, DELAY, CHOOSE_PATH, FINISH
 }
@@ -79,14 +86,23 @@ INIT, DELAY, CHOOSE_PATH, FINISH
 public static State autoState = State.INIT;
 public static void periodic ()
 {
+    if(Hardware.cancelAuto.get()){
+        autoState = State.FINISH;
+    }
 
     switch(autoState){
 
         case INIT:
-
+            Hardware.autoTimer.start();
+            autoState = State.DELAY;
             break;
 
         case DELAY:
+            if(Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0)){
+
+                autoState = State.CHOOSE_PATH;
+                Hardware.autoTimer.stop();
+            }
 
             break;
 
@@ -95,7 +111,7 @@ public static void periodic ()
             break;
 
         case FINISH: 
-
+            Hardware.drive.drive(0, 0);
              break;
 
         default: 
@@ -112,7 +128,29 @@ public static void periodic ()
 // =====================================================================
 private static void choosePath(){
 
+switch(path){
+
+    case LEAVE_LINE:
+    leaveLine(false);
+    break;
+
+    case NOTHING:
+        autoState = State.FINISH;
+        break;
+    default:
+    path = Path.NOTHING;
+       break;
+
 }
+
+}
+
+private static boolean leaveLine(boolean Direction){
+
+    return false;
+}
+
+
 
 /*
  * ==============================================================

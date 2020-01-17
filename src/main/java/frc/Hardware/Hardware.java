@@ -1,3 +1,4 @@
+
 // ====================================================================
 // FILE NAME: Hardware.java (Team 339 - Kilroy)
 //
@@ -25,8 +26,15 @@ import frc.Utils.drive.DrivePID;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -39,6 +47,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -58,17 +67,18 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
+
+        
         if (robotIdentity == Identifier.CurrentYear) {
             // ==============DIO INIT=============
 
 
             // ============ANALOG INIT============
 
-            // ==============CAN INIT=============
-        //boardMotor = new WPI_VictorSPX(21);
+         
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
@@ -82,42 +92,59 @@ public class Hardware {
             autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
             // ============ANALOG INIT============
-             delayPot = new Potentiometer(0);
+            delayPot = new Potentiometer(0);
 
             // ==============CAN INIT=============
             // Motor Controllers
-            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
-            //leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
-           // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+            // leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
+            // rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
+            // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
+            // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+
+            boardMotor = new WPI_TalonFX(18);
 
             // Encoders
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
+        
+            boardEncoder = new CANCoder(0);
+           
+
+            leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/ leftFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
             // ==============RIO INIT==============
             gyro = new KilroySPIGyro(false);
             // =============OTHER INIT============
-           transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-           drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
-           drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
+            // transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            // drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
+            // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
            
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
+
         }
+        System.out.println("CANCoder Obj = " + boardEncoder);
     }
+
+    public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
 
     // **********************************************************
     // CAN DEVICES
     // **********************************************************
 
-    public static SpeedController leftRearMotor = null;
-    public static SpeedController rightRearMotor = null;
+   
+
+    // public static SpeedController leftRearMotor = null;
+    // public static SpeedController rightRearMotor = null;
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
 
-    public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/ leftFrontMotor);
-    public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
+                                                                             
+    public static CANCoder boardEncoder = null;
+ 
+    public static SpeedControllerGroup leftDriveGroup = null;
+    public static SpeedControllerGroup rightDriveGroup = null;  
 
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
@@ -126,7 +153,7 @@ public class Hardware {
     // DIGITAL I/O
     // **********************************************************
 
-    // public static WPI_VictorSPX boardMotor = null;
+    public static WPI_TalonFX boardMotor = null;//Can ID 18 in Initilization
 
     public static SixPositionSwitch autoSixPosSwitch = null;
     public static SingleThrowSwitch autoDisableSwitch = null;
@@ -145,9 +172,9 @@ public class Hardware {
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
 
-public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
+    public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
-     public static KilroySPIGyro gyro = null;
+    public static KilroySPIGyro gyro = null;
 
     // **********************************************************
     // DRIVER STATION CLASSES
@@ -155,17 +182,17 @@ public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
     public static DriverStation driverStation = DriverStation.getInstance();
 
-    public static Joystick leftDriver = new Joystick(0);
-    public static Joystick rightDriver = new Joystick(1);
-    public static Joystick leftOperator = new Joystick(2);
-    public static Joystick rightOperator = new Joystick(3);
+    public static Joystick leftDriver = new Joystick(1);
+    public static Joystick rightDriver = new Joystick(0);
+    public static Joystick leftOperator = new Joystick(3);
+    public static Joystick rightOperator = new Joystick(2);
 
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    // UsbCamera usbCam0 = new UsbCamera("USB Cam 0", 0);
-    // UsbCamera usbCam1 = new UsbCamera("USB Cam 1", 1);
+    UsbCamera usbCam0 = new UsbCamera("USB Cam 0", 0);
+    UsbCamera usbCam1 = new UsbCamera("USB Cam 1", 1);
 
     // ------------------------------------
     // Utility classes
