@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.PIDSource;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.CANCoderFaults;
+import com.ctre.phoenix.sensors.CANCoderStickyFaults;
+import com.ctre.phoenix.sensors.MagnetFieldStrength;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 
@@ -27,6 +32,8 @@ public class KilroyEncoder implements PIDSource {
     private TalonSRX talonSensor = null;
 
     private CANSparkMax canEncoder = null;
+
+    private CANCoder falcon500Encoder = null;
 
     private final SensorType type;
 
@@ -75,6 +82,8 @@ public class KilroyEncoder implements PIDSource {
         setTicksPerRevolution(1);
     }
 
+    
+
     /**
      * this is the same as above it creats the object AND sets how many ticks we
      * want per revolution
@@ -99,6 +108,11 @@ public class KilroyEncoder implements PIDSource {
     public KilroyEncoder(TalonSRX canMotorController) {
         this.talonSensor = canMotorController;
         type = SensorType.CAN_HAT;
+    }
+
+    public KilroyEncoder(CANCoder falcon500Encoder) {
+        this.falcon500Encoder = falcon500Encoder;
+        type = SensorType.FALC_ENC;
     }
 
     /**
@@ -131,6 +145,8 @@ public class KilroyEncoder implements PIDSource {
             return talonSensor.getSelectedSensorPosition(0) / 4;
         // can talonSRX read the encoder as 4X instead of 1X, so the
         // output must be divided by 4
+        case FALC_ENC:
+            return (int) falcon500Encoder.getPosition();
         default:
             return 0;
         } // switch
@@ -164,6 +180,8 @@ public class KilroyEncoder implements PIDSource {
             return (this.sparkTicksPerRevolution * (canEncoder.getEncoder().getPosition() - savedPosition));
         case CAN_HAT:
             return talonSensor.getSelectedSensorPosition(0) / 4;
+        case FALC_ENC:
+            return (int) falcon500Encoder.getPosition();
         // can talonSRX read the encoder as 4X instead of 1X, so the
         // output must be divided by 4
         default:
@@ -190,6 +208,8 @@ public class KilroyEncoder implements PIDSource {
                 return -distancePerTick * (canEncoder.getEncoder().getPosition() - savedPosition);
             return distancePerTick * (canEncoder.getEncoder().getPosition() - savedPosition);
         case CAN_HAT:
+            return distancePerTick * this.get();
+        case FALC_ENC:
             return distancePerTick * this.get();
         default:
             return this.get();
@@ -219,6 +239,8 @@ public class KilroyEncoder implements PIDSource {
             return canEncoder.getEncoder().getVelocity() / 60;
         case CAN_HAT:
             return (talonSensor.getSelectedSensorVelocity(0) * 10) * distancePerTick;
+        case FALC_ENC:
+            return falcon500Encoder.getVelocity() * distancePerTick;
         default:
             return 0;
         }
@@ -299,6 +321,9 @@ public class KilroyEncoder implements PIDSource {
         case CAN_HAT:
             talonSensor.setSensorPhase(inverted);
             break;
+        case FALC_ENC:
+          //
+            break;
         default:
             return;
         }
@@ -339,6 +364,8 @@ public class KilroyEncoder implements PIDSource {
             savedPosition = canEncoder.getEncoder().getPosition();
             break;
         case CAN_HAT:
+            talonSensor.setSelectedSensorPosition(0, 0, 0);
+        case FALC_ENC:
             talonSensor.setSelectedSensorPosition(0, 0, 0);
         default:
             return;
@@ -398,7 +425,9 @@ public class KilroyEncoder implements PIDSource {
         /** Attached to the REVSparkMax CAN encoder */
         REV_CAN,
         /** Attached to a CAN Motor Controller via hat */
-        CAN_HAT
+        CAN_HAT,
+
+        FALC_ENC
     }
 
     // variable at which rotational measurements of the Spark Max is translated to

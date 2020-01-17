@@ -83,10 +83,22 @@ if(Hardware.rightDriver.getRawButton(4)){
 
     public void teleopDrive(){
 
+
         
     }
     public static void individualTest() {
         // people test functions
+        connerTest();
+        craigTest();
+    }
+
+    public static void connerTest(){
+
+
+    }
+
+    public static void craigTest(){
+
     }
 
     public static void printStatements() {
