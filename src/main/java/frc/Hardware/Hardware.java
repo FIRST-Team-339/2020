@@ -59,7 +59,7 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
         if (robotIdentity == Identifier.CurrentYear) {
