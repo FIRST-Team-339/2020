@@ -131,6 +131,7 @@ private static void choosePath(){
 switch(path){
 
     case LEAVE_LINE:
+    leaveLine(false);
     break;
 
     case NOTHING:
@@ -142,6 +143,11 @@ switch(path){
 
 }
 
+}
+
+private static boolean leaveLine(boolean Direction){
+
+    return false;
 }
 
 
