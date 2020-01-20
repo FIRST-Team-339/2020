@@ -32,28 +32,28 @@ public class NewDriveWithVision {
 
                 adjustmentValueLeft = MIN_MOVE - (Math.abs(offness) * ADJUST_PORP);
                 adjustmentValueRight = MIN_MOVE + (Math.abs(offness) * ADJUST_PORP);
-                // Hardware.drive.drive(adjustmentValueLeft,
-                // adjustmentValueRight);
-                //TODO
-              //  Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                Hardware.drive.drive(adjustmentValueLeft,
+                adjustmentValueRight);
+                
+               Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
 
             else
-            /* if (offness > 0) */
+             if (offness > 0) 
             {
 
                 adjustmentValueLeft = MIN_MOVE + (Math.abs(offness) * ADJUST_PORP);
                 adjustmentValueRight = MIN_MOVE - (Math.abs(offness) * ADJUST_PORP);
 
-                // Hardware.drive.drive(adjustmentValueLeft,
-                // adjustmentValueRight);
-                //TODO
-               // Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                Hardware.drive.drive(adjustmentValueLeft,
+                adjustmentValueRight);
+                
+               Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
-            // else
-            // {
-            // Hardware.transmission.driveRaw(.2, .2);
-            // }
+            else
+            {
+            Hardware.transmission.driveRaw(.2, .2);
+            }
         } else {
             return true;
         }
