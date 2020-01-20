@@ -157,7 +157,11 @@ public class KilroyEncoder implements PIDSource {
         // can talonSRX read the encoder as 4X instead of 1X, so the
         // output must be divided by 4
         case FALC_ENC:
+        if(this.talonMotor.getInverted()){
+            return -(int)(this.sensorCollection.getIntegratedSensorPosition());
+        }else{
             return (int)(this.sensorCollection.getIntegratedSensorPosition());
+        }
         default:
             return 0;
         } // switch
@@ -192,7 +196,11 @@ public class KilroyEncoder implements PIDSource {
 case CAN_HAT:
     return talonSensor.getSelectedSensorPosition(0) / 4;
 case FALC_ENC:
-    return sensorCollection.getIntegratedSensorAbsolutePosition();
+    if(this.talonMotor.getInverted()){
+            return -(int)(this.sensorCollection.getIntegratedSensorAbsolutePosition());
+        }else{
+            return (int)(this.sensorCollection.getIntegratedSensorAbsolutePosition());
+        }
 // can talonSRX read the encoder as 4X instead of 1X, so the
 // output must be divided by 4
 default:

@@ -9,6 +9,12 @@ public class NewVisionInterface
 
 NetworkTable limelight = NetworkTableInstance.getDefault()
         .getTable("limelight");
+        /*Limelight dettings
+        * Exposure: 12
+        * Black Level Offset: 24
+        * Red Balance: 1013
+        * Blue Balance 500
+        */
 
 // has target
 NetworkTableEntry tv = limelight.getEntry("tv");
@@ -250,7 +256,8 @@ public void setPipeline (int pipe)
 
 public void takePicture ()
 {
-    // TODO
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+    System.out.println("Picture has been taken...?");
 }
 
 public boolean filterPass = true;
