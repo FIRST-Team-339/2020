@@ -1,6 +1,8 @@
 package frc.HardwareInterfaces;
 
+import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 // import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -33,7 +35,9 @@ public class KilroyEncoder implements PIDSource {
 
     private CANSparkMax canEncoder = null;
 
-    private CANCoder falcon500Encoder = null;
+    private TalonFX talonMotor = null;
+
+    private TalonFXSensorCollection sensorCollection = null;
 
     private final SensorType type;
 
@@ -110,8 +114,15 @@ public class KilroyEncoder implements PIDSource {
         type = SensorType.CAN_HAT;
     }
 
-    public KilroyEncoder(CANCoder falcon500Encoder) {
-        this.falcon500Encoder = falcon500Encoder;
+    /**
+     * Kilroy Encoder type for TalonFX motors
+     *
+     * @param talonMotor
+     */
+    public KilroyEncoder(TalonFX talonMotor) {
+        this.talonMotor = talonMotor;
+        this.sensorCollection = this.talonMotor.getSensorCollection();
+    
         type = SensorType.FALC_ENC;
     }
 
@@ -146,7 +157,7 @@ public class KilroyEncoder implements PIDSource {
         // can talonSRX read the encoder as 4X instead of 1X, so the
         // output must be divided by 4
         case FALC_ENC:
-            return (int) falcon500Encoder.getPosition();
+            return (int)(this.sensorCollection.getIntegratedSensorPosition());
         default:
             return 0;
         } // switch
@@ -170,28 +181,28 @@ public class KilroyEncoder implements PIDSource {
             // rotations it
             // has completed
 
-            // sparkTicksPerRevolution is the number we multi the value of
-            // revolutions by to
-            // get a larger integer imitating ticks
-            // getPosition - savedPosition --- Reference reset() function
-            if (canEncoder.getInverted() == true) {
-                return -(this.sparkTicksPerRevolution * (canEncoder.getEncoder().getPosition() - savedPosition));
-            }
-            return (this.sparkTicksPerRevolution * (canEncoder.getEncoder().getPosition() - savedPosition));
-        case CAN_HAT:
-            return talonSensor.getSelectedSensorPosition(0) / 4;
-        case FALC_ENC:
-            return (int) falcon500Encoder.getPosition();
-        // can talonSRX read the encoder as 4X instead of 1X, so the
-        // output must be divided by 4
-        default:
-            return 0;
-        } // switch
-    } // end getRaw()
+        // sparkTicksPerRevolution is the number we multi the value of
+    // revolutions by to
+    // get a larger integer imitating ticks
+    // getPosition - savedPosition --- Reference reset() function
+    if (canEncoder.getInverted() == true) {
+        return -(this.sparkTicksPerRevolution * (canEncoder.getEncoder().getPosition() - savedPosition));
+    }
+    return (this.sparkTicksPerRevolution * (canEncoder.getEncoder().getPosition() - savedPosition));
+case CAN_HAT:
+    return talonSensor.getSelectedSensorPosition(0) / 4;
+case FALC_ENC:
+    return sensorCollection.getIntegratedSensorAbsolutePosition();
+// can talonSRX read the encoder as 4X instead of 1X, so the
+// output must be divided by 4
+default:
+    return 0;
+} // switch
+} // end getRaw()
 
-    /**
-     * When we want to measure distance based on the encoder, we multiply by a
-     * scalar set earlier (usually during initialization), that translates rotation
+/**
+ * When we want to measure distance based on the encoder, we multiply by a
+ * scalar set earlier (usually during initialization), that translates rotation
      * into linear movement. case REV_CAN getPosition - savedPosition --- Reference
      * reset() function
      *
@@ -210,7 +221,7 @@ public class KilroyEncoder implements PIDSource {
         case CAN_HAT:
             return distancePerTick * this.get();
         case FALC_ENC:
-            return distancePerTick * this.get();
+            return 0;
         default:
             return this.get();
         }
@@ -240,7 +251,7 @@ public class KilroyEncoder implements PIDSource {
         case CAN_HAT:
             return (talonSensor.getSelectedSensorVelocity(0) * 10) * distancePerTick;
         case FALC_ENC:
-            return falcon500Encoder.getVelocity() * distancePerTick;
+            return 0;
         default:
             return 0;
         }
@@ -366,7 +377,7 @@ public class KilroyEncoder implements PIDSource {
         case CAN_HAT:
             talonSensor.setSelectedSensorPosition(0, 0, 0);
         case FALC_ENC:
-            talonSensor.setSelectedSensorPosition(0, 0, 0);
+            sensorCollection.setIntegratedSensorPosition(0,0);
         default:
             return;
         }

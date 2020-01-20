@@ -68,7 +68,8 @@ public class Teleop {
 
         // ================== DRIVER CONTROLS =================
        // Hardware.boardMotor.set(Hardware.rightDriver.getY());
-        System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
+       
+        System.out.println("Ticks Please? : " + Hardware.boardEncoder.get());
         //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);$
 
         individualTest();
