@@ -81,9 +81,7 @@ public class Teleop {
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-        //Hardware.leftFrontMotor.set(Hardware.leftDriver.getY());
-     
-        System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
+      
        
         teleopDrive();
        // individualTest();
