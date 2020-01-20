@@ -60,7 +60,7 @@ public class Teleop {
         Hardware.drive.setGearPercentage(1, .5);
         Hardware.drive.setGearPercentage(2, .7);
        
-        Hardware.drive.setGear(1);
+        Hardware.drive.setGear(0);
 
     } // end Init
 
@@ -73,26 +73,39 @@ public class Teleop {
      * @written Jan 13, 2015
      */
 
+     public static boolean testBoolean = false;
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-      //  Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.updateValues();
      
+
+      if(Hardware.leftDriver.getRawButton(6)){
+
+        testBoolean = true;
+      }
+      if(testBoolean == true){
+          Hardware.visionDriving.driveToTarget();
+      }
+      if(testBoolean == false){
+        teleopDrive();
+      }
+
 
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
       
        
-        teleopDrive();
+       
        // individualTest();
     } // end Periodic()
  
     public static void teleopDrive(){
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
-        System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
-        System.out.println("Speed levels: rightDriver" + Hardware.rightDriver.getY());
-        System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
+        // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
+        // System.out.println("Speed levels: rightDriver" + Hardware.rightDriver.getY());
+        // System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
 
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
         
@@ -233,5 +246,5 @@ public class Teleop {
     private static int firstTime;
 
 
-    private final static int MAX_GEAR_NUMBER = 3;
+    private final static int MAX_GEAR_NUMBER = 2;
 } // end class

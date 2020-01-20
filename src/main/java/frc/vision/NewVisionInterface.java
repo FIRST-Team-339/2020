@@ -96,8 +96,9 @@ public void updateValues ()
         vertical = tvert.getDouble(0);
         pipeline = getpipe.getDouble(0);
         led_Mode = Led_Mode.getDouble(0);
+
         // filterBlobs();
-        //publishValues();
+        publishValues();
         }
     catch (NullPointerException exception)
         {
@@ -171,7 +172,7 @@ public void publishValues ()
     SmartDashboard.putNumber("vertical ", vertical);
     SmartDashboard.putNumber("pipeline ", pipeline);
     SmartDashboard.putNumber("ledMode", led_Mode);
-    // SmartDashboard.putNumber("distance", getDistanceFromTarget());
+    SmartDashboard.putNumber("distance", getDistanceFromTarget());
 }
 
 
@@ -299,7 +300,7 @@ public double getDistanceFromTarget ()
     if (hasTargets == true)
         {
 
-        return distance;
+        return Math.abs(distance);
         }
     else
         {
