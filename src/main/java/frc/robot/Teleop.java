@@ -30,6 +30,8 @@
 package frc.robot;
 
 
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
@@ -60,7 +62,7 @@ public class Teleop {
         Hardware.drive.setGearPercentage(1, .5);
         Hardware.drive.setGearPercentage(2, .7);
        
-        Hardware.drive.setGear(1);
+        Hardware.drive.setGear(0);
 
     } // end Init
 
@@ -73,26 +75,38 @@ public class Teleop {
      * @written Jan 13, 2015
      */
 
+     public static boolean testBoolean = false;
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-      //  Hardware.visionInterface.updateValues();
-     
+        Hardware.visionInterface.updateValues();
 
-        // ================= OPERATOR CONTROLS ================
+
+        if(Hardware.leftDriver.getRawButton(6)){
+
+            testBoolean = true;
+          }
+          if(testBoolean == true){
+              Hardware.visionDriving.driveToTarget();
+          }
+          if(testBoolean == false){
+            teleopDrive();
+          }
+             // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
       
        
-        teleopDrive();
+       
        // individualTest();
     } // end Periodic()
- 
+    
+
     public static void teleopDrive(){
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
-        System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
-        System.out.println("Speed levels: rightDriver" + Hardware.rightDriver.getY());
-        System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
+        // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
+        // System.out.println("Speed levels: rightDriver" + Hardware.rightDriver.getY());
+        // System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
 
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
         
@@ -104,9 +118,10 @@ public class Teleop {
     public static void individualTest() {
         // people test functions
        // connerTest();
-    craigTest();
+    //craigTest();
        // chrisTest();
-       dionTest();
+       //dionTest();
+       //patrickTest();
     }
 
     public static void connerTest(){
@@ -148,12 +163,26 @@ public class Teleop {
     }
         
     public static void chrisTest(){
-        int x = 0;
-        if(Hardware.leftDriver.getRawButton(6)){
-            if(x >= 0 || x <= 5){
-                x++;
-            }
+         int x = 0;
+        if( Hardware.leftOperator.getRawButton(5) == true){
+            x++; 
         }
+    }
+
+    public static void patrickTest()
+    {
+        boolean buttonPressed = false;
+
+        if(Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && !buttonPressed)
+        {
+            buttonPressed = true;
+            Hardware.visionInterface.takePicture();
+            System.out.println("TakePicture has been run");
+        }  
+        else
+            buttonPressed = false;
+
+        System.out.println(buttonPressed);
     }
 
     public static void printStatements() {
@@ -183,7 +212,7 @@ public class Teleop {
 
         // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
 
-        // Hardware.telemetry.printToConsole("Delay Pot: " + Hardware.delayPot.get());
+        System.out.println("Delay Pot: " + Hardware.delayPot.get());
 
         // ----------- CAN -------------
 
@@ -249,5 +278,5 @@ public class Teleop {
     private static int firstTime;
 
 
-    private final static int MAX_GEAR_NUMBER = 3;
+    private final static int MAX_GEAR_NUMBER = 2;
 } // end class

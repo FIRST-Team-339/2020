@@ -9,6 +9,12 @@ public class NewVisionInterface
 
 NetworkTable limelight = NetworkTableInstance.getDefault()
         .getTable("limelight");
+        /*Limelight dettings
+        * Exposure: 12
+        * Black Level Offset: 24
+        * Red Balance: 1013
+        * Blue Balance 500
+        */
 
 // has target
 NetworkTableEntry tv = limelight.getEntry("tv");
@@ -96,8 +102,9 @@ public void updateValues ()
         vertical = tvert.getDouble(0);
         pipeline = getpipe.getDouble(0);
         led_Mode = Led_Mode.getDouble(0);
+
         // filterBlobs();
-        //publishValues();
+        publishValues();
         }
     catch (NullPointerException exception)
         {
@@ -171,7 +178,7 @@ public void publishValues ()
     SmartDashboard.putNumber("vertical ", vertical);
     SmartDashboard.putNumber("pipeline ", pipeline);
     SmartDashboard.putNumber("ledMode", led_Mode);
-    // SmartDashboard.putNumber("distance", getDistanceFromTarget());
+    SmartDashboard.putNumber("distance", getDistanceFromTarget());
 }
 
 
@@ -250,7 +257,8 @@ public void setPipeline (int pipe)
 
 public void takePicture ()
 {
-    // TODO
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+    System.out.println("Picture has been taken...?");
 }
 
 public boolean filterPass = true;
@@ -299,7 +307,7 @@ public double getDistanceFromTarget ()
     if (hasTargets == true)
         {
 
-        return distance;
+        return Math.abs(distance);
         }
     else
         {
