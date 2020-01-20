@@ -56,11 +56,11 @@ public class Teleop {
         //Gear Inits
        
        
-        // Hardware.drive.setGearPercentage(0, .3);
-        // Hardware.drive.setGearPercentage(1, .5);
-        // Hardware.drive.setGearPercentage(2, .7);
+        Hardware.drive.setGearPercentage(0, .3);
+        Hardware.drive.setGearPercentage(1, .5);
+        Hardware.drive.setGearPercentage(2, .7);
        
-        // Hardware.drive.setGear(1);
+        Hardware.drive.setGear(1);
 
     } // end Init
 
@@ -81,12 +81,10 @@ public class Teleop {
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-        Hardware.leftFrontMotor.set(Hardware.leftDriver.getY());
-     
-        System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
+      
        
-       // teleopDrive();
-        individualTest();
+        teleopDrive();
+       // individualTest();
     } // end Periodic()
  
     public static void teleopDrive(){
@@ -99,7 +97,7 @@ public class Teleop {
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
         
         if(Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER){
-            Hardware.drive.setGear(MAX_GEAR_NUMBER -1);
+            Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
         }
 
     }

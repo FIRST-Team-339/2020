@@ -64,13 +64,20 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
 
-        if (robotIdentity == Identifier.CurrentYear) {
 
-            // ==============Buttons=============
+        // ==============Buttons=============
+        cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
+        gearUp = new JoystickButton(Hardware.rightDriver, 1);
+        gearDown = new JoystickButton(Hardware.leftDriver, 1);
+        launchButton = new JoystickButton(Hardware.rightOperator, 1);
+        intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+       
+
+        if (robotIdentity == Identifier.CurrentYear) {
 
             // ==============CAN INIT=============
             // Motor Controllers
@@ -97,39 +104,44 @@ public class Hardware {
         } else if (robotIdentity == Identifier.PrevYear) {
 
             // ==============DIO INIT=============
+            // autoDisableSwitch = new SingleThrowSwitch(0);
+            // autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
             // ============ANALOG INIT============
+           // delayPot = new Potentiometer(0);
 
             // ==============CAN INIT=============
             // Motor Controllers
-            // leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-            // rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
-            leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
-            rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+             leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+             rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+            // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
+            // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
-            // leftFrontMotor = new WPI_TalonFX(13);
+            //leftFrontMotor = new WPI_TalonFX(13);
 
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-            rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+             rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
-                    rightFrontMotor);
-
+             rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/
+             rightFrontMotor);
             // ==============RIO INIT==============
 
             // =============OTHER INIT============
-            // transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            // drive = new Drive(transmission, null, null, gyro);
+             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+             drive = new Drive(transmission, null, null, gyro);
+            // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
 
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
             // armMotor = new WPI_TalonSRX(24);
             // liftMotor = new WPI_TalonSRX(23);
             // armRoller = new WPI_TalonSRX(10);
+            
         }
     }
 
@@ -200,8 +212,8 @@ public class Hardware {
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
-    public static JoystickButton launchButton = new JoystickButton(Hardware.leftOperator, 1);
-
+    public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+    public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
