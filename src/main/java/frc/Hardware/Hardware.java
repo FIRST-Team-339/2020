@@ -78,6 +78,7 @@ public class Hardware {
           cancelAuto  = new JoystickButton(Hardware.rightDriver, 5);
           gearUp = new JoystickButton(Hardware.rightDriver, 1);
           gearDown = new JoystickButton(Hardware.leftDriver, 1);
+          launchButton = new JoystickButton(Hardware.leftOperator, 1);
 
             // ==============DIO INIT=============
 
@@ -102,28 +103,29 @@ public class Hardware {
 
             // ==============CAN INIT=============
             // Motor Controllers
-            // leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
+           //  leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
             // rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
             // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
-            boardMotor = new WPI_TalonFX(18);
+            leftFrontMotor = new WPI_TalonFX(13);
+           // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-            rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+            // leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            // rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
         
             boardEncoder = new CANCoder(0);
            
 
             leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/ leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
+           // rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
             // ==============RIO INIT==============
             gyro = new KilroySPIGyro(false);
             // =============OTHER INIT============
             // transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            // drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
+            // drive = new Drive(transmission, null, null, gyro);
             // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
            
             visionInterface = new NewVisionInterface();
@@ -142,6 +144,8 @@ public class Hardware {
     public static JoystickButton gearUp = null;
     public static JoystickButton gearDown = null;
     public static JoystickButton gearOverride = null;
+
+    public static JoystickButton launchButton = null;
     // **********************************************************
     // CAN DEVICES
     // **********************************************************
