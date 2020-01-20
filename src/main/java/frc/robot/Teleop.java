@@ -81,19 +81,10 @@ public class Teleop {
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-<<<<<<< HEAD
-       // Hardware.boardMotor.set(Hardware.rightDriver.getY());
-       
-        System.out.println("Ticks Please? : " + Hardware.boardEncoder.get());
-        //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);$
-
-        individualTest();
-=======
       
        
         teleopDrive();
        // individualTest();
->>>>>>> 8e4c40721bd5bafd57fb338e74f9487020338891
     } // end Periodic()
  
     public static void teleopDrive(){

@@ -41,8 +41,8 @@ public void robotInit ()
     Hardware.initialize();
 
     //Clearing TalonFX motor ticks
-     Hardware.boardEncoder.reset();
-
+     Hardware.leftEncoder.reset();
+     Hardware.rightEncoder.reset();
     // ---------------------------------------
     // done setup - tell the user we are complete
     // setup
