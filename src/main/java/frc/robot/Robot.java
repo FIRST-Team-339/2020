@@ -39,6 +39,7 @@ public void robotInit ()
     // ---------------------------------------
     
     Hardware.initialize();
+    
 
     //Clearing TalonFX motor ticks
      Hardware.leftEncoder.reset();
