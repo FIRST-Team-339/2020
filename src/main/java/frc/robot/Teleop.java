@@ -163,11 +163,10 @@ public class Teleop {
     }
         
     public static void chrisTest(){
-         int x = 0;
-        if( Hardware.leftOperator.getRawButton(5) == true){
-            x++; 
-        }
-    }
+      SmartDashboard.putNumber("Ball Count",x);
+      }  
+       
+   
 
     public static void patrickTest()
     {
