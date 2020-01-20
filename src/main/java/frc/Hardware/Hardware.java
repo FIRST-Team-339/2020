@@ -18,6 +18,7 @@ import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.Potentiometer;
+import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
 import frc.vision.*;
@@ -87,14 +88,10 @@ public class Hardware {
             // rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
             // ==============DIO INIT=============
             //red light sensors - there should be four! 20 Jan. 2020
-            intakeRL = new IRSensor(12);
-            lowStoreRL = new IRSensor(3);
-            upStoreRL = new IRSensor(4);
-            firingRL = new IRSensor(1);
 
             // ============ANALOG INIT============
 
-        
+
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
@@ -196,6 +193,14 @@ public class Hardware {
     // DIGITAL I/O
     // **********************************************************
 
+    public static LightSensor intakeRL = new LightSensor(12);
+    public static LightSensor lowStoreRL = new LightSensor(3);
+    public static LightSensor upStoreRL = new LightSensor(4);
+    public static LightSensor firingRL = new LightSensor(1);
+
+
+    public static WPI_TalonFX boardMotor = null;//Can ID 18 in Initilization
+
     public static SixPositionSwitch autoSixPosSwitch = null;
     public static SingleThrowSwitch autoDisableSwitch = null;
 
@@ -203,10 +208,7 @@ public class Hardware {
     // ANALOG I/O
     // **********************************************************
 
-    public static  IRSensor intakeRL = null;
-    public static IRSensor lowStoreRL = null;
-    public static IRSensor upStoreRL = null;
-    public static IRSensor firingRL = null;
+    
 
     public static Potentiometer delayPot = null;
 
