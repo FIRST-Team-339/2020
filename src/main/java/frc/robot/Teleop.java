@@ -86,8 +86,12 @@ public class Teleop {
             testBoolean = true;
           }
           if(testBoolean == true){
-              Hardware.visionDriving.driveToTarget();
-          }
+              if(Hardware.visionDriving.driveToTarget())
+            {
+            testBoolean =false;
+
+             }        
+              }
           if(testBoolean == false){
             teleopDrive();
           }
