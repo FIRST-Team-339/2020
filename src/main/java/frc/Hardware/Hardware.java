@@ -82,8 +82,8 @@ public class Hardware {
             // Motor Controllers
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
-            leftRearMotor = new WPI_TalonFX(12);
-            rightRearMotor = new WPI_TalonFX(14);
+           // leftRearMotor = new WPI_TalonFX(12);
+           // rightRearMotor = new WPI_TalonFX(14);
 
             leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
@@ -172,18 +172,18 @@ public class Hardware {
     public static LightSensor upStoreRL = new LightSensor(4); // upper middle
     public static LightSensor firingRL = new LightSensor(1); // top
 
-    // public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-    // public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
-    // public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
-    // public static SingleThrowSwitch autoDontDriveForward = new SingleThrowSwitch(22);
-    // public static SingleThrowSwitch autoDontDriveBack = new SingleThrowSwitch(23);
-    // public static SingleThrowSwitch zeroBallsIn = new SingleThrowSwitch(24);
-    // public static SingleThrowSwitch threeBallsIn = new SingleThrowSwitch(25);
+    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
+    public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
+    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
 
-    // public static DoubleThrowSwitch autoDriveForwardBack = new
-    // DoubleThrowSwitch(22, 23);
-    // public static DoubleThrowSwitch zeroOrThreeBalls = new DoubleThrowSwitch(24,
-    // 25);
+    public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
+    public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
+    public static DoubleThrowSwitch autoDriveForwardBack = new DoubleThrowSwitch(autoCrossTheLineForward,
+            autoCrossTheLineBack);
+
+    public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
+    public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
+    public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
 
     // **********************************************************
     // ANALOG I/O
@@ -217,6 +217,9 @@ public class Hardware {
     // **********************************************************
     // Buttons
     // **********************************************************
+
+    public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
+
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
