@@ -75,7 +75,7 @@ public static void init ()
  */
 
 public static enum Path{
-     NOTHING, LEAVE_LINE
+     NOTHING, LEAVE_LINE, AUTO_LAUNCH, PICK_UP_LAUNCH, PICKUP
 }
 
 public static Path path = Path.NOTHING;
