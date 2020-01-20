@@ -88,12 +88,9 @@ public class Hardware {
 
             leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+
             // ==============DIO INIT=============
             //red light sensors - there should be four! 20 Jan. 2020
-            intakeRL = new IRSensor(12);
-            lowStoreRL = new IRSensor(3);
-            upStoreRL = new IRSensor(4);
-            firingRL = new IRSensor(1);
 
             // ============ANALOG INIT============
 
@@ -178,6 +175,12 @@ public class Hardware {
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
+
+    public static IRSensor intakeRL = new LightSensor(12);
+    public static IRSensor lowStoreRL = new LightSensor(3);
+    public static IRSensr upStoreRL = new LightSensor(4);
+    public static IRSensor firingRL = new LightSensor(1);
+
 
     public static WPI_TalonFX boardMotor = null;//Can ID 18 in Initilization
 
