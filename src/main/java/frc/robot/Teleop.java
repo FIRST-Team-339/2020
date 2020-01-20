@@ -30,6 +30,8 @@
 package frc.robot;
 
 
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
@@ -83,7 +85,7 @@ public class Teleop {
         // ================== DRIVER CONTROLS =================
         Hardware.leftFrontMotor.set(Hardware.leftDriver.getY());
      
-        System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
+        //System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
        
        // teleopDrive();
         individualTest();
@@ -108,7 +110,8 @@ public class Teleop {
        // connerTest();
         //craigTest();
        // chrisTest();
-       dionTest();
+       //dionTest();
+       patrickTest();
     }
 
     public static void connerTest(){
@@ -140,6 +143,22 @@ public class Teleop {
                 x++;
             }
         }
+    }
+
+    public static void patrickTest()
+    {
+        boolean buttonPressed = false;
+
+        if(Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && !buttonPressed)
+        {
+            buttonPressed = true;
+            Hardware.visionInterface.takePicture();
+            System.out.println("TakePicture has been run");
+        }  
+        else
+            buttonPressed = false;
+
+        System.out.println(buttonPressed);
     }
 
     public static void printStatements() {
