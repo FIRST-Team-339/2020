@@ -1,4 +1,3 @@
-
 // ====================================================================
 // FILE NAME: Hardware.java (Team 339 - Kilroy)
 //
@@ -20,6 +19,7 @@ import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.Potentiometer;
+import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
 import frc.vision.*;
@@ -28,19 +28,15 @@ import frc.Utils.drive.DrivePID;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -68,7 +64,7 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.PrevYear;
+    public static Identifier robotIdentity = Identifier.CurrentYear;
 
     public static void initialize() {
 
@@ -100,6 +96,12 @@ public class Hardware {
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
 
+            usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+
+            usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+
+            usbCam1.close();
+
         } else if (robotIdentity == Identifier.PrevYear) {
 
             // ==============DIO INIT=============
@@ -117,6 +119,7 @@ public class Hardware {
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
             leftFrontMotor = new WPI_TalonFX(13);
+
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
@@ -137,9 +140,10 @@ public class Hardware {
 
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
-
+            // armMotor = new WPI_TalonSRX(24);
+            // liftMotor = new WPI_TalonSRX(23);
+            // armRoller = new WPI_TalonSRX(10);
         }
-        System.out.println("CANCoder Obj = " + boardEncoder);
     }
 
     // **********************************************************
@@ -169,6 +173,10 @@ public class Hardware {
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
 
+    public static KilroyEncoder liftingEncoder = null;
+
+    public static SpeedController liftMotor = null;
+
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
@@ -197,7 +205,7 @@ public class Hardware {
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
 
-    public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
+    public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     public static KilroySPIGyro gyro = null;
 
@@ -207,17 +215,17 @@ public class Hardware {
 
     public static DriverStation driverStation = DriverStation.getInstance();
 
-    public static Joystick leftDriver = new Joystick(1);
-    public static Joystick rightDriver = new Joystick(0);
-    public static Joystick leftOperator = new Joystick(3);
-    public static Joystick rightOperator = new Joystick(2);
+    public static Joystick leftDriver = new Joystick(0);
+    public static Joystick rightDriver = new Joystick(1);
+    public static Joystick leftOperator = new Joystick(2);
+    public static Joystick rightOperator = new Joystick(3);
 
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    UsbCamera usbCam0 = new UsbCamera("USB Cam 0", 0);
-    UsbCamera usbCam1 = new UsbCamera("USB Cam 1", 1);
+    public static UsbCamera usbCam0 = null;
+    public static UsbCamera usbCam1 = null;
 
     // ------------------------------------
     // Utility classes
