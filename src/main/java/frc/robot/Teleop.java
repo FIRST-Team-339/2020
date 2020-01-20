@@ -106,7 +106,7 @@ public class Teleop {
     public static void individualTest() {
         // people test functions
        // connerTest();
-        //craigTest();
+    craigTest();
        // chrisTest();
        //dionTest();
        patrickTest();
@@ -118,6 +118,22 @@ public class Teleop {
     }
 
     public static void craigTest(){
+
+        if(Hardware.rightDriver.getRawButton(4) == true && Hardware.invertTempoMomentarySwitch.isOn() == false){
+            Hardware.invertTempoMomentarySwitch.setValue(true);
+        }else{
+            Hardware.invertTempoMomentarySwitch.setValue(false);
+        }
+
+        if(Hardware.invertTempoMomentarySwitch.isOn()){
+            Hardware.rightFrontMotor.setInverted(true);
+            Hardware.leftFrontMotor.setInverted(true);
+        }else{
+            Hardware.leftFrontMotor.setInverted(false);
+            Hardware.rightFrontMotor.setInverted(false);
+        }
+
+        System.out.println("Ticks: " + Hardware.rightEncoder.get());
 
     }
 
