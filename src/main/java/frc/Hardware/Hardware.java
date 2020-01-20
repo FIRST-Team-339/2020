@@ -98,10 +98,6 @@ public class Hardware {
 
             usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
 
-            usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
-
-            usbCam1.close();
-
         } else if (robotIdentity == Identifier.PrevYear) {
 
             // ==============DIO INIT=============
