@@ -24,7 +24,6 @@ import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
 import frc.vision.*;
 import frc.Utils.drive.Drive;
-import frc.Utils.drive.DrivePID;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -71,22 +70,20 @@ public class Hardware {
         if (robotIdentity == Identifier.CurrentYear) {
 
             // ==============Buttons=============
-            cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
-            gearUp = new JoystickButton(Hardware.rightDriver, 1);
-            gearDown = new JoystickButton(Hardware.leftDriver, 1);
-            launchButton = new JoystickButton(Hardware.leftOperator, 1);
 
             // ==============CAN INIT=============
             // Motor Controllers
-            // leftFrontMotor = new WPI_TalonFX(13);
-            // rightFrontMotor = new WPI_TalonFX(15);
-            // leftRearMotor = new WPI_TalonFX(12);
-            // rightRearMotor = new WPI_TalonFX(14);
+            leftFrontMotor = new WPI_TalonFX(13);
+            rightFrontMotor = new WPI_TalonFX(15);
+            leftRearMotor = new WPI_TalonFX(12);
+            rightRearMotor = new WPI_TalonFX(14);
 
-            // leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
-            // rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+            leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+
+            leftEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
+            rightEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
             // ==============DIO INIT=============
-            // red light sensors - there should be four! 20 Jan. 2020
 
             // ============ANALOG INIT============
 
@@ -96,47 +93,36 @@ public class Hardware {
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
 
-            usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
-
-            usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
-
-            usbCam1.close();
-
         } else if (robotIdentity == Identifier.PrevYear) {
 
             // ==============DIO INIT=============
-            autoDisableSwitch = new SingleThrowSwitch(0);
-            autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
             // ============ANALOG INIT============
-            delayPot = new Potentiometer(0);
 
             // ==============CAN INIT=============
             // Motor Controllers
             // leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
             // rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
-            // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
-            // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+            leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
+            rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
-            leftFrontMotor = new WPI_TalonFX(13);
+            // leftFrontMotor = new WPI_TalonFX(13);
 
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-            // leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-            // rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
-
-            boardEncoder = new CANCoder(0);
+            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
-            // rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/
-            // rightFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
+                    rightFrontMotor);
+
             // ==============RIO INIT==============
-            gyro = new KilroySPIGyro(false);
+
             // =============OTHER INIT============
             // transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             // drive = new Drive(transmission, null, null, gyro);
-            // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
 
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
@@ -147,16 +133,6 @@ public class Hardware {
     }
 
     // **********************************************************
-    // Buttons
-    // **********************************************************
-    public static JoystickButton cancelAuto = null;
-
-    public static JoystickButton gearUp = null;
-    public static JoystickButton gearDown = null;
-    public static JoystickButton gearOverride = null;
-
-    public static JoystickButton launchButton = null;
-    // **********************************************************
     // CAN DEVICES
     // **********************************************************
 
@@ -165,17 +141,14 @@ public class Hardware {
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
 
-    public static CANCoder boardEncoder = null;
-
     public static SpeedControllerGroup leftDriveGroup = null;
     public static SpeedControllerGroup rightDriveGroup = null;
 
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
-
     public static KilroyEncoder liftingEncoder = null;
 
-    public static SpeedController liftMotor = null;
+    // public static SpeedController liftMotor = null;
 
     // **********************************************************
     // DIGITAL I/O
@@ -186,16 +159,14 @@ public class Hardware {
     public static LightSensor upStoreRL = new LightSensor(4);
     public static LightSensor firingRL = new LightSensor(1);
 
-    public static WPI_TalonFX boardMotor = null;// Can ID 18 in Initilization
-
-    public static SixPositionSwitch autoSixPosSwitch = null;
-    public static SingleThrowSwitch autoDisableSwitch = null;
+    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
+    public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
 
     // **********************************************************
     // ANALOG I/O
     // **********************************************************
 
-    public static Potentiometer delayPot = null;
+    public static Potentiometer delayPot = new Potentiometer(0);
 
     // **********************************************************
     // PNEUMATIC DEVICES
@@ -207,7 +178,7 @@ public class Hardware {
 
     public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
-    public static KilroySPIGyro gyro = null;
+    public static KilroySPIGyro gyro = new KilroySPIGyro(false);
 
     // **********************************************************
     // DRIVER STATION CLASSES
@@ -221,11 +192,19 @@ public class Hardware {
     public static Joystick rightOperator = new Joystick(3);
 
     // **********************************************************
+    // Buttons
+    // **********************************************************
+    public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
+    public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
+    public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
+    public static JoystickButton launchButton = new JoystickButton(Hardware.leftOperator, 1);
+
+    // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = null;
-    public static UsbCamera usbCam1 = null;
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
 
     // ------------------------------------
     // Utility classes
@@ -241,9 +220,7 @@ public class Hardware {
     // ------------------------------------
     public static Drive drive = null;
 
-    public static DrivePID drivePID = null;
-
-    public static TankTransmission transmission = null;
+    public static TankTransmission transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
 
     // ------------------------------------------
     // Vision stuff
