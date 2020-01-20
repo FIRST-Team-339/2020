@@ -100,8 +100,6 @@ public class Hardware {
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
 
-            usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
-
         } else if (robotIdentity == Identifier.PrevYear) {
 
             // ==============DIO INIT=============
@@ -142,6 +140,7 @@ public class Hardware {
 
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
+
         }
     }
 
@@ -172,18 +171,18 @@ public class Hardware {
     public static LightSensor upStoreRL = new LightSensor(4); // upper middle
     public static LightSensor firingRL = new LightSensor(1); // top
 
-    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-    public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
-    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
+    // public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
+    // public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
+    // public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
 
-    public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
-    public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
-    public static DoubleThrowSwitch autoDriveForwardBack = new DoubleThrowSwitch(autoCrossTheLineForward,
-            autoCrossTheLineBack);
+    // public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
+    // public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
+    // public static DoubleThrowSwitch autoDriveForwardBack = new DoubleThrowSwitch(autoCrossTheLineForward,
+    //         autoCrossTheLineBack);
 
-    public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
-    public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
-    public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
+    // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
+    // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
+    // public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
 
     // **********************************************************
     // ANALOG I/O
@@ -229,8 +228,8 @@ public class Hardware {
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = null;
-    public static UsbCamera usbCam1 = null;
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
 
     // ------------------------------------
     // Utility classes

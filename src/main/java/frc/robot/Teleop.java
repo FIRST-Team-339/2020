@@ -84,7 +84,7 @@ public class Teleop {
       
        
         teleopDrive();
-       // individualTest();
+        individualTest();
     } // end Periodic()
  
     public static void teleopDrive(){
@@ -104,9 +104,9 @@ public class Teleop {
     public static void individualTest() {
         // people test functions
        // connerTest();
-    craigTest();
+       // craigTest();
        // chrisTest();
-       dionTest();
+       // dionTest();
     }
 
     public static void connerTest(){
