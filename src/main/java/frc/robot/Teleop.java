@@ -57,9 +57,9 @@ public class Teleop {
         //Gear Inits
        
        
-        Hardware.drive.setGearPercentage(0, .3);
-        Hardware.drive.setGearPercentage(1, .5);
-        Hardware.drive.setGearPercentage(2, .7);
+        Hardware.drive.setGearPercentage(0, FIRST_GEAR);
+        Hardware.drive.setGearPercentage(1, SECOND_GEAR);
+        Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
        
         Hardware.drive.setGear(0);
 
@@ -85,8 +85,12 @@ public class Teleop {
             testBoolean = true;
           }
           if(testBoolean == true){
-              Hardware.visionDriving.driveToTarget();
-          }
+              if(Hardware.visionDriving.driveToTarget())
+            {
+            testBoolean =false;
+
+             }        
+              }
           if(testBoolean == false){
             teleopDrive();
           }
@@ -291,4 +295,10 @@ public class Teleop {
     private static boolean startOfMatch = true;
 
     private final static int MAX_GEAR_NUMBER = 2;
+
+    private final static double FIRST_GEAR = .3;
+
+    private final static double SECOND_GEAR = .5;
+
+    private final static double FORBIDDEN_THIRD_GEAR = 1.0;
 } // end class

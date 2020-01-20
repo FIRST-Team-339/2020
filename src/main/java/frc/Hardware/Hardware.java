@@ -82,8 +82,8 @@ public class Hardware {
             // Motor Controllers
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
-           // leftRearMotor = new WPI_TalonFX(12);
-           // rightRearMotor = new WPI_TalonFX(14);
+            // leftRearMotor = new WPI_TalonFX(12);
+            // rightRearMotor = new WPI_TalonFX(14);
 
             leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
@@ -173,14 +173,12 @@ public class Hardware {
     public static LightSensor upStoreRL = new LightSensor(4); // upper middle
     public static LightSensor firingRL = new LightSensor(1); // top
 
-    // public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-    // public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
-    // public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
+    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
+    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
 
-    // public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
-    // public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
-    // public static DoubleThrowSwitch autoDriveForwardBack = new DoubleThrowSwitch(autoCrossTheLineForward,
-    //         autoCrossTheLineBack);
+    public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
+    public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
+    public static DoubleThrowSwitch autoDisabled = new DoubleThrowSwitch(autoCrossTheLineForward, autoCrossTheLineBack);
 
     // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);

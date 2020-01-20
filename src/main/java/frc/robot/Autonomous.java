@@ -59,9 +59,12 @@ public class Autonomous
 public static void init ()
 {
 
+    Hardware.drive.setGearPercentage(4, AUTO_GEAR);
+    Hardware.drive.setGear(4);
+
 } // end Init
 
-/**
+/*
  * User Periodic code for autonomous mode should go here. Will be called
  * periodically at a regular rate while the robot is in autonomous mode.
  *
@@ -71,7 +74,6 @@ public static void init ()
  *          FYI: drive.stop cuts power to the motors, causing the robot to
  *          coast. drive.brake results in a more complete stop.
  *          Meghan Brown; 10 February 2019
- *
  */
 
 public static enum Path{
@@ -131,6 +133,7 @@ private static void choosePath(){
 switch(path){
 
     case LEAVE_LINE:
+    //if true forwards off line
     leaveLine(false);
     break;
 
@@ -157,4 +160,5 @@ private static boolean leaveLine(boolean Direction){
  * Constants
  * ==============================================================
  */
+private final static double AUTO_GEAR  = 1.0;
 }

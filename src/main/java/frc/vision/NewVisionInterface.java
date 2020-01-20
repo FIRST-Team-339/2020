@@ -297,17 +297,17 @@ public double getDistanceFromTarget ()
     // * Math.sin(90 - Math.abs(getYOffSet()));
 
    
-    // distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
-    // / Math.tan(Math.toRadians(MOUNTING_ANGLE) -  Math.toRadians(Math.abs(getYOffSet())));
+    distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
+    / Math.tan(Math.toRadians(MOUNTING_ANGLE) -  Math.toRadians(Math.abs(getYOffSet())));
 
-    distance = ((TARGET_HEIGHT -CAMERA_HEIGHT)
-            / (Math.sin(MOUNTING_ANGLE +  getYOffSet() ))) 
-             * (Math.sin(90 - MOUNTING_ANGLE +  getYOffSet() ));
+    // distance = ((TARGET_HEIGHT - CAMERA_HEIGHT)
+    //         / ( Math.toRadians( Math.sin(Math.toRadians(MOUNTING_ANGLE) +  Math.toRadians(getYOffSet()))))) 
+    //          * (Math.toRadians( Math.sin(90 - MOUNTING_ANGLE + getYOffSet())));
   
     if (hasTargets == true)
         {
 
-        return Math.abs(distance);
+         return Math.abs(distance);
         }
     else
         {
