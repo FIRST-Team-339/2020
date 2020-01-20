@@ -59,6 +59,9 @@ public class Autonomous
 public static void init ()
 {
 
+    Hardware.drive.setGearPercentage(4, AUTO_GEAR);
+    Hardware.drive.setGear(4);
+
 } // end Init
 
 /*
@@ -157,4 +160,5 @@ private static boolean leaveLine(boolean Direction){
  * Constants
  * ==============================================================
  */
+private final static double AUTO_GEAR  = 1.0;
 }
