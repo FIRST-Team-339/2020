@@ -30,6 +30,8 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 
 /**
@@ -49,6 +51,7 @@ public class Teleop {
      * @written Jan 13, 2015
      */
     public static void init() {
+        firstTime = 0;
 
         //Gear Inits
        
@@ -109,6 +112,7 @@ public class Teleop {
        // connerTest();
         //craigTest();
        // chrisTest();
+       dionTest();
     }
 
     public static void connerTest(){
@@ -120,6 +124,19 @@ public class Teleop {
 
     }
 
+    public static void dionTest()
+    {
+        if (Hardware.leftOperator.getRawButton(7) == true)
+        {
+            Hardware.usbCam0.close();
+        }
+        if (Hardware.leftOperator.getRawButton(10) == true && firstTime == 0)
+        {
+            Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+            firstTime++;
+        }
+    }
+        
     public static void chrisTest(){
         public class SmartDashboard(){
         Private String key = "Ball Count";
@@ -219,6 +236,7 @@ public class Teleop {
         // ---------- OTHER ------------
 
     }
+    private static int firstTime;
 
 
     private final static int MAX_GEAR_NUMBER = 3;
