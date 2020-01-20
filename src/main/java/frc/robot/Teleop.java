@@ -163,7 +163,13 @@ public class Teleop {
     }
         
     public static void chrisTest(){
-      SmartDashboard.putNumber("Ball Count",x);
+     int x = 0;
+     
+     if(Hardware.leftDriver.getRawButton(5) == true){
+         x+=1;
+        
+     }
+     SmartDashboard.putNumber("Ball Count", x);
       }  
        
    
