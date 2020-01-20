@@ -75,7 +75,7 @@ public static void init ()
  */
 
 public static enum Path{
-     NOTHING, LEAVE_LINE
+     NOTHING, LEAVE_LINE, AUTO_LAUNCH, PICK_UP_LAUNCH, PICKUP
 }
 
 public static Path path = Path.NOTHING;
@@ -86,7 +86,7 @@ INIT, DELAY, CHOOSE_PATH, FINISH
 public static State autoState = State.INIT;
 public static void periodic ()
 {
-    if(Hardware.cancelAuto.get()){
+    if(/*Hardware.cancelAuto.get()*/true){
         autoState = State.FINISH;
     }
 

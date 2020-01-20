@@ -30,6 +30,8 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 
 /**
@@ -49,6 +51,16 @@ public class Teleop {
      * @written Jan 13, 2015
      */
     public static void init() {
+        firstTime = 0;
+
+        //Gear Inits
+       
+       
+        Hardware.drive.setGearPercentage(0, .3);
+        Hardware.drive.setGearPercentage(1, .5);
+        Hardware.drive.setGearPercentage(2, .7);
+       
+        Hardware.drive.setGear(1);
 
     } // end Init
 
@@ -63,27 +75,47 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
+      //  Hardware.visionInterface.updateValues();
+     
 
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
+<<<<<<< HEAD
        // Hardware.boardMotor.set(Hardware.rightDriver.getY());
        
         System.out.println("Ticks Please? : " + Hardware.boardEncoder.get());
         //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);$
 
         individualTest();
+=======
+      
+       
+        teleopDrive();
+       // individualTest();
+>>>>>>> 8e4c40721bd5bafd57fb338e74f9487020338891
     } // end Periodic()
+ 
+    public static void teleopDrive(){
+        Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
-    public void teleopDrive(){
+        System.out.println("Sped levels: leftDriver" + Hardware.leftDriver.getY());
+        System.out.println("Sped levels: rightDriver" + Hardware.rightDriver.getY());
+        System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
 
-
+        Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
         
+        if(Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER){
+            Hardware.drive.setGear(MAX_GEAR_NUMBER -1);
+        }
+
     }
     public static void individualTest() {
         // people test functions
-        connerTest();
-        craigTest();
+       // connerTest();
+        //craigTest();
+       // chrisTest();
+       dionTest();
     }
 
     public static void connerTest(){
@@ -93,6 +125,28 @@ public class Teleop {
 
     public static void craigTest(){
 
+    }
+
+    public static void dionTest()
+    {
+        if (Hardware.leftOperator.getRawButton(7) == true)
+        {
+            Hardware.usbCam0.close();
+        }
+        if (Hardware.leftOperator.getRawButton(10) == true && firstTime == 0)
+        {
+            Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+            firstTime++;
+        }
+    }
+        
+    public static void chrisTest(){
+        int x = 0;
+        if(Hardware.leftDriver.getRawButton(6)){
+            if(x >= 0 || x <= 5){
+                x++;
+            }
+        }
     }
 
     public static void printStatements() {
@@ -185,5 +239,8 @@ public class Teleop {
         // ---------- OTHER ------------
 
     }
+    private static int firstTime;
 
+
+    private final static int MAX_GEAR_NUMBER = 3;
 } // end class
