@@ -173,15 +173,15 @@ public class Hardware {
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
     public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
     public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
-    public static SingleThrowSwitch autoDontDriveForward = new SingleThrowSwitch(22);
-    public static SingleThrowSwitch autoDontDriveBack = new SingleThrowSwitch(23);
-    public static SingleThrowSwitch zeroBallsIn = new SingleThrowSwitch(24);
-    public static SingleThrowSwitch threeBallsIn = new SingleThrowSwitch(25);
 
-    // public static DoubleThrowSwitch autoDriveForwardBack = new
-    // DoubleThrowSwitch(22, 23);
-    // public static DoubleThrowSwitch zeroOrThreeBalls = new DoubleThrowSwitch(24,
-    // 25);
+    public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
+    public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
+    public static DoubleThrowSwitch autoDriveForwardBack = new DoubleThrowSwitch(autoCrossTheLineForward,
+            autoCrossTheLineBack);
+
+    public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
+    public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
+    public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
 
     // **********************************************************
     // ANALOG I/O
