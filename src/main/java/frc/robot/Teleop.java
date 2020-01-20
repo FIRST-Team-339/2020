@@ -30,6 +30,8 @@
 package frc.robot;
 
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 
 /**
@@ -49,6 +51,7 @@ public class Teleop {
      * @written Jan 13, 2015
      */
     public static void init() {
+        firstTime = 0;
 
     } // end Init
 
@@ -68,19 +71,19 @@ public class Teleop {
 
 
       //  Hardware.visionInterface.updateValues();
-        int x = 0;
-        if(Hardware.leftDriver.getRawButton(6)){
-            if(x >= 0 || x <= 5){
-                x++;
-            }
-        }
+        // int x = 0;
+        // if(Hardware.leftDriver.getRawButton(6)){
+        //     if(x >= 0 || x <= 5){
+        //         x++;
+        //     }
+        // }
 
 
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
        // Hardware.boardMotor.set(Hardware.rightDriver.getY());
-        System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
+        // System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
         //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);$
 
         individualTest();
@@ -95,6 +98,7 @@ public class Teleop {
         // people test functions
         connerTest();
         craigTest();
+        dionTest();
     }
 
     public static void connerTest(){
@@ -104,6 +108,20 @@ public class Teleop {
 
     public static void craigTest(){
 
+    }
+
+    public static void dionTest()
+    {
+        if (Hardware.leftOperator.getRawButton(7) == true)
+        {
+            Hardware.usbCam0.close();
+        }
+        if (Hardware.leftOperator.getRawButton(10) == true && firstTime == 0)
+        {
+            Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+            firstTime++;
+        }
+        
     }
 
     public static void printStatements() {
@@ -196,5 +214,6 @@ public class Teleop {
         // ---------- OTHER ------------
 
     }
+    private static int firstTime;
 
 } // end class

@@ -79,8 +79,12 @@ public class Hardware {
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
 
-            CameraServer.getInstance().startAutomaticCapture(0);
-            CameraServer.getInstance().addSwitchedCamera("usbCam1");
+            usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+
+            usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+
+            usbCam1.close();
+            
 
         } else if (robotIdentity == Identifier.PrevYear) {
             
@@ -184,7 +188,7 @@ public class Hardware {
     // **********************************************************
 
     public static UsbCamera usbCam0 = null;
-    // public static UsbCamera usbCam1 = null;
+    public static UsbCamera usbCam1 = null;
 
     // ------------------------------------
     // Utility classes
