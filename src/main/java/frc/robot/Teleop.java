@@ -63,16 +63,16 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-<<<<<<< HEAD
-      //  Hardware.visionInterface.updateValues();
-        int x = 0;
-        if(Hardware.leftDriver.getRawButton(6)){
-            if(x >= 0 || x <= 5){
-                x++;
-            }
+        Hardware.visionInterface.updateValues();
+    
+    private int x = 0;    if(Hardware.leftDriver.getRawButton(5)){
+        if( x >= 0 || x < 5){
+            x++;
         }
-=======
->>>>>>> 5f41b90bf4200139844dcc0657bb68f06b73cc1e
+    }
+    }
+     
+
 
         // ================= OPERATOR CONTROLS ================
 
