@@ -14,6 +14,7 @@
 // ====================================================================
 package frc.Hardware;
 
+import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
@@ -68,14 +69,12 @@ public class Hardware {
 
     public static void initialize() {
 
-
         // ==============Buttons=============
         cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
         gearUp = new JoystickButton(Hardware.rightDriver, 1);
         gearDown = new JoystickButton(Hardware.leftDriver, 1);
         launchButton = new JoystickButton(Hardware.rightOperator, 1);
         intakeButton = new JoystickButton(Hardware.leftOperator, 1);
-       
 
         if (robotIdentity == Identifier.CurrentYear) {
 
@@ -104,36 +103,33 @@ public class Hardware {
         } else if (robotIdentity == Identifier.PrevYear) {
 
             // ==============DIO INIT=============
-            // autoDisableSwitch = new SingleThrowSwitch(0);
-            // autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
             // ============ANALOG INIT============
-           // delayPot = new Potentiometer(0);
+            // delayPot = new Potentiometer(0);
 
             // ==============CAN INIT=============
             // Motor Controllers
-             leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-             rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
             // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
-            //leftFrontMotor = new WPI_TalonFX(13);
+            // leftFrontMotor = new WPI_TalonFX(13);
 
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-             rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
-
+            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
-             rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/
-             rightFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
+                    rightFrontMotor);
             // ==============RIO INIT==============
 
             // =============OTHER INIT============
-             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-             drive = new Drive(transmission, null, null, gyro);
+            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            drive = new Drive(transmission, null, null, gyro);
             // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
 
             visionInterface = new NewVisionInterface();
@@ -141,7 +137,9 @@ public class Hardware {
             // armMotor = new WPI_TalonSRX(24);
             // liftMotor = new WPI_TalonSRX(23);
             // armRoller = new WPI_TalonSRX(10);
-            
+
+            Hardware.leftFrontMotor.setInverted(false);
+            Hardware.rightFrontMotor.setInverted(true);
         }
     }
 
@@ -167,13 +165,23 @@ public class Hardware {
     // DIGITAL I/O
     // **********************************************************
 
-    public static LightSensor intakeRL = new LightSensor(12);
-    public static LightSensor lowStoreRL = new LightSensor(3);
-    public static LightSensor upStoreRL = new LightSensor(4);
-    public static LightSensor firingRL = new LightSensor(1);
+    public static LightSensor intakeRL = new LightSensor(12); // bottom
+    public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
+    public static LightSensor upStoreRL = new LightSensor(4); // upper middle
+    public static LightSensor firingRL = new LightSensor(1); // top
 
-    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
+    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
     public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
+    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
+
+    public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
+    public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
+    public static DoubleThrowSwitch autoDriveForwardBack = new DoubleThrowSwitch(autoCrossTheLineForward,
+            autoCrossTheLineBack);
+
+    public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
+    public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
+    public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
 
     // **********************************************************
     // ANALOG I/O

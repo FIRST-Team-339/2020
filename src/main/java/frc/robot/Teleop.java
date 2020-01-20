@@ -90,8 +90,8 @@ public class Teleop {
     public static void teleopDrive(){
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
-        System.out.println("Sped levels: leftDriver" + Hardware.leftDriver.getY());
-        System.out.println("Sped levels: rightDriver" + Hardware.rightDriver.getY());
+        System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
+        System.out.println("Speed levels: rightDriver" + Hardware.rightDriver.getY());
         System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
 
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
