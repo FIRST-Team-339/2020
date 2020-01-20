@@ -19,6 +19,7 @@ import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.LightSensor;
+import frc.HardwareInterfaces.MomentarySwitch;
 import frc.HardwareInterfaces.Potentiometer;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.SingleThrowSwitch;
@@ -102,8 +103,6 @@ public class Hardware {
         } else if (robotIdentity == Identifier.PrevYear) {
 
             // ==============DIO INIT=============
-            // autoDisableSwitch = new SingleThrowSwitch(0);
-            // autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
             // ============ANALOG INIT============
             // delayPot = new Potentiometer(0);
@@ -139,6 +138,8 @@ public class Hardware {
             // liftMotor = new WPI_TalonSRX(23);
             // armRoller = new WPI_TalonSRX(10);
 
+            Hardware.leftFrontMotor.setInverted(false);
+            Hardware.rightFrontMotor.setInverted(true);
         }
     }
 
@@ -170,6 +171,7 @@ public class Hardware {
     public static LightSensor firingRL = new LightSensor(1); // top
 
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
+    public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
     public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
     public static SingleThrowSwitch autoDontDriveForward = new SingleThrowSwitch(22);
     public static SingleThrowSwitch autoDontDriveBack = new SingleThrowSwitch(23);
