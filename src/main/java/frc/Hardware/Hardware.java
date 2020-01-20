@@ -18,6 +18,7 @@ import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.LightSensor;
+import frc.HardwareInterfaces.MomentarySwitch;
 import frc.HardwareInterfaces.Potentiometer;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.SingleThrowSwitch;
@@ -206,6 +207,9 @@ public class Hardware {
     // **********************************************************
     // Buttons
     // **********************************************************
+
+    public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
+
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
