@@ -199,6 +199,7 @@ case FALC_ENC:
     if(this.talonMotor.getInverted()){
             return -(int)(this.sensorCollection.getIntegratedSensorAbsolutePosition());
         }else{
+            
             return (int)(this.sensorCollection.getIntegratedSensorAbsolutePosition());
         }
 // can talonSRX read the encoder as 4X instead of 1X, so the
