@@ -30,6 +30,8 @@
 package frc.robot;
 
 
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
@@ -77,21 +79,19 @@ public class Teleop {
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
-     
-
-      if(Hardware.leftDriver.getRawButton(6)){
-
-        testBoolean = true;
-      }
-      if(testBoolean == true){
-          Hardware.visionDriving.driveToTarget();
-      }
-      if(testBoolean == false){
-        teleopDrive();
-      }
 
 
-        // ================= OPERATOR CONTROLS ================
+        if(Hardware.leftDriver.getRawButton(6)){
+
+            testBoolean = true;
+          }
+          if(testBoolean == true){
+              Hardware.visionDriving.driveToTarget();
+          }
+          if(testBoolean == false){
+            teleopDrive();
+          }
+             // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
       
@@ -99,7 +99,8 @@ public class Teleop {
        
        // individualTest();
     } // end Periodic()
- 
+    
+
     public static void teleopDrive(){
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
@@ -117,9 +118,10 @@ public class Teleop {
     public static void individualTest() {
         // people test functions
        // connerTest();
-        //craigTest();
+    craigTest();
        // chrisTest();
-       dionTest();
+       //dionTest();
+       patrickTest();
     }
 
     public static void connerTest(){
@@ -128,6 +130,22 @@ public class Teleop {
     }
 
     public static void craigTest(){
+
+        if(Hardware.rightDriver.getRawButton(4) == true && Hardware.invertTempoMomentarySwitch.isOn() == false){
+            Hardware.invertTempoMomentarySwitch.setValue(true);
+        }else{
+            Hardware.invertTempoMomentarySwitch.setValue(false);
+        }
+
+        if(Hardware.invertTempoMomentarySwitch.isOn()){
+            Hardware.rightFrontMotor.setInverted(true);
+            Hardware.leftFrontMotor.setInverted(true);
+        }else{
+            Hardware.leftFrontMotor.setInverted(false);
+            Hardware.rightFrontMotor.setInverted(false);
+        }
+
+        System.out.println("Ticks: " + Hardware.rightEncoder.get());
 
     }
 
@@ -145,12 +163,26 @@ public class Teleop {
     }
         
     public static void chrisTest(){
-        int x = 0;
-        if(Hardware.leftDriver.getRawButton(6)){
-            if(x >= 0 || x <= 5){
-                x++;
-            }
+         int x = 0;
+        if( Hardware.leftOperator.getRawButton(5) == true){
+            x++; 
         }
+    }
+
+    public static void patrickTest()
+    {
+        boolean buttonPressed = false;
+
+        if(Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && !buttonPressed)
+        {
+            buttonPressed = true;
+            Hardware.visionInterface.takePicture();
+            System.out.println("TakePicture has been run");
+        }  
+        else
+            buttonPressed = false;
+
+        System.out.println(buttonPressed);
     }
 
     public static void printStatements() {
@@ -180,7 +212,7 @@ public class Teleop {
 
         // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
 
-        // Hardware.telemetry.printToConsole("Delay Pot: " + Hardware.delayPot.get());
+        System.out.println("Delay Pot: " + Hardware.delayPot.get());
 
         // ----------- CAN -------------
 
