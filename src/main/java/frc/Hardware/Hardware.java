@@ -184,7 +184,7 @@ public class Hardware {
     // ANALOG I/O
     // **********************************************************
 
-    //public static Potentiometer delayPot = new Potentiometer(0);
+    public static Potentiometer delayPot = new Potentiometer(0);
 
     // **********************************************************
     // PNEUMATIC DEVICES
