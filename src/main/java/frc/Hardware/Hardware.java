@@ -172,13 +172,13 @@ public class Hardware {
     public static LightSensor upStoreRL = new LightSensor(4); // upper middle
     public static LightSensor firingRL = new LightSensor(1); // top
 
-    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-    public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
-    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
-    public static SingleThrowSwitch autoDontDriveForward = new SingleThrowSwitch(22);
-    public static SingleThrowSwitch autoDontDriveBack = new SingleThrowSwitch(23);
-    public static SingleThrowSwitch zeroBallsIn = new SingleThrowSwitch(24);
-    public static SingleThrowSwitch threeBallsIn = new SingleThrowSwitch(25);
+    // public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
+    // public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
+    // public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
+    // public static SingleThrowSwitch autoDontDriveForward = new SingleThrowSwitch(22);
+    // public static SingleThrowSwitch autoDontDriveBack = new SingleThrowSwitch(23);
+    // public static SingleThrowSwitch zeroBallsIn = new SingleThrowSwitch(24);
+    // public static SingleThrowSwitch threeBallsIn = new SingleThrowSwitch(25);
 
     // public static DoubleThrowSwitch autoDriveForwardBack = new
     // DoubleThrowSwitch(22, 23);
