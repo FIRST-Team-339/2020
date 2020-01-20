@@ -73,6 +73,12 @@ public class Hardware {
 
         
         if (robotIdentity == Identifier.CurrentYear) {
+
+             // ==============Buttons=============
+          cancelAuto  = new JoystickButton(Hardware.rightDriver, 5);
+          gearUp = new JoystickButton(Hardware.rightDriver, 1);
+          gearDown = new JoystickButton(Hardware.leftDriver, 1);
+
             // ==============DIO INIT=============
 
 
@@ -127,8 +133,15 @@ public class Hardware {
         System.out.println("CANCoder Obj = " + boardEncoder);
     }
 
-    public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
+    
+    // **********************************************************
+    // Buttons
+    // **********************************************************
+    public static JoystickButton cancelAuto = null;
 
+    public static JoystickButton gearUp = null;
+    public static JoystickButton gearDown = null;
+    public static JoystickButton gearOverride = null;
     // **********************************************************
     // CAN DEVICES
     // **********************************************************

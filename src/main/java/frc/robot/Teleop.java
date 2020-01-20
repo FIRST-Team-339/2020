@@ -50,6 +50,14 @@ public class Teleop {
      */
     public static void init() {
 
+        //Gear Inits
+        Hardware.drive.setGear(1);
+        Hardware.drive.setGearPercentage(0, .3);
+        Hardware.drive.setGearPercentage(1, .5);
+        Hardware.drive.setGearPercentage(2,.7);
+       
+
+
     } // end Init
 
     /**
@@ -64,32 +72,37 @@ public class Teleop {
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
       //  Hardware.visionInterface.updateValues();
-        int x = 0;
-        if(Hardware.leftDriver.getRawButton(6)){
-            if(x >= 0 || x <= 5){
-                x++;
-            }
-        }
+     
 
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-       // Hardware.boardMotor.set(Hardware.rightDriver.getY());
+     
         System.out.println("Encoder: " + Hardware.boardEncoder.getAbsolutePosition());
-        //Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);$
-
+       
+        teleopDrive();
         individualTest();
     } // end Periodic()
  
-    public void teleopDrive(){
+    public static void teleopDrive(){
+        Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
+        System.out.println("Sped levels: leftDriver" + Hardware.leftDriver.getY());
+        System.out.println("Sped levels: rightDriver" + Hardware.rightDriver.getY());
+        System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
 
+        Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
         
+        if(Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER){
+            Hardware.drive.setGear(MAX_GEAR_NUMBER -1);
+        }
+
     }
     public static void individualTest() {
         // people test functions
-        connerTest();
-        craigTest();
+       // connerTest();
+        //craigTest();
+       // chrisTest();
     }
 
     public static void connerTest(){
@@ -99,6 +112,15 @@ public class Teleop {
 
     public static void craigTest(){
 
+    }
+
+    public static void chrisTest(){
+        int x = 0;
+        if(Hardware.leftDriver.getRawButton(6)){
+            if(x >= 0 || x <= 5){
+                x++;
+            }
+        }
     }
 
     public static void printStatements() {
@@ -192,4 +214,6 @@ public class Teleop {
 
     }
 
+
+    private final static int MAX_GEAR_NUMBER = 3;
 } // end class
