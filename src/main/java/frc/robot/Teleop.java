@@ -118,10 +118,10 @@ public class Teleop {
     public static void individualTest() {
         // people test functions
        // connerTest();
-    craigTest();
+    //craigTest();
        // chrisTest();
        //dionTest();
-       patrickTest();
+       //patrickTest();
     }
 
     public static void connerTest(){

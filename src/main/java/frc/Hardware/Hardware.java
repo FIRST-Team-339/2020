@@ -171,12 +171,6 @@ public class Hardware {
     public static LightSensor firingRL = new LightSensor(1); // top
 
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-<<<<<<< HEAD
-    // public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
-    // public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
-    // public static DoubleThrowSwitch autoDriveForwardBack = new DoubleThrowSwitch(22, 23);
-    // public static DoubleThrowSwitch zeroOrThreeBalls = new DoubleThrowSwitch(24, 25);
-=======
     public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
     public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
 
@@ -188,7 +182,6 @@ public class Hardware {
     public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
     public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
->>>>>>> a9800ac323512ecba6ec67825ad40c960788f1a2
 
     // **********************************************************
     // ANALOG I/O
