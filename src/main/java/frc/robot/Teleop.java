@@ -54,7 +54,6 @@ public class Teleop {
      */
     public static void init() {
 
-
         //Gear Inits
        
        
@@ -95,7 +94,7 @@ public class Teleop {
 
         // ================== DRIVER CONTROLS =================
       
-       
+        individualTest();
         teleopDrive();
     } // end Periodic()
     
@@ -119,7 +118,7 @@ public class Teleop {
        // connerTest();
     //craigTest();
        // chrisTest();
-       //dionTest();
+       // dionTest();
        //patrickTest();
     }
 
@@ -150,15 +149,27 @@ public class Teleop {
 
     public static void dionTest()
     {
-        if (Hardware.leftOperator.getRawButton(7))
+        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch))
         {
+            Hardware.camTimer1.stop();
+            Hardware.camTimer1.reset();
             Hardware.usbCam0.close();
+            
+            Hardware.camTimer1.start();
+            cam0 = false;
+            startOfMatch = false;
         }
-        if (Hardware.leftOperator.getRawButton(10) && firstTime == 0)
+        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
         {
-            Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
-            firstTime++;
+            Hardware.camTimer2.stop();
+            Hardware.camTimer2.reset();
+            Hardware.usbCam1.close();
+
+            Hardware.camTimer2.start();
+            cam0 = true;
         }
+       
+        
         
     }
         
@@ -275,8 +286,9 @@ public class Teleop {
         // ---------- OTHER ------------
 
     }
-    private static int firstTime = 0;
+    private static boolean cam0 = true;
 
+    private static boolean startOfMatch = true;
 
     private final static int MAX_GEAR_NUMBER = 2;
 } // end class

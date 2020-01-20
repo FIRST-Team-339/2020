@@ -141,6 +141,8 @@ public class Hardware {
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
 
+            usbCam1.close();
+
         }
     }
 
@@ -237,6 +239,10 @@ public class Hardware {
     public static Timer autoTimer = new Timer();
 
     public static Timer telopTimer = new Timer();
+
+    public static Timer camTimer1 = new Timer();
+
+    public static Timer camTimer2 = new Timer();
 
     public static Telemetry telemetry = new Telemetry(driverStation);
 
