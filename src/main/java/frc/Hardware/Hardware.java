@@ -15,6 +15,7 @@
 // ====================================================================
 package frc.Hardware;
 
+import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.Potentiometer;
@@ -71,7 +72,7 @@ public class Hardware {
 
     public static void initialize() {
 
-        
+
         if (robotIdentity == Identifier.CurrentYear) {
 
              // ==============Buttons=============
@@ -80,12 +81,25 @@ public class Hardware {
           gearDown = new JoystickButton(Hardware.leftDriver, 1);
           launchButton = new JoystickButton(Hardware.leftOperator, 1);
 
-            // ==============DIO INIT=============
+            // ==============CAN INIT=============
+            // Motor Controllers
+           // leftFrontMotor = new WPI_TalonFX(13);
+            //rightFrontMotor = new WPI_TalonFX(15);
+            // leftRearMotor = new WPI_TalonFX(12);
+            // rightRearMotor = new WPI_TalonFX(14);
 
+            // leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
+            // rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+            // ==============DIO INIT=============
+            //red light sensors - there should be four! 20 Jan. 2020
+            intakeRL = new IRSensor(12);
+            lowStoreRL = new IRSensor(3);
+            upStoreRL = new IRSensor(4);
+            firingRL = new IRSensor(1);
 
             // ============ANALOG INIT============
 
-         
+        
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
@@ -103,8 +117,8 @@ public class Hardware {
 
             // ==============CAN INIT=============
             // Motor Controllers
-           //  leftFrontMotor = new CANSparkMax(0, MotorType.kBrushless);
-            // rightFrontMotor = new CANSparkMax(1, MotorType.kBrushless);
+           // leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+            //rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
             // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
@@ -115,9 +129,9 @@ public class Hardware {
             // leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             // rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
-        
+
             boardEncoder = new CANCoder(0);
-           
+
 
             leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/ leftFrontMotor);
            // rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
@@ -127,7 +141,7 @@ public class Hardware {
             // transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             // drive = new Drive(transmission, null, null, gyro);
             // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
-           
+
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
 
@@ -135,7 +149,7 @@ public class Hardware {
         System.out.println("CANCoder Obj = " + boardEncoder);
     }
 
-    
+
     // **********************************************************
     // Buttons
     // **********************************************************
@@ -150,18 +164,18 @@ public class Hardware {
     // CAN DEVICES
     // **********************************************************
 
-   
 
-    // public static SpeedController leftRearMotor = null;
-    // public static SpeedController rightRearMotor = null;
+
+    public static SpeedController leftRearMotor = null;
+    public static SpeedController rightRearMotor = null;
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
 
-                                                                             
+
     public static CANCoder boardEncoder = null;
- 
+
     public static SpeedControllerGroup leftDriveGroup = null;
-    public static SpeedControllerGroup rightDriveGroup = null;  
+    public static SpeedControllerGroup rightDriveGroup = null;
 
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
@@ -178,6 +192,11 @@ public class Hardware {
     // **********************************************************
     // ANALOG I/O
     // **********************************************************
+
+    public static  IRSensor intakeRL = null;
+    public static IRSensor lowStoreRL = null;
+    public static IRSensor upStoreRL = null;
+    public static IRSensor firingRL = null;
 
     public static Potentiometer delayPot = null;
 
