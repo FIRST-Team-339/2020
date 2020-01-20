@@ -72,21 +72,12 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-<<<<<<< HEAD
         Hardware.visionInterface.updateValues();
-    
-    private int x = 0;    if(Hardware.leftDriver.getRawButton(5)){
-        if( x >= 0 || x < 5){
-            x++;
-        }
-    }
-    }
+    }     
      
 
-=======
       //  Hardware.visionInterface.updateValues();
      
->>>>>>> 704975ac07e79e6567d3a053571913a6accb564a
 
         // ================= OPERATOR CONTROLS ================
 
@@ -130,14 +121,14 @@ public class Teleop {
     }
 
     public static void chrisTest(){
-        int x = 0;
-        if(Hardware.leftDriver.getRawButton(6)){
-            if(x >= 0 || x <= 5){
-                x++;
-            }
+        public class SmartDashboard(){
+        Private String key = "Ball Count";
+        Private double value = 0.0;
+        public static boolean putNumber(String key, double value){
+
         }
     }
-
+    }
     public static void printStatements() {
         // ========== INPUTS ==========
 
