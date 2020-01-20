@@ -140,6 +140,9 @@ public class Hardware {
 
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
+
+            usbCam1.close();
+
         }
     }
 
@@ -177,9 +180,9 @@ public class Hardware {
     public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
     public static DoubleThrowSwitch autoDisabled = new DoubleThrowSwitch(autoCrossTheLineForward, autoCrossTheLineBack);
 
-    public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
-    public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
-    public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
+    // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
+    // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
+    // public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
 
     // **********************************************************
     // ANALOG I/O
@@ -234,6 +237,10 @@ public class Hardware {
     public static Timer autoTimer = new Timer();
 
     public static Timer telopTimer = new Timer();
+
+    public static Timer camTimer1 = new Timer();
+
+    public static Timer camTimer2 = new Timer();
 
     public static Telemetry telemetry = new Telemetry(driverStation);
 
