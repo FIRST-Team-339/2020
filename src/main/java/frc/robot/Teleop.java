@@ -86,7 +86,7 @@ public class Teleop {
       
        
         teleopDrive();
-       // individualTest();
+        individualTest();
     } // end Periodic()
  
     public static void teleopDrive(){
