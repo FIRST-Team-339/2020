@@ -106,7 +106,7 @@ public class Teleop {
 
         // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
 
-        // Hardware.telemetry.printToConsole("Delay Pot: " + Hardware.delayPot.get());
+        System.out.println("Delay Pot: " + Hardware.delayPot.get());
 
         // ----------- CAN -------------
 

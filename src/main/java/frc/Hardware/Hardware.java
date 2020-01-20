@@ -58,7 +58,7 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
         if (robotIdentity == Identifier.CurrentYear) {
@@ -98,9 +98,9 @@ public class Hardware {
             // ==============RIO INIT==============
             gyro = new KilroySPIGyro(false);
             // =============OTHER INIT============
-            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
-            drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
+//            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+ //           drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
+   //         drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
            
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
@@ -116,8 +116,8 @@ public class Hardware {
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
 
-    public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
-    public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+   // public static SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
+   // public static SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
 
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
@@ -145,7 +145,7 @@ public class Hardware {
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
 
-    public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+    public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
     public static KilroySPIGyro gyro = null;
 
