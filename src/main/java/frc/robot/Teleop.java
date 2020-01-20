@@ -97,7 +97,7 @@ public class Teleop {
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
         
         if(Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER){
-            Hardware.drive.setGear(MAX_GEAR_NUMBER -1);
+            Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
         }
 
     }

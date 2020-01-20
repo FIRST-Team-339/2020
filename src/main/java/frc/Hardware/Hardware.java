@@ -163,7 +163,7 @@ public class Hardware {
     // public static SpeedController liftMotor = null;
 
     // **********************************************************
-    // DIGITAL I/On
+    // DIGITAL I/O
     // **********************************************************
 
     public static LightSensor intakeRL = new LightSensor(12);
@@ -236,7 +236,7 @@ public class Hardware {
 
     // ------------------------------------------
     // Vision stuff
-    // ------------------------------------------
+    // ----------------------------
 
     public static NewDriveWithVision visionDriving = null;
 
