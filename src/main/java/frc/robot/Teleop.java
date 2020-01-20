@@ -63,7 +63,6 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-<<<<<<< HEAD
       //  Hardware.visionInterface.updateValues();
         int x = 0;
         if(Hardware.leftDriver.getRawButton(6)){
@@ -71,8 +70,6 @@ public class Teleop {
                 x++;
             }
         }
-=======
->>>>>>> 5f41b90bf4200139844dcc0657bb68f06b73cc1e
 
         // ================= OPERATOR CONTROLS ================
 
