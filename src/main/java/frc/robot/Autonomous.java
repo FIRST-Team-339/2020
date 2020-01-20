@@ -98,7 +98,7 @@ public static void periodic ()
             break;
 
         case DELAY:
-            if(Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0)){
+            if( Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0) ){
 
                 autoState = State.CHOOSE_PATH;
                 Hardware.autoTimer.stop();
