@@ -82,8 +82,8 @@ public class Hardware {
             // Motor Controllers
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
-            leftRearMotor = new WPI_TalonFX(12);
-            rightRearMotor = new WPI_TalonFX(14);
+           // leftRearMotor = new WPI_TalonFX(12);
+           // rightRearMotor = new WPI_TalonFX(14);
 
             leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
