@@ -161,8 +161,8 @@ public class Hardware {
     public static LightSensor upStoreRL = new LightSensor(4);
     public static LightSensor firingRL = new LightSensor(1);
 
-    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
-    public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
+    // public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
+    // public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
 
     // **********************************************************
     // ANALOG I/O
@@ -205,8 +205,8 @@ public class Hardware {
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
-    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+    public static UsbCamera usbCam0 = null;
+    public static UsbCamera usbCam1 = null;
 
     // ------------------------------------
     // Utility classes
