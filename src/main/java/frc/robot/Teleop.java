@@ -112,7 +112,7 @@ public class Teleop {
        // connerTest();
         //craigTest();
        // chrisTest();
-       dionTest();
+       //dionTest();
     }
 
     public static void connerTest(){
@@ -138,14 +138,12 @@ public class Teleop {
     }
         
     public static void chrisTest(){
-        public class SmartDashboard(){
-        Private String key = "Ball Count";
-        Private double value = 0.0;
-        public static boolean putNumber(String key, double value){
-
+        private int x = 0;
+        if( Hardware.leftOperator.getRawButton(5) == true){
+            x++ 
         }
     }
-    }
+    
     public static void printStatements() {
         // ========== INPUTS ==========
 
