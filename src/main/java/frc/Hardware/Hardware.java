@@ -177,7 +177,6 @@ public class Hardware {
     public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
     public static DoubleThrowSwitch autoDisabled = new DoubleThrowSwitch(autoCrossTheLineForward, autoCrossTheLineBack);
 
-    public static int abc = 0;
     public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
     public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
