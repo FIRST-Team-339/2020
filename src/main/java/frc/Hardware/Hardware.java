@@ -107,11 +107,7 @@ public class Hardware {
             // autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
 
             // ============ANALOG INIT============
-<<<<<<< HEAD
-            delayPot = new Potentiometer(1);
-=======
            // delayPot = new Potentiometer(0);
->>>>>>> 8e4c40721bd5bafd57fb338e74f9487020338891
 
             // ==============CAN INIT=============
             // Motor Controllers
@@ -120,26 +116,14 @@ public class Hardware {
             // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
-<<<<<<< HEAD
-            boardMotor = new TalonFX(15);
-=======
             //leftFrontMotor = new WPI_TalonFX(13);
 
             // rightFrontMotor = new WPI_TalonFX(15);
->>>>>>> 8e4c40721bd5bafd57fb338e74f9487020338891
 
             // Encoders
              leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
              rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
-<<<<<<< HEAD
-        
-            boardEncoder = new KilroyEncoder((TalonFX)boardMotor);
-
-        
-           
-=======
->>>>>>> 8e4c40721bd5bafd57fb338e74f9487020338891
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
              rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/
@@ -169,14 +153,6 @@ public class Hardware {
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
 
-<<<<<<< HEAD
-                                                                              
-    public static KilroyEncoder boardEncoder = null;
-    //add each insatnce to robot init to clear sensor positions
-
- 
-=======
->>>>>>> 8e4c40721bd5bafd57fb338e74f9487020338891
     public static SpeedControllerGroup leftDriveGroup = null;
     public static SpeedControllerGroup rightDriveGroup = null;
 
@@ -187,17 +163,13 @@ public class Hardware {
     // public static SpeedController liftMotor = null;
 
     // **********************************************************
-    // DIGITAL I/On
+    // DIGITAL I/O
     // **********************************************************
 
-<<<<<<< HEAD
-    public static TalonFX boardMotor = null;//Can ID 18 in Initilization
-=======
     public static LightSensor intakeRL = new LightSensor(12);
     public static LightSensor lowStoreRL = new LightSensor(3);
     public static LightSensor upStoreRL = new LightSensor(4);
     public static LightSensor firingRL = new LightSensor(1);
->>>>>>> 8e4c40721bd5bafd57fb338e74f9487020338891
 
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(1, 2, 3, 4, 5, 6);
     public static SingleThrowSwitch autoDisableSwitch = new SingleThrowSwitch(0);
@@ -264,7 +236,7 @@ public class Hardware {
 
     // ------------------------------------------
     // Vision stuff
-    // ------------------------------------------
+    // ----------------------------
 
     public static NewDriveWithVision visionDriving = null;
 
