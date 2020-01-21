@@ -70,19 +70,17 @@ public class Teleop {
      * User Periodic code for teleop mode should go here. Will be called
      * periodically at a regular rate while the robot is in teleop mode.
      *
-     
      * @author Nathanial Lydick
      * @written Jan 13, 2015
      */
 
      public static boolean testBoolean = false;
-    public static void periodic() {
+     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
 
 
         if(Hardware.leftDriver.getRawButton(6)){
-
             testBoolean = true;
           }
           if(testBoolean == true){
