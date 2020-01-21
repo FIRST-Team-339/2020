@@ -61,7 +61,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware {
 
-    enum Identifier {
+   public static enum Identifier {
         CurrentYear, PrevYear
     };
 
