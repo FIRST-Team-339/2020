@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 // import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Encoder;
@@ -35,7 +36,7 @@ public class KilroyEncoder implements PIDSource {
 
     private CANSparkMax canEncoder = null;
 
-    private TalonFX talonMotor = null;
+    private WPI_TalonFX talonMotor = null;
 
     private TalonFXSensorCollection sensorCollection = null;
 
@@ -119,7 +120,7 @@ public class KilroyEncoder implements PIDSource {
      *
      * @param talonMotor
      */
-    public KilroyEncoder(TalonFX talonMotor) {
+    public KilroyEncoder(WPI_TalonFX talonMotor) {
         this.talonMotor = talonMotor;
         this.sensorCollection = this.talonMotor.getSensorCollection();
     
