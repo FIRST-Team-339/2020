@@ -82,8 +82,8 @@ public class Hardware {
             // Motor Controllers
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
-           // leftRearMotor = new WPI_TalonFX(12);
-           // rightRearMotor = new WPI_TalonFX(14);
+            // leftRearMotor = new WPI_TalonFX(12);
+            // rightRearMotor = new WPI_TalonFX(14);
 
             leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
@@ -140,6 +140,9 @@ public class Hardware {
 
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
+
+            usbCam1.close();
+
         }
     }
 
@@ -175,12 +178,11 @@ public class Hardware {
 
     public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
     public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
-    public static DoubleThrowSwitch autoDisabled = new DoubleThrowSwitch(autoCrossTheLineForward,
-            autoCrossTheLineBack);
+    public static DoubleThrowSwitch autoDisabled = new DoubleThrowSwitch(autoCrossTheLineForward, autoCrossTheLineBack);
 
-    public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
-    public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
-    public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
+    // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
+    // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
+    // public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
 
     // **********************************************************
     // ANALOG I/O
@@ -235,6 +237,10 @@ public class Hardware {
     public static Timer autoTimer = new Timer();
 
     public static Timer telopTimer = new Timer();
+
+    public static Timer camTimer1 = new Timer();
+
+    public static Timer camTimer2 = new Timer();
 
     public static Telemetry telemetry = new Telemetry(driverStation);
 

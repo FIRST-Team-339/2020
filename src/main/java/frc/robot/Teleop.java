@@ -53,14 +53,13 @@ public class Teleop {
      * @written Jan 13, 2015
      */
     public static void init() {
-        firstTime = 0;
 
         //Gear Inits
        
        
-        Hardware.drive.setGearPercentage(0, .3);
-        Hardware.drive.setGearPercentage(1, .5);
-        Hardware.drive.setGearPercentage(2, .7);
+        Hardware.drive.setGearPercentage(0, FIRST_GEAR);
+        Hardware.drive.setGearPercentage(1, SECOND_GEAR);
+        Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
        
         Hardware.drive.setGear(0);
 
@@ -84,8 +83,12 @@ public class Teleop {
             testBoolean = true;
           }
           if(testBoolean == true){
-              Hardware.visionDriving.driveToTarget();
-          }
+              if(Hardware.visionDriving.driveToTarget())
+            {
+            testBoolean =false;
+
+             }        
+              }
           if(testBoolean == false){
             teleopDrive();
           }
@@ -93,9 +96,8 @@ public class Teleop {
 
         // ================== DRIVER CONTROLS =================
       
-       
-       
-       // individualTest();
+        individualTest();
+        teleopDrive();
     } // end Periodic()
     
 
@@ -118,7 +120,7 @@ public class Teleop {
        // connerTest();
     //craigTest();
        // chrisTest();
-       //dionTest();
+       // dionTest();
        //patrickTest();
     }
 
@@ -149,23 +151,41 @@ public class Teleop {
 
     public static void dionTest()
     {
-        if (Hardware.leftOperator.getRawButton(7) == true)
+        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch))
         {
+            Hardware.camTimer1.stop();
+            Hardware.camTimer1.reset();
             Hardware.usbCam0.close();
+            
+            Hardware.camTimer1.start();
+            cam0 = false;
+            startOfMatch = false;
         }
-        if (Hardware.leftOperator.getRawButton(10) == true && firstTime == 0)
+        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
         {
-            Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
-            firstTime++;
+            Hardware.camTimer2.stop();
+            Hardware.camTimer2.reset();
+            Hardware.usbCam1.close();
+
+            Hardware.camTimer2.start();
+            cam0 = true;
         }
+       
+        
+        
     }
         
     public static void chrisTest(){
-         int x = 0;
-        if( Hardware.leftOperator.getRawButton(5) == true){
-            x++; 
-        }
-    }
+     int x = 0;
+     
+     if(Hardware.leftDriver.getRawButton(5) == true){
+         x+=1;
+        
+     }
+     SmartDashboard.putNumber("Ball Count", x);
+      }  
+       
+   
 
     public static void patrickTest()
     {
@@ -273,8 +293,15 @@ public class Teleop {
         // ---------- OTHER ------------
 
     }
-    private static int firstTime;
+    private static boolean cam0 = true;
 
+    private static boolean startOfMatch = true;
 
     private final static int MAX_GEAR_NUMBER = 2;
+
+    private final static double FIRST_GEAR = .3;
+
+    private final static double SECOND_GEAR = .5;
+
+    private final static double FORBIDDEN_THIRD_GEAR = 1.0;
 } // end class

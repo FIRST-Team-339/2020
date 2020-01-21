@@ -55,6 +55,7 @@ public class NewDriveWithVision {
             Hardware.transmission.driveRaw(.2, .2);
             }
         } else {
+            Hardware.transmission.drive(0, 0);
             return true;
         }
         return false;
@@ -62,9 +63,9 @@ public class NewDriveWithVision {
     }
 
 
-    final double MIN_MOVE = .15;
+    final double MIN_MOVE = .2;
 
-    final double ADJUST_PORP = .01;
+    final double ADJUST_PORP = .015;
 
     final double STOP_DISTANCE_TEST = 80;
 
