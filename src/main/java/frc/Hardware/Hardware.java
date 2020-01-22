@@ -179,6 +179,17 @@ public class Hardware {
     public static KilroyEncoder leftDriveEncoder = null;
     public static KilroyEncoder rightDriveEncoder = null;
 
+    //------------------------------------------------------------
+
+    public static SpeedController launcherMotor1 = null;
+    public static SpeedController launcherMotor2 = null;
+
+    public static SpeedControllerGroup launcherMotorGroup = null;
+
+    public static KilroyEncoder launcherMotorEncoder = null;
+
+    //-------------------------------------------------------------
+
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
