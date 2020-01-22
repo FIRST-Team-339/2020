@@ -30,6 +30,7 @@
 package frc.robot;
 
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -134,13 +135,15 @@ public class Teleop {
 
     public static void craigTest(){
 
-        if(Hardware.rightDriver.getRawButton(4) == true && Hardware.invertTempoMomentarySwitch.isOn() == false){
-            Hardware.invertTempoMomentarySwitch.setValue(true);
-        }else{
-            Hardware.invertTempoMomentarySwitch.setValue(false);
+        if(Hardware.rightDriver.getRawButton(4) == true ){
+            if(Hardware.invertTempoMomentarySwitch.isOn()){
+                Hardware.invertTempoMomentarySwitch.setValue(false);
+            }else{
+                Hardware.invertTempoMomentarySwitch.setValue(true);
+            }
         }
-
         if(Hardware.invertTempoMomentarySwitch.isOn()){
+            // System.out.println("Should be inverted");
             Hardware.rightFrontMotor.setInverted(true);
             Hardware.leftFrontMotor.setInverted(true);
         }else{
@@ -148,7 +151,8 @@ public class Teleop {
             Hardware.rightFrontMotor.setInverted(false);
         }
 
-        System.out.println("Ticks: " + Hardware.rightEncoder.get());
+      //  System.out.println(Hardware.rightFrontMotor.getInverted());
+        System.out.println("Ticks: " + Hardware.rightEncoder.getRate());
 
     }
 
@@ -158,7 +162,7 @@ public class Teleop {
         {
             Hardware.camTimer1.stop();
             Hardware.camTimer1.reset();
-            Hardware.usbCam0.close();
+            //Hardware.usbCam0.close();
             
             Hardware.camTimer1.start();
             cam0 = false;
@@ -168,7 +172,7 @@ public class Teleop {
         {
             Hardware.camTimer2.stop();
             Hardware.camTimer2.reset();
-            Hardware.usbCam1.close();
+           // Hardware.usbCam1.close();
 
             Hardware.camTimer2.start();
             cam0 = true;

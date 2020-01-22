@@ -121,10 +121,12 @@ public class KilroyEncoder implements PIDSource {
      * @param talonMotor
      */
     public KilroyEncoder(WPI_TalonFX talonMotor) {
+
         this.talonMotor = talonMotor;
         this.sensorCollection = this.talonMotor.getSensorCollection();
-    
         type = SensorType.FALC_ENC;
+        this.reset();
+
     }
 
     /**
@@ -261,7 +263,7 @@ default:
         case CAN_HAT:
             return (talonSensor.getSelectedSensorVelocity(0) * 10) * distancePerTick;
         case FALC_ENC:
-            return 0;
+            return this.sensorCollection.getIntegratedSensorVelocity();
         default:
             return 0;
         }

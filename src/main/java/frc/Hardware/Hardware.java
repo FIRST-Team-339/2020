@@ -65,7 +65,7 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.PrevYear;
+    public static Identifier robotIdentity = Identifier.CurrentYear;
 
     public static void initialize() {
 
@@ -77,17 +77,17 @@ public class Hardware {
         intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
         if (robotIdentity == Identifier.CurrentYear) {
-            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
+
+            
             // ==============CAN INIT=============
-            // Motor Controllers
+            // Motor Controllers          
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
             // leftRearMotor = new WPI_TalonFX(12);
             // rightRearMotor = new WPI_TalonFX(14);
 
-            leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+            leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/leftFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
 
             leftEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
             rightEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
@@ -100,6 +100,8 @@ public class Hardware {
             // =============OTHER INIT============
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
+            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
 
         } else if (robotIdentity == Identifier.PrevYear) {
 
@@ -142,7 +144,7 @@ public class Hardware {
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
 
-            usbCam1.close();
+          //  usbCam1.close();
 
         }
     }
@@ -229,8 +231,8 @@ public class Hardware {
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
-    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+    // public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+    // public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
 
     // ------------------------------------
     // Utility classes
