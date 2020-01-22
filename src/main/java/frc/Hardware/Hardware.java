@@ -26,6 +26,7 @@ import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
 import frc.vision.*;
 import frc.Utils.drive.Drive;
+import frc.Utils.Launcher;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -85,11 +86,14 @@ public class Hardware {
             // leftRearMotor = new WPI_TalonFX(12);
             // rightRearMotor = new WPI_TalonFX(14);
 
+            
+
             leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
 
             leftEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
-            rightEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
+            rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
+
             // ==============DIO INIT=============
 
             // ============ANALOG INIT============
@@ -120,26 +124,30 @@ public class Hardware {
 
             // Encoders
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-            rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+            rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
                     rightFrontMotor);
+
             // ==============RIO INIT==============
 
             // =============OTHER INIT============
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, null, null, gyro);
-            // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
+            // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
+            launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
+
             // armMotor = new WPI_TalonSRX(24);
             // liftMotor = new WPI_TalonSRX(23);
             // armRoller = new WPI_TalonSRX(10);
 
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
+            
 
             usbCam1.close();
 
@@ -159,7 +167,7 @@ public class Hardware {
     public static SpeedControllerGroup rightDriveGroup = null;
 
     public static KilroyEncoder leftEncoder = null;
-    public static KilroyEncoder rightEncoder = null;
+    public static KilroyEncoder rightDriveEncoder = null;
     public static KilroyEncoder liftingEncoder = null;
 
     // public static SpeedController liftMotor = null;
@@ -258,6 +266,8 @@ public class Hardware {
     public static NewDriveWithVision visionDriving = null;
 
     public static NewVisionInterface visionInterface = null;
+
+    public static Launcher launcher = null;
     // -------------------
     // Subassemblies
     // -------------------

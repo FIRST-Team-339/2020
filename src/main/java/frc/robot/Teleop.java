@@ -80,6 +80,7 @@ public class Teleop {
      public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
+        Hardware.launcher.launcherUpdater();
 
 
         if(Hardware.leftDriver.getRawButton(6)){
@@ -100,7 +101,7 @@ public class Teleop {
         // ================== DRIVER CONTROLS =================
       
         individualTest();
-        teleopDrive();
+        //teleopDrive();
     } // end Periodic()
     
 
@@ -148,7 +149,7 @@ public class Teleop {
             Hardware.rightFrontMotor.setInverted(false);
         }
 
-        System.out.println("Ticks: " + Hardware.rightEncoder.get());
+        System.out.println("Ticks: " + Hardware.rightDriveEncoder.get());
 
     }
 
@@ -215,13 +216,13 @@ public class Teleop {
         // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
         // Hardware.leftEncoder.getDistance());
         // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
-        // Hardware.rightEncoder.getDistance());
+        // Hardware.rightDriveEncoder.getDistance());
 
         // Encoder Raw Values
         // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
         // Hardware.leftEncoder.get());
         // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
-        // Hardware.rightEncoder.get());
+        // Hardware.rightDriveEncoder.get());
 
         // Switch Values
         // Hardware.telemetry.printToConsole("Six Pos Sw: " +

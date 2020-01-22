@@ -25,16 +25,16 @@ public class Drive {
      *
      * @param transmission The robot's transmission object
      * @param leftEncoder  The left-side encoder
-     * @param rightEncoder The right-side encoder
+     * @param rightDriveEncoder The right-side encoder
      * @param ultrasonic   The sensor that finds distance using sound
      * @param gyro         A sensor that is used to measure rotation
      */
-    public Drive(TransmissionBase transmission, KilroyEncoder leftEncoder, KilroyEncoder rightEncoder, GyroBase gyro) {
+    public Drive(TransmissionBase transmission, KilroyEncoder leftEncoder, KilroyEncoder rightDriveEncoder, GyroBase gyro) {
         this.transmissionType = transmission.getType();
         this.transmission = transmission;
         this.encoders = new KilroyEncoder[2];
         this.encoders[0] = leftEncoder;
-        this.encoders[1] = rightEncoder;
+        this.encoders[1] = rightDriveEncoder;
         this.brakeMotorDirection = new int[2];
         this.brakeMotorDirection[0] = 1;
         this.brakeMotorDirection[1] = 1;
