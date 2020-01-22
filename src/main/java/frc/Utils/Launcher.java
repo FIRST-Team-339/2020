@@ -40,13 +40,15 @@ public class Launcher{
                 break;
 
             case PASSIVE:  
-
+           
             if(Hardware.launchButton.get()){
                 teleopLaunch(); 
                 }
             if(Hardware.intakeButton.get()){
                 intake();
-                }         
+                }else{
+                    intaking = false;
+                }   
                 break;
 
             case INJECTION:   
@@ -89,7 +91,10 @@ public class Launcher{
                 //make motor go vroom
     }
 
+
+private boolean intaking = false;
     private void intake(){
+        intaking = true;
 
         //make intake motor go vroom vroom
     }

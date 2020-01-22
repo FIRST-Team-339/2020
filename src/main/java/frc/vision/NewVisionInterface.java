@@ -3,214 +3,185 @@ package frc.vision;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.*;
 
+public class NewVisionInterface {
 
-public class NewVisionInterface
-{
+    NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+    /*
+     * Limelight dettings Exposure: 12 Black Level Offset: 24 Red Balance: 1013 Blue
+     * Balance 500
+     */
 
-NetworkTable limelight = NetworkTableInstance.getDefault()
-        .getTable("limelight");
-        /*Limelight dettings
-        * Exposure: 12
-        * Black Level Offset: 24
-        * Red Balance: 1013
-        * Blue Balance 500
-        */
+    // has target
+    NetworkTableEntry tv = limelight.getEntry("tv");
 
-// has target
-NetworkTableEntry tv = limelight.getEntry("tv");
+    // horizontal offset
+    NetworkTableEntry tx = limelight.getEntry("tx");
 
-// horizontal offset
-NetworkTableEntry tx = limelight.getEntry("tx");
+    // vertical offset
+    NetworkTableEntry ty = limelight.getEntry("ty");
 
-// vertical offset
-NetworkTableEntry ty = limelight.getEntry("ty");
+    // % area
+    NetworkTableEntry ta = limelight.getEntry("ta");
 
-// % area
-NetworkTableEntry ta = limelight.getEntry("ta");
+    // skew
+    NetworkTableEntry ts = limelight.getEntry("ts");
 
-// skew
-NetworkTableEntry ts = limelight.getEntry("ts");
+    // latency
+    NetworkTableEntry tl = limelight.getEntry("tl");
 
-// latency
-NetworkTableEntry tl = limelight.getEntry("tl");
+    // length of shortest side
+    NetworkTableEntry tshort = limelight.getEntry("tshort");
 
-// length of shortest side
-NetworkTableEntry tshort = limelight.getEntry("tshort");
+    // length of longest side
+    NetworkTableEntry tlong = limelight.getEntry("tlong");
 
-// length of longest side
-NetworkTableEntry tlong = limelight.getEntry("tlong");
+    // horizontal side length (The "strongest" avenger)
+    NetworkTableEntry thor = limelight.getEntry("thor");
 
-// horizontal side length (The "strongest" avenger)
-NetworkTableEntry thor = limelight.getEntry("thor");
+    // vertical side length
+    NetworkTableEntry tvert = limelight.getEntry("tvert");
 
-// vertical side length
-NetworkTableEntry tvert = limelight.getEntry("tvert");
+    // active pipeline
+    NetworkTableEntry getpipe = limelight.getEntry("getpipe");
 
-// active pipeline
-NetworkTableEntry getpipe = limelight.getEntry("getpipe");
+    // 3d stuff
+    NetworkTableEntry camtran = limelight.getEntry("camtran");
 
-// 3d stuff
-NetworkTableEntry camtran = limelight.getEntry("camtran");
+    NetworkTableEntry Led_Mode = limelight.getEntry("ledMode");
 
-NetworkTableEntry Led_Mode = limelight.getEntry("ledMode");
+    public boolean hasTargets;
 
-public boolean hasTargets;
+    public double x;
 
-public double x;
+    public double y;
 
-public double y;
+    public double area;
 
-public double area;
+    public double skew;
 
-public double skew;
+    public double latency;
 
-public double latency;
+    public double shortSide;
 
-public double shortSide;
+    public double longSide;
 
-public double longSide;
+    public double horizontal;
 
-public double horizontal;
+    public double vertical;
 
-public double vertical;
+    public double pipeline;
 
-public double pipeline;
+    public double camtan;
 
-public double camtan;
+    public double led_Mode;
 
-public double led_Mode;
+    // to be called continuously
+    // updates internal values with those recieved from the network table
+    public void updateValues() {
 
+        try {
 
+            hasTargets = hasTargets(tv.getDouble(0));
+            x = tx.getDouble(0);
+            y = ty.getDouble(0);
+            area = ta.getDouble(0);
+            skew = ts.getDouble(0);
+            latency = tl.getDouble(0);
+            shortSide = tshort.getDouble(0);
+            longSide = tlong.getDouble(0);
+            horizontal = thor.getDouble(0);
+            vertical = tvert.getDouble(0);
+            pipeline = getpipe.getDouble(0);
+            led_Mode = Led_Mode.getDouble(0);
 
-// to be called continuously
-// updates internal values with those recieved from the network table
-public void updateValues ()
-{
-
-    try
-        {
-
-        hasTargets = hasTargets(tv.getDouble(0));
-        x = tx.getDouble(0);
-        y = ty.getDouble(0);
-        area = ta.getDouble(0);
-        skew = ts.getDouble(0);
-        latency = tl.getDouble(0);
-        shortSide = tshort.getDouble(0);
-        longSide = tlong.getDouble(0);
-        horizontal = thor.getDouble(0);
-        vertical = tvert.getDouble(0);
-        pipeline = getpipe.getDouble(0);
-        led_Mode = Led_Mode.getDouble(0);
-
-        // filterBlobs();
-        publishValues();
-        }
-    catch (NullPointerException exception)
-        {
-        System.out.println(exception);
+            // filterBlobs();
+            publishValues();
+        } catch (NullPointerException exception) {
+            System.out.println(exception);
         }
 
-}
-
-public double getXOffSet ()
-{
-    return x;
-
-}
-
-public double getYOffSet ()
-{
-    return y;
-}
-
-public double getArea ()
-{
-    return area;
-}
-
-public double getSkew ()
-{
-    return skew;
-}
-
-public double getLatency ()
-{
-    return latency;
-}
-
-public double getShortSide ()
-{
-    return shortSide;
-}
-
-public double getLongSide ()
-{
-    return longSide;
-}
-
-public double getHorizontalSide ()
-{
-    return horizontal;
-}
-
-public double getVerticalSide ()
-{
-    return vertical;
-}
-
-public double getPipeline ()
-{
-    return pipeline;
-}
-
-public void publishValues ()
-{
-
-    SmartDashboard.putBoolean("hasTargets", hasTargets);
-    SmartDashboard.putNumber("x offset", x);
-    SmartDashboard.putNumber("y offset", y);
-    SmartDashboard.putNumber("skew ", skew);
-    SmartDashboard.putNumber("latency ", latency);
-    SmartDashboard.putNumber("shortside", shortSide);
-    SmartDashboard.putNumber("longSide ", longSide);
-    SmartDashboard.putNumber("horizontal ", horizontal);
-    SmartDashboard.putNumber("vertical ", vertical);
-    SmartDashboard.putNumber("pipeline ", pipeline);
-    SmartDashboard.putNumber("ledMode", led_Mode);
-    SmartDashboard.putNumber("distance", getDistanceFromTarget());
-}
-
-
-
-public boolean hasTargets (double targets)
-{
-    if (targets != 0)
-        {
-
-        return true;
-        }
-
-    return false;
-
-}
-
-public enum LedMode
-    {
-    PIPELINE, OFF, BLINK, ON
     }
 
-public LedMode ledmode = LedMode.PIPELINE;
+    public double getXOffSet() {
+        return x;
 
-// @parameters
-// 0 pipeline control
-// 1 off
-// 2 blink
-// 3 on
-public void setLedMode (LedMode ledMode)
-{
-    switch (ledmode)
-        {
+    }
+
+    public double getYOffSet() {
+        return y;
+    }
+
+    public double getArea() {
+        return area;
+    }
+
+    public double getSkew() {
+        return skew;
+    }
+
+    public double getLatency() {
+        return latency;
+    }
+
+    public double getShortSide() {
+        return shortSide;
+    }
+
+    public double getLongSide() {
+        return longSide;
+    }
+
+    public double getHorizontalSide() {
+        return horizontal;
+    }
+
+    public double getVerticalSide() {
+        return vertical;
+    }
+
+    public double getPipeline() {
+        return pipeline;
+    }
+
+    public void publishValues() {
+
+        SmartDashboard.putBoolean("hasTargets", hasTargets);
+        SmartDashboard.putNumber("x offset", x);
+        SmartDashboard.putNumber("y offset", y);
+        SmartDashboard.putNumber("skew ", skew);
+        SmartDashboard.putNumber("latency ", latency);
+        SmartDashboard.putNumber("shortside", shortSide);
+        SmartDashboard.putNumber("longSide ", longSide);
+        SmartDashboard.putNumber("horizontal ", horizontal);
+        SmartDashboard.putNumber("vertical ", vertical);
+        SmartDashboard.putNumber("pipeline ", pipeline);
+        SmartDashboard.putNumber("ledMode", led_Mode);
+        SmartDashboard.putNumber("distance", getDistanceFromTarget());
+    }
+
+    public boolean hasTargets(double targets) {
+        if (targets != 0) {
+
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public enum LedMode {
+        PIPELINE, OFF, BLINK, ON
+    }
+
+    public LedMode ledmode = LedMode.PIPELINE;
+
+    // @parameters
+    // 0 pipeline control
+    // 1 off
+    // 2 blink
+    // 3 on
+    public void setLedMode(LedMode ledMode) {
+        switch (ledmode) {
         case PIPELINE:
             limelight.getEntry("ledMode").setNumber(0);
             break;
@@ -224,22 +195,19 @@ public void setLedMode (LedMode ledMode)
             limelight.getEntry("ledMode").setNumber(3);
             break;
         }
-}
-
-public enum CamMode
-    {
-    PROCESSOR, CAMERA
     }
 
-public CamMode camMode = CamMode.PROCESSOR;
+    public enum CamMode {
+        PROCESSOR, CAMERA
+    }
 
-// TODO make enum
-// 0 vision processor
-// 1 driver camera
-public void setCamMode (int mode)
-{
-    switch (camMode)
-        {
+    public CamMode camMode = CamMode.PROCESSOR;
+
+    // TODO make enum
+    // 0 vision processor
+    // 1 driver camera
+    public void setCamMode(int mode) {
+        switch (camMode) {
         case PROCESSOR:
             limelight.getEntry("camMode").setNumber(0);
             break;
@@ -247,80 +215,62 @@ public void setCamMode (int mode)
             limelight.getEntry("camMode").setNumber(1);
             break;
         }
-}
+    }
 
-// pipeline number
-public void setPipeline (int pipe)
-{
-    limelight.getEntry("pipeling").setNumber(pipe);
-}
+    // pipeline number
+    public void setPipeline(int pipe) {
+        limelight.getEntry("pipeling").setNumber(pipe);
+    }
 
-public void takePicture ()
-{
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
-    System.out.println("Picture has been taken...?");
-}
+    public void takePicture() {
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+        System.out.println("Picture has been taken");
+    }
 
-public boolean filterPass = true;
+    public boolean filterPass = true;
 
-public void filterBlobs ()
-{
+    public void filterBlobs() {
 
-    if (longSide > 50)
-        {
-        filterPass = false;
-        }
-    else
-        {
-        filterPass = true;
+        if (longSide > 50) {
+            filterPass = false;
+        } else {
+            filterPass = true;
         }
 
+    }
 
-}
+    public double distance = 0;
 
+    public double getDistanceFromTarget() {
+        // alternating piplein to compare the different blob goups?
 
+        // set pipeline()
 
-public double distance = 0;
+        // double distance = 0;
+        // d = (h2-h1) / tan(a1+a2)
+        // distance = ((CAMERA_HEIGHT - TARGET_HEIGHT_LOW)
+        // / Math.sin(Math.abs(getYOffSet())))
+        // * Math.sin(90 - Math.abs(getYOffSet()));
 
-public double getDistanceFromTarget ()
-{
-    // alternating piplein to compare the different blob goups?
+        distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
+                / Math.tan(Math.toRadians(MOUNTING_ANGLE) - Math.toRadians(Math.abs(getYOffSet())));
 
-    // set pipeline()
+        // distance = ((TARGET_HEIGHT - CAMERA_HEIGHT)
+        // / ( Math.toRadians( Math.sin(Math.toRadians(MOUNTING_ANGLE) +
+        // Math.toRadians(getYOffSet())))))
+        // * (Math.toRadians( Math.sin(90 - MOUNTING_ANGLE + getYOffSet())));
 
+        if (hasTargets == true) {
 
-
-    // double distance = 0;
-    // d = (h2-h1) / tan(a1+a2)
-    // distance = ((CAMERA_HEIGHT - TARGET_HEIGHT_LOW)
-    // / Math.sin(Math.abs(getYOffSet())))
-    // * Math.sin(90 - Math.abs(getYOffSet()));
-
-   
-    distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
-    / Math.tan(Math.toRadians(MOUNTING_ANGLE) -  Math.toRadians(Math.abs(getYOffSet())));
-
-    // distance = ((TARGET_HEIGHT - CAMERA_HEIGHT)
-    //         / ( Math.toRadians( Math.sin(Math.toRadians(MOUNTING_ANGLE) +  Math.toRadians(getYOffSet()))))) 
-    //          * (Math.toRadians( Math.sin(90 - MOUNTING_ANGLE + getYOffSet())));
-  
-    if (hasTargets == true)
-        {
-
-         return Math.abs(distance);
+            return Math.abs(distance);
+        } else {
+            return 0;
         }
-    else
-        {
-        return 0;
-        }
-}
+    }
 
+    public final double CAMERA_HEIGHT = 35.25;// TODO
 
-public final double CAMERA_HEIGHT = 35.25;// TODO
+    final double TARGET_HEIGHT = 83.5;// TODO
 
-
-
-final double TARGET_HEIGHT = 83.5;// TODO
-
-final double MOUNTING_ANGLE = 35;//35;// TODO
+    final double MOUNTING_ANGLE = 35;// 35;// TODO
 }
