@@ -44,7 +44,7 @@ import frc.Hardware.Hardware;
  * @written Jan 13, 2015
  */
 public class Teleop {
-  
+
     /**
      * User Initialization code for teleop mode should go here. Will be called once
      * when the robot enters teleop mode.
@@ -82,7 +82,7 @@ public class Teleop {
         // =============== AUTOMATED SUBSYSTEMS ===============
        // Hardware.visionInterface.updateValues();
 
-   
+
         if (testBoolean == false) {
 
             teleopDrive();
@@ -180,24 +180,24 @@ public class Teleop {
             Hardware.camTimer1.stop();
             Hardware.camTimer1.reset();
 
-            
+
             Hardware.usbCam0.close();
-            
+
             CameraServer.getInstance().removeServer("usb0");
-            CameraServer.getInstance().removeCamera("usb0"); 
-            
+            CameraServer.getInstance().removeCamera("usb0");
+
              //Hardware.usbCam0 = CameraServer.getInstance().
             // Hardware.camTimer1.start();
 
             System.out.println("Cam 1 on");
             cam0 = false;
             startOfMatch = false;
-            
+
         }
         if(Hardware.leftOperator.getRawButton(8)){
 
             Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
-        
+
         }
         if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
         {
@@ -252,13 +252,13 @@ public class Teleop {
 
         // Encoder Distances
         // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
-        // Hardware.leftEncoder.getDistance());
+        // Hardware.leftDriveEncoder.getDistance());
         // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
         // Hardware.rightDriveEncoder.getDistance());
 
         // Encoder Raw Values
         // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
-        // Hardware.leftEncoder.get());
+        // Hardware.leftDriveEncoder.get());
         // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
         // Hardware.rightDriveEncoder.get());
 

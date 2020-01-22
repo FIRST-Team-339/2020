@@ -80,9 +80,9 @@ public class Hardware {
 
         if (robotIdentity == Identifier.CurrentYear) {
 
-            
+
             // ==============CAN INIT=============
-            // Motor Controllers          
+            // Motor Controllers
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
             // leftRearMotor = new WPI_TalonFX(12);
@@ -93,7 +93,7 @@ public class Hardware {
             rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
 
 
-            leftEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
+             = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
             rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
 
             // ==============DIO INIT=============
@@ -106,7 +106,7 @@ public class Hardware {
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, leftEncoder, rightDriveEncoder, gyro);
+            drive = new Drive(transmission, , rightDriveEncoder, gyro);
 
         } else if (robotIdentity == Identifier.PrevYear) {
 
@@ -127,10 +127,10 @@ public class Hardware {
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+             = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
-           
+
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
@@ -141,7 +141,7 @@ public class Hardware {
             // =============OTHER INIT============
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, null, null, gyro);
-            // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
+            // drivePID = new DrivePID(transmission, , , gyro);
 
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
@@ -153,15 +153,15 @@ public class Hardware {
 
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
-            
 
-           
 
-            leftEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+
+
+            .setDistancePerPulse(DISTANCE_PER_TICK_XIX);
             rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
         }
-        
+
     }
 
     // **********************************************************
@@ -176,13 +176,8 @@ public class Hardware {
     public static SpeedControllerGroup leftDriveGroup = null;
     public static SpeedControllerGroup rightDriveGroup = null;
 
-    public static KilroyEncoder leftEncoder = null;
+    public static KilroyEncoder leftDriveEncoder = null;
     public static KilroyEncoder rightDriveEncoder = null;
-    public static KilroyEncoder liftingEncoder = null;
-
-    
-
-    // public static SpeedController liftMotor = null;
 
     // **********************************************************
     // DIGITAL I/O

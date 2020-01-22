@@ -37,12 +37,12 @@ public void robotInit ()
     // start setup - tell the user we are beginning
     // setup
     // ---------------------------------------
-    
+
     Hardware.initialize();
-    
+
 
     //Clearing TalonFX motor ticks
-     Hardware.leftEncoder.reset();
+     Hardware.leftDriveEncoder.reset();
      Hardware.rightDriveEncoder.reset();
     // ---------------------------------------
     // done setup - tell the user we are complete
@@ -131,7 +131,7 @@ public void disabledInit ()
     // ---------------------------------------
 
 
-    
+
     // ---------------------------------------
     // done setup - tell the user we are complete
     // setup
@@ -172,7 +172,7 @@ public void teleopInit ()
     // start setup - tell the user we are beginning
     // setup
     // ---------------------------------------
-    
+
     Teleop.init();
 
     // ---------------------------------------
