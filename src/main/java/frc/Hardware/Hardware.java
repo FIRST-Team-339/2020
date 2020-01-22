@@ -40,6 +40,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -66,7 +67,7 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.PrevYear;
+    public static Identifier robotIdentity = Identifier.CurrentYear;
 
     public static void initialize() {
 
@@ -79,17 +80,18 @@ public class Hardware {
 
         if (robotIdentity == Identifier.CurrentYear) {
 
+            
             // ==============CAN INIT=============
-            // Motor Controllers
+            // Motor Controllers          
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
             // leftRearMotor = new WPI_TalonFX(12);
             // rightRearMotor = new WPI_TalonFX(14);
 
-            
 
-            leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+            leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/leftFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
+
 
             leftEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
             rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
@@ -103,6 +105,8 @@ public class Hardware {
             // =============OTHER INIT============
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
+            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            drive = new Drive(transmission, leftEncoder, rightDriveEncoder, gyro);
 
         } else if (robotIdentity == Identifier.PrevYear) {
 
@@ -125,6 +129,8 @@ public class Hardware {
             // Encoders
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+
+           
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
@@ -149,9 +155,13 @@ public class Hardware {
             Hardware.rightFrontMotor.setInverted(true);
             
 
-            usbCam1.close();
+           
+
+            leftEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+            rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
         }
+        
     }
 
     // **********************************************************
@@ -169,6 +179,8 @@ public class Hardware {
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightDriveEncoder = null;
     public static KilroyEncoder liftingEncoder = null;
+
+    
 
     // public static SpeedController liftMotor = null;
 
@@ -236,7 +248,7 @@ public class Hardware {
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0",0);
     public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
 
     // ------------------------------------
@@ -268,6 +280,8 @@ public class Hardware {
     public static NewVisionInterface visionInterface = null;
 
     public static Launcher launcher = null;
+
+    public final static double DISTANCE_PER_TICK_XIX = 23/13.8;//.0346;
     // -------------------
     // Subassemblies
     // -------------------
