@@ -44,7 +44,7 @@ import frc.Hardware.Hardware;
  * @written Jan 13, 2015
  */
 public class Teleop {
-
+  
     /**
      * User Initialization code for teleop mode should go here. Will be called once
      * when the robot enters teleop mode.
@@ -80,26 +80,20 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-        Hardware.visionInterface.updateValues();
+       // Hardware.visionInterface.updateValues();
 
-        if (Hardware.leftDriver.getRawButton(6)) {
-            testBoolean = true;
-        }
-        if (testBoolean == true) {
-            if (Hardware.visionDriving.driveToTarget()) {
-                testBoolean = false;
-
-            }
-        }
+   
         if (testBoolean == false) {
+
             teleopDrive();
         }
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
 
+
         individualTest();
-        teleopDrive();
+      //  teleopDrive();
         takeSinglePicture(Hardware.leftOperator.getRawButton(8), Hardware.leftOperator.getRawButton(9));
     } // end Periodic()
 

@@ -39,6 +39,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -123,6 +124,8 @@ public class Hardware {
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
+           
+
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
                     rightFrontMotor);
@@ -130,7 +133,7 @@ public class Hardware {
 
             // =============OTHER INIT============
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, null, null, gyro);
+            drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
             // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
 
             visionInterface = new NewVisionInterface();
@@ -144,7 +147,11 @@ public class Hardware {
 
            
 
+            leftEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+            rightEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+
         }
+        
     }
 
     // **********************************************************
@@ -162,6 +169,8 @@ public class Hardware {
     public static KilroyEncoder leftEncoder = null;
     public static KilroyEncoder rightEncoder = null;
     public static KilroyEncoder liftingEncoder = null;
+
+    
 
     // public static SpeedController liftMotor = null;
 
@@ -259,6 +268,8 @@ public class Hardware {
     public static NewDriveWithVision visionDriving = null;
 
     public static NewVisionInterface visionInterface = null;
+
+    public final static double DISTANCE_PER_TICK_XIX = 23/13.8;//.0346;
     // -------------------
     // Subassemblies
     // -------------------
