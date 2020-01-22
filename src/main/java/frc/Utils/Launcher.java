@@ -74,9 +74,11 @@ public class Launcher{
             break;
 
         }
-
+        
     }
-
+    /*public void launcherDebug(){
+        SmartDashboard.putNumber("ballCount",currentBallCount);
+    }*/
 
     public boolean autoLaunch(){
 

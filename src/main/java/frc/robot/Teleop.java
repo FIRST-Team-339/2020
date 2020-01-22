@@ -178,13 +178,14 @@ public class Teleop {
     }
         
     public static void chrisTest(){
-     int x = 0;
+     int ballCount = 1;
+     ballCount = 1;
      
-     if(Hardware.leftDriver.getRawButton(5) == true){
-         x+=1;
-        
-     }
-     SmartDashboard.putNumber("Ball Count", x);
+     //if(Hardware.leftDriver.getRawButton(5) == true){
+     //    ballCount+=1;
+     SmartDashboard.putNumber("ballCount", ballCount);
+     //}
+     
       }  
        
    

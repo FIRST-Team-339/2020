@@ -109,8 +109,8 @@ public class Hardware {
 
             // ==============CAN INIT=============
             // Motor Controllers
-            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+            //leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+            // rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
             // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
@@ -119,17 +119,17 @@ public class Hardware {
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-            rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+            //leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            //rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
-            leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
-                    rightFrontMotor);
+            //leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
+            //rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
+            //        rightFrontMotor);
             // ==============RIO INIT==============
 
             // =============OTHER INIT============
-            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, null, null, gyro);
+            //transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            //drive = new Drive(transmission, null, null, gyro);
             // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
 
             visionInterface = new NewVisionInterface();
@@ -138,8 +138,8 @@ public class Hardware {
             // liftMotor = new WPI_TalonSRX(23);
             // armRoller = new WPI_TalonSRX(10);
 
-            Hardware.leftFrontMotor.setInverted(false);
-            Hardware.rightFrontMotor.setInverted(true);
+            //Hardware.leftFrontMotor.setInverted(false);
+            //Hardware.rightFrontMotor.setInverted(true);
 
             usbCam1.close();
 
