@@ -81,8 +81,18 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-        Hardware.visionInterface.updateValues();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        // Hardware.visionInterface.updateValues();
+
+        if (Hardware.rightOperator.getRawButton(2) == true) {
+            testBoolean = true;
+        }
+        if (testBoolean == true) {
+            System.out.println("Gyro Distance " + Hardware.drive.getGyro());
+
+            if (Hardware.drive.turnDegrees(90, .4, 0, true)) {
+                testBoolean = false;
+            }
+        }
 
         if (testBoolean == false) {
 
@@ -92,7 +102,7 @@ public class Teleop {
 
         // ================== DRIVER CONTROLS =================
 
-        // individualTest();
+        individualTest();
         // teleopDrive();
 
     } // end Periodic()
