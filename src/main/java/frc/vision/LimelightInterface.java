@@ -3,7 +3,7 @@ package frc.vision;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.*;
 
-public class NewVisionInterface {
+public class LimelightInterface {
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     /*

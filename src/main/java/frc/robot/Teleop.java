@@ -92,7 +92,7 @@ public class Teleop {
         // ================== DRIVER CONTROLS =================
 
 
-        individualTest();
+       // individualTest();
       //  teleopDrive();
         takeSinglePicture(Hardware.leftOperator.getRawButton(8), Hardware.leftOperator.getRawButton(9));
     } // end Periodic()
