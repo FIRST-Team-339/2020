@@ -93,7 +93,7 @@ public class Hardware {
             rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
 
 
-             = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
+            leftDriveEncoder  = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
             rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
 
             // ==============DIO INIT=============
@@ -106,7 +106,7 @@ public class Hardware {
             visionInterface = new NewVisionInterface();
             visionDriving = new NewDriveWithVision();
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, , rightDriveEncoder, gyro);
+            drive = new Drive(transmission, leftDriveEncoder , rightDriveEncoder, gyro);
 
         } else if (robotIdentity == Identifier.PrevYear) {
 
@@ -127,7 +127,7 @@ public class Hardware {
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-             = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            leftDriveEncoder  = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
 
@@ -157,7 +157,7 @@ public class Hardware {
 
 
 
-            .setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+            leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
             rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
         }

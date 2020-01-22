@@ -55,7 +55,7 @@ public class DrivePID extends Drive {
      */
     public DrivePID(TransmissionBase transmission, KilroyEncoder leftDriveEncoder, KilroyEncoder rightDriveEncoder,
             GyroBase gyro) {
-        super(transmission, lefDriveEncoder, rightDriveEncoder, gyro);
+        super(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
         initPIDControllers();
         this.encoders = new KilroyEncoder[2];
         this.encoders[0] = leftDriveEncoder;
