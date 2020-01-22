@@ -32,6 +32,7 @@ package frc.robot;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 
@@ -178,19 +179,35 @@ public class Teleop {
         if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch)) {
             Hardware.camTimer1.stop();
             Hardware.camTimer1.reset();
-            Hardware.usbCam0.close();
 
-            Hardware.camTimer1.start();
+            
+            Hardware.usbCam0.close();
+            
+            CameraServer.getInstance().removeServer("usb0");
+            CameraServer.getInstance().removeCamera("usb0"); 
+            
+             //Hardware.usbCam0 = CameraServer.getInstance().
+            // Hardware.camTimer1.start();
+
+            System.out.println("Cam 1 on");
             cam0 = false;
             startOfMatch = false;
+            
         }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1) {
-            Hardware.camTimer2.stop();
-            Hardware.camTimer2.reset();
-           // Hardware.usbCam1.close();
+        if(Hardware.leftOperator.getRawButton(8)){
 
-            Hardware.camTimer2.start();
-            cam0 = true;
+            Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
+        
+        }
+        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
+        {
+            // Hardware.camTimer2.stop();
+            // Hardware.camTimer2.reset();
+            // Hardware.usbCam1.close();
+            // Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+            // Hardware.camTimer2.start();
+            // System.out.println("Cam 0 on");
+            // cam0 = true;
         }
 
     }
