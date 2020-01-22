@@ -141,7 +141,7 @@ public class Hardware {
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
 
-            usbCam1.close();
+           
 
         }
     }
@@ -228,7 +228,7 @@ public class Hardware {
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0",0);
     public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
 
     // ------------------------------------
