@@ -30,8 +30,8 @@ public class NewDriveWithVision {
 
             if (offness < 0) {
 
-                adjustmentValueLeft = MIN_MOVE - (Math.abs(offness) * ADJUST_PORP);
-                adjustmentValueRight = MIN_MOVE + (Math.abs(offness) * ADJUST_PORP);
+                adjustmentValueLeft = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueRight = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
                 Hardware.drive.drive(adjustmentValueLeft,
                 adjustmentValueRight);
                 
@@ -42,8 +42,8 @@ public class NewDriveWithVision {
              if (offness > 0) 
             {
 
-                adjustmentValueLeft = MIN_MOVE + (Math.abs(offness) * ADJUST_PORP);
-                adjustmentValueRight = MIN_MOVE - (Math.abs(offness) * ADJUST_PORP);
+                adjustmentValueLeft = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueRight = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
 
                 Hardware.drive.drive(adjustmentValueLeft,
                 adjustmentValueRight);
@@ -63,9 +63,13 @@ public class NewDriveWithVision {
     }
 
 
-    final double MIN_MOVE = .2;
+    final double MIN_MOVE_2019 = .2;
 
-    final double ADJUST_PORP = .015;
+    final double ADJUST_PORP_2019 = .015;
+
+    final double ADJUST_PORP_2020 = .015;//TODO
+
+    final double MIN_MOVE_2020 = .2;//TODO
 
     final double STOP_DISTANCE_TEST = 80;
 

@@ -61,7 +61,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware {
 
-    enum Identifier {
+   public static enum Identifier {
         CurrentYear, PrevYear
     };
 
@@ -77,7 +77,8 @@ public class Hardware {
         intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
         if (robotIdentity == Identifier.CurrentYear) {
-
+            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            drive = new Drive(transmission, leftEncoder, rightEncoder, gyro);
             // ==============CAN INIT=============
             // Motor Controllers
             leftFrontMotor = new WPI_TalonFX(13);
