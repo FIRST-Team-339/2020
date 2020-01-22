@@ -1,5 +1,6 @@
 package frc.vision;
 
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.*;
 
@@ -222,10 +223,38 @@ public class NewVisionInterface {
         limelight.getEntry("pipeling").setNumber(pipe);
     }
 
-    public void takePicture() {
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
-        System.out.println("Picture has been taken");
+    /**
+     * takePictureWithButtons passes in two joystick buttons and when they are both
+     * pressed, it takes a single picture
+     *
+     * @author Patrick
+     * @param leftOp1
+     * @param leftOp2
+     */
+    public void takePictureWithButtons(JoystickButton leftOp1, JoystickButton leftOp2) {
+        if (leftOp1 != null && leftOp2 != null) {
+            if (leftOp1.get() && leftOp2.get() && buttonHasBeenPressed && !hasButtonBeenPressed) {
+
+                hasButtonBeenPressed = true;
+
+                NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+                System.out.println("Picture has been taken");
+            }
+
+            if (leftOp1.get() && leftOp2.get() && !buttonHasBeenPressed)
+                buttonHasBeenPressed = true;
+
+            if (!leftOp1.get() && !leftOp2.get()) {
+                buttonHasBeenPressed = false;
+                hasButtonBeenPressed = false;
+            }
+        }
     }
+
+    // private void takePicture() {
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+    // System.out.println("Picture has been taken");
+    // }
 
     public boolean filterPass = true;
 
@@ -273,4 +302,7 @@ public class NewVisionInterface {
     final double TARGET_HEIGHT = 83.5;// TODO
 
     final double MOUNTING_ANGLE = 35;// 35;// TODO
+
+    private boolean buttonHasBeenPressed = false;
+    private boolean hasButtonBeenPressed = false;
 }
