@@ -29,8 +29,6 @@
 // ====================================================================
 package frc.robot;
 
-
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -45,7 +43,7 @@ import frc.Hardware.Hardware;
  * @written Jan 13, 2015
  */
 public class Teleop {
-
+  
     /**
      * User Initialization code for teleop mode should go here. Will be called once
      * when the robot enters teleop mode.
@@ -56,7 +54,7 @@ public class Teleop {
     public static void init() {
 
         //Gear Inits
-       
+
        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)){
         Hardware.drive.setGearPercentage(0, FIRST_GEAR);
         Hardware.drive.setGearPercentage(1, SECOND_GEAR);
@@ -64,7 +62,7 @@ public class Teleop {
          }else{
         //TODO
          }
-       
+
         Hardware.drive.setGear(0);
 
     } // end Init
@@ -77,63 +75,83 @@ public class Teleop {
      * @written Jan 13, 2015
      */
 
-     public static boolean testBoolean = false;
-     public static void periodic() {
+    public static boolean testBoolean = false;
+
+    public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-        Hardware.visionInterface.updateValues();
+       // Hardware.visionInterface.updateValues();
 
+   
+        if (testBoolean == false) {
 
-        if(Hardware.leftDriver.getRawButton(6)){
-            testBoolean = true;
-          }
-          if(testBoolean == true){
-              if(Hardware.visionDriving.driveToTarget())
-            {
-            testBoolean =false;
-
-             }        
-              }
-          if(testBoolean == false){
             teleopDrive();
-          }
-             // ================= OPERATOR CONTROLS ================
+        }
+        // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-      
-        individualTest();
-        teleopDrive();
-    } // end Periodic()
-    
 
-    public static void teleopDrive(){
+
+        individualTest();
+      //  teleopDrive();
+        takeSinglePicture(Hardware.leftOperator.getRawButton(8), Hardware.leftOperator.getRawButton(9));
+    } // end Periodic()
+
+    public static void teleopDrive() {
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
-        // System.out.println("Speed levels: rightDriver" + Hardware.rightDriver.getY());
+        // System.out.println("Speed levels: rightDriver" +
+        // Hardware.rightDriver.getY());
         // System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
 
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
-        
-        if(Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER){
+
+        if (Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER) {
             Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
         }
 
     }
+
+    /**
+     * takeSinglePicture() is a function that takes a single picture. Duh. Pass in
+     * two joystick buttons, which are currently Left Operator 8 and 9. limelight
+     * web interface is found at: http://limelight.local:5801/. you have to be
+     * connected to the robot in order to view it.
+     *
+     * @author Patrick
+     * @param joyButton1
+     * @param joyButton2
+     */
+    public static void takeSinglePicture(boolean joyButton1, boolean joyButton2) {
+        if (joyButton1 && joyButton2 && buttonHasBeenPressed && !hasButtonBeenPressed) {
+
+            hasButtonBeenPressed = true;
+            Hardware.visionInterface.takePicture();
+        }
+
+        if (joyButton1 && joyButton2 && !buttonHasBeenPressed)
+            buttonHasBeenPressed = true;
+
+        if (!joyButton1 && !joyButton2) {
+            buttonHasBeenPressed = false;
+            hasButtonBeenPressed = false;
+        }
+    }
+
     public static void individualTest() {
         // people test functions
-       // connerTest();
-    //craigTest();
-       // chrisTest();
-       // dionTest();
-       //patrickTest();
+        // connerTest();
+        // craigTest();
+        // chrisTest();
+        // dionTest();
+        // patrickTest();
     }
 
-    public static void connerTest(){
-
+    public static void connerTest() {
 
     }
 
-    public static void craigTest(){
+    public static void craigTest() {
 
         if(Hardware.rightDriver.getRawButton(4) == true ){
             if(Hardware.invertTempoMomentarySwitch.isOn()){
@@ -146,7 +164,7 @@ public class Teleop {
             // System.out.println("Should be inverted");
             Hardware.rightFrontMotor.setInverted(true);
             Hardware.leftFrontMotor.setInverted(true);
-        }else{
+        } else {
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(false);
         }
@@ -156,20 +174,17 @@ public class Teleop {
 
     }
 
-    public static void dionTest()
-    {
-        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch))
-        {
+    public static void dionTest() {
+        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch)) {
             Hardware.camTimer1.stop();
             Hardware.camTimer1.reset();
-            //Hardware.usbCam0.close();
-            
+            Hardware.usbCam0.close();
+
             Hardware.camTimer1.start();
             cam0 = false;
             startOfMatch = false;
         }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
-        {
+        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1) {
             Hardware.camTimer2.stop();
             Hardware.camTimer2.reset();
            // Hardware.usbCam1.close();
@@ -177,37 +192,40 @@ public class Teleop {
             Hardware.camTimer2.start();
             cam0 = true;
         }
-       
-        
-        
+
     }
-        
-    public static void chrisTest(){
-     int x = 0;
-     
-     if(Hardware.leftDriver.getRawButton(5) == true){
-         x+=1;
-        
-     }
-     SmartDashboard.putNumber("Ball Count", x);
-      }  
-       
-   
 
-    public static void patrickTest()
-    {
-        boolean buttonPressed = false;
+    public static void chrisTest() {
+        int x = 0;
 
-        if(Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && !buttonPressed)
-        {
-            buttonPressed = true;
+        if (Hardware.leftDriver.getRawButton(5) == true) {
+            x += 1;
+
+        }
+        SmartDashboard.putNumber("Ball Count", x);
+    }
+
+    public static void patrickTest() {
+
+        if (Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && buttonHasBeenPressed
+                && !hasButtonBeenPressed) {
+            hasButtonBeenPressed = true;
             Hardware.visionInterface.takePicture();
-            System.out.println("TakePicture has been run");
-        }  
-        else
-            buttonPressed = false;
+            System.out.println("Test has been run");
+        }
 
-        System.out.println(buttonPressed);
+        if (Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && !buttonHasBeenPressed)
+            buttonHasBeenPressed = true;
+
+        if (!Hardware.leftOperator.getRawButton(8) && !Hardware.leftOperator.getRawButton(9)) {
+            buttonHasBeenPressed = false;
+            hasButtonBeenPressed = false;
+        }
+
+        System.out.println("buttonHasBeenPressed: " + buttonHasBeenPressed);
+        System.out.println("hasButtonBeenPressed: " + hasButtonBeenPressed);
+
+        // limelight web interface http://limelight.local:5801/
     }
 
     public static void printStatements() {
@@ -300,6 +318,7 @@ public class Teleop {
         // ---------- OTHER ------------
 
     }
+
     private static boolean cam0 = true;
 
     private static boolean startOfMatch = true;
@@ -311,4 +330,8 @@ public class Teleop {
     private final static double SECOND_GEAR = .5;
 
     private final static double FORBIDDEN_THIRD_GEAR = 1.0;
+
+    // patrickTest variable
+    public static boolean buttonHasBeenPressed = false;
+    public static boolean hasButtonBeenPressed = false;
 } // end class
