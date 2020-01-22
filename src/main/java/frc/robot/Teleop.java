@@ -53,11 +53,15 @@ public class Teleop {
      */
     public static void init() {
 
-        // Gear Inits
+        //Gear Inits
 
+       if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)){
         Hardware.drive.setGearPercentage(0, FIRST_GEAR);
         Hardware.drive.setGearPercentage(1, SECOND_GEAR);
         Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
+         }else{
+        //TODO
+         }
 
         Hardware.drive.setGear(0);
 
