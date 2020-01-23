@@ -6,6 +6,13 @@ import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.MomentarySwitch;
 import edu.wpi.first.networktables.*;
 
+/**
+ * an interface class for the limelight vision camera
+ * 
+ * @author Conner McKevitt
+ *
+ *
+ */
 public class LimelightInterface {
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
@@ -201,7 +208,7 @@ public class LimelightInterface {
     /**
      * publishes all of the data provided by the limelight to the smartdashboard for
      * debugging.
-     * 
+     *
      * @param MomentarySwitch switch to enable/disable the publishing of the values
      *
      */
@@ -227,7 +234,7 @@ public class LimelightInterface {
 
     /**
      * returns whether the amount of blobs is > 1
-     * 
+     *
      * @return boolean
      */
     public boolean hasTargets(double targets) {
@@ -308,7 +315,7 @@ public class LimelightInterface {
     /**
      *
      * sets the current processing pipeline for thelimelight
-     * 
+     *
      * @param pipe the pipeline number this has to be made in the web interface for
      *             the limelight
      */
@@ -316,26 +323,47 @@ public class LimelightInterface {
         limelight.getEntry("pipeling").setNumber(pipe);
     }
 
+    /**
+     * takePictureWithButtons passes in two joystick buttons and when they are both
+     * pressed, it takes a single picture
+     *
+     * @author Patrick
+     * @param leftOp1
+     * @param leftOp2
+     */
+    public void takePictureWithButtons(JoystickButton leftOp1, JoystickButton leftOp2) {
+        if (leftOp1 != null && leftOp2 != null) {
+            if (leftOp1.get() && leftOp2.get() && buttonHasBeenPressed && !hasButtonBeenPressed) {
+
+                hasButtonBeenPressed = true;
+
+                NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+                System.out.println("Picture has been taken");
+            }
+
+            if (leftOp1.get() && leftOp2.get() && !buttonHasBeenPressed)
+                buttonHasBeenPressed = true;
+
+            if (!leftOp1.get() && !leftOp2.get()) {
+                buttonHasBeenPressed = false;
+                hasButtonBeenPressed = false;
+            }
+        }
+    }
+
+    // variable for storing distance
     private double distance = 0;
 
+    /**
+     * returns the distance away from a blob. The cameraHeight, cameraAngle, and
+     * targetHeight have to be set in the final variables at the end of the class
+     *
+     * @return distance away from the blob
+     */
     public double getDistanceFromTarget() {
-        // alternating piplein to compare the different blob goups?
-
-        // set pipeline()
-
-        // double distance = 0;
-        // d = (h2-h1) / tan(a1+a2)
-        // distance = ((CAMERA_HEIGHT - TARGET_HEIGHT_LOW)
-        // / Math.sin(Math.abs(getYOffSet())))
-        // * Math.sin(90 - Math.abs(getYOffSet()));
 
         distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
                 / Math.tan(Math.toRadians(MOUNTING_ANGLE) - Math.toRadians(Math.abs(getYOffSet())));
-
-        // distance = ((TARGET_HEIGHT - CAMERA_HEIGHT)
-        // / ( Math.toRadians( Math.sin(Math.toRadians(MOUNTING_ANGLE) +
-        // Math.toRadians(getYOffSet())))))
-        // * (Math.toRadians( Math.sin(90 - MOUNTING_ANGLE + getYOffSet())));
 
         if (hasTargets == true) {
 
@@ -349,5 +377,8 @@ public class LimelightInterface {
 
     private final double TARGET_HEIGHT = 83.5;// TODO
 
-    private final double MOUNTING_ANGLE = 35;// 35;// TODO
+    final double MOUNTING_ANGLE = 35;// 35;// TODO
+
+    private boolean buttonHasBeenPressed = false;
+    private boolean hasButtonBeenPressed = false;
 }

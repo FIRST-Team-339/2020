@@ -32,6 +32,7 @@ package frc.robot;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
@@ -93,7 +94,7 @@ public class Teleop {
 
         // individualTest();
         // teleopDrive();
-        takeSinglePicture(Hardware.leftOperator.getRawButton(8), Hardware.leftOperator.getRawButton(9));
+
     } // end Periodic()
 
     public static void teleopDrive() {
@@ -110,32 +111,6 @@ public class Teleop {
             Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
         }
 
-    }
-
-    /**
-     * takeSinglePicture() is a function that takes a single picture. Duh. Pass in
-     * two joystick buttons, which are currently Left Operator 8 and 9. limelight
-     * web interface is found at: http://limelight.local:5801/. you have to be
-     * connected to the robot in order to view it.
-     *
-     * @author Patrick
-     * @param joyButton1
-     * @param joyButton2
-     */
-    public static void takeSinglePicture(boolean joyButton1, boolean joyButton2) {
-        if (joyButton1 && joyButton2 && buttonHasBeenPressed && !hasButtonBeenPressed) {
-
-            hasButtonBeenPressed = true;
-            Hardware.visionInterface.takePicture();
-        }
-
-        if (joyButton1 && joyButton2 && !buttonHasBeenPressed)
-            buttonHasBeenPressed = true;
-
-        if (!joyButton1 && !joyButton2) {
-            buttonHasBeenPressed = false;
-            hasButtonBeenPressed = false;
-        }
     }
 
     public static void individualTest() {
@@ -221,25 +196,6 @@ public class Teleop {
 
     public static void patrickTest() {
 
-        if (Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && buttonHasBeenPressed
-                && !hasButtonBeenPressed) {
-            hasButtonBeenPressed = true;
-            Hardware.visionInterface.takePicture();
-            System.out.println("Test has been run");
-        }
-
-        if (Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && !buttonHasBeenPressed)
-            buttonHasBeenPressed = true;
-
-        if (!Hardware.leftOperator.getRawButton(8) && !Hardware.leftOperator.getRawButton(9)) {
-            buttonHasBeenPressed = false;
-            hasButtonBeenPressed = false;
-        }
-
-        System.out.println("buttonHasBeenPressed: " + buttonHasBeenPressed);
-        System.out.println("hasButtonBeenPressed: " + hasButtonBeenPressed);
-
-        // limelight web interface http://limelight.local:5801/
     }
 
     public static void printStatements() {
@@ -345,7 +301,4 @@ public class Teleop {
 
     private final static double FORBIDDEN_THIRD_GEAR = 1.0;
 
-    // patrickTest variable
-    public static boolean buttonHasBeenPressed = false;
-    public static boolean hasButtonBeenPressed = false;
 } // end class

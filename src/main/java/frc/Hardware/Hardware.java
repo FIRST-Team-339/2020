@@ -248,6 +248,8 @@ public class Hardware {
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+    public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
+    public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
