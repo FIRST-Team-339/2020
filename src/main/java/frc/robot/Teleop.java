@@ -32,6 +32,7 @@ package frc.robot;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
@@ -44,7 +45,7 @@ import frc.Hardware.Hardware;
  * @written Jan 13, 2015
  */
 public class Teleop {
-  
+
     /**
      * User Initialization code for teleop mode should go here. Will be called once
      * when the robot enters teleop mode.
@@ -54,15 +55,15 @@ public class Teleop {
      */
     public static void init() {
 
-        //Gear Inits
+        // Gear Inits
 
-       if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)){
-        Hardware.drive.setGearPercentage(0, FIRST_GEAR);
-        Hardware.drive.setGearPercentage(1, SECOND_GEAR);
-        Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
-         }else{
-        //TODO
-         }
+        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)) {
+            Hardware.drive.setGearPercentage(0, FIRST_GEAR);
+            Hardware.drive.setGearPercentage(1, SECOND_GEAR);
+            Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
+        } else {
+            // TODO
+        }
 
         Hardware.drive.setGear(0);
 
@@ -80,9 +81,9 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-       // Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-   
         if (testBoolean == false) {
 
             teleopDrive();
@@ -91,10 +92,9 @@ public class Teleop {
 
         // ================== DRIVER CONTROLS =================
 
+        // individualTest();
+        // teleopDrive();
 
-        individualTest();
-      //  teleopDrive();
-        takeSinglePicture(Hardware.leftOperator.getRawButton(8), Hardware.leftOperator.getRawButton(9));
     } // end Periodic()
 
     public static void teleopDrive() {
@@ -113,32 +113,6 @@ public class Teleop {
 
     }
 
-    /**
-     * takeSinglePicture() is a function that takes a single picture. Duh. Pass in
-     * two joystick buttons, which are currently Left Operator 8 and 9. limelight
-     * web interface is found at: http://limelight.local:5801/. you have to be
-     * connected to the robot in order to view it.
-     *
-     * @author Patrick
-     * @param joyButton1
-     * @param joyButton2
-     */
-    public static void takeSinglePicture(boolean joyButton1, boolean joyButton2) {
-        if (joyButton1 && joyButton2 && buttonHasBeenPressed && !hasButtonBeenPressed) {
-
-            hasButtonBeenPressed = true;
-            Hardware.visionInterface.takePicture();
-        }
-
-        if (joyButton1 && joyButton2 && !buttonHasBeenPressed)
-            buttonHasBeenPressed = true;
-
-        if (!joyButton1 && !joyButton2) {
-            buttonHasBeenPressed = false;
-            hasButtonBeenPressed = false;
-        }
-    }
-
     public static void individualTest() {
         // people test functions
         // connerTest();
@@ -154,14 +128,14 @@ public class Teleop {
 
     public static void craigTest() {
 
-        if(Hardware.rightDriver.getRawButton(4) == true ){
-            if(Hardware.invertTempoMomentarySwitch.isOn()){
+        if (Hardware.rightDriver.getRawButton(4) == true) {
+            if (Hardware.invertTempoMomentarySwitch.isOn()) {
                 Hardware.invertTempoMomentarySwitch.setValue(false);
-            }else{
+            } else {
                 Hardware.invertTempoMomentarySwitch.setValue(true);
             }
         }
-        if(Hardware.invertTempoMomentarySwitch.isOn()){
+        if (Hardware.invertTempoMomentarySwitch.isOn()) {
             // System.out.println("Should be inverted");
             Hardware.rightFrontMotor.setInverted(true);
             Hardware.leftFrontMotor.setInverted(true);
@@ -170,7 +144,7 @@ public class Teleop {
             Hardware.rightFrontMotor.setInverted(false);
         }
 
-      //  System.out.println(Hardware.rightFrontMotor.getInverted());
+        // System.out.println(Hardware.rightFrontMotor.getInverted());
         System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
 
     }
@@ -180,27 +154,25 @@ public class Teleop {
             Hardware.camTimer1.stop();
             Hardware.camTimer1.reset();
 
-            
             Hardware.usbCam0.close();
-            
+
             CameraServer.getInstance().removeServer("usb0");
-            CameraServer.getInstance().removeCamera("usb0"); 
-            
-             //Hardware.usbCam0 = CameraServer.getInstance().
+            CameraServer.getInstance().removeCamera("usb0");
+
+            // Hardware.usbCam0 = CameraServer.getInstance().
             // Hardware.camTimer1.start();
 
             System.out.println("Cam 1 on");
             cam0 = false;
             startOfMatch = false;
-            
+
         }
-        if(Hardware.leftOperator.getRawButton(8)){
+        if (Hardware.leftOperator.getRawButton(8)) {
 
             Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
-        
+
         }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
-        {
+        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1) {
             // Hardware.camTimer2.stop();
             // Hardware.camTimer2.reset();
             // Hardware.usbCam1.close();
@@ -221,44 +193,9 @@ public class Teleop {
         }
         SmartDashboard.putNumber("Ball Count", x);
     }
-<<<<<<< HEAD
-        
-    public static void chrisTest(){
-     int ballCount = 1;
-     ballCount = 1;
-     
-     //if(Hardware.leftDriver.getRawButton(5) == true){
-     //    ballCount+=1;
-     SmartDashboard.putNumber("ballCount", ballCount);
-     //}
-     
-      }  
-       
-   
-=======
->>>>>>> 9a11d5eff5e0d68afe57b34667b6c26bf41335af
 
     public static void patrickTest() {
 
-        if (Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && buttonHasBeenPressed
-                && !hasButtonBeenPressed) {
-            hasButtonBeenPressed = true;
-            Hardware.visionInterface.takePicture();
-            System.out.println("Test has been run");
-        }
-
-        if (Hardware.leftOperator.getRawButton(8) && Hardware.leftOperator.getRawButton(9) && !buttonHasBeenPressed)
-            buttonHasBeenPressed = true;
-
-        if (!Hardware.leftOperator.getRawButton(8) && !Hardware.leftOperator.getRawButton(9)) {
-            buttonHasBeenPressed = false;
-            hasButtonBeenPressed = false;
-        }
-
-        System.out.println("buttonHasBeenPressed: " + buttonHasBeenPressed);
-        System.out.println("hasButtonBeenPressed: " + hasButtonBeenPressed);
-
-        // limelight web interface http://limelight.local:5801/
     }
 
     public static void printStatements() {
@@ -268,13 +205,13 @@ public class Teleop {
 
         // Encoder Distances
         // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
-        // Hardware.leftEncoder.getDistance());
+        // Hardware.leftDriveEncoder.getDistance());
         // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
         // Hardware.rightDriveEncoder.getDistance());
 
         // Encoder Raw Values
         // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
-        // Hardware.leftEncoder.get());
+        // Hardware.leftDriveEncoder.get());
         // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
         // Hardware.rightDriveEncoder.get());
 
@@ -364,7 +301,4 @@ public class Teleop {
 
     private final static double FORBIDDEN_THIRD_GEAR = 1.0;
 
-    // patrickTest variable
-    public static boolean buttonHasBeenPressed = false;
-    public static boolean hasButtonBeenPressed = false;
 } // end class

@@ -24,16 +24,16 @@ public class Drive {
      * encoders), set it to null. Setup for Traction drive (only 2 motors/encoders)
      *
      * @param transmission The robot's transmission object
-     * @param leftEncoder  The left-side encoder
+     * @param leftDriveEncoder  The left-side encoder
      * @param rightDriveEncoder The right-side encoder
      * @param ultrasonic   The sensor that finds distance using sound
      * @param gyro         A sensor that is used to measure rotation
      */
-    public Drive(TransmissionBase transmission, KilroyEncoder leftEncoder, KilroyEncoder rightDriveEncoder, GyroBase gyro) {
+    public Drive(TransmissionBase transmission, KilroyEncoder leftDriveEncoder, KilroyEncoder rightDriveEncoder, GyroBase gyro) {
         this.transmissionType = transmission.getType();
         this.transmission = transmission;
         this.encoders = new KilroyEncoder[2];
-        this.encoders[0] = leftEncoder;
+        this.encoders[0] = leftDriveEncoder;
         this.encoders[1] = rightDriveEncoder;
         this.brakeMotorDirection = new int[2];
         this.brakeMotorDirection[0] = 1;
@@ -759,7 +759,7 @@ public class Drive {
         // if the transmission type input is Mecanum, then control it with that
         if (transmission instanceof MecanumTransmission)
             ((MecanumTransmission) transmission).drive(magnitude, direction, rotation);
-        
+
         // AHHH! we are a Tank transmission! ...Switching to arcade drive I
         // guess?
         else if (transmission instanceof TankTransmission) {

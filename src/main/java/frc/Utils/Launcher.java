@@ -5,160 +5,92 @@ import frc.HardwareInterfaces.LightSensor;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Launcher{
+public class Launcher {
 
     private LightSensor intake = null;
     private LightSensor shooting = null;
-    private LightSensor  upper = null;
+    private LightSensor upper = null;
     private LightSensor lower = null;
-    //private motortype shootingMotor = null;
-    //private motortype intakeMotor = null;
+    // private motortype shootingMotor = null;
+    // private motortype intakeMotor = null;
 
-
-    public Launcher(LightSensor intake, LightSensor shooting, LightSensor upper, LightSensor lower, SpeedController intakeMotor, SpeedController shootingMotor){
+    public Launcher(LightSensor intake, LightSensor shooting, LightSensor upper, LightSensor lower,
+            SpeedController intakeMotor, SpeedController shootingMotor) {
 
         this.intake = intake;
         this.shooting = shooting;
         this.upper = upper;
         this.lower = lower;
-       // this.shootingMotor = shootingMotor
-      //  this.intakeMotor = intakeMotor
+        // this.shootingMotor = shootingMotor
+        // this.intakeMotor = intakeMotor
     }
 
-    enum LauncherState{
+    enum LauncherState {
         INIT, INJECTION, LAUNCH, EJECTION, PREPARE_LAUNCH, OVERRIDE, PASSIVE
     }
 
     public LauncherState state = LauncherState.INIT;
 
+    public void launcherUpdater() {
 
-    public void launcherUpdater(){
+        // inject/eject balls
 
-        //inject/eject balls
-
-        switch(state){
-            case INIT: 
+        switch (state) {
+        case INIT:
             state = LauncherState.PASSIVE;
-                break;
+            break;
 
-            case PASSIVE:  
-           
-            //updates the ball count based off of the intake RL
-         updateBalls();
+        case PASSIVE:
 
+            // updates the ball count based off of the intake RL
 
+        case INJECTION:
 
+            // if ball count != MAX_BALL_COUNT
 
+            break;
 
-            if(Hardware.launchButton.get()){
-                teleopLaunch(); 
-                }
+        case EJECTION:
+            break;
 
-            if(Hardware.intakeButton.get()){
-                intake();
-                }
+        case PREPARE_LAUNCH:
+            break;
 
-            case INJECTION:   
-                
-                //if ball count != MAX_BALL_COUNT
+        case LAUNCH:
 
-                break;
+            // maybe not use this case
+            break;
 
-            case EJECTION:  
-                break;
+        case OVERRIDE:
+            break;
 
-            case PREPARE_LAUNCH:  
-                break;
-
-            case LAUNCH:  
-
-              //maybe not use this case                
-                break;
-
-            case OVERRIDE:  
-                break;
-
-             default:
-                state = LauncherState.PASSIVE;
+        default:
+            state = LauncherState.PASSIVE;
             break;
 
         }
-        
-    }
-    /*public void launcherDebug(){
-        SmartDashboard.putNumber("ballCount",currentBallCount);
-    }*/
 
-    private boolean prevIntakeState= false;
-    private boolean prevLowState= false;
-    private boolean prevUpperState= false;
-    private boolean prevFiringState= false;
-
-    public int updateBalls(){
-//intake
-if(prevIntakeState != this.intake.get() && this.intake.get()){
-    currentBallCount++;
-    prevIntakeState = this.intake.get();
-}else if(prevIntakeState != this.intake.get() && !this.intake.get()){
- currentBallCount--;
- prevIntakeState = this.intake.get();
-}
-//lower
-if(prevLowState != this.lower.get() && this.lower.get()){
-    currentBallCount++;
-    prevLowState = this.lower.get();
-}else if(prevLowState != this.lower.get() && !this.lower.get()){
- currentBallCount--;
- prevLowState = this.lower.get();
-}
-//upper
-if(prevUpperState != this.upper.get() && this.upper.get()){
-    currentBallCount++;
-    prevUpperState = this.upper.get();
-}else if(prevUpperState != this.upper.get() && !this.upper.get()){
- currentBallCount--;
-     prevUpperState = this.upper.get();
-}
-//firing
-if(prevFiringState != this.shooting.get() && this.shooting.get()){
-    currentBallCount++;
-    prevFiringState = this.shooting.get();
-}else if(prevFiringState != this.shooting.get() && !this.shooting.get()){
- currentBallCount--;
- prevFiringState = this.shooting.get();
-}
-SmartDashboard.putBoolean("intakeRL", this.intake.get());
-SmartDashboard.putBoolean("lower RL", this.lower.get());
-SmartDashboard.putBoolean("Upper RL", this.upper.get());
-SmartDashboard.putBoolean("firing RL", this.shooting.get());
-SmartDashboard.putNumber("Ball count", currentBallCount);
-return currentBallCount;
     }
 
-    public boolean autoLaunch(){
+    public boolean autoLaunch() {
 
-            //make motor go vroom but automagically
+        // make motor go vroom but automagically
         return false;
     }
 
-    private void teleopLaunch(){
+    private void teleopLaunch() {
 
-                //make motor go vroom
+        // make motor go vroom
     }
 
+    private void intake() {
 
-
-    private void intake(){
-       
-
-        //make intake motor go vroom vroom
+        // make intake motor go vroom vroom
     }
 
-    //variable===============
+    // variable===============
     public int currentBallCount = 0;
 
-
     private final int MAX_BALL_COUNT = 5;
-
 
 }

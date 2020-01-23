@@ -63,11 +63,11 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware {
 
-   public static enum Identifier {
+    public static enum Identifier {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
 
@@ -77,23 +77,21 @@ public class Hardware {
         gearDown = new JoystickButton(Hardware.leftDriver, 1);
         launchButton = new JoystickButton(Hardware.rightOperator, 1);
         intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+        publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
         if (robotIdentity == Identifier.CurrentYear) {
 
-            
             // ==============CAN INIT=============
-            // Motor Controllers          
+            // Motor Controllers
             leftFrontMotor = new WPI_TalonFX(13);
             rightFrontMotor = new WPI_TalonFX(15);
             // leftRearMotor = new WPI_TalonFX(12);
             // rightRearMotor = new WPI_TalonFX(14);
 
+            leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */leftFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */ rightFrontMotor);
 
-            leftDriveGroup = new SpeedControllerGroup(/*leftRearMotor,*/leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(/*rightRearMotor,*/ rightFrontMotor);
-
-
-            leftEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
+            leftDriveEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
             rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
 
             // ==============DIO INIT=============
@@ -103,10 +101,10 @@ public class Hardware {
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
-            visionInterface = new NewVisionInterface();
-            visionDriving = new NewDriveWithVision();
+            visionInterface = new LimelightInterface();
+            visionDriving = new LimelightDriveWithVision();
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, leftEncoder, rightDriveEncoder, gyro);
+            drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
 
         } else if (robotIdentity == Identifier.PrevYear) {
 
@@ -128,6 +126,7 @@ public class Hardware {
 
             // Encoders
 <<<<<<< HEAD
+<<<<<<< HEAD
             //leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
             //rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
@@ -142,9 +141,10 @@ public class Hardware {
             // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
 =======
             leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+=======
+            leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+>>>>>>> 1e5bdc606ca1291a0628ea8d8e34cde384f5093a
             rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
-
-           
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
             rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
@@ -155,11 +155,15 @@ public class Hardware {
             // =============OTHER INIT============
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, null, null, gyro);
+<<<<<<< HEAD
             // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 >>>>>>> 9a11d5eff5e0d68afe57b34667b6c26bf41335af
+=======
+            // drivePID = new DrivePID(transmission, , , gyro);
+>>>>>>> 1e5bdc606ca1291a0628ea8d8e34cde384f5093a
 
-            visionInterface = new NewVisionInterface();
-            visionDriving = new NewDriveWithVision();
+            visionInterface = new LimelightInterface();
+            visionDriving = new LimelightDriveWithVision();
             launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
 
             // armMotor = new WPI_TalonSRX(24);
@@ -172,16 +176,19 @@ public class Hardware {
 =======
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
+<<<<<<< HEAD
             
 
            
 >>>>>>> 9a11d5eff5e0d68afe57b34667b6c26bf41335af
+=======
+>>>>>>> 1e5bdc606ca1291a0628ea8d8e34cde384f5093a
 
-            leftEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+            leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
             rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
         }
-        
+
     }
 
     // **********************************************************
@@ -196,13 +203,19 @@ public class Hardware {
     public static SpeedControllerGroup leftDriveGroup = null;
     public static SpeedControllerGroup rightDriveGroup = null;
 
-    public static KilroyEncoder leftEncoder = null;
+    public static KilroyEncoder leftDriveEncoder = null;
     public static KilroyEncoder rightDriveEncoder = null;
-    public static KilroyEncoder liftingEncoder = null;
 
-    
+    // ------------------------------------------------------------
 
-    // public static SpeedController liftMotor = null;
+    public static SpeedController launcherMotor1 = null;
+    public static SpeedController launcherMotor2 = null;
+
+    public static SpeedControllerGroup launcherMotorGroup = null;
+
+    public static KilroyEncoder launcherMotorEncoder = null;
+
+    // -------------------------------------------------------------
 
     // **********************************************************
     // DIGITAL I/O
@@ -216,13 +229,14 @@ public class Hardware {
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
     public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
 
-    public static SingleThrowSwitch autoCrossTheLineForward = new SingleThrowSwitch(22);
-    public static SingleThrowSwitch autoCrossTheLineBack = new SingleThrowSwitch(23);
-    public static DoubleThrowSwitch autoDisabled = new DoubleThrowSwitch(autoCrossTheLineForward, autoCrossTheLineBack);
+    public static SingleThrowSwitch shootFar = new SingleThrowSwitch(22);
+    public static SingleThrowSwitch shootClose = new SingleThrowSwitch(23);
+    public static DoubleThrowSwitch shootingPlan = new DoubleThrowSwitch(shootFar, shootClose);
 
     // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
-    // public static DoubleThrowSwitch autoTwoBalls = new DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
+    // public static DoubleThrowSwitch autoTwoBalls = new
+    // DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
 
     // **********************************************************
     // ANALOG I/O
@@ -259,16 +273,22 @@ public class Hardware {
 
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
+    public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
+
+    public static JoystickButton publishVisionButton = null;
+
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+    public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
+    public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0",0);
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
     public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
 
     // ------------------------------------
@@ -295,13 +315,13 @@ public class Hardware {
     // Vision stuff
     // ----------------------------
 
-    public static NewDriveWithVision visionDriving = null;
+    public static LimelightDriveWithVision visionDriving = null;
 
-    public static NewVisionInterface visionInterface = null;
+    public static LimelightInterface visionInterface = null;
 
     public static Launcher launcher = null;
 
-    public final static double DISTANCE_PER_TICK_XIX = 23/13.8;//.0346;
+    public final static double DISTANCE_PER_TICK_XIX = 23 / 13.8;// .0346;
     // -------------------
     // Subassemblies
     // -------------------
