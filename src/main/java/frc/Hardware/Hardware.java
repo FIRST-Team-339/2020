@@ -185,7 +185,6 @@ public class Hardware {
     public static SpeedControllerGroup launcherMotorGroup = null;
 
     public static KilroyEncoder launcherMotorEncoder = null;
-
     // -------------------------------------------------------------
 
     // **********************************************************
@@ -198,7 +197,7 @@ public class Hardware {
     public static LightSensor firingRL = new LightSensor(1); // top
 
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
+    public static SingleThrowSwitch autoSwitch = new SingleThrowSwitch(0);
 
     public static SingleThrowSwitch shootFar = new SingleThrowSwitch(22);
     public static SingleThrowSwitch shootClose = new SingleThrowSwitch(23);
