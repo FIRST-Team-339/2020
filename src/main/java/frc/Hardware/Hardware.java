@@ -67,7 +67,7 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
 
@@ -77,6 +77,7 @@ public class Hardware {
         gearDown = new JoystickButton(Hardware.leftDriver, 1);
         launchButton = new JoystickButton(Hardware.rightOperator, 1);
         intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+        publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
         if (robotIdentity == Identifier.CurrentYear) {
 
@@ -237,6 +238,10 @@ public class Hardware {
     // **********************************************************
 
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
+
+    public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
+
+    public static JoystickButton publishVisionButton = null;
 
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);

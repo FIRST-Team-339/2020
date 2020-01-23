@@ -54,15 +54,15 @@ public class Teleop {
      */
     public static void init() {
 
-        //Gear Inits
+        // Gear Inits
 
-       if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)){
-        Hardware.drive.setGearPercentage(0, FIRST_GEAR);
-        Hardware.drive.setGearPercentage(1, SECOND_GEAR);
-        Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
-         }else{
-        //TODO
-         }
+        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)) {
+            Hardware.drive.setGearPercentage(0, FIRST_GEAR);
+            Hardware.drive.setGearPercentage(1, SECOND_GEAR);
+            Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
+        } else {
+            // TODO
+        }
 
         Hardware.drive.setGear(0);
 
@@ -80,8 +80,8 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-       // Hardware.visionInterface.updateValues();
-
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
         if (testBoolean == false) {
 
@@ -91,9 +91,8 @@ public class Teleop {
 
         // ================== DRIVER CONTROLS =================
 
-
-       // individualTest();
-      //  teleopDrive();
+        // individualTest();
+        // teleopDrive();
         takeSinglePicture(Hardware.leftOperator.getRawButton(8), Hardware.leftOperator.getRawButton(9));
     } // end Periodic()
 
@@ -154,14 +153,14 @@ public class Teleop {
 
     public static void craigTest() {
 
-        if(Hardware.rightDriver.getRawButton(4) == true ){
-            if(Hardware.invertTempoMomentarySwitch.isOn()){
+        if (Hardware.rightDriver.getRawButton(4) == true) {
+            if (Hardware.invertTempoMomentarySwitch.isOn()) {
                 Hardware.invertTempoMomentarySwitch.setValue(false);
-            }else{
+            } else {
                 Hardware.invertTempoMomentarySwitch.setValue(true);
             }
         }
-        if(Hardware.invertTempoMomentarySwitch.isOn()){
+        if (Hardware.invertTempoMomentarySwitch.isOn()) {
             // System.out.println("Should be inverted");
             Hardware.rightFrontMotor.setInverted(true);
             Hardware.leftFrontMotor.setInverted(true);
@@ -170,7 +169,7 @@ public class Teleop {
             Hardware.rightFrontMotor.setInverted(false);
         }
 
-      //  System.out.println(Hardware.rightFrontMotor.getInverted());
+        // System.out.println(Hardware.rightFrontMotor.getInverted());
         System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
 
     }
@@ -180,13 +179,12 @@ public class Teleop {
             Hardware.camTimer1.stop();
             Hardware.camTimer1.reset();
 
-
             Hardware.usbCam0.close();
 
             CameraServer.getInstance().removeServer("usb0");
             CameraServer.getInstance().removeCamera("usb0");
 
-             //Hardware.usbCam0 = CameraServer.getInstance().
+            // Hardware.usbCam0 = CameraServer.getInstance().
             // Hardware.camTimer1.start();
 
             System.out.println("Cam 1 on");
@@ -194,13 +192,12 @@ public class Teleop {
             startOfMatch = false;
 
         }
-        if(Hardware.leftOperator.getRawButton(8)){
+        if (Hardware.leftOperator.getRawButton(8)) {
 
             Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
 
         }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
-        {
+        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1) {
             // Hardware.camTimer2.stop();
             // Hardware.camTimer2.reset();
             // Hardware.usbCam1.close();
