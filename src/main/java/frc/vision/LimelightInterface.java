@@ -49,9 +49,10 @@ public class LimelightInterface {
 
     // 3d stuff
     NetworkTableEntry camtran = limelight.getEntry("camtran");
-
+    // led mod
     NetworkTableEntry Led_Mode = limelight.getEntry("ledMode");
 
+    // our declarations of the limelight provided information
     private boolean hasTargets;
 
     private double x;
@@ -74,7 +75,7 @@ public class LimelightInterface {
 
     private double pipeline;
 
-    private double camtan;
+    private double camTran;
 
     private double led_Mode;
 
@@ -103,47 +104,107 @@ public class LimelightInterface {
 
     }
 
+    /**
+     * The x offset from the center of camera
+     *
+     * @return
+     */
     public double getXOffSet() {
         return x;
 
     }
 
+    /**
+     * The y offset from the center of camera
+     *
+     * @return
+     */
     public double getYOffSet() {
         return y;
     }
 
+    /**
+     * the percent area a blob takes up
+     *
+     * @return
+     */
     public double getArea() {
         return area;
     }
 
+    /**
+     * returns the skew of the blob
+     *
+     * @return
+     */
     public double getSkew() {
         return skew;
     }
 
+    /**
+     * returns the latency of the limelight
+     *
+     * @return
+     */
     public double getLatency() {
         return latency;
     }
 
+    /**
+     *
+     * returns the length of the shortest side of the blob
+     *
+     * @return
+     */
     public double getShortSide() {
         return shortSide;
     }
 
+    /**
+     *
+     * returns the length of the longest side of the blob
+     *
+     * @return
+     */
     public double getLongSide() {
         return longSide;
     }
 
+    /**
+     *
+     * returns the length of the horizontal side of the blob
+     *
+     * @return
+     */
     public double getHorizontalSide() {
         return horizontal;
     }
 
+    /**
+     * returns the length of the vertical side of the blob
+     *
+     * @return
+     */
     public double getVerticalSide() {
         return vertical;
     }
 
+    /**
+     * returns the current pipeline that is in use
+     *
+     * @return
+     */
     public double getPipeline() {
         return pipeline;
     }
 
+    /**
+     * publishes all of the data provided by the limelight to the smartdashboard for
+     * debugging.
+     * 
+     * @param MomentarySwitch switch to enable/disable the publishing of the values
+     *
+     */
     public void publishValues(MomentarySwitch publishSwitch) {
 
         publishSwitch.update();
@@ -164,6 +225,11 @@ public class LimelightInterface {
         }
     }
 
+    /**
+     * returns whether the amount of blobs is > 1
+     * 
+     * @return boolean
+     */
     public boolean hasTargets(double targets) {
         if (targets > 0) {
             return true;
@@ -171,17 +237,26 @@ public class LimelightInterface {
         return false;
     }
 
+    /**
+     * enum to control the LedMode of the limelight
+     */
     private enum LedMode {
         PIPELINE, OFF, BLINK, ON
     }
 
     private LedMode ledmode = LedMode.PIPELINE;
 
-    // @parameters
+    // *@parameters
     // 0 pipeline control
     // 1 off
     // 2 blink
     // 3 on
+
+    /**
+     * sets the led mode of the limelight. This is TODO as it has yet to be tested
+     *
+     * @param ledMode 0 =pipleline control 1 = off 2 = blink 3 = on
+     */
     public void setLedMode(LedMode ledMode) {
         switch (ledmode) {
         case PIPELINE:
@@ -199,6 +274,9 @@ public class LimelightInterface {
         }
     }
 
+    /**
+     * enum to control the camera mode of the limelight
+     */
     private enum CamMode {
         PROCESSOR, CAMERA
     }
@@ -208,6 +286,14 @@ public class LimelightInterface {
     // TODO make enum
     // 0 vision processor
     // 1 driver camera
+
+    /**
+     * sets the camera mode for the limelight. TODO, this has been written but has
+     * yet to be tested
+     *
+     *
+     * @param mode 0 = vision processor 1 = driver camera
+     */
     public void setCamMode(int mode) {
         switch (camMode) {
         case PROCESSOR:
@@ -219,13 +305,15 @@ public class LimelightInterface {
         }
     }
 
-    // pipeline number
+    /**
+     *
+     * sets the current processing pipeline for thelimelight
+     * 
+     * @param pipe the pipeline number this has to be made in the web interface for
+     *             the limelight
+     */
     public void setPipeline(int pipe) {
         limelight.getEntry("pipeling").setNumber(pipe);
-    }
-
-    public void takePicture() {
-
     }
 
     private double distance = 0;
