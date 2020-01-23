@@ -24,6 +24,7 @@ public class LimelightDriveWithVision {
         double offness = Hardware.visionInterface.getXOffSet();
 
         double adjustmentValueRight = 0;
+
         double adjustmentValueLeft = 0;
 
         if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST) {
@@ -61,12 +62,13 @@ public class LimelightDriveWithVision {
      *
      */
     public boolean alignToTarget() {
-
         return false;
     }
 
     final double MIN_MOVE_2019 = .2;
+
     final double DRIVE_AFTER_ALIGN = .2;
+
     final double ADJUST_PORP_2019 = .015;
 
     final double ADJUST_PORP_2020 = .015;// TODO
@@ -74,5 +76,4 @@ public class LimelightDriveWithVision {
     final double MIN_MOVE_2020 = .2;// TODO
 
     final double STOP_DISTANCE_TEST = 80;
-
 }

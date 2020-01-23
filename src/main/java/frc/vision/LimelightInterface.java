@@ -4,11 +4,14 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.MomentarySwitch;
+
+import javax.swing.DefaultListCellRenderer;
+
 import edu.wpi.first.networktables.*;
 
 /**
  * an interface class for the limelight vision camera
- * 
+ *
  * @author Conner McKevitt
  *
  *
@@ -91,19 +94,18 @@ public class LimelightInterface {
     public void updateValues() {
 
         try {
-
-            hasTargets = hasTargets(tv.getDouble(0));
-            x = tx.getDouble(0);
-            y = ty.getDouble(0);
-            area = ta.getDouble(0);
-            skew = ts.getDouble(0);
-            latency = tl.getDouble(0);
-            shortSide = tshort.getDouble(0);
-            longSide = tlong.getDouble(0);
-            horizontal = thor.getDouble(0);
-            vertical = tvert.getDouble(0);
-            pipeline = getpipe.getDouble(0);
-            led_Mode = Led_Mode.getDouble(0);
+            this.hasTargets = this.hasTargets(this.tv.getDouble(0));
+            this.x = this.tx.getDouble(0);
+            this.y = this.ty.getDouble(0);
+            this.area = this.ta.getDouble(0);
+            this.skew = this.ts.getDouble(0);
+            this.latency = this.tl.getDouble(0);
+            this.shortSide = this.tshort.getDouble(0);
+            this.longSide = this.tlong.getDouble(0);
+            this.horizontal = this.thor.getDouble(0);
+            this.vertical = this.tvert.getDouble(0);
+            this.pipeline = this.getpipe.getDouble(0);
+            this.led_Mode = this.Led_Mode.getDouble(0);
 
         } catch (NullPointerException exception) {
             System.out.println(exception);
@@ -117,7 +119,7 @@ public class LimelightInterface {
      * @return
      */
     public double getXOffSet() {
-        return x;
+        return this.x;
 
     }
 
@@ -127,7 +129,7 @@ public class LimelightInterface {
      * @return
      */
     public double getYOffSet() {
-        return y;
+        return this.y;
     }
 
     /**
@@ -136,7 +138,7 @@ public class LimelightInterface {
      * @return
      */
     public double getArea() {
-        return area;
+        return this.area;
     }
 
     /**
@@ -145,7 +147,7 @@ public class LimelightInterface {
      * @return
      */
     public double getSkew() {
-        return skew;
+        return this.skew;
     }
 
     /**
@@ -154,7 +156,7 @@ public class LimelightInterface {
      * @return
      */
     public double getLatency() {
-        return latency;
+        return this.latency;
     }
 
     /**
@@ -164,7 +166,7 @@ public class LimelightInterface {
      * @return
      */
     public double getShortSide() {
-        return shortSide;
+        return this.shortSide;
     }
 
     /**
@@ -174,7 +176,7 @@ public class LimelightInterface {
      * @return
      */
     public double getLongSide() {
-        return longSide;
+        return this.longSide;
     }
 
     /**
@@ -184,7 +186,7 @@ public class LimelightInterface {
      * @return
      */
     public double getHorizontalSide() {
-        return horizontal;
+        return this.horizontal;
     }
 
     /**
@@ -193,7 +195,7 @@ public class LimelightInterface {
      * @return
      */
     public double getVerticalSide() {
-        return vertical;
+        return this.vertical;
     }
 
     /**
@@ -202,7 +204,7 @@ public class LimelightInterface {
      * @return
      */
     public double getPipeline() {
-        return pipeline;
+        return this.pipeline;
     }
 
     /**
@@ -216,19 +218,19 @@ public class LimelightInterface {
 
         publishSwitch.update();
 
-        if (publishSwitch.get()) {
-            SmartDashboard.putBoolean("hasTargets", hasTargets);
-            SmartDashboard.putNumber("x offset", x);
-            SmartDashboard.putNumber("y offset", y);
-            SmartDashboard.putNumber("skew ", skew);
-            SmartDashboard.putNumber("latency ", latency);
-            SmartDashboard.putNumber("shortside", shortSide);
-            SmartDashboard.putNumber("longSide ", longSide);
-            SmartDashboard.putNumber("horizontal ", horizontal);
-            SmartDashboard.putNumber("vertical ", vertical);
-            SmartDashboard.putNumber("pipeline ", pipeline);
-            SmartDashboard.putNumber("ledMode", led_Mode);
-            SmartDashboard.putNumber("distance", getDistanceFromTarget());
+        if (publishSwitch.get() == true) {
+            SmartDashboard.putBoolean("hasTargets", this.hasTargets);
+            SmartDashboard.putNumber("x offset", this.x);
+            SmartDashboard.putNumber("y offset", this.y);
+            SmartDashboard.putNumber("skew ", this.skew);
+            SmartDashboard.putNumber("latency ", this.latency);
+            SmartDashboard.putNumber("shortside", this.shortSide);
+            SmartDashboard.putNumber("longSide ", this.longSide);
+            SmartDashboard.putNumber("horizontal ", this.horizontal);
+            SmartDashboard.putNumber("vertical ", this.vertical);
+            SmartDashboard.putNumber("pipeline ", this.pipeline);
+            SmartDashboard.putNumber("ledMode", this.led_Mode);
+            SmartDashboard.putNumber("distance", this.getDistanceFromTarget());
         }
     }
 
@@ -238,7 +240,7 @@ public class LimelightInterface {
      * @return boolean
      */
     public boolean hasTargets(double targets) {
-        if (targets > 0) {
+        if (targets > 0.0) {
             return true;
         }
         return false;
@@ -253,7 +255,6 @@ public class LimelightInterface {
 
     private LedMode ledmode = LedMode.PIPELINE;
 
-    // *@parameters
     // 0 pipeline control
     // 1 off
     // 2 blink
@@ -261,11 +262,12 @@ public class LimelightInterface {
 
     /**
      * sets the led mode of the limelight. This is TODO as it has yet to be tested
+     * TODO return number with an enum and forgo the switch
      *
      * @param ledMode 0 =pipleline control 1 = off 2 = blink 3 = on
      */
     public void setLedMode(LedMode ledMode) {
-        switch (ledmode) {
+        switch (this.ledmode) {
         case PIPELINE:
             limelight.getEntry("ledMode").setNumber(0);
             break;
@@ -277,6 +279,8 @@ public class LimelightInterface {
             break;
         case ON:
             limelight.getEntry("ledMode").setNumber(3);
+            break;
+        default:
             break;
         }
     }
@@ -298,16 +302,19 @@ public class LimelightInterface {
      * sets the camera mode for the limelight. TODO, this has been written but has
      * yet to be tested
      *
+     * TODO return number with an enum and forgo the switch
      *
      * @param mode 0 = vision processor 1 = driver camera
      */
     public void setCamMode(int mode) {
-        switch (camMode) {
+        switch (this.camMode) {
         case PROCESSOR:
             limelight.getEntry("camMode").setNumber(0);
             break;
         case CAMERA:
             limelight.getEntry("camMode").setNumber(1);
+            break;
+        default:
             break;
         }
     }
@@ -320,7 +327,10 @@ public class LimelightInterface {
      *             the limelight
      */
     public void setPipeline(int pipe) {
-        limelight.getEntry("pipeling").setNumber(pipe);
+
+        if (pipe <= 9 && pipe >= 0) {
+            limelight.getEntry("pipeling").setNumber(pipe);
+        }
     }
 
     /**
@@ -338,7 +348,7 @@ public class LimelightInterface {
                 hasButtonBeenPressed = true;
 
                 NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
-                System.out.println("Picture has been taken");
+                // System.out.println("Picture has been taken");
             }
 
             if (leftOp1.get() && leftOp2.get() && !buttonHasBeenPressed)
@@ -349,6 +359,13 @@ public class LimelightInterface {
                 hasButtonBeenPressed = false;
             }
         }
+    }
+
+    /**
+     * takes and stores a picture from the limelight TODO
+     */
+    public void takePicture() {
+
     }
 
     // variable for storing distance
@@ -373,12 +390,14 @@ public class LimelightInterface {
         }
     }
 
-    private final double CAMERA_HEIGHT = 35.25;// TODO
+    // TODO make getters and setters and set these to null
+    private double CAMERA_HEIGHT = 35.25;// TODO
 
-    private final double TARGET_HEIGHT = 83.5;// TODO
+    private double TARGET_HEIGHT = 83.5;// TODO
 
     final double MOUNTING_ANGLE = 35;// 35;// TODO
 
+    // TODO make patrick comment
     private boolean buttonHasBeenPressed = false;
     private boolean hasButtonBeenPressed = false;
 }

@@ -43,15 +43,6 @@ public class Launcher {
         case PASSIVE:
 
             // updates the ball count based off of the intake RL
-            updateBalls();
-
-            if (Hardware.launchButton.get()) {
-                teleopLaunch();
-            }
-
-            if (Hardware.intakeButton.get()) {
-                intake();
-            }
 
         case INJECTION:
 
@@ -79,17 +70,6 @@ public class Launcher {
 
         }
 
-    }
-
-    private boolean prevIntakeState = false;
-    private boolean prevLowState = false;
-    private boolean prevUpperState = false;
-    private boolean prevFiringState = false;
-
-    public int updateBalls() {
-        // intake
-
-        return currentBallCount;
     }
 
     public boolean autoLaunch() {
