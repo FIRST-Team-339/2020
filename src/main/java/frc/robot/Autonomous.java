@@ -31,6 +31,7 @@
 // ====================================================================
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Relay;
 import frc.Hardware.Hardware;
 
 /**
@@ -59,6 +60,14 @@ public class Autonomous {
 
         Hardware.drive.setGearPercentage(4, AUTO_GEAR);
         Hardware.drive.setGear(4);
+        /*
+         * 2 pos switch: 1: no auto 2: go auto
+         */
+        if (Hardware.autoSwitch.isOn() == false) {
+            autoState = State.FINISH;
+        } else {
+            autoState = State.INIT;
+        }
 
     } // end Init
 
@@ -88,6 +97,7 @@ public class Autonomous {
     public static State autoState = State.INIT;
 
     public static void periodic() {
+        // Cancel if the "cancelAuto" button is pressed
         if (Hardware.cancelAuto.get() == true) {
             autoState = State.FINISH;
         }
@@ -96,6 +106,7 @@ public class Autonomous {
 
         case INIT:
             Hardware.autoTimer.start();
+
             autoState = State.DELAY;
             break;
 
@@ -131,25 +142,43 @@ public class Autonomous {
         // Statements to determine sates:
 
         /*
-         * 2 pos switch: 1: no auto 2: go auto
+         * 3 pos switch: 1: shoot far 2: shoot close 3: dont move kForward = shoot far
+         * kreverse = shoot close off = dont move
          */
-        // if (Hardware.shootingPlan.getPosition() == value.kForward) {
 
-        // }
-
+        if (Hardware.shootingPlan.getPosition() == Relay.Value.kForward) {
+            path = Path.SHOOT_FAR;
+        } else if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse) {
+            path = Path.SHOOT_CLOSE;
+        } else if (Hardware.shootingPlan.getPosition() == Relay.Value.kOff) {
+            path = Path.DONT_MOVE;
+        }
         /*
-         * 3 pos switch: 1: shoot far 2: shoot close 3: dont move
+         * 6 pos switch: this will determine the exiting strategy for each path
          */
+        if (Hardware.autoSixPosSwitch.getPosition() == 0) {
 
-        /*
-         * 6 pos switch:
-         */
+        } else if (Hardware.autoSixPosSwitch.getPosition() == 1) {
+
+        } else if (Hardware.autoSixPosSwitch.getPosition() == 2) {
+
+        } else if (Hardware.autoSixPosSwitch.getPosition() == 3) {
+
+        } else if (Hardware.autoSixPosSwitch.getPosition() == 4) {
+
+        } else {
+            path = Path.NOTHING;
+        }
 
         // Switch case to execute the functions of auto path
 
         switch (path) {
         case NOTHING:
             // Do Nothing :)
+            // Sit there and contemplate your life :)
+            // This will be for the insatnce where the robot is not a in a functioning state
+            // and auto paths are broken
+
             break;
 
         case SHOOT_FAR:
