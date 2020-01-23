@@ -379,8 +379,8 @@ public class LimelightInterface {
      */
     public double getDistanceFromTarget() {
 
-        distance = (CAMERA_HEIGHT - TARGET_HEIGHT)
-                / Math.tan(Math.toRadians(MOUNTING_ANGLE) - Math.toRadians(Math.abs(getYOffSet())));
+        distance = (this.cameraHeight - this.targetHeight)
+                / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(Math.abs(getYOffSet())));
 
         if (hasTargets == true) {
 
@@ -390,12 +390,56 @@ public class LimelightInterface {
         }
     }
 
+    /**
+     * sets the camera height for use in getting distance
+     */
+    public void setCameraHeight(double cameraHeight) {
+        this.cameraHeight = cameraHeight;
+    }
+
+    /**
+     * sets the target height for use in getting distance
+     */
+    public void setTargetHeight(double targetHeight) {
+        this.targetHeight = targetHeight;
+    }
+
+    /**
+     * sets the mounting angle for use in getting distance
+     */
+    public void setMountingAngle(double mountingAngle) {
+        this.mountingAngle = mountingAngle;
+    }
+
+    /**
+     * @return camera height
+     */
+    public double getCameraHeight() {
+        return this.cameraHeight;
+    }
+
+    /**
+     *
+     * @return target height
+     */
+    public double getTargetHeight() {
+        return this.targetHeight;
+    }
+
+    /**
+     *
+     * @return mounting angle
+     */
+    public double getMountingAngle() {
+        return this.mountingAngle;
+    }
+
     // TODO make getters and setters and set these to null
-    private double CAMERA_HEIGHT = 35.25;// TODO
+    private double cameraHeight = 0;
 
-    private double TARGET_HEIGHT = 83.5;// TODO
+    private double targetHeight = 0;
 
-    final double MOUNTING_ANGLE = 35;// 35;// TODO
+    private double mountingAngle = 0;
 
     // TODO make patrick comment
     private boolean buttonHasBeenPressed = false;

@@ -143,9 +143,9 @@ public class Hardware {
             visionDriving = new LimelightDriveWithVision();
             launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
 
-            // armMotor = new WPI_TalonSRX(24);
-            // liftMotor = new WPI_TalonSRX(23);
-            // armRoller = new WPI_TalonSRX(10);
+            // intakeMotor = new WPI_TalonSRX(10);
+            // shootMotor = new WPI_TalonSRX(23);
+            // conveyorMotor = new WPI_TalonSRX(24);
 
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
