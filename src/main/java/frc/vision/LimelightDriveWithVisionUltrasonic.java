@@ -1,6 +1,7 @@
 package frc.vision;
 
 import frc.Hardware.Hardware;
+import frc.HardwareInterfaces.UltraSonic;
 import frc.vision.LimelightInterface;
 
 /**
@@ -10,7 +11,14 @@ import frc.vision.LimelightInterface;
  *
  * @author Conner McKevitt
  */
-public class LimelightDriveWithVision {
+public class LimelightDriveWithVisionUltrasonic {
+
+    UltraSonic ultraSonic = null;
+
+    public LimelightDriveWithVisionUltrasonic(UltraSonic ultraSonic) {
+
+        this.ultraSonic = ultraSonic;
+    }
 
     /**
      * Aligns to vision targets using a one turn system. For use if already mostly.
@@ -26,26 +34,27 @@ public class LimelightDriveWithVision {
         double adjustmentValueRight = 0;
         double adjustmentValueLeft = 0;
 
-        if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST) {
-            System.out.println("driving to target");
+        if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST
+                || this.ultraSonic.getDistanceFromNearestBumper() >= STOP_DISTANCE_TEST) {
 
             if (offness < 0) {
+
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
-                adjustmentValueLeft = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PROP_2019);
+                adjustmentValueRight = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PROP_2019);
                 // drive raw so that we dont have to write addition gearing code in teleop
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
 
             else if (offness > 0) {
 
-                adjustmentValueLeft = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PROP_2019);
+                adjustmentValueRight = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PROP_2019);
 
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             } else {
-                // drive raw at speed after aligning
+                // drive raw at speed
                 Hardware.transmission.driveRaw(DRIVE_AFTER_ALIGN, DRIVE_AFTER_ALIGN);
             }
         } else {
@@ -58,9 +67,11 @@ public class LimelightDriveWithVision {
 
     final double MIN_MOVE_2019 = .2;
     final double DRIVE_AFTER_ALIGN = .2;
-    final double ADJUST_PORP_2019 = .015;
 
-    final double ADJUST_PORP_2020 = .015;// TODO
+    // proportion
+    final double ADJUST_PROP_2019 = .015;
+
+    final double ADJUST_PROP_2020 = .015;// TODO
 
     final double MIN_MOVE_2020 = .2;// TODO
 
