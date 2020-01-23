@@ -115,8 +115,8 @@ public class Hardware {
 
             // ==============CAN INIT=============
             // Motor Controllers
-            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+            //leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+            // rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
             // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
 
@@ -125,7 +125,25 @@ public class Hardware {
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
+<<<<<<< HEAD
+<<<<<<< HEAD
+            //leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            //rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+
+            //leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
+            //rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
+            //        rightFrontMotor);
+            // ==============RIO INIT==============
+
+            // =============OTHER INIT============
+            //transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            //drive = new Drive(transmission, null, null, gyro);
+            // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
+=======
+            leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+=======
             leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+>>>>>>> 1e5bdc606ca1291a0628ea8d8e34cde384f5093a
             rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
@@ -137,7 +155,12 @@ public class Hardware {
             // =============OTHER INIT============
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, null, null, gyro);
+<<<<<<< HEAD
+            // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
+>>>>>>> 9a11d5eff5e0d68afe57b34667b6c26bf41335af
+=======
             // drivePID = new DrivePID(transmission, , , gyro);
+>>>>>>> 1e5bdc606ca1291a0628ea8d8e34cde384f5093a
 
             visionInterface = new LimelightInterface();
             visionDriving = new LimelightDriveWithVision();
@@ -147,8 +170,19 @@ public class Hardware {
             // shootMotor = new WPI_TalonSRX(23);
             // conveyorMotor = new WPI_TalonSRX(24);
 
+<<<<<<< HEAD
+            //Hardware.leftFrontMotor.setInverted(false);
+            //Hardware.rightFrontMotor.setInverted(true);
+=======
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(true);
+<<<<<<< HEAD
+            
+
+           
+>>>>>>> 9a11d5eff5e0d68afe57b34667b6c26bf41335af
+=======
+>>>>>>> 1e5bdc606ca1291a0628ea8d8e34cde384f5093a
 
             leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
             rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);

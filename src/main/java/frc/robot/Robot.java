@@ -17,6 +17,7 @@ import frc.Hardware.Hardware;
  * creating this project, you must also update the build.gradle file in the
  * project.
  */
+
 public class Robot extends TimedRobot {
 
     /**
@@ -227,4 +228,4 @@ public class Robot extends TimedRobot {
     private final double CAMERA_HEIGHT_2019 = 35.25;
     private final double TARGET_HEIGHT_2019 = 83.5;
     private final double MOUNTING_ANGLE_2019 = 35;
-} // end robot class
+}
