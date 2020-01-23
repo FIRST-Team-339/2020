@@ -28,7 +28,6 @@ public class LimelightDriveWithVision {
         double adjustmentValueLeft = 0;
 
         if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST) {
-            System.out.println("driving to target");
 
             if (offness < 0) {
                 // adjust the speed for the left and right motors based off their offness and a
