@@ -133,9 +133,9 @@ public class Autonomous {
         /*
          * 2 pos switch: 1: no auto 2: go auto
          */
-        if (Hardware.shootingPlan.getPosition() == value.kForward) {
+        // if (Hardware.shootingPlan.getPosition() == value.kForward) {
 
-        }
+        // }
 
         /*
          * 3 pos switch: 1: shoot far 2: shoot close 3: dont move
