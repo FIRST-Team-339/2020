@@ -20,11 +20,12 @@ public class LimelightDriveWithVision {
      * @return
      */
     public boolean driveToTarget() {
-
+        // offness recieved from network tables
         double offness = Hardware.visionInterface.getXOffSet();
 
+        // left move speed
         double adjustmentValueRight = 0;
-
+        // right move speed
         double adjustmentValueLeft = 0;
 
         if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST) {
@@ -64,15 +65,20 @@ public class LimelightDriveWithVision {
         return false;
     }
 
+    // minimum speed a motor will move while aligning
     final double MIN_MOVE_2019 = .2;
 
+    // after the robot is align the speed that the robot will continue at
     final double DRIVE_AFTER_ALIGN = .2;
-
+    // an adjustment proportional value. Found with the tried and true method of
+    // randomly plugging in number until it works
     final double ADJUST_PORP_2019 = .015;
-
+    // an adjustment proportional value. Found with the tried and true method of
+    // randomly plugging in number until it works
     final double ADJUST_PORP_2020 = .015;// TODO
-
+    // after the robot is align the speed that the robot will continue at
     final double MIN_MOVE_2020 = .2;// TODO
 
-    final double STOP_DISTANCE_TEST = 80;
+    // distance away from the target that the robot will stop at
+    final double STOP_DISTANCE_TEST = 80;// TODO
 }

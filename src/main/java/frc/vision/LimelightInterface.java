@@ -17,8 +17,8 @@ import edu.wpi.first.networktables.*;
  *
  * the web application can be used to adjust the filtering values
  *
- * currrent camera settings as of 1/23/20 are exposure = 12 black offset level
- * =24 red balance = 1013 blue balance = 500
+ * currrent camera settings as of 1/23/20 are exposure = 12 black offset
+ * level=24 red balance = 1013 blue balance = 500
  *
  * @author Conner McKevitt
  *
@@ -101,6 +101,7 @@ public class LimelightInterface {
     // updates internal values with those recieved from the network table
     public void updateValues() {
 
+        // dont let the null pointer monsters attack
         try {
             this.hasTargets = this.hasTargets(this.tv.getDouble(0));
             this.x = this.tx.getDouble(0);
@@ -387,6 +388,7 @@ public class LimelightInterface {
      */
     public double getDistanceFromTarget() {
 
+        // not so fancy trig stuff that is pretty self explanitory
         distance = (this.cameraHeight - this.targetHeight)
                 / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(Math.abs(getYOffSet())));
 
@@ -442,7 +444,6 @@ public class LimelightInterface {
         return this.mountingAngle;
     }
 
-    // TODO make getters and setters and set these to null
     private double cameraHeight = 0;
 
     private double targetHeight = 0;
