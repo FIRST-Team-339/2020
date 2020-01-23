@@ -81,7 +81,8 @@ public class Teleop {
 
     public static void periodic() {
         // =============== AUTOMATED SUBSYSTEMS ===============
-        // Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
         if (testBoolean == false) {
 
@@ -91,9 +92,9 @@ public class Teleop {
 
         // ================== DRIVER CONTROLS =================
 
-        individualTest();
+        // individualTest();
         // teleopDrive();
-        Hardware.visionInterface.takePictureWithButtons(Hardware.pictureButton1, Hardware.pictureButton2);
+
     } // end Periodic()
 
     public static void teleopDrive() {

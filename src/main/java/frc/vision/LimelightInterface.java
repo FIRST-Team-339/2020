@@ -2,9 +2,11 @@ package frc.vision;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.Hardware.Hardware;
+import frc.HardwareInterfaces.MomentarySwitch;
 import edu.wpi.first.networktables.*;
 
-public class NewVisionInterface {
+public class LimelightInterface {
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     /*
@@ -50,31 +52,31 @@ public class NewVisionInterface {
 
     NetworkTableEntry Led_Mode = limelight.getEntry("ledMode");
 
-    public boolean hasTargets;
+    private boolean hasTargets;
 
-    public double x;
+    private double x;
 
-    public double y;
+    private double y;
 
-    public double area;
+    private double area;
 
-    public double skew;
+    private double skew;
 
-    public double latency;
+    private double latency;
 
-    public double shortSide;
+    private double shortSide;
 
-    public double longSide;
+    private double longSide;
 
-    public double horizontal;
+    private double horizontal;
 
-    public double vertical;
+    private double vertical;
 
-    public double pipeline;
+    private double pipeline;
 
-    public double camtan;
+    private double camtan;
 
-    public double led_Mode;
+    private double led_Mode;
 
     // to be called continuously
     // updates internal values with those recieved from the network table
@@ -95,8 +97,6 @@ public class NewVisionInterface {
             pipeline = getpipe.getDouble(0);
             led_Mode = Led_Mode.getDouble(0);
 
-            // filterBlobs();
-            publishValues();
         } catch (NullPointerException exception) {
             System.out.println(exception);
         }
@@ -144,37 +144,38 @@ public class NewVisionInterface {
         return pipeline;
     }
 
-    public void publishValues() {
+    public void publishValues(MomentarySwitch publishSwitch) {
 
-        SmartDashboard.putBoolean("hasTargets", hasTargets);
-        SmartDashboard.putNumber("x offset", x);
-        SmartDashboard.putNumber("y offset", y);
-        SmartDashboard.putNumber("skew ", skew);
-        SmartDashboard.putNumber("latency ", latency);
-        SmartDashboard.putNumber("shortside", shortSide);
-        SmartDashboard.putNumber("longSide ", longSide);
-        SmartDashboard.putNumber("horizontal ", horizontal);
-        SmartDashboard.putNumber("vertical ", vertical);
-        SmartDashboard.putNumber("pipeline ", pipeline);
-        SmartDashboard.putNumber("ledMode", led_Mode);
-        SmartDashboard.putNumber("distance", getDistanceFromTarget());
+        publishSwitch.update();
+
+        if (publishSwitch.get()) {
+            SmartDashboard.putBoolean("hasTargets", hasTargets);
+            SmartDashboard.putNumber("x offset", x);
+            SmartDashboard.putNumber("y offset", y);
+            SmartDashboard.putNumber("skew ", skew);
+            SmartDashboard.putNumber("latency ", latency);
+            SmartDashboard.putNumber("shortside", shortSide);
+            SmartDashboard.putNumber("longSide ", longSide);
+            SmartDashboard.putNumber("horizontal ", horizontal);
+            SmartDashboard.putNumber("vertical ", vertical);
+            SmartDashboard.putNumber("pipeline ", pipeline);
+            SmartDashboard.putNumber("ledMode", led_Mode);
+            SmartDashboard.putNumber("distance", getDistanceFromTarget());
+        }
     }
 
     public boolean hasTargets(double targets) {
-        if (targets != 0) {
-
+        if (targets > 0) {
             return true;
         }
-
         return false;
-
     }
 
-    public enum LedMode {
+    private enum LedMode {
         PIPELINE, OFF, BLINK, ON
     }
 
-    public LedMode ledmode = LedMode.PIPELINE;
+    private LedMode ledmode = LedMode.PIPELINE;
 
     // @parameters
     // 0 pipeline control
@@ -198,11 +199,11 @@ public class NewVisionInterface {
         }
     }
 
-    public enum CamMode {
+    private enum CamMode {
         PROCESSOR, CAMERA
     }
 
-    public CamMode camMode = CamMode.PROCESSOR;
+    private CamMode camMode = CamMode.PROCESSOR;
 
     // TODO make enum
     // 0 vision processor
@@ -268,7 +269,7 @@ public class NewVisionInterface {
 
     }
 
-    public double distance = 0;
+    private double distance = 0;
 
     public double getDistanceFromTarget() {
         // alternating piplein to compare the different blob goups?
@@ -297,9 +298,9 @@ public class NewVisionInterface {
         }
     }
 
-    public final double CAMERA_HEIGHT = 35.25;// TODO
+    private final double CAMERA_HEIGHT = 35.25;// TODO
 
-    final double TARGET_HEIGHT = 83.5;// TODO
+    private final double TARGET_HEIGHT = 83.5;// TODO
 
     final double MOUNTING_ANGLE = 35;// 35;// TODO
 
