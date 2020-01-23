@@ -121,13 +121,22 @@ public class Hardware {
             // rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
             // leftRearMotor = new CANSparkMax(2, MotorType.kBrushless);
             // rightRearMotor = new CANSparkMax(3, MotorType.kBrushless);
+            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
 
             // leftFrontMotor = new WPI_TalonFX(13);
-
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
             leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+
+            // rightFrontMotor);
+            // ==============RIO INIT==============
+
+            // =============OTHER INIT============
+
+            leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+
             rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
@@ -146,9 +155,9 @@ public class Hardware {
             visionDriving = new LimelightDriveWithVision();
             launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
 
-            // armMotor = new WPI_TalonSRX(24);
-            // liftMotor = new WPI_TalonSRX(23);
-            // armRoller = new WPI_TalonSRX(10);
+            // intakeMotor = new WPI_TalonSRX(10);
+            // shootMotor = new WPI_TalonSRX(23);
+            // conveyorMotor = new WPI_TalonSRX(24);
 
             // Hardware.leftFrontMotor.setInverted(false);
             // Hardware.rightFrontMotor.setInverted(true);
@@ -186,7 +195,6 @@ public class Hardware {
     public static SpeedControllerGroup launcherMotorGroup = null;
 
     public static KilroyEncoder launcherMotorEncoder = null;
-
     // -------------------------------------------------------------
 
     // **********************************************************
@@ -201,7 +209,7 @@ public class Hardware {
     public static LightSensor firingRL = new LightSensor(1); // top
 
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(0);
+    public static SingleThrowSwitch autoSwitch = new SingleThrowSwitch(0);
 
     public static SingleThrowSwitch shootFar = new SingleThrowSwitch(22);
     public static SingleThrowSwitch shootClose = new SingleThrowSwitch(23);
