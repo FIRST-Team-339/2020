@@ -56,6 +56,15 @@ public class LimelightDriveWithVision {
 
     }
 
+    /**
+     * TODO function. Will align to the target but not drive towards it
+     *
+     */
+    public boolean alignToTarget() {
+
+        return false;
+    }
+
     final double MIN_MOVE_2019 = .2;
     final double DRIVE_AFTER_ALIGN = .2;
     final double ADJUST_PORP_2019 = .015;
