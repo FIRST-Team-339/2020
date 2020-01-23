@@ -48,51 +48,51 @@ import frc.Hardware.Hardware;
  * @author Nathanial Lydick
  * @written Jan 13, 2015
  */
-public class Autonomous
-{
+public class Autonomous {
 
-/**
- * User Initialization code for autonomous mode should go here. Will run once
- * when the autonomous first starts, and will be followed immediately by
- * periodic().
- */
-public static void init ()
-{
+    /**
+     * User Initialization code for autonomous mode should go here. Will run once
+     * when the autonomous first starts, and will be followed immediately by
+     * periodic().
+     */
+    public static void init() {
 
-    Hardware.drive.setGearPercentage(4, AUTO_GEAR);
-    Hardware.drive.setGear(4);
+        Hardware.drive.setGearPercentage(4, AUTO_GEAR);
+        Hardware.drive.setGear(4);
 
-} // end Init
+    } // end Init
 
-/*
- * User Periodic code for autonomous mode should go here. Will be called
- * periodically at a regular rate while the robot is in autonomous mode.
- *
- * @author Nathanial Lydick
- * @written Jan 13, 2015
- *
- *          FYI: drive.stop cuts power to the motors, causing the robot to
- *          coast. drive.brake results in a more complete stop.
- *          Meghan Brown; 10 February 2019
- */
+    /*
+     * User Periodic code for autonomous mode should go here. Will be called
+     * periodically at a regular rate while the robot is in autonomous mode.
+     *
+     * @author Nathanial Lydick
+     *
+     * @written Jan 13, 2015
+     *
+     * FYI: drive.stop cuts power to the motors, causing the robot to coast.
+     * drive.brake results in a more complete stop. Meghan Brown; 10 February 2019
+     */
 
-public static enum Path{
-     NOTHING, LEAVE_LINE, AUTO_LAUNCH, PICK_UP_LAUNCH, PICKUP
-}
-
-public static Path path = Path.NOTHING;
-public static enum State {
-INIT, DELAY, CHOOSE_PATH, FINISH
-}
-
-public static State autoState = State.INIT;
-public static void periodic ()
-{
-    if(/*Hardware.cancelAuto.get()*/true){
-        autoState = State.FINISH;
+    public static enum Path {
+        NOTHING, SHOOT_FAR, SHOOT_CLOSE, MOVE_FORWARD, MOVE_BACKWARDS, DONT_MOVE, DONT_LEAVE, GET_OUT, ALIGN_SQUARE,
+        ALIGN_TRENCH, PICKUP_TRENCH, TURN_AND_FIRE
     }
 
-    switch(autoState){
+    public static Path path = Path.NOTHING;
+
+    public static enum State {
+        INIT, DELAY, CHOOSE_PATH, FINISH
+    }
+
+    public static State autoState = State.INIT;
+
+    public static void periodic() {
+        if (Hardware.cancelAuto.get() == true) {
+            autoState = State.FINISH;
+        }
+
+        switch (autoState) {
 
         case INIT:
             Hardware.autoTimer.start();
@@ -100,7 +100,7 @@ public static void periodic ()
             break;
 
         case DELAY:
-            if( Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0) ){
+            if (Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0)) {
 
                 autoState = State.CHOOSE_PATH;
                 Hardware.autoTimer.stop();
@@ -108,57 +108,138 @@ public static void periodic ()
 
             break;
 
-         case CHOOSE_PATH:
+        case CHOOSE_PATH:
             choosePath();
             break;
 
-        case FINISH: 
+        case FINISH:
             Hardware.drive.drive(0, 0);
-             break;
+            break;
 
-        default: 
-        autoState = State.FINISH;
-             break;
+        default:
+            autoState = State.FINISH;
+            break;
 
-}
+        }
 
+    }
 
-}
+    // =====================================================================
+    // Path Methods
+    // =====================================================================
+    private static void choosePath() {
+        // Statements to determine sates:
 
-// =====================================================================
-// Path Methods
-// =====================================================================
-private static void choosePath(){
+        /*
+         * 2 pos switch: 1: no auto 2: go auto
+         */
+        if (Hardware.shootingPlan.getPosition() == value.kForward) {
 
-switch(path){
+        }
 
-    case LEAVE_LINE:
-    //if true forwards off line
-    leaveLine(false);
-    break;
+        /*
+         * 3 pos switch: 1: shoot far 2: shoot close 3: dont move
+         */
 
-    case NOTHING:
-        autoState = State.FINISH;
-        break;
-    default:
-    path = Path.NOTHING;
-       break;
+        /*
+         * 6 pos switch:
+         */
 
-}
+        // Switch case to execute the functions of auto path
 
-}
+        switch (path) {
+        case NOTHING:
+            // Do Nothing :)
+            break;
 
-private static boolean leaveLine(boolean Direction){
+        case SHOOT_FAR:
+            // The action of not moving before the attempt of shooting
+            shootFar();
+            break;
 
-    return false;
-}
+        case SHOOT_CLOSE:
+            // the action of moving closer before attempting to shoot in the goal
+            shootClose();
+            break;
 
+        case MOVE_FORWARD:
+            // move in a straight line forwards
+            moveForward();
+            break;
 
+        case MOVE_BACKWARDS:
+            // move in a straight line backwards
+            moveBackward();
+            break;
 
-/*
- * ==============================================================
- * Constants
- * ==============================================================
- */
-private final static double AUTO_GEAR  = 1.0;
+        case DONT_MOVE:
+            // doAnything?
+            break;
+
+        case GET_OUT:
+            // removing yourself from the way of robots
+            getOut();
+            break;
+
+        case ALIGN_SQUARE:
+            // aligning for center square to allign for balls
+            alignSquare();
+            break;
+
+        case ALIGN_TRENCH:
+            // aligning for trench to allign for balls
+            alignTrench();
+            break;
+
+        case PICKUP_TRENCH:
+            // picking up balls
+            pickupTrench();
+            break;
+
+        case TURN_AND_FIRE:
+            // final attempt to turn and shoot more balls from trench
+            turnFire();
+            break;
+
+        default:
+            path = Path.NOTHING;
+            break;
+
+        }
+
+    }
+
+    private static void turnFire() {
+    }
+
+    private static void pickupTrench() {
+    }
+
+    private static void alignTrench() {
+    }
+
+    private static void alignSquare() {
+    }
+
+    private static void getOut() {
+    }
+
+    private static void moveBackward() {
+    }
+
+    private static void moveForward() {
+    }
+
+    private static void shootClose() {
+    }
+
+    private static void shootFar() {
+
+    }
+
+    /*
+     * ============================================================== Constants
+     * ==============================================================
+     */
+    private final static double AUTO_GEAR = 1.0;
 }
