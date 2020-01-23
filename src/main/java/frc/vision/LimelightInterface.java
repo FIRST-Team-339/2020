@@ -12,6 +12,14 @@ import edu.wpi.first.networktables.*;
 /**
  * an interface class for the limelight vision camera
  *
+ * the limelight can be access while connected to the robot in a web browser at
+ * http://limelight.local:5801/
+ *
+ * the web application can be used to adjust the filtering values
+ *
+ * currrent camera settings as of 1/23/20 are exposure = 12 black offset level
+ * =24 red balance = 1013 blue balance = 500
+ *
  * @author Conner McKevitt
  *
  *
