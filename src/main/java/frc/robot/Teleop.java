@@ -32,10 +32,12 @@ package frc.robot;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
+import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * This class contains all of the user code for the Autonomous part of the
@@ -83,16 +85,22 @@ public class Teleop {
         // =============== AUTOMATED SUBSYSTEMS ===============
         // Hardware.visionInterface.updateValues();
 
-        if (Hardware.rightOperator.getRawButton(2) == true) {
-            testBoolean = true;
-        }
-        if (testBoolean == true) {
-            System.out.println("Gyro Distance " + Hardware.drive.getGyro());
+        // if (Hardware.rightOperator.getRawButton(2) == true) {
+        // testBoolean = true;
+        // }
+        // if (testBoolean == true) {
+        // System.out.println("Gyro Angle " + Hardware.gyro.getAngle());
 
-            if (Hardware.drive.turnDegrees(90, .4, 0, true)) {
-                testBoolean = false;
-            }
-        }
+        // if (Hardware.drive.turnDegrees(720, .4, 0, true)) {
+        // testBoolean = false;
+        // }
+        // }
+        Color detectedColor = Hardware.colorSensor.getColor();
+        // SendableRegistry color = Hardware.colorSensor.getColor();
+        SmartDashboard.putNumber("Red", detectedColor.red);
+        SmartDashboard.putNumber("Green", detectedColor.green);
+        SmartDashboard.putNumber("Blue", detectedColor.blue);
+        // SmartDashboard.putData("Color Detected", color);
 
         if (testBoolean == false) {
 

@@ -35,12 +35,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -125,23 +127,7 @@ public class Hardware {
             // rightFrontMotor = new WPI_TalonFX(15);
 
             // Encoders
-
-            // leftEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-            // rightEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
-
-            // leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */
-            // leftFrontMotor);
-            // rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
-            // rightFrontMotor);
-            // ==============RIO INIT==============
-
-            // =============OTHER INIT============
-            // transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            // drive = new Drive(transmission, null, null, gyro);
-            // drivePID = new DrivePID(transmission, leftEncoder, rightEncoder, gyro);
-
             leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-
             rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
             leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
@@ -206,6 +192,8 @@ public class Hardware {
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
+    public static I2C.Port i2cPort = I2C.Port.kOnboard;
+    public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     public static LightSensor intakeRL = new LightSensor(12); // bottom
     public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
@@ -240,7 +228,7 @@ public class Hardware {
 
     public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
-    public static KilroySPIGyro gyro = new KilroySPIGyro(false);
+    public static KilroySPIGyro gyro = new KilroySPIGyro(true);
 
     // **********************************************************
     // DRIVER STATION CLASSES

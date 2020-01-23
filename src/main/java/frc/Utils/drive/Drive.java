@@ -23,13 +23,14 @@ public class Drive {
      * Creates the Drive object. If a sensor listed is not used (except for
      * encoders), set it to null. Setup for Traction drive (only 2 motors/encoders)
      *
-     * @param transmission The robot's transmission object
+     * @param transmission      The robot's transmission object
      * @param leftDriveEncoder  The left-side encoder
      * @param rightDriveEncoder The right-side encoder
-     * @param ultrasonic   The sensor that finds distance using sound
-     * @param gyro         A sensor that is used to measure rotation
+     * @param ultrasonic        The sensor that finds distance using sound
+     * @param gyro              A sensor that is used to measure rotation
      */
-    public Drive(TransmissionBase transmission, KilroyEncoder leftDriveEncoder, KilroyEncoder rightDriveEncoder, GyroBase gyro) {
+    public Drive(TransmissionBase transmission, KilroyEncoder leftDriveEncoder, KilroyEncoder rightDriveEncoder,
+            GyroBase gyro) {
         this.transmissionType = transmission.getType();
         this.transmission = transmission;
         this.encoders = new KilroyEncoder[2];
