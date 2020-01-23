@@ -67,7 +67,7 @@ public class Hardware {
         CurrentYear, PrevYear
     };
 
-    public static Identifier robotIdentity = Identifier.CurrentYear;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     public static void initialize() {
 
@@ -77,6 +77,7 @@ public class Hardware {
         gearDown = new JoystickButton(Hardware.leftDriver, 1);
         launchButton = new JoystickButton(Hardware.rightOperator, 1);
         intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+        publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
         if (robotIdentity == Identifier.CurrentYear) {
 
@@ -100,8 +101,8 @@ public class Hardware {
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
-            visionInterface = new NewVisionInterface();
-            visionDriving = new NewDriveWithVision();
+            visionInterface = new LimelightInterface();
+            visionDriving = new LimelightDriveWithVision();
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
 
@@ -138,8 +139,8 @@ public class Hardware {
             drive = new Drive(transmission, null, null, gyro);
             // drivePID = new DrivePID(transmission, , , gyro);
 
-            visionInterface = new NewVisionInterface();
-            visionDriving = new NewDriveWithVision();
+            visionInterface = new LimelightInterface();
+            visionDriving = new LimelightDriveWithVision();
             launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
 
             // armMotor = new WPI_TalonSRX(24);
@@ -238,11 +239,17 @@ public class Hardware {
 
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
+    public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
+
+    public static JoystickButton publishVisionButton = null;
+
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+    public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
+    public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
@@ -274,9 +281,9 @@ public class Hardware {
     // Vision stuff
     // ----------------------------
 
-    public static NewDriveWithVision visionDriving = null;
+    public static LimelightDriveWithVision visionDriving = null;
 
-    public static NewVisionInterface visionInterface = null;
+    public static LimelightInterface visionInterface = null;
 
     public static Launcher launcher = null;
 
