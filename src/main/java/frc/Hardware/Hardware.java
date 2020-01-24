@@ -277,7 +277,7 @@ public class Hardware {
 
     // launcher stuff
     public static IntakeControl intake = new IntakeControl(launchTimer, intakeMotor);
-    public static Launcher launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
+    public static Launcher launcher = new Launcher();
 
     public static StorageControl storage = new StorageControl();
     // ------------------------------------------

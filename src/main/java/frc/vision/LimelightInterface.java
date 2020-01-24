@@ -66,6 +66,10 @@ public class LimelightInterface {
     // led mod
     NetworkTableEntry Led_Mode = limelight.getEntry("ledMode");
 
+    NetworkTableEntry tcornx = limelight.getEntry("tcornx");
+
+    NetworkTableEntry tcorny = limelight.getEntry("tcorny");
+
     // our declarations of the limelight provided information
     private boolean hasTargets;
 
@@ -93,6 +97,10 @@ public class LimelightInterface {
 
     private double led_Mode;
 
+    private double[] xcorner;
+
+    private double[] ycorner;
+
     // to be called continuously
     // updates internal values with those recieved from the network table
     public void updateValues() {
@@ -111,6 +119,9 @@ public class LimelightInterface {
             this.vertical = this.tvert.getDouble(0);
             this.pipeline = this.getpipe.getDouble(0);
             this.led_Mode = this.Led_Mode.getDouble(0);
+
+            this.xcorner = this.tcornx.getDoubleArray(new double[0]);
+            this.ycorner = this.tcorny.getDoubleArray(new double[0]);
 
         } catch (NullPointerException exception) {
             System.out.println(exception);
@@ -236,6 +247,11 @@ public class LimelightInterface {
             SmartDashboard.putNumber("pipeline ", this.pipeline);
             SmartDashboard.putNumber("ledMode", this.led_Mode);
             SmartDashboard.putNumber("distance", this.getDistanceFromTarget());
+
+            SmartDashboard.putNumberArray("x corner", this.xcorner);
+            SmartDashboard.putNumberArray("y corner", this.ycorner);
+            SmartDashboard.putNumber("lowest x", this.getLowestXPoint());
+
         }
     }
 
@@ -373,6 +389,36 @@ public class LimelightInterface {
 
     }
 
+    // TODO implement a class the returns the oordinates of all the points and can
+    // give our 3d position on the field
+
+    private double lowestX = 0;
+    private double lowestDegree = 0;
+
+    /**
+     * returns the lowest x coordinat of the vision target. this is for use
+     *
+     * @return double
+     */
+    public double getLowestXPoint() {
+        lowestX = this.xcorner[0];
+        // compare all the x coordinates in order to find the lowest
+        for (int i = 0; i < this.xcorner.length; i++) {
+            if (this.xcorner[i] < lowestX) {
+                lowestX = this.xcorner[i];
+            }
+        }
+        if (lowestX > 120) {
+            lowestDegree = (120 - lowestX) / 120 * (49.7 / 2);
+        } else if (lowestX < 120) {
+            lowestDegree = (lowestX - 120) / 120 * (497 / 2);
+        } else {
+            lowestDegree = 0;
+        }
+
+        return lowestDegree;
+    }
+
     // variable for storing distance
     private double distance = 0;
 
@@ -385,8 +431,12 @@ public class LimelightInterface {
     public double getDistanceFromTarget() {
 
         // not so fancy trig stuff that is pretty self explanitory
+        // distance = (this.cameraHeight - this.targetHeight)
+        // / Math.tan(Math.toRadians(this.mountingAngle) -
+        // Math.toRadians(Math.abs(getYOffSet())));
+
         distance = (this.cameraHeight - this.targetHeight)
-                / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(Math.abs(getYOffSet())));
+                / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(Math.abs(this.getLowestXPoint())));
 
         if (hasTargets == true) {
 
