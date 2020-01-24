@@ -2,11 +2,7 @@ package frc.vision;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.MomentarySwitch;
-
-import javax.swing.DefaultListCellRenderer;
-
 import edu.wpi.first.networktables.*;
 
 /**
