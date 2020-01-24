@@ -6,4 +6,10 @@ public class StorageControl {
 
     }
 
+    public int getBallCount() {
+        // return the ball count
+
+        return 0;
+    }
+
 }
