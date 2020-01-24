@@ -69,7 +69,6 @@ public class Launcher {
             break;
 
         }
-
     }
 
     public boolean autoLaunch() {

@@ -71,14 +71,6 @@ public class Hardware {
 
     public static void initialize() {
 
-        // ==============Buttons=============
-        cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
-        gearUp = new JoystickButton(Hardware.rightDriver, 1);
-        gearDown = new JoystickButton(Hardware.leftDriver, 1);
-        launchButton = new JoystickButton(Hardware.rightOperator, 1);
-        intakeButton = new JoystickButton(Hardware.leftOperator, 1);
-        publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
-
         if (robotIdentity == Identifier.CurrentYear) {
 
             // ==============CAN INIT=============
@@ -245,13 +237,14 @@ public class Hardware {
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
-    public static JoystickButton publishVisionButton = null;
+    public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+    public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
     public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************

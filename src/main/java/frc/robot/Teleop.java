@@ -83,7 +83,14 @@ public class Teleop {
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-
+        if (Hardware.leftOperator.getRawButton(4)) {
+            testBoolean = true;
+        }
+        if (testBoolean) {
+            if (Hardware.visionDriving.driveToTarget()) {
+                testBoolean = false;
+            }
+        }
         if (testBoolean == false) {
 
             teleopDrive();
