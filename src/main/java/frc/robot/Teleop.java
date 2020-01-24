@@ -31,6 +31,7 @@ package frc.robot;
 
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -150,37 +151,59 @@ public class Teleop {
     }
 
     public static void dionTest() {
-        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch)) {
-            Hardware.camTimer1.stop();
-            Hardware.camTimer1.reset();
-
-            Hardware.usbCam0.close();
-
-            CameraServer.getInstance().removeServer("usb0");
-            CameraServer.getInstance().removeCamera("usb0");
-
-            // Hardware.usbCam0 = CameraServer.getInstance().
-            // Hardware.camTimer1.start();
-
-            System.out.println("Cam 1 on");
+        if (Hardware.leftOperator.getRawButton(7) && cam0) {
+            Hardware.server.setSource(Hardware.usbCam0);
+            Hardware.server.setFPS(10);
+            Hardware.server.setResolution(160, 90);
             cam0 = false;
-            startOfMatch = false;
-
         }
-        if (Hardware.leftOperator.getRawButton(8)) {
-
-            Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
-
+        if (Hardware.leftOperator.getRawButton(7) && !cam0) {
+            Hardware.server.setSource(Hardware.usbCam1);
+            cam0 = true;
         }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1) {
-            // Hardware.camTimer2.stop();
-            // Hardware.camTimer2.reset();
-            // Hardware.usbCam1.close();
-            // Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
-            // Hardware.camTimer2.start();
-            // System.out.println("Cam 0 on");
-            // cam0 = true;
-        }
+        // if (Hardware.leftOperator.getRawButton(7) && cam0 &&
+        // (Hardware.camTimer2.get() > 1 || startOfMatch)) {
+        // Hardware.camTimer1.stop();
+        // Hardware.camTimer1.reset();
+
+        // // Hardware.usbCam0.close();
+        // // Hardware.usbCam1.close();
+
+        // // CameraServer.getInstance().removeServer("usb0");
+        // // CameraServer.getInstance().removeCamera("usb0");
+
+        // // Hardware.usbCam0 = CameraServer.getInstance().
+        // Hardware.camTimer1.start();
+        // // CameraServer.getInstance().addServer("usb1", 1);
+
+        // System.out.println("Cam 1 on");
+        // cam0 = false;
+        // startOfMatch = false;
+
+        // }
+        // if (Hardware.leftOperator.getRawButton(8)) {
+
+        // }
+        // // if (Hardware.leftOperator.getRawButton(7) && !cam0 &&
+        // // Hardware.camTimer1.get() > 1) {
+        // // Hardware.camTimer2.stop();
+        // // Hardware.camTimer2.reset();
+
+        // // Hardware.usbCam1.close();
+
+        // // CameraServer.getInstance().removeServer("usb0");
+        // // CameraServer.getInstance().removeCamera("usb0");
+
+        // // // Hardware.usbCam0 = CameraServer.getInstance().
+        // // // Hardware.camTimer1.start();
+        // // // CameraServer.getInstance().addServer("usb1", 1);
+        // // CameraServer.getInstance().addCamera(Hardware.usbCam1);
+        // // CameraServer.getInstance().addServer("usb1");
+
+        // // System.out.println("Cam 1 on");
+        // // cam0 = false;
+        // // startOfMatch = false;
+        // // }
 
     }
 
