@@ -29,12 +29,23 @@
 // ====================================================================
 package frc.robot;
 
+//import frc.HardwareInterfaces.KilroyColorSensor;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.I2C;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.ctre.phoenix.CANifier.LEDChannel;
+import com.revrobotics.ColorMatch;
 
 /**
  * This class contains all of the user code for the Autonomous part of the
@@ -86,8 +97,47 @@ public class Teleop
     public static void periodic()
     {
         // =============== AUTOMATED SUBSYSTEMS ===============
+
+        if (Hardware.rightOperator.getRawButton(2) == true)
+            {
+            testBoolean = true;
+            }
+        if (testBoolean == true)
+            {
+            System.out.println("Gyro Angle " + Hardware.gyro.getAngle());
+
+            if (Hardware.drive.turnDegrees(720, .4, 0, true))
+                {
+                testBoolean = false;
+                }
+            }
+
+        //Color detectedColor = Hardware.colorSensor.getColor();
+
+        // final ColorMatch colorMatcher = new ColorMatch();
+        // final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        // final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+        // final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+        // final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+        // colorMatcher.addColorMatch(kBlueTarget);
+        // colorMatcher.addColorMatch(kGreenTarget);
+        // colorMatcher.addColorMatch(kRedTarget);
+        // colorMatcher.addColorMatch(kYellowTarget);
+
+        // String colorString;
+        // ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+
+        // if (match.color == kBlueTarget)
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        int ballCount = 0;
+        if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5)
+            {
+            ballCount++;
+            SmartDashboard.putNumber("Ball Count", ballCount);
+            }
+        SmartDashboard.putNumber("Ball Count", ballCount);
 
         if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
             {
@@ -100,27 +150,37 @@ public class Teleop
             }
         SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
 
-        if (Hardware.leftOperator.getRawButton(4))
-            {
-            testBoolean = true;
-            }
-        if (testBoolean)
-            {
-            if (Hardware.visionDriving.driveToTarget())
-                {
-                testBoolean = false;
-                }
-            }
-        if (testBoolean == false)
-            {
+        // if (Hardware.leftOperator.getRawButton(4))
+        //     {
+        //     colorString = "Blue";
+        //     }
+        // else if (match.color == kRedTarget)
+        //     {
+        //     colorString = "Red";
+        //     }
+        // else if (match.color == kGreenTarget)
+        //     {
+        //     colorString = "Green";
+        //     }
+        // else if (match.color == kYellowTarget)
+        //     {
+        //     colorString = "Yellow";
+        //     }
+        // else
+        //     {
+        //     colorString = "Unknown";
+        //     }
 
-            teleopDrive();
-            }
+        // SmartDashboard.putNumber("Red", detectedColor.red);
+        // SmartDashboard.putNumber("Green", detectedColor.green);
+        // SmartDashboard.putNumber("Blue", detectedColor.blue);
+        // SmartDashboard.putString("Detected Color", colorString);
+        teleopDrive();
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
 
-        individualTest();
+        // individualTest();
         // teleopDrive();
 
     } // end Periodic()
@@ -148,8 +208,10 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
+        chrisTest();
+        // dionTest();
         // chrisTest();
-        dionTest();
+        // dionTest();
         // patrickTest();
     }
 
@@ -193,6 +255,15 @@ public class Teleop
     {
         if (Hardware.leftOperator.getRawButton(7) && (startOfMatch || cam0))
             {
+            // CameraServer.getInstance().addCamera(Hardware.usbCam1);
+            // CameraServer.getInstance().addServer("usb0");
+            // Hardware.server.setSource(Hardware.usbCam0);
+            // Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            // CameraServer.getInstance().addServer("serve_usb1");
+            // CameraServer.getInstance().removeCamera("usb1");
+            // CameraServer.getInstance().removeServer("serve_usb1");
+            CameraServer.getInstance().addServer("serve_usb1");
+            CameraServer.getInstance().addCamera(Hardware.usbCam1);
 
             startOfMatch = false;
             cam0 = false;
@@ -206,14 +277,7 @@ public class Teleop
 
     public static void chrisTest()
     {
-        int x = 0;
 
-        if (Hardware.leftDriver.getRawButton(5) == true)
-            {
-            x += 1;
-
-            }
-        SmartDashboard.putNumber("Ball Count", x);
     }
 
     public static void patrickTest()

@@ -228,7 +228,7 @@ public class Autonomous
         else if (Hardware.autoSixPosSwitch.getPosition() == 2)
             {
             // move yourself out of the way, close to goal
-            exit = Exit.TURN_AND_FIRE;
+            exit = Exit.GET_OUT;
             }
         else if (Hardware.autoSixPosSwitch.getPosition() == 3)
             {
@@ -672,8 +672,8 @@ public static GetOutState out = GetOutState.TURN;
 
     private static boolean hasShotTheEtHInG = false;
     /*
-     * =============================================================================
-     * Constants ==============================================================
+     * ============================================================= Constants
+     * ==============================================================
      */
 
     private final static double AUTO_GEAR = 1.0;
