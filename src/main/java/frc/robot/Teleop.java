@@ -88,15 +88,13 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-<<<<<<< HEAD
-       /* int ballCount = 0;
-        if(Hardware.rightOperator.getRawButton(6) == true /*&& ballCount >= 0 || ballCount < 5){
+        int ballCount = 0;
+        if(Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5){
            ballCount++;
             SmartDashboard.putNumber("Ball Count", ballCount);
         }
             SmartDashboard.putNumber("Ball Count", ballCount);
-*/
-=======
+
 
         if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
             {
@@ -108,7 +106,6 @@ public class Teleop
             Hardware.intakeMotor.set(0);
             }
         SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
->>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
 
         if (Hardware.leftOperator.getRawButton(4))
             {
@@ -130,11 +127,8 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-<<<<<<< HEAD
          individualTest();
-=======
         individualTest();
->>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
         // teleopDrive();
 
     } // end Periodic()
@@ -162,13 +156,10 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-<<<<<<< HEAD
          chrisTest();
         // dionTest();
-=======
         // chrisTest();
         dionTest();
->>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
         // patrickTest();
     }
 
@@ -225,12 +216,7 @@ public class Teleop
 
     public static void chrisTest()
     {
-        int ballCount = 0;
-        if(Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5){
-           ballCount++;
-            SmartDashboard.putNumber("Ball Count", ballCount);
-        }
-            SmartDashboard.putNumber("Ball Count", ballCount);
+
     }
 
     public static void patrickTest()

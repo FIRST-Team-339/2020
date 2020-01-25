@@ -66,13 +66,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware
     {
-<<<<<<< HEAD
-=======
-
->>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
-    /**********************************************
      * Identifier that determines which year's robot
-     * we are testing.
      *
      * @author R. Brown
      * @date 1/25/2020
@@ -83,21 +77,19 @@ public class Hardware
 
         private final String name;
 
-<<<<<<< HEAD
-            private Identifier(String 
+            private Identifier(String
 
                     this.name = s;
                 }
-                    
+
                 i
 
                 // (otherName == null) check is not nee
-             
+
                 return name.equals(otherName);
-                
-                
+
+
             p
-=======
         private Identifier(String s)
             {
                 this.name = s;
@@ -115,12 +107,11 @@ public class Hardware
             return this.name;
         }
         };
->>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
 
                 return this.name;
             }
-                
-            
+
+
     public static Identifier robotIdentity = Identifier.PrevYear;
 
     /**********************************************
@@ -162,7 +153,6 @@ public class Hardware
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
         // ==============DIO INIT=============
-<<<<<<< HEAD
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
 
@@ -255,7 +245,6 @@ public class Hardware
         Hardware.leftFrontMotor.setInverted(false);
         Hardware.rightFrontMotor.setInverted(true);
 
-=======
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
 
@@ -348,7 +337,6 @@ public class Hardware
         Hardware.leftFrontMotor.setInverted(false);
         Hardware.rightFrontMotor.setInverted(true);
 
->>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
         leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
         rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
@@ -370,20 +358,17 @@ public class Hardware
             }
         else if (robotIdentity == Identifier.PrevYear)
             {
-<<<<<<< HEAD
-            
+
             nitializePrevYear();
                 }
-                
+
                  initialize()
-=======
             initializePrevYear();
             usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
 
             }
 
     } // end initialize()
->>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
 
     // **********************************************************
     // CAN DEVICES
