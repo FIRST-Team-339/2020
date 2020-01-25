@@ -47,13 +47,12 @@ public class Robot extends TimedRobot
             Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
 
             }
-        else
-            if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
-                {
-                Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
-                Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
-                Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
-                }
+        else if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
+            {
+            Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
+            Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
+            Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
+            }
 
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();

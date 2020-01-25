@@ -40,6 +40,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -382,8 +383,14 @@ public class Hardware
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
-    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+    // public static UsbCamera usbCam0 =
+    // CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+    // public static UsbCamera usbCam1 =
+    // CameraServer.getInstance().addSwitchedCamera(null)
+
+    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
+    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
+    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
 
     // ------------------------------------
     // Utility classes
@@ -408,7 +415,7 @@ public class Hardware
     public static TankTransmission transmission = null;
 
     // launcher stuff
-    public static IntakeControl intake = new IntakeControl(launchTimer, intakeMotor);
+    public static IntakeControl intake = new IntakeControl(launchTimer);
     public static Launcher launcher = new Launcher();
 
     public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);
