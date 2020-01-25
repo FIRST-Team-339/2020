@@ -81,16 +81,15 @@ public class Autonomous
             {
             position = Position.LEFT;
             }
-        else
-            if (Hardware.autoLocation.getPosition() == Relay.Value.kReverse)
-                {
-                position = Position.RIGHT;
+        else if (Hardware.autoLocation.getPosition() == Relay.Value.kReverse)
+            {
+            position = Position.RIGHT;
 
-                }
-            else
-                {
-                position = Position.CENTER;
-                }
+            }
+        else
+            {
+            position = Position.CENTER;
+            }
 
     } // end Init
 
@@ -193,17 +192,15 @@ public class Autonomous
             {
             path = Path.SHOOT_FAR;
             }
-        else
-            if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
-                {
-                path = Path.SHOOT_CLOSE;
-                }
-            else
-                if (Hardware.shootingPlan.getPosition() == Relay.Value.kOff)
-                    {
-                    // robot is broken
-                    path = Path.NOTHING;
-                    }
+        else if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
+            {
+            path = Path.SHOOT_CLOSE;
+            }
+        else if (Hardware.shootingPlan.getPosition() == Relay.Value.kOff)
+            {
+            // robot is broken
+            path = Path.NOTHING;
+            }
         /*
          * 6 pos switch: this will determine the exiting strategy for each path
          */
@@ -212,36 +209,32 @@ public class Autonomous
             // positioning the robot for the center square
             exit = Exit.ALIGN_SQUARE;
             }
+        else if (Hardware.autoSixPosSwitch.getPosition() == 1)
+            {
+            // position the robot for the trench
+            exit = Exit.ALIGN_TRENCH;
+            }
+        else if (Hardware.autoSixPosSwitch.getPosition() == 2)
+            {
+            // move yourself out of the way, close to goal
+            exit = Exit.TURN_AND_FIRE;
+            }
+        else if (Hardware.autoSixPosSwitch.getPosition() == 3)
+            {
+            // if you are going to turn and fire, this must be called after the functions of
+            // alligning trench
+            exit = Exit.GET_OUT;
+            }
+        else if (Hardware.autoSixPosSwitch.getPosition() == 4)
+            {
+            // path to move straight forward
+            path = Path.MOVE_FORWARD;
+            }
         else
-            if (Hardware.autoSixPosSwitch.getPosition() == 1)
-                {
-                // position the robot for the trench
-                exit = Exit.ALIGN_TRENCH;
-                }
-            else
-                if (Hardware.autoSixPosSwitch.getPosition() == 2)
-                    {
-                    // move yourself out of the way, close to goal
-                    exit = Exit.GET_OUT;
-                    }
-                else
-                    if (Hardware.autoSixPosSwitch.getPosition() == 3)
-                        {
-                        // if you are going to turn and fire, this must be called after the functions of
-                        // alligning trench
-                        exit = Exit.TURN_AND_FIRE;
-                        }
-                    else
-                        if (Hardware.autoSixPosSwitch.getPosition() == 4)
-                            {
-                            // path to move straight forward
-                            path = Path.MOVE_FORWARD;
-                            }
-                        else
-                            {
-                            // path to move straight backwards
-                            path = Path.MOVE_BACKWARDS;
-                            }
+            {
+            // path to move straight backwards
+            path = Path.MOVE_BACKWARDS;
+            }
 
         // Switch case to execute the functions of auto path
 
@@ -267,25 +260,22 @@ public class Autonomous
                     // This is a function that works if the robot is aligned on the left side
                     path = Path.ALIGN_SQUARE;
                     }
-                else
-                    if (exit == Exit.ALIGN_TRENCH)
-                        {
-                        // this is a function that works if the robot is aligned on the right side
-                        path = Path.ALIGN_TRENCH;
-                        }
-                    else
-                        if (exit == Exit.TURN_AND_FIRE)
-                            {
-                            // Continuation of Alinging trench, adding the process of picking up those balls
-                            // and attepting to shoot, or alligning to shoot again.
-                            path = Path.ALIGN_TRENCH;
-                            }
-                        else
-                            if (exit == Exit.GET_OUT)
-                                {
-                                // Move out of the way, staying close to goal to retreive missed balls
-                                path = Path.GET_OUT;
-                                }
+                else if (exit == Exit.ALIGN_TRENCH)
+                    {
+                    // this is a function that works if the robot is aligned on the right side
+                    path = Path.ALIGN_TRENCH;
+                    }
+                else if (exit == Exit.TURN_AND_FIRE)
+                    {
+                    // Continuation of Alinging trench, adding the process of picking up those balls
+                    // and attepting to shoot, or alligning to shoot again.
+                    path = Path.ALIGN_TRENCH;
+                    }
+                else if (exit == Exit.GET_OUT)
+                    {
+                    // Move out of the way, staying close to goal to retreive missed balls
+                    path = Path.GET_OUT;
+                    }
 
                 break;
 
@@ -299,25 +289,22 @@ public class Autonomous
                     // This is a function that works if the robot is aligned on the left side
                     path = Path.ALIGN_SQUARE;
                     }
-                else
-                    if (exit == Exit.ALIGN_TRENCH)
-                        {
-                        // this is a function that works if the robot is aligned on the right side
-                        path = Path.ALIGN_TRENCH;
-                        }
-                    else
-                        if (exit == Exit.TURN_AND_FIRE)
-                            {
-                            // Continuation of Alinging trench, adding the process of picking up those balls
-                            // and attepting to shoot, or alligning to shoot again.
-                            path = Path.ALIGN_TRENCH;
-                            }
-                        else
-                            if (exit == Exit.GET_OUT)
-                                {
-                                // Move out of the way, staying close to goal to retreive missed balls
-                                path = Path.GET_OUT;
-                                }
+                else if (exit == Exit.ALIGN_TRENCH)
+                    {
+                    // this is a function that works if the robot is aligned on the right side
+                    path = Path.ALIGN_TRENCH;
+                    }
+                else if (exit == Exit.TURN_AND_FIRE)
+                    {
+                    // Continuation of Alinging trench, adding the process of picking up those balls
+                    // and attepting to shoot, or alligning to shoot again.
+                    path = Path.ALIGN_TRENCH;
+                    }
+                else if (exit == Exit.GET_OUT)
+                    {
+                    // Move out of the way, staying close to goal to retreive missed balls
+                    path = Path.GET_OUT;
+                    }
 
                 break;
 
@@ -325,11 +312,6 @@ public class Autonomous
                 // move in a straight line forwards
                 moveForward();
 
-                break;
-
-            case MOVE_BACKWARDS:
-                // move in a straight line backwards
-                moveBackward();
                 break;
 
             case DONT_MOVE:
@@ -387,12 +369,18 @@ public class Autonomous
 
     private static void turnFire()
     {
+        // drive backwards towards line
+
+        // turn towards target
+
+        // hail marry
 
     }
 
     private static void pickupTrench()
     {
         // drive forward along balls picking them up
+        Hardware.drive.driveStraightInches(PICKUP_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
     }
 
     private static void alignTrench()
@@ -400,19 +388,15 @@ public class Autonomous
         if (position == Position.RIGHT)
             {
             // robot started in the right position
+            // drive backwards
+            Hardware.drive.driveStraightInches(ALIGN_TRENCH_MOVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION, false);
             // turn turn degrees right
-
-            // Wait am i turning first or driving backwards??
-
             Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, false);
 
+            // drive up to trench
+            Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
+
             }
-        else
-            if (position == Position.CENTER)
-                {
-                // robot started in the center position
-                // turn degrees right (Not the same)
-                }
     }
 
     private static void alignSquare()
@@ -420,6 +404,17 @@ public class Autonomous
         if (position == Position.LEFT)
             {
             // robot started in the left position
+            // drive back towards line
+            Hardware.drive.driveStraightInches(ALIGN_SQUARE_MOVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION, false);
+            // turn away from tower
+            Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_DEGREES, TURN_SPEED, ACCELERATION, false);
+            // drive away from tower
+            Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
+            // turn towards square
+            Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_FINAL_DEGREES, TURN_SPEED, ACCELERATION, false);
+            // drive towards square final distance
+            Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_FINAL_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
+
             }
     }
 
@@ -429,26 +424,31 @@ public class Autonomous
             {
             // robot started in the right position
             // turn degrees right
+            Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, false);
+            // drive towards wall
+            Hardware.drive.driveStraightInches(GET_OUT_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
 
             }
-        else
-            if (position == Position.LEFT)
-                {
-                // robot started in the left position
-                // turn degrees left
-                }
-            else
-                if (position == Position.CENTER)
-                    {
-                    // robot started in the center position
+        else if (position == Position.LEFT)
+            {
+            // robot started in the left position
+            // turn degrees left
+            Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, false);
+            // drive towards wall
+            Hardware.drive.driveStraightInches(GET_OUT_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
+            }
+        else if (position == Position.CENTER)
+            {
+            // drives straight back along same path, moves 10 feet back
+            Hardware.drive.driveStraightInches(GET_OUT_CENTER_DISTANCE, -DRIVE_SPEED, ACCELERATION, false);
 
-                    }
+            }
 
     }
 
     private static void moveBackward()
     {
-
+        // nothing yet?
     }
 
     private static void moveForward()
@@ -473,40 +473,40 @@ public class Autonomous
     }
 
     /*
-     * ============================================================== Constants
-     * ==============================================================
+     * =============================================================================
+     * Constants ==============================================================
      */
 
     private final static double AUTO_GEAR = 1.0;
 
     private final static int OFF_LINE_DISTANCE = 30;
 
-    private final static int GET_OUT_LEFT_DEGREES = 0;
-    private final static int GET_OUT_LEFT_DISTANCE = 0;
+    private final static int GET_OUT_LEFT_DEGREES = -60;
+    private final static int GET_OUT_LEFT_DISTANCE = 36;
 
-    private final static int GET_OUT_RIGHT_DEGREES = 0;
-    private final static int GET_OUT_RIGHT_DISTANCE = 0;
+    private final static int GET_OUT_RIGHT_DEGREES = 60;
+    private final static int GET_OUT_RIGHT_DISTANCE = 36;
 
     private final static int GET_OUT_CENTER_DEGREES = 0;
-    private final static int GET_OUT_CENTER_DISTANCE = 0;
+    private final static int GET_OUT_CENTER_DISTANCE = 120;
 
-    private final static int ALIGN_SQUARE_LEFT_DEGREES = 0;
-    private final static int ALIGN_SQUARE_LEFT_DISTANCE = 0;
+    private final static int ALIGN_SQUARE_MOVE_BACK_DISTANCE = 120;
+    private final static int ALIGN_SQUARE_LEFT_DEGREES = 150;
+    private final static int ALIGN_SQUARE_LEFT_DISTANCE = 120;
+    private final static int ALIGN_SQUARE_LEFT_FINAL_DEGREES = 45;
+    private final static int ALIGN_SQUARE_LEFT_FINAL_DISTANCE = 0;
 
-    private final static int ALIGN_TRENCH_RIGHT_DEGREES = 0;
-    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 0;
+    private final static int ALIGN_TRENCH_MOVE_BACK_DISTANCE = 120;
+    private final static int ALIGN_TRENCH_RIGHT_DEGREES = 120;
+    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 80;
 
-    private final static int ALIGN_TRENCH_CENTER_DEGREES = 0;
-    private final static int ALIGN_TRENCH_CENTER_DISTANCE = 0;
+    // if the way i pick up the balls is just driving into them utilize this
+    // constant
+    private final static int PICKUP_DISTANCE = 120;
 
-    private final static int PICKUP_TURN_RIGHT_DEGREES = 0;
-    private final static int PICKUP_TURN_RIGHT_DISTANCE = 0;
-
-    private final static int PICKUP_TURN_CENTER_DEGREES = 0;
-    private final static int PICKUP_TURN_CENTER_DISTANCE = 0;
-
-    private final static int TUNR_AND_FIRE_DEGREES = 0;
-    private final static int TUNR_AND_FIRE_DISTANCE = 0;
+    private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 120;
+    private final static int TURN_AND_FIRE_DEGREES = -150;
+    private final static int TURN_AND_FIRE_DISTANCE = 0;
 
     private final static double TURN_SPEED = 0.4;
     private final static double DRIVE_SPEED = 0.4;
