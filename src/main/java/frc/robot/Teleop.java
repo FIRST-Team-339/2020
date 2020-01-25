@@ -88,6 +88,18 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+
+        if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
+            {
+            Hardware.intake.intake(Hardware.intakeButton);
+            Hardware.intake.outtake(Hardware.outtakeButton);
+            }
+        else
+            {
+            Hardware.intakeMotor.set(0);
+            }
+        SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
+
         if (Hardware.leftOperator.getRawButton(4))
             {
             testBoolean = true;

@@ -42,20 +42,19 @@ public class LimelightDriveWithVision
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
 
+            else if (offness > 0)
+                {
+
+                adjustmentValueLeft = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueRight = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
+
+                Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                }
             else
-                if (offness > 0)
-                    {
-
-                    adjustmentValueLeft = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
-                    adjustmentValueRight = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
-
-                    Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
-                    }
-                else
-                    {
-                    // drive raw at speed after aligning
-                    Hardware.transmission.driveRaw(DRIVE_AFTER_ALIGN, DRIVE_AFTER_ALIGN);
-                    }
+                {
+                // drive raw at speed after aligning
+                Hardware.transmission.driveRaw(DRIVE_AFTER_ALIGN, DRIVE_AFTER_ALIGN);
+                }
             }
         else
             {
@@ -91,4 +90,4 @@ public class LimelightDriveWithVision
 
     // distance away from the target that the robot will stop at
     final double STOP_DISTANCE_TEST = 50;// TODO
-}
+    }
