@@ -144,10 +144,6 @@ public class Hardware
 
                 // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 
-            // intakeMotor = new WPI_TalonSRX(10);
-            // shootMotor = new WPI_TalonSRX(23);
-            // conveyorMotor = new WPI_TalonSRX(24);
-
                 Hardware.leftFrontMotor.setInverted(false);
                 Hardware.rightFrontMotor.setInverted(true);
 
@@ -290,7 +286,7 @@ public class Hardware
     public static IntakeControl intake = new IntakeControl(launchTimer, intakeMotor);
     public static Launcher launcher = new Launcher();
 
-    public static StorageControl storage = new StorageControl();
+    public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);
     // ------------------------------------------
     // Vision stuff
     // ----------------------------
