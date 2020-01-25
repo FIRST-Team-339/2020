@@ -47,13 +47,12 @@ public class Robot extends TimedRobot
             Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
 
             }
-        else
-            if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
-                {
-                Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
-                Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
-                Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
-                }
+        else if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
+            {
+            Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
+            Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
+            Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
+            }
 
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
@@ -240,7 +239,7 @@ public class Robot extends TimedRobot
         Teleop.periodic();
     } // end testPeriodic()
 
-    private final double CAMERA_HEIGHT_2019 = 35.25;
-    private final double TARGET_HEIGHT_2019 = 83.5;
+    private final double CAMERA_HEIGHT_2019 = 34.25;
+    private final double TARGET_HEIGHT_2019 = 83.7;
     private final double MOUNTING_ANGLE_2019 = 35;
     }

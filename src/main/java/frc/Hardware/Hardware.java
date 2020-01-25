@@ -41,6 +41,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -80,24 +81,24 @@ public class Hardware
         {
         CurrentYear("2020"), PrevYear("2019");
 
-            private final String name;
+        private final String name;
 
-            private Identifier(String s)
-                {
-                    this.name = s;
-                }
-
-            public boolean equalsName(String otherName)
+        private Identifier(String s)
             {
-                // (otherName == null) check is not needed because name.equals(null) returns
-                // false
-                return name.equals(otherName);
+                this.name = s;
             }
 
-            public String toString()
-            {
-                return this.name;
-            }
+        public boolean equalsName(String otherName)
+        {
+            // (otherName == null) check is not needed because name.equals(null) returns
+            // false
+            return name.equals(otherName);
+        }
+
+        public String toString()
+        {
+            return this.name;
+        }
         };
 
     public static Identifier robotIdentity = Identifier.PrevYear;
@@ -178,8 +179,7 @@ public class Hardware
         // ==============CAN INIT=============
         // Motor Controllers
         leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-        //rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
-        rightFrontMotor = new CANSparkMax(27, MotorType.kBrushless);
+        rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
 
         leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
@@ -253,12 +253,12 @@ public class Hardware
             {
             initializeCurrentYear();
             }
-        else
-            if (robotIdentity == Identifier.PrevYear)
-                {
+        else if (robotIdentity == Identifier.PrevYear)
+            {
+            initializePrevYear();
+            usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
 
-                initializePrevYear();
-                }
+            }
 
     } // end initialize()
 
@@ -389,8 +389,14 @@ public class Hardware
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
-    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+    // public static UsbCamera usbCam0 =
+    // CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+    // public static UsbCamera usbCam1 =
+    // CameraServer.getInstance().addSwitchedCamera(null)
+
+    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
+    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
+    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
 
     // ------------------------------------
     // Utility classes
@@ -416,7 +422,6 @@ public class Hardware
 
     // launcher stuff
     public static IntakeControl intake = new IntakeControl(launchTimer);
-
     public static Launcher launcher = new Launcher();
 
     public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);

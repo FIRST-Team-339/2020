@@ -30,6 +30,9 @@
 package frc.robot;
 
 import frc.HardwareInterfaces.KilroyColorSensor;
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
+
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -126,28 +129,40 @@ public class Teleop
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
         if (match.color == kBlueTarget)
+            Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+
+        if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
+            {
+            Hardware.intake.intake(Hardware.intakeButton);
+            Hardware.intake.outtake(Hardware.outtakeButton);
+            }
+        else
+            {
+            Hardware.intakeMotor.set(0);
+            }
+        SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
+
+        if (Hardware.leftOperator.getRawButton(4))
             {
             colorString = "Blue";
             }
+        else if (match.color == kRedTarget)
+            {
+            colorString = "Red";
+            }
+        else if (match.color == kGreenTarget)
+            {
+            colorString = "Green";
+            }
+        else if (match.color == kYellowTarget)
+            {
+            colorString = "Yellow";
+            }
         else
-            if (match.color == kRedTarget)
-                {
-                colorString = "Red";
-                }
-            else
-                if (match.color == kGreenTarget)
-                    {
-                    colorString = "Green";
-                    }
-                else
-                    if (match.color == kYellowTarget)
-                        {
-                        colorString = "Yellow";
-                        }
-                    else
-                        {
-                        colorString = "Unknown";
-                        }
+            {
+            colorString = "Unknown";
+            }
 
         SmartDashboard.putNumber("Red", detectedColor.red);
         SmartDashboard.putNumber("Green", detectedColor.green);
@@ -187,7 +202,7 @@ public class Teleop
         // connerTest();
         // craigTest();
         // chrisTest();
-        // dionTest();
+        dionTest();
         // patrickTest();
     }
 
@@ -229,41 +244,17 @@ public class Teleop
 
     public static void dionTest()
     {
-        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch))
+        if (Hardware.leftOperator.getRawButton(7) && (startOfMatch || cam0))
             {
-            Hardware.camTimer1.stop();
-            Hardware.camTimer1.reset();
 
-            Hardware.usbCam0.close();
-
-            CameraServer.getInstance().removeServer("usb0");
-            CameraServer.getInstance().removeCamera("usb0");
-
-            // Hardware.usbCam0 = CameraServer.getInstance().
-            // Hardware.camTimer1.start();
-
-            System.out.println("Cam 1 on");
-            cam0 = false;
             startOfMatch = false;
-
+            cam0 = false;
             }
-        if (Hardware.leftOperator.getRawButton(8))
+        if (Hardware.leftOperator.getRawButton(8) && !cam0)
             {
 
-            Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
-
+            cam0 = true;
             }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
-            {
-            // Hardware.camTimer2.stop();
-            // Hardware.camTimer2.reset();
-            // Hardware.usbCam1.close();
-            // Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
-            // Hardware.camTimer2.start();
-            // System.out.println("Cam 0 on");
-            // cam0 = true;
-            }
-
     }
 
     public static void chrisTest()
