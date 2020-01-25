@@ -441,21 +441,30 @@ public class Autonomous
                 if (position == Position.CENTER)
                     {
                     // robot started in the center position
-                    // what the fuck
+
                     }
+
     }
 
     private static void moveBackward()
     {
+
     }
 
     private static void moveForward()
     {
+        // this will pull forward the distance declared to leave the line.
+        Hardware.drive.driveStraightInches(OFF_LINE_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
+
     }
 
     private static void shootClose()
     {
         // Drive Forward Then shoot
+        // Drive towards target
+        Hardware.visionDriving.driveToTarget();
+        // Call methods to shoot
+
     }
 
     private static void shootFar()
@@ -469,6 +478,8 @@ public class Autonomous
      */
 
     private final static double AUTO_GEAR = 1.0;
+
+    private final static int OFF_LINE_DISTANCE = 30;
 
     private final static int GET_OUT_LEFT_DEGREES = 0;
     private final static int GET_OUT_LEFT_DISTANCE = 0;
@@ -498,6 +509,8 @@ public class Autonomous
     private final static int TUNR_AND_FIRE_DISTANCE = 0;
 
     private final static double TURN_SPEED = 0.4;
+    private final static double DRIVE_SPEED = 0.4;
+
     private final static double ACCELERATION = .5;
 
     }
