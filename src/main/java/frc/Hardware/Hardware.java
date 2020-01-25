@@ -104,53 +104,52 @@ public class Hardware
             drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
 
             }
-        else
-            if (robotIdentity == Identifier.PrevYear)
-                {
+        else if (robotIdentity == Identifier.PrevYear)
+            {
 
-                // ==============DIO INIT=============
+            // ==============DIO INIT=============
 
-                // ============ANALOG INIT============
-                // delayPot = new Potentiometer(0);
+            // ============ANALOG INIT============
+            // delayPot = new Potentiometer(0);
 
-                // ==============CAN INIT=============
-                // Motor Controllers
-                leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-                rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+            // ==============CAN INIT=============
+            // Motor Controllers
+            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
 
-                // leftFrontMotor = new WPI_TalonFX(13);
-                // rightFrontMotor = new WPI_TalonFX(15);
+            // leftFrontMotor = new WPI_TalonFX(13);
+            // rightFrontMotor = new WPI_TalonFX(15);
 
-                // Encoders
+            // Encoders
 
-                // rightFrontMotor);
-                // ==============RIO INIT==============
+            // rightFrontMotor);
+            // ==============RIO INIT==============
 
-                // =============OTHER INIT============
+            // =============OTHER INIT============
 
-                leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+            leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
 
-                rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+            rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
-                leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
-                rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
-                        rightFrontMotor);
+            leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
+            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
+                    rightFrontMotor);
 
-                // ==============RIO INIT==============
+            // ==============RIO INIT==============
 
-                // =============OTHER INIT============
-                transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-                drive = new Drive(transmission, null, null, gyro);
+            // =============OTHER INIT============
+            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+            drive = new Drive(transmission, null, null, gyro);
 
-                // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
+            // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 
-                Hardware.leftFrontMotor.setInverted(false);
-                Hardware.rightFrontMotor.setInverted(true);
+            Hardware.leftFrontMotor.setInverted(false);
+            Hardware.rightFrontMotor.setInverted(true);
 
-                leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
-                rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+            leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+            rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
-                }
+            }
 
     }
 
