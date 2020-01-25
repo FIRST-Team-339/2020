@@ -144,19 +144,9 @@ public class Hardware
 
                 // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 
-<<<<<<< HEAD
             // intakeMotor = new WPI_TalonSRX(10);
             // shootMotor = new WPI_TalonSRX(23);
             // conveyorMotor = new WPI_TalonSRX(24);
-=======
-                visionInterface = new LimelightInterface();
-                visionDriving = new LimelightDriveWithVision();
-                launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
-
-                // intakeMotor = new WPI_TalonSRX(10);
-                // shootMotor = new WPI_TalonSRX(23);
-                // conveyorMotor = new WPI_TalonSRX(24);
->>>>>>> 3ddcc903185bc84ceda9baf6c62b84888dd0b998
 
                 Hardware.leftFrontMotor.setInverted(false);
                 Hardware.rightFrontMotor.setInverted(true);
