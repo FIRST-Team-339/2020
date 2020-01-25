@@ -42,20 +42,18 @@ public class StorageControl
             {
             ballCount++;
             }
-        else
-            if (!getControlledRLOutput(this.intakeLR) && Hardware.intake.outtaking)
-                {
-                ballCount--;
-                }
-        if (getControlledRLOutput(this.shootLR) && )
+        else if (!getControlledRLOutput(this.intakeLR) && Hardware.intake.outtaking)
             {
             ballCount--;
             }
-        else
-            if (!getControlledRLOutput(this.shootLR) && )
-                {
-                ballCount++;
-                }
+        if (getControlledRLOutput(this.shootLR))
+            {
+            ballCount--;
+            }
+        else if (!getControlledRLOutput(this.shootLR))
+            {
+            ballCount++;
+            }
 
         return 0;
     }
