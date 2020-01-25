@@ -63,7 +63,8 @@ public class Robot extends TimedRobot
         // setup
         // ---------------------------------------
 
-        System.out.println("Kilroy " + Hardware.robotIdentity + " has started.  All hardware items created.");
+        System.out
+                .println("Kilroy " + Hardware.robotIdentity.toString() + " has started.  All hardware items created.");
     } // end robotInit()
 
     /**
