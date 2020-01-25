@@ -131,6 +131,13 @@ public class Teleop
         if (match.color == kBlueTarget)
             Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        int ballCount = 0;
+        if(Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5){
+           ballCount++;
+            SmartDashboard.putNumber("Ball Count", ballCount);
+        }
+            SmartDashboard.putNumber("Ball Count", ballCount);
+
 
         if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
             {
@@ -173,7 +180,7 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-        individualTest();
+        // individualTest();
         // teleopDrive();
 
     } // end Periodic()
@@ -201,8 +208,10 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
+         chrisTest();
+        // dionTest();
         // chrisTest();
-        dionTest();
+        // dionTest();
         // patrickTest();
     }
 
@@ -246,6 +255,15 @@ public class Teleop
     {
         if (Hardware.leftOperator.getRawButton(7) && (startOfMatch || cam0))
             {
+            // CameraServer.getInstance().addCamera(Hardware.usbCam1);
+            // CameraServer.getInstance().addServer("usb0");
+            // Hardware.server.setSource(Hardware.usbCam0);
+            // Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            // CameraServer.getInstance().addServer("serve_usb1");
+            // CameraServer.getInstance().removeCamera("usb1");
+            // CameraServer.getInstance().removeServer("serve_usb1");
+            CameraServer.getInstance().addServer("serve_usb1");
+            CameraServer.getInstance().addCamera(Hardware.usbCam1);
 
             startOfMatch = false;
             cam0 = false;
@@ -259,14 +277,7 @@ public class Teleop
 
     public static void chrisTest()
     {
-        int x = 0;
 
-        if (Hardware.leftDriver.getRawButton(5) == true)
-            {
-            x += 1;
-
-            }
-        SmartDashboard.putNumber("Ball Count", x);
     }
 
     public static void patrickTest()
