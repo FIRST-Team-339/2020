@@ -387,42 +387,45 @@ public class LimelightInterface
 
     /**
      * takePictureWithButtons passes in two joystick buttons and when they are both
-     * pressed, it takes a single picture
+     * pressed, it takes a single picture. Uses two booleans to make sure the camera code is only run once per each button press, regardless of how long they are held
      *
      * @author Patrick
+     *
      * @param leftOp1
      * @param leftOp2
      */
     public void takePictureWithButtons(JoystickButton leftOp1, JoystickButton leftOp2)
     {
+        //avoids a null pointer exception
         if (leftOp1 != null && leftOp2 != null)
             {
-            if (leftOp1.get() && leftOp2.get() && buttonHasBeenPressed && !hasButtonBeenPressed)
+            //if both buttons are pressed and they aren't already pressed,this takes a picture and registers that the buttons have been pressed so that way they won't take another picture
+            if (leftOp1.get() && leftOp2.get() && this.buttonHasBeenPressed && !this.hasButtonBeenPressed)
                 {
-
-                hasButtonBeenPressed = true;
-
-                NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
-                // System.out.println("Picture has been taken");
+                this.hasButtonBeenPressed = true;
+                this.takePicture();
                 }
 
-            if (leftOp1.get() && leftOp2.get() && !buttonHasBeenPressed)
-                buttonHasBeenPressed = true;
+            //if both buttons return true, and are not already pressed, than the boolean registers the buttons have been pressed.
+            if (leftOp1.get() && leftOp2.get() && !this.buttonHasBeenPressed)
+                this.buttonHasBeenPressed = true;
 
+            //if only one of the buttons or neither button is pressed, this makes sure both booleans are false
             if (!leftOp1.get() && !leftOp2.get())
                 {
-                buttonHasBeenPressed = false;
-                hasButtonBeenPressed = false;
+                this.buttonHasBeenPressed = false;
+                this.hasButtonBeenPressed = false;
                 }
             }
     }
 
     /**
-     * takes and stores a picture from the limelight TODO
+     * Takes a picture with the limelight and stores it on the limelight
      */
     public void takePicture()
     {
-
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+        // System.out.println("Picture has been taken");
     }
 
     // TODO implement a class the returns the oordinates of all the points and can
@@ -448,7 +451,7 @@ public class LimelightInterface
                 lowestY = this.ycorner[i];
                 }
             }
-        // get the angle of the lowestX base off of the fov of the camera. lowestX is in
+        // get the angle of the lowestY base off of the fov of the camera. lowestY is in
         // pixels with 0 being at the top of the frame
         // this is currently assuming that the resolution is 320x240 the lowest setting
         // for the limelight camera
@@ -457,15 +460,14 @@ public class LimelightInterface
             {
             lowestDegree = 24.85 - ((lowestY / 120) * 24.85);
             }
+        else if (lowestY < 120)
+            {
+            lowestDegree = (lowestY - 120) / 120 * (49.7 / 2);
+            }
         else
-            if (lowestY > 120)
-                {
-                lowestDegree = -(((lowestY - 120) / 120) * 24.85);
-                }
-            else
-                {
-                lowestDegree = 0;
-                }
+            {
+            lowestDegree = 0;
+            }
 
         return lowestDegree;
     }

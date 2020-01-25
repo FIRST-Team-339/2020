@@ -217,13 +217,13 @@ public class Autonomous
         else if (Hardware.autoSixPosSwitch.getPosition() == 2)
             {
             // move yourself out of the way, close to goal
-            exit = Exit.TURN_AND_FIRE;
+            exit = Exit.GET_OUT;
             }
         else if (Hardware.autoSixPosSwitch.getPosition() == 3)
             {
             // if you are going to turn and fire, this must be called after the functions of
             // alligning trench
-            exit = Exit.GET_OUT;
+            exit = Exit.TURN_AND_FIRE;
             }
         else if (Hardware.autoSixPosSwitch.getPosition() == 4)
             {
@@ -397,6 +397,11 @@ public class Autonomous
             Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
 
             }
+        else if (position == Position.CENTER)
+            {
+            // robot started in the center position
+            // turn degrees right (Not the same)
+            }
     }
 
     private static void alignSquare()
@@ -433,17 +438,12 @@ public class Autonomous
             {
             // robot started in the left position
             // turn degrees left
-            Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, false);
-            // drive towards wall
-            Hardware.drive.driveStraightInches(GET_OUT_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, false);
             }
         else if (position == Position.CENTER)
             {
-            // drives straight back along same path, moves 10 feet back
-            Hardware.drive.driveStraightInches(GET_OUT_CENTER_DISTANCE, -DRIVE_SPEED, ACCELERATION, false);
-
+            // robot started in the center position
+            // what the fuck
             }
-
     }
 
     private static void moveBackward()
@@ -473,8 +473,8 @@ public class Autonomous
     }
 
     /*
-     * =============================================================================
-     * Constants ==============================================================
+     * ============================================================= Constants
+     * ==============================================================
      */
 
     private final static double AUTO_GEAR = 1.0;
