@@ -29,6 +29,7 @@
 // ====================================================================
 package frc.robot;
 
+import frc.HardwareInterfaces.KilroyColorSensor;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -36,9 +37,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
+import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.ColorMatch;
 
 /**
@@ -92,34 +95,65 @@ public class Teleop
     {
         // =============== AUTOMATED SUBSYSTEMS ===============
 
-        // if (Hardware.rightOperator.getRawButton(2) == true) {
+        // if (Hardware.rightOperator.getRawButton(2) == true)
+        // {
         // testBoolean = true;
         // }
-        // if (testBoolean == true) {
+        // if (testBoolean == true)
+        // {
         // System.out.println("Gyro Angle " + Hardware.gyro.getAngle());
 
-        // if (Hardware.drive.turnDegrees(720, .4, 0, true)) {
+        // if (Hardware.drive.turnDegrees(720, .4, 0, true))
+        // {
         // testBoolean = false;
         // }
         // }
 
-        if (testBoolean == false) {
-        Hardware.visionInterface.updateValues();
-        if (Hardware.leftOperator.getRawButton(4))
-            {
-            testBoolean = true;
-            }
-        if (testBoolean)
-            {
-            if (Hardware.visionDriving.driveToTarget())
-                {
-                testBoolean = false;
-                }
-            }
-        if (testBoolean == false)
-            {
+        Color detectedColor = Hardware.colorSensor.getColor();
 
-            teleopDrive();
+        final ColorMatch colorMatcher = new ColorMatch();
+        final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+        final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+        final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+        colorMatcher.addColorMatch(kBlueTarget);
+        colorMatcher.addColorMatch(kGreenTarget);
+        colorMatcher.addColorMatch(kRedTarget);
+        colorMatcher.addColorMatch(kYellowTarget);
+
+        String colorString;
+        ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+
+        if (match.color == kBlueTarget)
+            {
+            colorString = "Blue";
+            }
+        else
+            if (match.color == kRedTarget)
+                {
+                colorString = "Red";
+                }
+            else
+                if (match.color == kGreenTarget)
+                    {
+                    colorString = "Green";
+                    }
+                else
+                    if (match.color == kYellowTarget)
+                        {
+                        colorString = "Yellow";
+                        }
+                    else
+                        {
+                        colorString = "Unknown";
+                        }
+
+        SmartDashboard.putNumber("Red", detectedColor.red);
+        SmartDashboard.putNumber("Green", detectedColor.green);
+        SmartDashboard.putNumber("Blue", detectedColor.blue);
+        SmartDashboard.putString("Detected Color", colorString);
+        teleopDrive();
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
