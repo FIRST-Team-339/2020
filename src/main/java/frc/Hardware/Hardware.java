@@ -203,6 +203,10 @@ public class Hardware {
     public static SingleThrowSwitch shootClose = new SingleThrowSwitch(23);
     public static DoubleThrowSwitch shootingPlan = new DoubleThrowSwitch(shootFar, shootClose);
 
+    public static SingleThrowSwitch leftAuto = new SingleThrowSwitch(24);
+    public static SingleThrowSwitch rightAuto = new SingleThrowSwitch(25);
+    public static DoubleThrowSwitch autoLocation = new DoubleThrowSwitch(leftAuto, rightAuto);
+
     // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
     // public static DoubleThrowSwitch autoTwoBalls = new
