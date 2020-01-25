@@ -53,4 +53,5 @@ public class Launcher
         return 0;
     }
 
+    public boolean launching = false;
     }

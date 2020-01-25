@@ -13,7 +13,10 @@ public class StorageControl
 
     public StorageControl(LightSensor intakeLR, LightSensor lowerLR, LightSensor upperLR, LightSensor shootLR)
         {
-
+            this.intakeLR = intakeLR;
+            this.lowerLR = lowerLR;
+            this.upperLR = upperLR;
+            this.shootLR = shootLR;
         }
 
     public boolean ejectBalls()
@@ -40,22 +43,21 @@ public class StorageControl
 
         if (getControlledRLOutput(this.intakeLR) && Hardware.intake.intaking)
             {
-            ballCount++;
+            if (ballCount < MAX_BALLS)
+                ballCount++;
             }
         else if (!getControlledRLOutput(this.intakeLR) && Hardware.intake.outtaking)
             {
-            ballCount--;
+            if (ballCount > 0)
+                ballCount--;
             }
-        if (getControlledRLOutput(this.shootLR))
+        if (getControlledRLOutput(this.shootLR) && Hardware.launcher.launching)
             {
-            ballCount--;
-            }
-        else if (!getControlledRLOutput(this.shootLR))
-            {
-            ballCount++;
+            if (ballCount > 0)
+                ballCount--;
             }
 
-        return 0;
+        return ballCount;
     }
 
     private boolean prevLR = false;
@@ -63,23 +65,19 @@ public class StorageControl
     public boolean getControlledRLOutput(LightSensor lightSensor)
     {
 
-        if (lightSensor.get())
+        if (lightSensor.get() && !prevLR)
             {
             prevLR = true;
+            return true;
             }
-        else
+        if (!lightSensor.get())
             {
             prevLR = false;
             }
-        if (lightSensor.get() == prevLR)
-            {
-            return false;
-            }
-        else
-            {
-            return true;
-            }
-
+        return false;
     }
+
+    private final int MAX_BALLS = 5;
+    private final int MIN_BALLS = 0;
 
     }

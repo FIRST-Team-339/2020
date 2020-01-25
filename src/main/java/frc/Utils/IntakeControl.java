@@ -1,5 +1,7 @@
 package frc.Utils;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -9,9 +11,9 @@ public class IntakeControl
     {
 
     Timer timer = null;
-    SpeedController intakeMotor = null;
+    WPI_TalonSRX intakeMotor = null;
 
-    public IntakeControl(Timer timer, SpeedController intakeMotor)
+    public IntakeControl(Timer timer)
         {
             this.timer = timer;
             this.timer.reset();
@@ -24,10 +26,11 @@ public class IntakeControl
         if (intakeButton.get())
             {
             intaking = true;
-            intakeMotor.set(INTAKE_SPEED);
+            Hardware.intakeMotor.set(INTAKE_SPEED);
             }
         else
             {
+
             intaking = false;
             }
     }
@@ -38,10 +41,12 @@ public class IntakeControl
         if (this.timer.get() < seconds)
             {
             intaking = true;
-            intakeMotor.set(INTAKE_SPEED);
+            Hardware.intakeMotor.set(INTAKE_SPEED);
+
             }
         else
             {
+
             intaking = false;
             this.timer.stop();
             this.timer.reset();
@@ -56,10 +61,11 @@ public class IntakeControl
             {
             outtaking = true;
             // set motor to vomit up the balls it sucked
-            this.intakeMotor.set(OUTTAKE_SPEED);
+            Hardware.intakeMotor.set(OUTTAKE_SPEED);
             }
         else
             {
+
             outtaking = false;
             }
     }
@@ -69,10 +75,11 @@ public class IntakeControl
         if (Hardware.storage.getBallCount() > 0)
             {
             outtaking = true;
-            this.intakeMotor.set(OUTTAKE_SPEED);
+            Hardware.intakeMotor.set(OUTTAKE_SPEED);
             }
         else
             {
+
             outtaking = false;
             return true;
             }
