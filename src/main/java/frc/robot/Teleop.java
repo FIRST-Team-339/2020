@@ -85,11 +85,14 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        int ballCount = 0;
-        if(Hardware.rightOperator.getRawButton(6) && ballCout >= 0 || ballCount < 5){
-            ballCount += 1;
+       /* int ballCount = 0;
+        if(Hardware.rightOperator.getRawButton(6) == true /*&& ballCount >= 0 || ballCount < 5){
+           ballCount++;
+            SmartDashboard.putNumber("Ball Count", ballCount);
         }
-        return SmartDashboard.putNumber("Ball Count", ballCount);
+            SmartDashboard.putNumber("Ball Count", ballCount);
+*/
+
         if (Hardware.leftOperator.getRawButton(4))
             {
             testBoolean = true;
@@ -110,7 +113,7 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-        // individualTest();
+         individualTest();
         // teleopDrive();
 
     } // end Periodic()
@@ -138,7 +141,7 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-        // chrisTest();
+         chrisTest();
         // dionTest();
         // patrickTest();
     }
@@ -220,14 +223,12 @@ public class Teleop
 
     public static void chrisTest()
     {
-        int x = 0;
-
-        if (Hardware.leftDriver.getRawButton(5) == true)
-            {
-            x += 1;
-
-            }
-        SmartDashboard.putNumber("Ball Count", x);
+        int ballCount = 0;
+        if(Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5){
+           ballCount++;
+            SmartDashboard.putNumber("Ball Count", ballCount);
+        }
+            SmartDashboard.putNumber("Ball Count", ballCount);
     }
 
     public static void patrickTest()

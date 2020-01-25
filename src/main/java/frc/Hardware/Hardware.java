@@ -33,6 +33,7 @@ import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -53,9 +54,8 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
- * ------------------------------------------------------- puts all of the
- * hardware declarations into one place. In addition, it makes them available to
- * both autonomous and teleop.
+ * -------------------------------------------------------
+ *  puts all of the hardware declarations into one place. In addition, it makes them available to both autonomous and teleop.
  *
  * @class HardwareDeclarations
  * @author Bob Brown
@@ -65,98 +65,196 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware
     {
-
+    /**********************************************
+     * Identifier that determines which year's robot
+     * we are testing.
+     *
+     * @author R. Brown
+     * @date 1/25/2020
+     *********************************************/
     public static enum Identifier
         {
-        CurrentYear, PrevYear
-        };
+        CurrentYear("2020"), PrevYear("2019");
 
+        private final String name;
+
+            private Identifier(String 
+
+                    this.name = s;
+                }
+                    
+                i
+
+                // (otherName == null) check is not nee
+             
+                return name.equals(otherName);
+                
+                
+            p
+
+                return this.name;
+            }
+                
+            
     public static Identifier robotIdentity = Identifier.PrevYear;
 
+    /**********************************************
+     * initializePrevYear() function initializes all Hardware
+     * items that are REQUIRED for this year
+     *
+     * @author R. Brown
+     * @date 1/25/2020
+     *********************************************/
+    public static void initializeCurrentYear() // 2020
+    {
+        // ==============CAN INIT=============
+        // Motor Controllers
+        leftFrontMotor = new WPI_TalonFX(13);
+        rightFrontMotor = new WPI_TalonFX(15);
+        leftRearMotor = new WPI_TalonFX(12);
+        rightRearMotor = new WPI_TalonFX(14);
+
+        leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
+        rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
+
+        leftDriveEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
+        rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
+
+        launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
+        launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
+
+        launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
+
+        conveyorMotor1 = new WPI_TalonSRX(21);
+        conveyorMotor2 = new WPI_TalonSRX(22);
+
+        conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
+
+        intakeMotor = new WPI_TalonSRX(23);
+
+        wheelSpinnerMotor = new WPI_TalonSRX(25);
+
+        hoodAdjustmentMotor = new WPI_TalonSRX(24);
+
+        // ==============DIO INIT=============
+
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+
+        conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
+
+        intakeMotorEncoder = new KilroyEncoder((WPI_TalonSRX) intakeMotor);
+
+        wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+
+        // ============ANALOG INIT============
+
+        // ==============RIO INIT=============
+
+        // =============OTHER INIT============
+
+        transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+        drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
+
+    } // end initiaizeCurrentYear()
+
+    /**********************************************
+     * initializePrevYear() function initializes all Hardware items that are
+     * REQUIRED for this year
+     *
+     * @author R. Brown
+     * @date 1/25/2020
+     *********************************************/
+    public static void initializePrevYear() // 2019
+    {
+        // ==============DIO INIT=============
+
+        // ============ANALOG INIT============
+        // delayPot = new Potentiometer(0);
+
+        // ==============CAN INIT=============
+        // Motor Controllers
+        leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+        rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+
+        leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
+        rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
+
+        launcherMotor1 = new WPI_TalonSRX(26);
+
+        launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
+
+        conveyorMotor1 = new WPI_TalonSRX(22);
+
+        conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
+
+        intakeMotor = new WPI_TalonSRX(23);
+
+        wheelSpinnerMotor = new WPI_TalonSRX(25);
+
+        hoodAdjustmentMotor = new WPI_TalonSRX(24);
+
+        // ==============DIO INIT=============
+
+        launcherMotorEncoder = new KilroyEncoder((WPI_TalonSRX) launcherMotor1);
+
+        conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
+
+        intakeMotorEncoder = new KilroyEncoder((WPI_TalonSRX) intakeMotor);
+
+        wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+
+        // ==============RIO INIT==============
+
+        // =============OTHER INIT============
+
+        leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+
+        rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+
+        leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
+        rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
+
+        // ==============RIO INIT==============
+
+        // =============OTHER INIT============
+        transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+        drive = new Drive(transmission, null, null, gyro);
+
+        // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
+
+        // intakeMotor = new WPI_TalonSRX(10);
+        // shootMotor = new WPI_TalonSRX(23);
+        // conveyorMotor = new WPI_TalonSRX(24);
+
+        Hardware.leftFrontMotor.setInverted(false);
+        Hardware.rightFrontMotor.setInverted(true);
+
+        leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+        rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+
+    } // end initizliePrevYear()
+
+    /**********************************************
+     * initialize() function initializes all Hardware items that REQUIRE
+     * initialization. It calls a function for either this year or the previous year
+     *
+     * @author R. Brown
+     * @date 1/25/2020
+     ***********************************************/
     public static void initialize()
     {
 
         if (robotIdentity == Identifier.CurrentYear)
             {
-
-            // ==============CAN INIT=============
-            // Motor Controllers
-            leftFrontMotor = new WPI_TalonFX(13);
-            rightFrontMotor = new WPI_TalonFX(15);
-            // leftRearMotor = new WPI_TalonFX(12);
-            // rightRearMotor = new WPI_TalonFX(14);
-
-            leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */ rightFrontMotor);
-
-            leftDriveEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
-            rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
-
-            // ==============DIO INIT=============
-
-            // ============ANALOG INIT============
-
-            // ==============RIO INIT=============
-
-            // =============OTHER INIT============
-
-            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
-
+            initializeCurrentYear();
             }
-        else
-            if (robotIdentity == Identifier.PrevYear)
-                {
-
-                // ==============DIO INIT=============
-
-                // ============ANALOG INIT============
-                // delayPot = new Potentiometer(0);
-
-                // ==============CAN INIT=============
-                // Motor Controllers
-                leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-                rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
-
-                // leftFrontMotor = new WPI_TalonFX(13);
-                // rightFrontMotor = new WPI_TalonFX(15);
-
-                // Encoders
-
-                // rightFrontMotor);
-                // ==============RIO INIT==============
-
-                // =============OTHER INIT============
-
-                leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
-
-                rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
-
-                leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
-                rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
-                        rightFrontMotor);
-
-                // ==============RIO INIT==============
-
-                // =============OTHER INIT============
-                transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-                drive = new Drive(transmission, null, null, gyro);
-
-                // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
-
-            // intakeMotor = new WPI_TalonSRX(10);
-            // shootMotor = new WPI_TalonSRX(23);
-            // conveyorMotor = new WPI_TalonSRX(24);
-
-                Hardware.leftFrontMotor.setInverted(false);
-                Hardware.rightFrontMotor.setInverted(true);
-
-                leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
-                rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
-
+        else if (robotIdentity == Identifier.PrevYear)
+            {
+            
+            nitializePrevYear();
                 }
-
-    }
+                
+                 initialize()
 
     // **********************************************************
     // CAN DEVICES
@@ -178,12 +276,34 @@ public class Hardware
     public static SpeedController launcherMotor1 = null;
     public static SpeedController launcherMotor2 = null;
 
-    public static SpeedController intakeMotor = null;
-
     public static SpeedControllerGroup launcherMotorGroup = null;
 
     public static KilroyEncoder launcherMotorEncoder = null;
+
+    // ------------------------------------------------------------
+
+    public static SpeedController conveyorMotor1 = null;
+    public static SpeedController conveyorMotor2 = null;
+
+    public static SpeedControllerGroup conveyorMotorGroup = null;
+
+    public static KilroyEncoder conveyorMotorEncoder = null;
+
+    // ------------------------------------------------------------
+
+    public static SpeedController intakeMotor = null;
+
+    public static KilroyEncoder intakeMotorEncoder = null;
+
+    // ------------------------------------------------------------
+
+    public static SpeedController wheelSpinnerMotor = null;
+
+    public static KilroyEncoder wheelSpinnerEncoder = null;
+
     // -------------------------------------------------------------
+
+    public static SpeedController hoodAdjustmentMotor = null;
 
     // **********************************************************
     // DIGITAL I/O
@@ -284,13 +404,13 @@ public class Hardware
     // ------------------------------------
     public static Drive drive = null;
 
-    public static TankTransmission transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+    public static TankTransmission transmission = null;
 
     // launcher stuff
     public static IntakeControl intake = new IntakeControl(launchTimer, intakeMotor);
     public static Launcher launcher = new Launcher();
 
-    public static StorageControl storage = new StorageControl();
+    public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);
     // ------------------------------------------
     // Vision stuff
     // ----------------------------
