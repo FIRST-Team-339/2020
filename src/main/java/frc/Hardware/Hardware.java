@@ -16,7 +16,6 @@ package frc.Hardware;
 
 import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
-import frc.HardwareInterfaces.KilroyColorSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.LightSensor;
@@ -46,7 +45,6 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -57,8 +55,9 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
- * -------------------------------------------------------
- *  puts all of the hardware declarations into one place. In addition, it makes them available to both autonomous and teleop.
+ * ------------------------------------------------------- puts all of the
+ * hardware declarations into one place. In addition, it makes them available to
+ * both autonomous and teleop.
  *
  * @class HardwareDeclarations
  * @author Bob Brown
@@ -99,10 +98,6 @@ public class Hardware
             return this.name;
         }
         };
-
-                return this.name;
-            }
-
 
     public static Identifier robotIdentity = Identifier.PrevYear;
 
@@ -259,6 +254,8 @@ public class Hardware
         else if (robotIdentity == Identifier.PrevYear)
             {
             initializePrevYear();
+            usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+
             }
 
     } // end initialize()
@@ -316,8 +313,6 @@ public class Hardware
     // DIGITAL I/O
     // **********************************************************
 
-    public static I2C.Port i2cPort = I2C.Port.kOnboard;
-    public static KilroyColorSensor colorSensor = new KilroyColorSensor(i2cPort);
     public static LightSensor intakeRL = new LightSensor(12); // bottom
     public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
     public static LightSensor upStoreRL = new LightSensor(4); // upper middle
@@ -395,9 +390,9 @@ public class Hardware
     // public static UsbCamera usbCam1 =
     // CameraServer.getInstance().addSwitchedCamera(null)
 
-    // public static MjpegServer server = new MjpegServer("Camera", 1189);
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
-    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
+    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
+    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
 
     // ------------------------------------
     // Utility classes

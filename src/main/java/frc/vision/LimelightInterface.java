@@ -451,7 +451,7 @@ public class LimelightInterface
                 lowestY = this.ycorner[i];
                 }
             }
-        // get the angle of the lowestX base off of the fov of the camera. lowestX is in
+        // get the angle of the lowestY base off of the fov of the camera. lowestY is in
         // pixels with 0 being at the top of the frame
         // this is currently assuming that the resolution is 320x240 the lowest setting
         // for the limelight camera
@@ -460,25 +460,14 @@ public class LimelightInterface
             {
             lowestDegree = 24.85 - ((lowestY / 120) * 24.85);
             }
-        else if (lowestX < 120)
+        else if (lowestY < 120)
             {
-            lowestDegree = (lowestX - 120) / 120 * (49.7 / 2);
+            lowestDegree = (lowestY - 120) / 120 * (49.7 / 2);
             }
         else
-<<<<<<< HEAD
-            if (lowestY > 120)
-                {
-                lowestDegree = -(((lowestY - 120) / 120) * 24.85);
-                }
-            else
-                {
-                lowestDegree = 0;
-                }
-=======
             {
             lowestDegree = 0;
             }
->>>>>>> patrick commit
 
         return lowestDegree;
     }
