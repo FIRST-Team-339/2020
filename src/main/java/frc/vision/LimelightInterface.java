@@ -126,7 +126,8 @@ public class LimelightInterface
             this.xcorner = this.tcornx.getDoubleArray(new double[0]);
             this.ycorner = this.tcorny.getDoubleArray(new double[0]);
 
-        } catch (NullPointerException exception) {
+            } catch (NullPointerException exception)
+            {
             System.out.println(exception);
             }
 
@@ -269,7 +270,7 @@ public class LimelightInterface
             SmartDashboard.putNumberArray("y corner", this.ycorner);
             SmartDashboard.putNumber("lowest x", this.getLowestXPoint());
 
-        }
+            }
     }
 
     /**
@@ -435,21 +436,30 @@ public class LimelightInterface
      *
      * @return double
      */
-    public double getLowestXPoint() {
+    public double getLowestXPoint()
+    {
         lowestX = this.xcorner[0];
         // compare all the x coordinates in order to find the lowest
-        for (int i = 0; i < this.xcorner.length; i++) {
-            if (this.xcorner[i] < lowestX) {
+        for (int i = 0; i < this.xcorner.length; i++)
+            {
+            if (this.xcorner[i] < lowestX)
+                {
                 lowestX = this.xcorner[i];
+                }
             }
-        }
-        if (lowestX > 120) {
+        if (lowestX > 120)
+            {
             lowestDegree = (120 - lowestX) / 120 * (49.7 / 2);
-        } else if (lowestX < 120) {
-            lowestDegree = (lowestX - 120) / 120 * (497 / 2);
-        } else {
-            lowestDegree = 0;
-        }
+            }
+        else
+            if (lowestX < 120)
+                {
+                lowestDegree = (lowestX - 120) / 120 * (49.7 / 2);
+                }
+            else
+                {
+                lowestDegree = 0;
+                }
 
         return lowestDegree;
     }
