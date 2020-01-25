@@ -67,10 +67,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware
     {
-
-    /**********************************************
-     * Identifier that determines which year's robot
-     * we are testing.
+    /* * Identifier that determines which year's robot
      *
      * @author R. Brown
      * @date 1/25/2020
