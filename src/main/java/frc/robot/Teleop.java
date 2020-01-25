@@ -44,7 +44,8 @@ import frc.Hardware.Hardware;
  * @author Nathanial Lydick
  * @written Jan 13, 2015
  */
-public class Teleop {
+public class Teleop
+    {
 
     /**
      * User Initialization code for teleop mode should go here. Will be called once
@@ -53,17 +54,21 @@ public class Teleop {
      * @author Nathanial Lydick
      * @written Jan 13, 2015
      */
-    public static void init() {
+    public static void init()
+    {
 
         // Gear Inits
 
-        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)) {
+        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear))
+            {
             Hardware.drive.setGearPercentage(0, FIRST_GEAR);
             Hardware.drive.setGearPercentage(1, SECOND_GEAR);
             Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
-        } else {
+            }
+        else
+            {
             // TODO
-        }
+            }
 
         Hardware.drive.setGear(0);
 
@@ -79,15 +84,27 @@ public class Teleop {
 
     public static boolean testBoolean = false;
 
-    public static void periodic() {
+    public static void periodic()
+    {
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-
-        if (testBoolean == false) {
+        if (Hardware.leftOperator.getRawButton(4))
+            {
+            testBoolean = true;
+            }
+        if (testBoolean)
+            {
+            if (Hardware.visionDriving.driveToTarget())
+                {
+                testBoolean = false;
+                }
+            }
+        if (testBoolean == false)
+            {
 
             teleopDrive();
-        }
+            }
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
@@ -97,7 +114,8 @@ public class Teleop {
 
     } // end Periodic()
 
-    public static void teleopDrive() {
+    public static void teleopDrive()
+    {
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
@@ -107,13 +125,15 @@ public class Teleop {
 
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
 
-        if (Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER) {
+        if (Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER)
+            {
             Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
-        }
+            }
 
     }
 
-    public static void individualTest() {
+    public static void individualTest()
+    {
         // people test functions
         // connerTest();
         // craigTest();
@@ -122,35 +142,46 @@ public class Teleop {
         // patrickTest();
     }
 
-    public static void connerTest() {
+    public static void connerTest()
+    {
 
     }
 
-    public static void craigTest() {
+    public static void craigTest()
+    {
 
-        if (Hardware.rightDriver.getRawButton(4) == true) {
-            if (Hardware.invertTempoMomentarySwitch.isOn()) {
+        if (Hardware.rightDriver.getRawButton(4) == true)
+            {
+            if (Hardware.invertTempoMomentarySwitch.isOn())
+                {
                 Hardware.invertTempoMomentarySwitch.setValue(false);
-            } else {
+                }
+            else
+                {
                 Hardware.invertTempoMomentarySwitch.setValue(true);
+                }
             }
-        }
-        if (Hardware.invertTempoMomentarySwitch.isOn()) {
+        if (Hardware.invertTempoMomentarySwitch.isOn())
+            {
             // System.out.println("Should be inverted");
             Hardware.rightFrontMotor.setInverted(true);
             Hardware.leftFrontMotor.setInverted(true);
-        } else {
+            }
+        else
+            {
             Hardware.leftFrontMotor.setInverted(false);
             Hardware.rightFrontMotor.setInverted(false);
-        }
+            }
 
         // System.out.println(Hardware.rightFrontMotor.getInverted());
         System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
 
     }
 
-    public static void dionTest() {
-        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch)) {
+    public static void dionTest()
+    {
+        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch))
+            {
             Hardware.camTimer1.stop();
             Hardware.camTimer1.reset();
 
@@ -166,13 +197,15 @@ public class Teleop {
             cam0 = false;
             startOfMatch = false;
 
-        }
-        if (Hardware.leftOperator.getRawButton(8)) {
+            }
+        if (Hardware.leftOperator.getRawButton(8))
+            {
 
             Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
 
-        }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1) {
+            }
+        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
+            {
             // Hardware.camTimer2.stop();
             // Hardware.camTimer2.reset();
             // Hardware.usbCam1.close();
@@ -180,25 +213,29 @@ public class Teleop {
             // Hardware.camTimer2.start();
             // System.out.println("Cam 0 on");
             // cam0 = true;
-        }
+            }
 
     }
 
-    public static void chrisTest() {
+    public static void chrisTest()
+    {
         int x = 0;
 
-        if (Hardware.leftDriver.getRawButton(5) == true) {
+        if (Hardware.leftDriver.getRawButton(5) == true)
+            {
             x += 1;
 
-        }
+            }
         SmartDashboard.putNumber("Ball Count", x);
     }
 
-    public static void patrickTest() {
+    public static void patrickTest()
+    {
 
     }
 
-    public static void printStatements() {
+    public static void printStatements()
+    {
         // ========== INPUTS ==========
 
         // ---------- DIGITAL ----------
@@ -301,4 +338,4 @@ public class Teleop {
 
     private final static double FORBIDDEN_THIRD_GEAR = 1.0;
 
-} // end class
+    } // end class

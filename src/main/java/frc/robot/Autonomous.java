@@ -49,25 +49,30 @@ import frc.Hardware.Hardware;
  * @author Nathanial Lydick
  * @written Jan 13, 2015
  */
-public class Autonomous {
+public class Autonomous
+    {
 
     /**
      * User Initialization code for autonomous mode should go here. Will run once
      * when the autonomous first starts, and will be followed immediately by
      * periodic().
      */
-    public static void init() {
+    public static void init()
+    {
 
         Hardware.drive.setGearPercentage(4, AUTO_GEAR);
         Hardware.drive.setGear(4);
         /*
          * 2 pos switch: 1: no auto 2: go auto
          */
-        if (Hardware.autoSwitch.isOn() == false) {
+        if (Hardware.autoSwitch.isOn() == false)
+            {
             autoState = State.FINISH;
-        } else {
+            }
+        else
+            {
             autoState = State.INIT;
-        }
+            }
 
         /*
          * pos switch for starting location: forward : left reverse : right off : center
@@ -95,10 +100,10 @@ public class Autonomous {
      * drive.brake results in a more complete stop. Meghan Brown; 10 February 2019
      */
 
-    public static enum Path {
-        NOTHING, SHOOT_FAR, SHOOT_CLOSE, MOVE_FORWARD, MOVE_BACKWARDS, DONT_MOVE, DONT_LEAVE, GET_OUT, ALIGN_SQUARE,
-        ALIGN_TRENCH, PICKUP_TRENCH, TURN_AND_FIRE
-    }
+    public static enum Path
+        {
+        NOTHING, SHOOT_FAR, SHOOT_CLOSE, MOVE_FORWARD, MOVE_BACKWARDS, DONT_MOVE, DONT_LEAVE, GET_OUT, ALIGN_SQUARE, ALIGN_TRENCH, PICKUP_TRENCH, TURN_AND_FIRE
+        }
 
     public static enum Exit {
         ALIGN_SQUARE, ALIGN_TRENCH, GET_OUT, TURN_AND_FIRE, NOTHING
@@ -112,57 +117,67 @@ public class Autonomous {
 
     public static Path path = Path.NOTHING;
 
+<<<<<<< HEAD
     public static Position position = Position.CENTER;
 
     public static enum State {
+=======
+    public static enum State
+        {
+>>>>>>> 1de4637d0b8e77aa15358d30ddb18a324f80c9a4
         INIT, DELAY, CHOOSE_PATH, FINISH
-    }
+        }
 
     public static State autoState = State.INIT;
 
-    public static void periodic() {
+    public static void periodic()
+    {
         // Cancel if the "cancelAuto" button is pressed
-        if (Hardware.cancelAuto.get() == true) {
+        if (Hardware.cancelAuto.get() == true)
+            {
             autoState = State.FINISH;
-        }
-
-        switch (autoState) {
-
-        case INIT:
-            Hardware.autoTimer.start();
-
-            autoState = State.DELAY;
-            break;
-
-        case DELAY:
-            if (Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0)) {
-
-                autoState = State.CHOOSE_PATH;
-                Hardware.autoTimer.stop();
             }
 
-            break;
+        switch (autoState)
+            {
 
-        case CHOOSE_PATH:
-            choosePath();
-            break;
+            case INIT:
+                Hardware.autoTimer.start();
 
-        case FINISH:
-            Hardware.drive.drive(0, 0);
-            break;
+                autoState = State.DELAY;
+                break;
 
-        default:
-            autoState = State.FINISH;
-            break;
+            case DELAY:
+                if (Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0))
+                    {
 
-        }
+                    autoState = State.CHOOSE_PATH;
+                    Hardware.autoTimer.stop();
+                    }
+
+                break;
+
+            case CHOOSE_PATH:
+                choosePath();
+                break;
+
+            case FINISH:
+                Hardware.drive.drive(0, 0);
+                break;
+
+            default:
+                autoState = State.FINISH;
+                break;
+
+            }
 
     }
 
     // =====================================================================
     // Path Methods
     // =====================================================================
-    private static void choosePath() {
+    private static void choosePath()
+    {
         // Statements to determine sates:
 
         /*
@@ -170,8 +185,10 @@ public class Autonomous {
          * kreverse = shoot close kOff = stay, no auto
          */
 
-        if (Hardware.shootingPlan.getPosition() == Relay.Value.kForward) {
+        if (Hardware.shootingPlan.getPosition() == Relay.Value.kForward)
+            {
             path = Path.SHOOT_FAR;
+<<<<<<< HEAD
         } else if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse) {
             path = Path.SHOOT_CLOSE;
         } else if (Hardware.shootingPlan.getPosition() == Relay.Value.kOff) {
@@ -317,11 +334,121 @@ public class Autonomous {
         default:
             path = Path.NOTHING;
             break;
+=======
+            }
+        else
+            if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
+                {
+                path = Path.SHOOT_CLOSE;
+                }
+            else
+                if (Hardware.shootingPlan.getPosition() == Relay.Value.kOff)
+                    {
+                    path = Path.DONT_MOVE;
+                    }
+        /*
+         * 6 pos switch: this will determine the exiting strategy for each path
+         */
+        if (Hardware.autoSixPosSwitch.getPosition() == 0)
+            {
 
-        }
+            }
+        else
+            if (Hardware.autoSixPosSwitch.getPosition() == 1)
+                {
+
+                }
+            else
+                if (Hardware.autoSixPosSwitch.getPosition() == 2)
+                    {
+
+                    }
+                else
+                    if (Hardware.autoSixPosSwitch.getPosition() == 3)
+                        {
+
+                        }
+                    else
+                        if (Hardware.autoSixPosSwitch.getPosition() == 4)
+                            {
+
+                            }
+                        else
+                            {
+                            path = Path.NOTHING;
+                            }
+
+        // Switch case to execute the functions of auto path
+
+        switch (path)
+            {
+            case NOTHING:
+                // Do Nothing :)
+                // Sit there and contemplate your life :)
+                // This will be for the insatnce where the robot is not a in a functioning state
+                // and auto paths are broken
+
+                break;
+
+            case SHOOT_FAR:
+                // The action of not moving before the attempt of shooting
+                shootFar();
+                break;
+
+            case SHOOT_CLOSE:
+                // the action of moving closer before attempting to shoot in the goal
+                shootClose();
+                break;
+
+            case MOVE_FORWARD:
+                // move in a straight line forwards
+                moveForward();
+                break;
+
+            case MOVE_BACKWARDS:
+                // move in a straight line backwards
+                moveBackward();
+                break;
+
+            case DONT_MOVE:
+                // doAnything?
+                break;
+
+            case GET_OUT:
+                // removing yourself from the way of robots
+                getOut();
+                break;
+
+            case ALIGN_SQUARE:
+                // aligning for center square to allign for balls
+                alignSquare();
+                break;
+
+            case ALIGN_TRENCH:
+                // aligning for trench to allign for balls
+                alignTrench();
+                break;
+
+            case PICKUP_TRENCH:
+                // picking up balls
+                pickupTrench();
+                break;
+
+            case TURN_AND_FIRE:
+                // final attempt to turn and shoot more balls from trench
+                turnFire();
+                break;
+
+            default:
+                path = Path.NOTHING;
+                break;
+>>>>>>> 1de4637d0b8e77aa15358d30ddb18a324f80c9a4
+
+            }
 
     }
 
+<<<<<<< HEAD
     private static void turnFire() {
 
     }
@@ -363,20 +490,52 @@ public class Autonomous {
             // robot started in the center position
             // what the fuck
         }
+=======
+    private static void turnFire()
+    {
     }
 
-    private static void moveBackward() {
+    private static void pickupTrench()
+    {
     }
 
-    private static void moveForward() {
+    private static void alignTrench()
+    {
     }
 
+    private static void alignSquare()
+    {
+    }
+
+    private static void getOut()
+    {
+>>>>>>> 1de4637d0b8e77aa15358d30ddb18a324f80c9a4
+    }
+
+    private static void moveBackward()
+    {
+    }
+
+    private static void moveForward()
+    {
+    }
+
+<<<<<<< HEAD
     private static void shootClose() {
         // Drive Forward Then shoot
     }
 
     private static void shootFar() {
         // Call functions to Shoot
+=======
+    private static void shootClose()
+    {
+    }
+
+    private static void shootFar()
+    {
+
+>>>>>>> 1de4637d0b8e77aa15358d30ddb18a324f80c9a4
     }
 
     /*
@@ -385,6 +544,7 @@ public class Autonomous {
      */
 
     private final static double AUTO_GEAR = 1.0;
+<<<<<<< HEAD
 
     private final static int GET_OUT_LEFT_DEGREES = 0;
     private final static int GET_OUT_LEFT_DISTANCE = 0;
@@ -417,3 +577,6 @@ public class Autonomous {
     private final static double ACCELERATION = .5;
 
 }
+=======
+    }
+>>>>>>> 1de4637d0b8e77aa15358d30ddb18a324f80c9a4
