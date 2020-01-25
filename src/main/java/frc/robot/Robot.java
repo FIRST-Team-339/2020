@@ -240,7 +240,7 @@ public class Robot extends TimedRobot
         Teleop.periodic();
     } // end testPeriodic()
 
-    private final double CAMERA_HEIGHT_2019 = 35.25;
-    private final double TARGET_HEIGHT_2019 = 83.5;
+    private final double CAMERA_HEIGHT_2019 = 34.25;
+    private final double TARGET_HEIGHT_2019 = 83.7;
     private final double MOUNTING_ANGLE_2019 = 35;
     }

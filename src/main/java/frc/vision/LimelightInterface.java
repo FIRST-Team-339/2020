@@ -268,7 +268,7 @@ public class LimelightInterface
 
             SmartDashboard.putNumberArray("x corner", this.xcorner);
             SmartDashboard.putNumberArray("y corner", this.ycorner);
-            SmartDashboard.putNumber("lowest x", this.getLowestXPoint());
+            SmartDashboard.putNumber("lowest x degree", this.getLowestYDegree());
 
             }
     }
@@ -426,9 +426,10 @@ public class LimelightInterface
     }
 
     // TODO implement a class the returns the oordinates of all the points and can
-    // give our 3d position on the field
+    // give our 3d position on the field NOTE: this would probably get us an award
+    // and would be kinda cool
 
-    private double lowestX = 0;
+    private double lowestY = 0;
     private double lowestDegree = 0;
 
     /**
@@ -436,25 +437,30 @@ public class LimelightInterface
      *
      * @return double
      */
-    public double getLowestXPoint()
+    public double getLowestYDegree()
     {
-        lowestX = this.xcorner[0];
+        lowestY = this.ycorner[0];
         // compare all the x coordinates in order to find the lowest
-        for (int i = 0; i < this.xcorner.length; i++)
+        for (int i = 0; i < this.ycorner.length; i++)
             {
-            if (this.xcorner[i] < lowestX)
+            if (this.ycorner[i] > lowestY)
                 {
-                lowestX = this.xcorner[i];
+                lowestY = this.ycorner[i];
                 }
             }
-        if (lowestX > 120)
+        // get the angle of the lowestX base off of the fov of the camera. lowestX is in
+        // pixels with 0 being at the top of the frame
+        // this is currently assuming that the resolution is 320x240 the lowest setting
+        // for the limelight camera
+
+        if (lowestY < 120)
             {
-            lowestDegree = (120 - lowestX) / 120 * (49.7 / 2);
+            lowestDegree = 24.85 - ((lowestY / 120) * 24.85);
             }
         else
-            if (lowestX < 120)
+            if (lowestY > 120)
                 {
-                lowestDegree = (lowestX - 120) / 120 * (49.7 / 2);
+                lowestDegree = -(((lowestY - 120) / 120) * 24.85);
                 }
             else
                 {
@@ -481,8 +487,9 @@ public class LimelightInterface
         // / Math.tan(Math.toRadians(this.mountingAngle) -
         // Math.toRadians(Math.abs(getYOffSet())));
 
+        // not so fancy trig stuff that is pretty self explanitory
         distance = (this.cameraHeight - this.targetHeight)
-                / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(Math.abs(this.getLowestXPoint())));
+                / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(-this.getLowestYDegree()));
 
         if (hasTargets == true)
             {
