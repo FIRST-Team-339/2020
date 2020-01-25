@@ -2,7 +2,6 @@ package frc.vision;
 
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.UltraSonic;
-import frc.vision.LimelightInterface;
 
 /**
  * an alternate drive to vision class the also uses the ultrasonic to control

@@ -1,7 +1,6 @@
 package frc.vision;
 
 import frc.Hardware.Hardware;
-import frc.vision.LimelightInterface;
 
 /**
  * an alternate drive to vision class the also uses the ultrasonic to control
@@ -91,5 +90,5 @@ public class LimelightDriveWithVision
     final double MIN_MOVE_2020 = .2;// TODO
 
     // distance away from the target that the robot will stop at
-    final double STOP_DISTANCE_TEST = 80;// TODO
-    }
+    final double STOP_DISTANCE_TEST = 50;// TODO
+}

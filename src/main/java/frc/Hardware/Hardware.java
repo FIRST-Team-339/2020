@@ -26,7 +26,9 @@ import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
 import frc.vision.*;
 import frc.Utils.drive.Drive;
+import frc.Utils.IntakeControl;
 import frc.Utils.Launcher;
+import frc.Utils.StorageControl;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -97,8 +99,7 @@ public class Hardware
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
-            visionInterface = new LimelightInterface();
-            visionDriving = new LimelightDriveWithVision();
+
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
 
@@ -143,13 +144,9 @@ public class Hardware
 
                 // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 
-                visionInterface = new LimelightInterface();
-                visionDriving = new LimelightDriveWithVision();
-                launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
-
-                // intakeMotor = new WPI_TalonSRX(10);
-                // shootMotor = new WPI_TalonSRX(23);
-                // conveyorMotor = new WPI_TalonSRX(24);
+            // intakeMotor = new WPI_TalonSRX(10);
+            // shootMotor = new WPI_TalonSRX(23);
+            // conveyorMotor = new WPI_TalonSRX(24);
 
                 Hardware.leftFrontMotor.setInverted(false);
                 Hardware.rightFrontMotor.setInverted(true);
@@ -180,6 +177,8 @@ public class Hardware
 
     public static SpeedController launcherMotor1 = null;
     public static SpeedController launcherMotor2 = null;
+
+    public static SpeedController intakeMotor = null;
 
     public static SpeedControllerGroup launcherMotorGroup = null;
 
@@ -276,6 +275,8 @@ public class Hardware
 
     public static Timer camTimer2 = new Timer();
 
+    public static Timer launchTimer = new Timer();
+
     public static Telemetry telemetry = new Telemetry(driverStation);
 
     // ------------------------------------
@@ -285,15 +286,17 @@ public class Hardware
 
     public static TankTransmission transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
 
+    // launcher stuff
+    public static IntakeControl intake = new IntakeControl(launchTimer, intakeMotor);
+    public static Launcher launcher = new Launcher();
+
+    public static StorageControl storage = new StorageControl();
     // ------------------------------------------
     // Vision stuff
     // ----------------------------
+    public static LimelightDriveWithVision visionDriving = new LimelightDriveWithVision();
 
-    public static LimelightDriveWithVision visionDriving = null;
-
-    public static LimelightInterface visionInterface = null;
-
-    public static Launcher launcher = null;
+    public static LimelightInterface visionInterface = new LimelightInterface();
 
     public final static double DISTANCE_PER_TICK_XIX = 23 / 13.8;// .0346;
     // -------------------
