@@ -127,8 +127,7 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-         individualTest();
-        individualTest();
+        // individualTest();
         // teleopDrive();
 
     } // end Periodic()
@@ -159,7 +158,7 @@ public class Teleop
          chrisTest();
         // dionTest();
         // chrisTest();
-        dionTest();
+        // dionTest();
         // patrickTest();
     }
 
@@ -203,6 +202,15 @@ public class Teleop
     {
         if (Hardware.leftOperator.getRawButton(7) && (startOfMatch || cam0))
             {
+            // CameraServer.getInstance().addCamera(Hardware.usbCam1);
+            // CameraServer.getInstance().addServer("usb0");
+            // Hardware.server.setSource(Hardware.usbCam0);
+            // Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            // CameraServer.getInstance().addServer("serve_usb1");
+            // CameraServer.getInstance().removeCamera("usb1");
+            // CameraServer.getInstance().removeServer("serve_usb1");
+            CameraServer.getInstance().addServer("serve_usb1");
+            CameraServer.getInstance().addCamera(Hardware.usbCam1);
 
             startOfMatch = false;
             cam0 = false;

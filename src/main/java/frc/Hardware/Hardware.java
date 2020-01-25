@@ -236,6 +236,8 @@ public class Hardware
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, null, null, gyro);
 
+        // usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+        usbCam1.close();
         // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 
         // intakeMotor = new WPI_TalonSRX(10);
@@ -500,9 +502,9 @@ public class Hardware
     // public static UsbCamera usbCam1 =
     // CameraServer.getInstance().addSwitchedCamera(null)
 
-    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
-    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
-    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
+    // public static MjpegServer server = new MjpegServer("Camera", 1189);
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
 
     // ------------------------------------
     // Utility classes
