@@ -38,6 +38,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.I2C;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorMatch;
 
 /**
  * This class contains all of the user code for the Autonomous part of the
@@ -95,12 +99,6 @@ public class Teleop {
         // testBoolean = false;
         // }
         // }
-        Color detectedColor = Hardware.colorSensor.getColor();
-        // SendableRegistry color = Hardware.colorSensor.getColor();
-        SmartDashboard.putNumber("Red", detectedColor.red);
-        SmartDashboard.putNumber("Green", detectedColor.green);
-        SmartDashboard.putNumber("Blue", detectedColor.blue);
-        // SmartDashboard.putData("Color Detected", color);
 
         if (testBoolean == false) {
 
