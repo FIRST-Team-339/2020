@@ -18,7 +18,8 @@ import frc.Hardware.Hardware;
  * project.
  */
 
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot
+    {
 
     /**
      * ------------------------------------------------------- This function is run
@@ -29,7 +30,8 @@ public class Robot extends TimedRobot {
      * @written Jan 2, 2011 -------------------------------------------------------
      */
     @Override
-    public void robotInit() {
+    public void robotInit()
+    {
         System.out.println("Started robotInit()");
         // ---------------------------------------
         // start setup - tell the user we are beginning
@@ -38,16 +40,20 @@ public class Robot extends TimedRobot {
 
         Hardware.initialize();
 
-        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear)) {
+        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear))
+            {
             Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
             Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
             Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
 
-        } else if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear)) {
-            Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
-            Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
-            Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
-        }
+            }
+        else
+            if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
+                {
+                Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
+                Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
+                Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
+                }
 
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
@@ -71,7 +77,8 @@ public class Robot extends TimedRobot {
      * and SmartDashboard integrated updating.
      */
     @Override
-    public void robotPeriodic() {
+    public void robotPeriodic()
+    {
     } // end robotPeriodic()
 
     /**
@@ -85,7 +92,8 @@ public class Robot extends TimedRobot {
      *          -------------------------------------------------------
      */
     @Override
-    public void autonomousInit() {
+    public void autonomousInit()
+    {
         System.out.println("Started AutonousInit().");
         // ---------------------------------------
         // start setup - tell the user we are beginning
@@ -114,7 +122,8 @@ public class Robot extends TimedRobot {
      *          -------------------------------------------------------
      */
     @Override
-    public void autonomousPeriodic() {
+    public void autonomousPeriodic()
+    {
         Autonomous.periodic();
 
     }// end autonomousPeriodic()
@@ -128,7 +137,8 @@ public class Robot extends TimedRobot {
      * @written Jan 2, 2011 -------------------------------------------------------
      */
     @Override
-    public void disabledInit() {
+    public void disabledInit()
+    {
         System.out.println("Started DisabledInit().");
         // ---------------------------------------
         // start setup - tell the user we are beginning
@@ -153,7 +163,8 @@ public class Robot extends TimedRobot {
      * @written Jan 2, 2011 -------------------------------------------------------
      */
     @Override
-    public void disabledPeriodic() {
+    public void disabledPeriodic()
+    {
 
     } // end disabledPeriodic()
 
@@ -167,7 +178,8 @@ public class Robot extends TimedRobot {
      * @written Jan 2, 2011 -------------------------------------------------------
      */
     @Override
-    public void teleopInit() {
+    public void teleopInit()
+    {
         System.out.println("Started teleopInit().");
         // ---------------------------------------
         // start setup - tell the user we are beginning
@@ -193,7 +205,8 @@ public class Robot extends TimedRobot {
      * @written Jan 2, 2011 -------------------------------------------------------
      */
     @Override
-    public void teleopPeriodic() {
+    public void teleopPeriodic()
+    {
         // -------------------------------------
         // Call the Teleop class's Periodic function,
         // which contains the user code.
@@ -212,7 +225,8 @@ public class Robot extends TimedRobot {
      * @written Jan 2, 2015 ------------------------------------------------------
      */
     @Override
-    public void testInit() {
+    public void testInit()
+    {
         this.teleopInit();
 
     } // end testInit()
@@ -221,11 +235,12 @@ public class Robot extends TimedRobot {
      * This function is called periodically during test mode.
      */
     @Override
-    public void testPeriodic() {
+    public void testPeriodic()
+    {
         Teleop.periodic();
     } // end testPeriodic()
 
     private final double CAMERA_HEIGHT_2019 = 35.25;
     private final double TARGET_HEIGHT_2019 = 83.5;
     private final double MOUNTING_ANGLE_2019 = 35;
-}
+    }
