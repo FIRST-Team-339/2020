@@ -150,7 +150,8 @@ public class Hardware
             leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
             rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
-            usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            // usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            usbCam1.close();
 
             }
 
@@ -264,9 +265,9 @@ public class Hardware
     // public static UsbCamera usbCam1 =
     // CameraServer.getInstance().addSwitchedCamera(null)
 
-    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
-    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
-    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
+    // public static MjpegServer server = new MjpegServer("Camera", 1189);
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
 
     // ------------------------------------
     // Utility classes
