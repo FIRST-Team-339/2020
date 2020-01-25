@@ -40,6 +40,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -65,6 +66,10 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware
     {
+<<<<<<< HEAD
+=======
+
+>>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
     /**********************************************
      * Identifier that determines which year's robot
      * we are testing.
@@ -78,6 +83,7 @@ public class Hardware
 
         private final String name;
 
+<<<<<<< HEAD
             private Identifier(String 
 
                     this.name = s;
@@ -91,6 +97,25 @@ public class Hardware
                 
                 
             p
+=======
+        private Identifier(String s)
+            {
+                this.name = s;
+            }
+
+        public boolean equalsName(String otherName)
+        {
+            // (otherName == null) check is not needed because name.equals(null) returns
+            // false
+            return name.equals(otherName);
+        }
+
+        public String toString()
+        {
+            return this.name;
+        }
+        };
+>>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
 
                 return this.name;
             }
@@ -137,6 +162,7 @@ public class Hardware
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
         // ==============DIO INIT=============
+<<<<<<< HEAD
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
 
@@ -229,6 +255,100 @@ public class Hardware
         Hardware.leftFrontMotor.setInverted(false);
         Hardware.rightFrontMotor.setInverted(true);
 
+=======
+
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+
+        conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
+
+        intakeMotorEncoder = new KilroyEncoder((WPI_TalonSRX) intakeMotor);
+
+        wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+
+        // ============ANALOG INIT============
+
+        // ==============RIO INIT=============
+
+        // =============OTHER INIT============
+
+        transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+        drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
+
+    } // end initiaizeCurrentYear()
+
+    /**********************************************
+     * initializePrevYear() function initializes all Hardware items that are
+     * REQUIRED for this year
+     *
+     * @author R. Brown
+     * @date 1/25/2020
+     *********************************************/
+    public static void initializePrevYear() // 2019
+    {
+        // ==============DIO INIT=============
+
+        // ============ANALOG INIT============
+        // delayPot = new Potentiometer(0);
+
+        // ==============CAN INIT=============
+        // Motor Controllers
+        leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+        rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+
+        leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
+        rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
+
+        launcherMotor1 = new WPI_TalonSRX(26);
+
+        launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
+
+        conveyorMotor1 = new WPI_TalonSRX(22);
+
+        conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
+
+        intakeMotor = new WPI_TalonSRX(23);
+
+        wheelSpinnerMotor = new WPI_TalonSRX(25);
+
+        hoodAdjustmentMotor = new WPI_TalonSRX(24);
+
+        // ==============DIO INIT=============
+
+        launcherMotorEncoder = new KilroyEncoder((WPI_TalonSRX) launcherMotor1);
+
+        conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
+
+        intakeMotorEncoder = new KilroyEncoder((WPI_TalonSRX) intakeMotor);
+
+        wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+
+        // ==============RIO INIT==============
+
+        // =============OTHER INIT============
+
+        leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+
+        rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+
+        leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
+        rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
+
+        // ==============RIO INIT==============
+
+        // =============OTHER INIT============
+        transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+        drive = new Drive(transmission, null, null, gyro);
+
+        // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
+
+        // intakeMotor = new WPI_TalonSRX(10);
+        // shootMotor = new WPI_TalonSRX(23);
+        // conveyorMotor = new WPI_TalonSRX(24);
+
+        Hardware.leftFrontMotor.setInverted(false);
+        Hardware.rightFrontMotor.setInverted(true);
+
+>>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
         leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
         rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
@@ -250,11 +370,20 @@ public class Hardware
             }
         else if (robotIdentity == Identifier.PrevYear)
             {
+<<<<<<< HEAD
             
             nitializePrevYear();
                 }
                 
                  initialize()
+=======
+            initializePrevYear();
+            usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+
+            }
+
+    } // end initialize()
+>>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
 
     // **********************************************************
     // CAN DEVICES
@@ -381,8 +510,14 @@ public class Hardware
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
-    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture(1);
+    // public static UsbCamera usbCam0 =
+    // CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+    // public static UsbCamera usbCam1 =
+    // CameraServer.getInstance().addSwitchedCamera(null)
+
+    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
+    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
+    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
 
     // ------------------------------------
     // Utility classes
@@ -407,7 +542,7 @@ public class Hardware
     public static TankTransmission transmission = null;
 
     // launcher stuff
-    public static IntakeControl intake = new IntakeControl(launchTimer, intakeMotor);
+    public static IntakeControl intake = new IntakeControl(launchTimer);
     public static Launcher launcher = new Launcher();
 
     public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);

@@ -29,6 +29,9 @@
 // ====================================================================
 package frc.robot;
 
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
+
+import edu.wpi.cscore.MjpegServer;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
@@ -85,6 +88,7 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+<<<<<<< HEAD
        /* int ballCount = 0;
         if(Hardware.rightOperator.getRawButton(6) == true /*&& ballCount >= 0 || ballCount < 5){
            ballCount++;
@@ -92,6 +96,19 @@ public class Teleop
         }
             SmartDashboard.putNumber("Ball Count", ballCount);
 */
+=======
+
+        if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
+            {
+            Hardware.intake.intake(Hardware.intakeButton);
+            Hardware.intake.outtake(Hardware.outtakeButton);
+            }
+        else
+            {
+            Hardware.intakeMotor.set(0);
+            }
+        SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
+>>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
 
         if (Hardware.leftOperator.getRawButton(4))
             {
@@ -113,7 +130,11 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
+<<<<<<< HEAD
          individualTest();
+=======
+        individualTest();
+>>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
         // teleopDrive();
 
     } // end Periodic()
@@ -141,8 +162,13 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
+<<<<<<< HEAD
          chrisTest();
         // dionTest();
+=======
+        // chrisTest();
+        dionTest();
+>>>>>>> eed1fb92e0cf82fc4b4e1ccf531a14025946319d
         // patrickTest();
     }
 
@@ -184,41 +210,17 @@ public class Teleop
 
     public static void dionTest()
     {
-        if (Hardware.leftOperator.getRawButton(7) && cam0 && (Hardware.camTimer2.get() > 1 || startOfMatch))
+        if (Hardware.leftOperator.getRawButton(7) && (startOfMatch || cam0))
             {
-            Hardware.camTimer1.stop();
-            Hardware.camTimer1.reset();
 
-            Hardware.usbCam0.close();
-
-            CameraServer.getInstance().removeServer("usb0");
-            CameraServer.getInstance().removeCamera("usb0");
-
-            // Hardware.usbCam0 = CameraServer.getInstance().
-            // Hardware.camTimer1.start();
-
-            System.out.println("Cam 1 on");
-            cam0 = false;
             startOfMatch = false;
-
+            cam0 = false;
             }
-        if (Hardware.leftOperator.getRawButton(8))
+        if (Hardware.leftOperator.getRawButton(8) && !cam0)
             {
 
-            Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(4);
-
+            cam0 = true;
             }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() > 1)
-            {
-            // Hardware.camTimer2.stop();
-            // Hardware.camTimer2.reset();
-            // Hardware.usbCam1.close();
-            // Hardware.usbCam0 = CameraServer.getInstance().startAutomaticCapture(0);
-            // Hardware.camTimer2.start();
-            // System.out.println("Cam 0 on");
-            // cam0 = true;
-            }
-
     }
 
     public static void chrisTest()
