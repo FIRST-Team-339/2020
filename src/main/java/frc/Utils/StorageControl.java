@@ -1,5 +1,6 @@
 package frc.Utils;
 
+import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
 
 public class StorageControl
@@ -30,11 +31,57 @@ public class StorageControl
         return false;
     }
 
+    private int ballCount = 0;
+
     public int getBallCount()
     {
+
         // return the ball count
 
+        if (getControlledRLOutput(this.intakeLR) && Hardware.intake.intaking)
+            {
+            ballCount++;
+            }
+        else
+            if (!getControlledRLOutput(this.intakeLR) && Hardware.intake.outtaking)
+                {
+                ballCount--;
+                }
+        if (getControlledRLOutput(this.shootLR) && )
+            {
+            ballCount--;
+            }
+        else
+            if (!getControlledRLOutput(this.shootLR) && )
+                {
+                ballCount++;
+                }
+
         return 0;
+    }
+
+    private boolean prevLR = false;
+
+    public boolean getControlledRLOutput(LightSensor lightSensor)
+    {
+
+        if (lightSensor.get())
+            {
+            prevLR = true;
+            }
+        else
+            {
+            prevLR = false;
+            }
+        if (lightSensor.get() == prevLR)
+            {
+            return false;
+            }
+        else
+            {
+            return true;
+            }
+
     }
 
     }
