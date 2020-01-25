@@ -26,7 +26,9 @@ import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
 import frc.vision.*;
 import frc.Utils.drive.Drive;
+import frc.Utils.IntakeControl;
 import frc.Utils.Launcher;
+import frc.Utils.StorageControl;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -62,25 +64,21 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * @written Jan 2, 2011 -------------------------------------------------------
  */
 
-public class Hardware {
+public class Hardware
+    {
 
-    public static enum Identifier {
+    public static enum Identifier
+        {
         CurrentYear, PrevYear
-    };
+        };
 
     public static Identifier robotIdentity = Identifier.PrevYear;
 
-    public static void initialize() {
+    public static void initialize()
+    {
 
-        // ==============Buttons=============
-        cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
-        gearUp = new JoystickButton(Hardware.rightDriver, 1);
-        gearDown = new JoystickButton(Hardware.leftDriver, 1);
-        launchButton = new JoystickButton(Hardware.rightOperator, 1);
-        intakeButton = new JoystickButton(Hardware.leftOperator, 1);
-        publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
-
-        if (robotIdentity == Identifier.CurrentYear) {
+        if (robotIdentity == Identifier.CurrentYear)
+            {
 
             // ==============CAN INIT=============
             // Motor Controllers
@@ -102,62 +100,60 @@ public class Hardware {
             // ==============RIO INIT=============
 
             // =============OTHER INIT============
-            visionInterface = new LimelightInterface();
-            visionDriving = new LimelightDriveWithVision();
+
             transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
             drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
 
-        } else if (robotIdentity == Identifier.PrevYear) {
+            }
+        else
+            if (robotIdentity == Identifier.PrevYear)
+                {
 
-            // ==============DIO INIT=============
+                // ==============DIO INIT=============
 
-            // ============ANALOG INIT============
-            // delayPot = new Potentiometer(0);
+                // ============ANALOG INIT============
+                // delayPot = new Potentiometer(0);
 
-            // ==============CAN INIT=============
-            // Motor Controllers
-            leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
-            rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+                // ==============CAN INIT=============
+                // Motor Controllers
+                leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
+                rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
 
-            // leftFrontMotor = new WPI_TalonFX(13);
-            // rightFrontMotor = new WPI_TalonFX(15);
+                // leftFrontMotor = new WPI_TalonFX(13);
+                // rightFrontMotor = new WPI_TalonFX(15);
 
-            // Encoders
+                // Encoders
 
-            // rightFrontMotor);
-            // ==============RIO INIT==============
+                // rightFrontMotor);
+                // ==============RIO INIT==============
 
-            // =============OTHER INIT============
+                // =============OTHER INIT============
 
-            leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
+                leftDriveEncoder = new KilroyEncoder((CANSparkMax) leftFrontMotor);
 
-            rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
+                rightDriveEncoder = new KilroyEncoder((CANSparkMax) rightFrontMotor);
 
-            leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
-            rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
-                    rightFrontMotor);
+                leftDriveGroup = new SpeedControllerGroup(/* leftRearMotor, */ leftFrontMotor);
+                rightDriveGroup = new SpeedControllerGroup(/* rightRearMotor, */
+                        rightFrontMotor);
 
-            // ==============RIO INIT==============
+                // ==============RIO INIT==============
 
-            // =============OTHER INIT============
-            transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
-            drive = new Drive(transmission, null, null, gyro);
+                // =============OTHER INIT============
+                transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
+                drive = new Drive(transmission, null, null, gyro);
 
-            // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
-
-            visionInterface = new LimelightInterface();
-            visionDriving = new LimelightDriveWithVision();
-            launcher = new Launcher(intakeRL, firingRL, upStoreRL, lowStoreRL, null, null);
+                // drivePID = new DrivePID(transmission, leftEncoder, , gyro);
 
             // intakeMotor = new WPI_TalonSRX(10);
             // shootMotor = new WPI_TalonSRX(23);
             // conveyorMotor = new WPI_TalonSRX(24);
 
-            Hardware.leftFrontMotor.setInverted(false);
-            Hardware.rightFrontMotor.setInverted(true);
+                Hardware.leftFrontMotor.setInverted(false);
+                Hardware.rightFrontMotor.setInverted(true);
 
-            leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
-            rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+                leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+                rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
             usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
 
@@ -185,6 +181,8 @@ public class Hardware {
     public static SpeedController launcherMotor1 = null;
     public static SpeedController launcherMotor2 = null;
 
+    public static SpeedController intakeMotor = null;
+
     public static SpeedControllerGroup launcherMotorGroup = null;
 
     public static KilroyEncoder launcherMotorEncoder = null;
@@ -205,6 +203,10 @@ public class Hardware {
     public static SingleThrowSwitch shootFar = new SingleThrowSwitch(22);
     public static SingleThrowSwitch shootClose = new SingleThrowSwitch(23);
     public static DoubleThrowSwitch shootingPlan = new DoubleThrowSwitch(shootFar, shootClose);
+
+    public static SingleThrowSwitch leftAuto = new SingleThrowSwitch(24);
+    public static SingleThrowSwitch rightAuto = new SingleThrowSwitch(25);
+    public static DoubleThrowSwitch autoLocation = new DoubleThrowSwitch(leftAuto, rightAuto);
 
     // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
@@ -248,13 +250,14 @@ public class Hardware {
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
-    public static JoystickButton publishVisionButton = null;
+    public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+    public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
     public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************
@@ -281,6 +284,8 @@ public class Hardware {
 
     public static Timer camTimer2 = new Timer();
 
+    public static Timer launchTimer = new Timer();
+
     public static Telemetry telemetry = new Telemetry(driverStation);
 
     // ------------------------------------
@@ -290,19 +295,21 @@ public class Hardware {
 
     public static TankTransmission transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
 
+    // launcher stuff
+    public static IntakeControl intake = new IntakeControl(launchTimer, intakeMotor);
+    public static Launcher launcher = new Launcher();
+
+    public static StorageControl storage = new StorageControl();
     // ------------------------------------------
     // Vision stuff
     // ----------------------------
+    public static LimelightDriveWithVision visionDriving = new LimelightDriveWithVision();
 
-    public static LimelightDriveWithVision visionDriving = null;
-
-    public static LimelightInterface visionInterface = null;
-
-    public static Launcher launcher = null;
+    public static LimelightInterface visionInterface = new LimelightInterface();
 
     public final static double DISTANCE_PER_TICK_XIX = 23 / 13.8;// .0346;
     // -------------------
     // Subassemblies
     // -------------------
 
-} // end class
+    } // end class

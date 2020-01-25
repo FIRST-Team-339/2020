@@ -2,11 +2,7 @@ package frc.vision;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.MomentarySwitch;
-
-import javax.swing.DefaultListCellRenderer;
-
 import edu.wpi.first.networktables.*;
 
 /**
@@ -17,14 +13,15 @@ import edu.wpi.first.networktables.*;
  *
  * the web application can be used to adjust the filtering values
  *
- * currrent camera settings as of 1/23/20 are exposure = 12 black offset level
- * =24 red balance = 1013 blue balance = 500
+ * currrent camera settings as of 1/23/20 are exposure = 12 black offset
+ * level=24 red balance = 1013 blue balance = 500
  *
  * @author Conner McKevitt
  *
  *
  */
-public class LimelightInterface {
+public class LimelightInterface
+    {
 
     NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
     /*
@@ -70,6 +67,10 @@ public class LimelightInterface {
     // led mod
     NetworkTableEntry Led_Mode = limelight.getEntry("ledMode");
 
+    NetworkTableEntry tcornx = limelight.getEntry("tcornx");
+
+    NetworkTableEntry tcorny = limelight.getEntry("tcorny");
+
     // our declarations of the limelight provided information
     private boolean hasTargets;
 
@@ -97,11 +98,18 @@ public class LimelightInterface {
 
     private double led_Mode;
 
+    private double[] xcorner;
+
+    private double[] ycorner;
+
     // to be called continuously
     // updates internal values with those recieved from the network table
-    public void updateValues() {
+    public void updateValues()
+    {
 
-        try {
+        // dont let the null pointer monsters attack
+        try
+            {
             this.hasTargets = this.hasTargets(this.tv.getDouble(0));
             this.x = this.tx.getDouble(0);
             this.y = this.ty.getDouble(0);
@@ -115,9 +123,13 @@ public class LimelightInterface {
             this.pipeline = this.getpipe.getDouble(0);
             this.led_Mode = this.Led_Mode.getDouble(0);
 
-        } catch (NullPointerException exception) {
+            this.xcorner = this.tcornx.getDoubleArray(new double[0]);
+            this.ycorner = this.tcorny.getDoubleArray(new double[0]);
+
+            } catch (NullPointerException exception)
+            {
             System.out.println(exception);
-        }
+            }
 
     }
 
@@ -126,7 +138,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getXOffSet() {
+    public double getXOffSet()
+    {
         return this.x;
 
     }
@@ -136,7 +149,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getYOffSet() {
+    public double getYOffSet()
+    {
         return this.y;
     }
 
@@ -145,7 +159,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getArea() {
+    public double getArea()
+    {
         return this.area;
     }
 
@@ -154,7 +169,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getSkew() {
+    public double getSkew()
+    {
         return this.skew;
     }
 
@@ -163,7 +179,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getLatency() {
+    public double getLatency()
+    {
         return this.latency;
     }
 
@@ -173,7 +190,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getShortSide() {
+    public double getShortSide()
+    {
         return this.shortSide;
     }
 
@@ -183,7 +201,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getLongSide() {
+    public double getLongSide()
+    {
         return this.longSide;
     }
 
@@ -193,7 +212,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getHorizontalSide() {
+    public double getHorizontalSide()
+    {
         return this.horizontal;
     }
 
@@ -202,7 +222,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getVerticalSide() {
+    public double getVerticalSide()
+    {
         return this.vertical;
     }
 
@@ -211,7 +232,8 @@ public class LimelightInterface {
      *
      * @return
      */
-    public double getPipeline() {
+    public double getPipeline()
+    {
         return this.pipeline;
     }
 
@@ -219,14 +241,18 @@ public class LimelightInterface {
      * publishes all of the data provided by the limelight to the smartdashboard for
      * debugging.
      *
-     * @param MomentarySwitch switch to enable/disable the publishing of the values
+     * @param MomentarySwitch
+     *                            switch to enable/disable the publishing of the
+     *                            values
      *
      */
-    public void publishValues(MomentarySwitch publishSwitch) {
+    public void publishValues(MomentarySwitch publishSwitch)
+    {
 
         publishSwitch.update();
 
-        if (publishSwitch.get() == true) {
+        if (publishSwitch.get() == true)
+            {
             SmartDashboard.putBoolean("hasTargets", this.hasTargets);
             SmartDashboard.putNumber("x offset", this.x);
             SmartDashboard.putNumber("y offset", this.y);
@@ -239,7 +265,12 @@ public class LimelightInterface {
             SmartDashboard.putNumber("pipeline ", this.pipeline);
             SmartDashboard.putNumber("ledMode", this.led_Mode);
             SmartDashboard.putNumber("distance", this.getDistanceFromTarget());
-        }
+
+            SmartDashboard.putNumberArray("x corner", this.xcorner);
+            SmartDashboard.putNumberArray("y corner", this.ycorner);
+            SmartDashboard.putNumber("lowest x", this.getLowestXPoint());
+
+            }
     }
 
     /**
@@ -247,19 +278,22 @@ public class LimelightInterface {
      *
      * @return boolean
      */
-    public boolean hasTargets(double targets) {
-        if (targets > 0.0) {
+    public boolean hasTargets(double targets)
+    {
+        if (targets > 0.0)
+            {
             return true;
-        }
+            }
         return false;
     }
 
     /**
      * enum to control the LedMode of the limelight
      */
-    private enum LedMode {
+    private enum LedMode
+        {
         PIPELINE, OFF, BLINK, ON
-    }
+        }
 
     private LedMode ledmode = LedMode.PIPELINE;
 
@@ -272,33 +306,37 @@ public class LimelightInterface {
      * sets the led mode of the limelight. This is TODO as it has yet to be tested
      * TODO return number with an enum and forgo the switch
      *
-     * @param ledMode 0 =pipleline control 1 = off 2 = blink 3 = on
+     * @param ledMode
+     *                    0 =pipleline control 1 = off 2 = blink 3 = on
      */
-    public void setLedMode(LedMode ledMode) {
-        switch (this.ledmode) {
-        case PIPELINE:
-            limelight.getEntry("ledMode").setNumber(0);
-            break;
-        case OFF:
-            limelight.getEntry("ledMode").setNumber(1);
-            break;
-        case BLINK:
-            limelight.getEntry("ledMode").setNumber(2);
-            break;
-        case ON:
-            limelight.getEntry("ledMode").setNumber(3);
-            break;
-        default:
-            break;
-        }
+    public void setLedMode(LedMode ledMode)
+    {
+        switch (this.ledmode)
+            {
+            case PIPELINE:
+                limelight.getEntry("ledMode").setNumber(0);
+                break;
+            case OFF:
+                limelight.getEntry("ledMode").setNumber(1);
+                break;
+            case BLINK:
+                limelight.getEntry("ledMode").setNumber(2);
+                break;
+            case ON:
+                limelight.getEntry("ledMode").setNumber(3);
+                break;
+            default:
+                break;
+            }
     }
 
     /**
      * enum to control the camera mode of the limelight
      */
-    private enum CamMode {
+    private enum CamMode
+        {
         PROCESSOR, CAMERA
-    }
+        }
 
     private CamMode camMode = CamMode.PROCESSOR;
 
@@ -312,33 +350,39 @@ public class LimelightInterface {
      *
      * TODO return number with an enum and forgo the switch
      *
-     * @param mode 0 = vision processor 1 = driver camera
+     * @param mode
+     *                 0 = vision processor 1 = driver camera
      */
-    public void setCamMode(int mode) {
-        switch (this.camMode) {
-        case PROCESSOR:
-            limelight.getEntry("camMode").setNumber(0);
-            break;
-        case CAMERA:
-            limelight.getEntry("camMode").setNumber(1);
-            break;
-        default:
-            break;
-        }
+    public void setCamMode(int mode)
+    {
+        switch (this.camMode)
+            {
+            case PROCESSOR:
+                limelight.getEntry("camMode").setNumber(0);
+                break;
+            case CAMERA:
+                limelight.getEntry("camMode").setNumber(1);
+                break;
+            default:
+                break;
+            }
     }
 
     /**
      *
      * sets the current processing pipeline for thelimelight
      *
-     * @param pipe the pipeline number this has to be made in the web interface for
-     *             the limelight
+     * @param pipe
+     *                 the pipeline number this has to be made in the web interface
+     *                 for the limelight
      */
-    public void setPipeline(int pipe) {
+    public void setPipeline(int pipe)
+    {
 
-        if (pipe <= 9 && pipe >= 0) {
+        if (pipe <= 9 && pipe >= 0)
+            {
             limelight.getEntry("pipeling").setNumber(pipe);
-        }
+            }
     }
 
     /**
@@ -349,31 +393,75 @@ public class LimelightInterface {
      * @param leftOp1
      * @param leftOp2
      */
-    public void takePictureWithButtons(JoystickButton leftOp1, JoystickButton leftOp2) {
-        if (leftOp1 != null && leftOp2 != null) {
-            if (leftOp1.get() && leftOp2.get() && buttonHasBeenPressed && !hasButtonBeenPressed) {
+    public void takePictureWithButtons(JoystickButton leftOp1, JoystickButton leftOp2)
+    {
+        if (leftOp1 != null && leftOp2 != null)
+            {
+            if (leftOp1.get() && leftOp2.get() && buttonHasBeenPressed && !hasButtonBeenPressed)
+                {
 
                 hasButtonBeenPressed = true;
 
                 NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
                 // System.out.println("Picture has been taken");
-            }
+                }
 
             if (leftOp1.get() && leftOp2.get() && !buttonHasBeenPressed)
                 buttonHasBeenPressed = true;
 
-            if (!leftOp1.get() && !leftOp2.get()) {
+            if (!leftOp1.get() && !leftOp2.get())
+                {
                 buttonHasBeenPressed = false;
                 hasButtonBeenPressed = false;
+                }
             }
-        }
     }
 
     /**
      * takes and stores a picture from the limelight TODO
      */
-    public void takePicture() {
+    public void takePicture()
+    {
 
+    }
+
+    // TODO implement a class the returns the oordinates of all the points and can
+    // give our 3d position on the field
+
+    private double lowestX = 0;
+    private double lowestDegree = 0;
+
+    /**
+     * returns the lowest x coordinat of the vision target. this is for use
+     *
+     * @return double
+     */
+    public double getLowestXPoint()
+    {
+        lowestX = this.xcorner[0];
+        // compare all the x coordinates in order to find the lowest
+        for (int i = 0; i < this.xcorner.length; i++)
+            {
+            if (this.xcorner[i] < lowestX)
+                {
+                lowestX = this.xcorner[i];
+                }
+            }
+        if (lowestX > 120)
+            {
+            lowestDegree = (120 - lowestX) / 120 * (49.7 / 2);
+            }
+        else
+            if (lowestX < 120)
+                {
+                lowestDegree = (lowestX - 120) / 120 * (49.7 / 2);
+                }
+            else
+                {
+                lowestDegree = 0;
+                }
+
+        return lowestDegree;
     }
 
     // variable for storing distance
@@ -385,44 +473,57 @@ public class LimelightInterface {
      *
      * @return distance away from the blob
      */
-    public double getDistanceFromTarget() {
+    public double getDistanceFromTarget()
+    {
+
+        // not so fancy trig stuff that is pretty self explanitory
+        // distance = (this.cameraHeight - this.targetHeight)
+        // / Math.tan(Math.toRadians(this.mountingAngle) -
+        // Math.toRadians(Math.abs(getYOffSet())));
 
         distance = (this.cameraHeight - this.targetHeight)
-                / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(Math.abs(getYOffSet())));
+                / Math.tan(Math.toRadians(this.mountingAngle) - Math.toRadians(Math.abs(this.getLowestXPoint())));
 
-        if (hasTargets == true) {
+        if (hasTargets == true)
+            {
 
             return Math.abs(distance);
-        } else {
+            }
+        else
+            {
             return 0;
-        }
+            }
     }
 
     /**
      * sets the camera height for use in getting distance
      */
-    public void setCameraHeight(double cameraHeight) {
+    public void setCameraHeight(double cameraHeight)
+    {
         this.cameraHeight = cameraHeight;
     }
 
     /**
      * sets the target height for use in getting distance
      */
-    public void setTargetHeight(double targetHeight) {
+    public void setTargetHeight(double targetHeight)
+    {
         this.targetHeight = targetHeight;
     }
 
     /**
      * sets the mounting angle for use in getting distance
      */
-    public void setMountingAngle(double mountingAngle) {
+    public void setMountingAngle(double mountingAngle)
+    {
         this.mountingAngle = mountingAngle;
     }
 
     /**
      * @return camera height
      */
-    public double getCameraHeight() {
+    public double getCameraHeight()
+    {
         return this.cameraHeight;
     }
 
@@ -430,7 +531,8 @@ public class LimelightInterface {
      *
      * @return target height
      */
-    public double getTargetHeight() {
+    public double getTargetHeight()
+    {
         return this.targetHeight;
     }
 
@@ -438,11 +540,11 @@ public class LimelightInterface {
      *
      * @return mounting angle
      */
-    public double getMountingAngle() {
+    public double getMountingAngle()
+    {
         return this.mountingAngle;
     }
 
-    // TODO make getters and setters and set these to null
     private double cameraHeight = 0;
 
     private double targetHeight = 0;
@@ -452,4 +554,4 @@ public class LimelightInterface {
     // TODO make patrick comment
     private boolean buttonHasBeenPressed = false;
     private boolean hasButtonBeenPressed = false;
-}
+    }
