@@ -19,7 +19,7 @@ public class LimelightDriveWithVision
      *
      * @return
      */
-    public boolean driveToTarget()
+    public boolean driveToTarget(int distance, boolean overrideUltrasonic)
     {
         // offness recieved from network tables
         double offness = Hardware.visionInterface.getXOffSet();
@@ -28,8 +28,14 @@ public class LimelightDriveWithVision
         double adjustmentValueRight = 0;
         // right move speed
         double adjustmentValueLeft = 0;
-
-        if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST)
+        if (overrideUltrasonic)
+            {
+            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < distance)
+                {
+                return true;
+                }
+            }
+        if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
             if (offness < 0)

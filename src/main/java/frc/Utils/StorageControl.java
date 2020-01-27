@@ -19,6 +19,13 @@ public class StorageControl
             this.shootLR = shootLR;
         }
 
+    public void storageUpdate()
+    {
+        getBallCount();
+        getControlledRLOutput(intakeLR);
+        //other stuff
+    }
+
     public boolean ejectBalls()
     {
         if (this.getBallCount() > 0)
@@ -44,15 +51,18 @@ public class StorageControl
         if (getControlledRLOutput(this.intakeLR) && Hardware.intake.intaking)
             {
             if (ballCount < MAX_BALLS)
-                ballCount++;
+                didThing = true;
+            ballCount++;
             }
         else if (!getControlledRLOutput(this.intakeLR) && Hardware.intake.outtaking)
             {
+            didThing = true;
             if (ballCount > 0)
                 ballCount--;
             }
         if (getControlledRLOutput(this.shootLR) && Hardware.launcher.launching)
             {
+            didThing = true;
             if (ballCount > 0)
                 ballCount--;
             }
@@ -60,20 +70,42 @@ public class StorageControl
         return ballCount;
     }
 
-    private boolean prevLR = false;
+    private boolean didThing = false;
+    private boolean LRTriggered = false;
 
     public boolean getControlledRLOutput(LightSensor lightSensor)
     {
-
-        if (lightSensor.get() && !prevLR)
+        if (didThing)
             {
-            prevLR = true;
+            return false;
+            }
+
+        if (lightSensor.get() && !didThing)
+            {
+
             return true;
             }
         if (!lightSensor.get())
             {
-            prevLR = false;
+            return false;
             }
+        return false;
+    }
+
+    public void jamAway()
+    {
+        //move the motors randomly enough that we unjam stuff
+
+    }
+
+    public void getBallPosition()
+    {
+
+    }
+
+    public boolean prepareToShoot()
+    {
+
         return false;
     }
 

@@ -29,7 +29,7 @@ public class Launcher
      * desire. whether it be the target or pesky those builders who have yet to
      * finish the actual laucher
      */
-    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
+    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, boolean close)
     {
         switch (shootState)
             {
@@ -43,7 +43,7 @@ public class Launcher
 
     }
 
-    public boolean shootBallsAuto(JoystickButton overrideButton)
+    public boolean shootBallsAuto(JoystickButton overrideButton, boolean close)
     {
         return false;
     }

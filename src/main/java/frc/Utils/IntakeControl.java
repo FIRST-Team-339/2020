@@ -17,11 +17,11 @@ public class IntakeControl
         {
             this.timer = timer;
             this.timer.reset();
-            this.intakeMotor = intakeMotor;
+            //this.intakeMotor = intakeMotor;
 
         }
 
-    public void intake(JoystickButton intakeButton)
+    public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
     {
         if (intakeButton.get())
             {
@@ -30,7 +30,10 @@ public class IntakeControl
             }
         else
             {
-
+            if (!outtaking)
+                {
+                Hardware.intakeMotor.set(0);
+                }
             intaking = false;
             }
     }
@@ -46,7 +49,10 @@ public class IntakeControl
             }
         else
             {
-
+            if (!outtaking)
+                {
+                Hardware.intakeMotor.set(0);
+                }
             intaking = false;
             this.timer.stop();
             this.timer.reset();
@@ -55,7 +61,7 @@ public class IntakeControl
         return false;
     }
 
-    public void outtake(JoystickButton outtakeButton)
+    public void outtake(JoystickButton outtakeButton, JoystickButton overrideButton)
     {
         if (outtakeButton.get())
             {
@@ -65,7 +71,10 @@ public class IntakeControl
             }
         else
             {
-
+            if (!intaking)
+                {
+                Hardware.intakeMotor.set(0);
+                }
             outtaking = false;
             }
     }
@@ -79,7 +88,10 @@ public class IntakeControl
             }
         else
             {
-
+            if (!intaking)
+                {
+                Hardware.intakeMotor.set(0);
+                }
             outtaking = false;
             return true;
             }
