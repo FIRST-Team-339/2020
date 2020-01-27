@@ -27,10 +27,10 @@ import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
 import frc.HardwareInterfaces.UltraSonic;
 import frc.vision.*;
+import frc.Utils.*;
+import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
-import frc.Utils.IntakeControl;
-import frc.Utils.Launcher;
-import frc.Utils.StorageControl;
+
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -338,6 +338,8 @@ public class Hardware
 
     public static Potentiometer delayPot = new Potentiometer(0);
 
+    public static Potentiometer hoodPot = new Potentiometer(1);
+
     public static LVMaxSonarEZ frontUltraSonic = new LVMaxSonarEZ(3);
     // **********************************************************
     // PNEUMATIC DEVICES
@@ -407,6 +409,8 @@ public class Hardware
 
     public static Timer launchTimer = new Timer();
 
+    public static Timer ballButtonTimer = new Timer();
+
     public static Telemetry telemetry = new Telemetry(driverStation);
 
     // ------------------------------------
@@ -418,9 +422,13 @@ public class Hardware
 
     // launcher stuff
     public static IntakeControl intake = new IntakeControl(launchTimer);
+
     public static Launcher launcher = new Launcher();
 
     public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);
+
+    public static HoodControl hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
+
     // ------------------------------------------
     // Vision stuff
     // ----------------------------

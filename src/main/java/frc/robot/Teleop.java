@@ -105,9 +105,6 @@ public class Teleop
 
         Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
-        SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
-        System.out.println("ultrasonic" + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
-
         if (Hardware.rightOperator.getRawButton(6) == true)
             {
             testBoolean1 = true;
@@ -203,7 +200,7 @@ public class Teleop
         // ================== DRIVER CONTROLS =================
 
         // individualTest();
-        // teleopDrive();
+        //teleopDrive();
 
     } // end Periodic()
 

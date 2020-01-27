@@ -23,6 +23,7 @@ public class IntakeControl
 
     public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
     {
+
         if (intakeButton.get())
             {
             intaking = true;
@@ -81,20 +82,6 @@ public class IntakeControl
 
     public boolean outtake()
     {
-        if (Hardware.storage.getBallCount() > 0)
-            {
-            outtaking = true;
-            Hardware.intakeMotor.set(OUTTAKE_SPEED);
-            }
-        else
-            {
-            if (!intaking)
-                {
-                Hardware.intakeMotor.set(0);
-                }
-            outtaking = false;
-            return true;
-            }
         return false;
     }
 
