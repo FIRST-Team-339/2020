@@ -19,17 +19,19 @@ import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
+import frc.HardwareInterfaces.LVMaxSonarEZ;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.MomentarySwitch;
 import frc.HardwareInterfaces.Potentiometer;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
+import frc.HardwareInterfaces.UltraSonic;
 import frc.vision.*;
+import frc.Utils.*;
+import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
-import frc.Utils.IntakeControl;
-import frc.Utils.Launcher;
-import frc.Utils.StorageControl;
+
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -131,16 +133,14 @@ public class Hardware
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
         conveyorMotor1 = new WPI_TalonSRX(21);
-        conveyorMotor2 = new WPI_TalonSRX(22);
+        conveyorMotor2 = new WPI_TalonSRX(22);//TODO
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
 
         intakeMotor = new WPI_TalonSRX(23);
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
-
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
-
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
@@ -191,11 +191,11 @@ public class Hardware
 
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
 
-        conveyorMotor1 = new WPI_TalonSRX(22);
+        //conveyorMotor1 = new WPI_TalonSRX(22);//TODO
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
 
-        intakeMotor = new WPI_TalonSRX(23);
+        intakeMotor = new WPI_TalonSRX(22);//TODO 23
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
@@ -346,6 +346,9 @@ public class Hardware
 
     public static Potentiometer delayPot = new Potentiometer(0);
 
+    public static Potentiometer hoodPot = new Potentiometer(1);
+
+    public static LVMaxSonarEZ frontUltraSonic = new LVMaxSonarEZ(3);
     // **********************************************************
     // PNEUMATIC DEVICES
     // **********************************************************
@@ -387,6 +390,7 @@ public class Hardware
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
+    public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
     public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************
@@ -415,6 +419,8 @@ public class Hardware
 
     public static Timer launchTimer = new Timer();
 
+    public static Timer ballButtonTimer = new Timer();
+
     public static Telemetry telemetry = new Telemetry(driverStation);
 
     // ------------------------------------
@@ -426,9 +432,13 @@ public class Hardware
 
     // launcher stuff
     public static IntakeControl intake = new IntakeControl(launchTimer);
+
     public static Launcher launcher = new Launcher();
 
     public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);
+
+    public static HoodControl hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
+
     // ------------------------------------------
     // Vision stuff
     // ----------------------------

@@ -349,10 +349,10 @@ public class Autonomous
 
             case MOVE_FORWARD:
                 // move in a straight line forwards
-                if(
-                moveForward()){
+                if (moveForward())
+                    {
                     return true;
-                }
+                    }
 
                 break;
 
@@ -383,9 +383,10 @@ public class Autonomous
 
                 // call align
 
-                if(alignSquare()){
+                if (alignSquare())
+                    {
                     return true;
-                }
+                    }
                 break;
 
             case ALIGN_TRENCH:
@@ -393,37 +394,39 @@ public class Autonomous
                 // robot is on the right side or center
 
                 // calling align
-                if(alignTrench()){
+                if (alignTrench())
+                    {
 
-                // are we collecting?
-                     if (exit == Exit.TURN_AND_FIRE)
-                    { 
-                     path = Path.PICKUP_TRENCH;
-                   
-                }else{
-                return true;                    
-                }
-            }
+                    // are we collecting?
+                    if (exit == Exit.TURN_AND_FIRE)
+                        {
+                        path = Path.PICKUP_TRENCH;
+
+                        }
+                    else
+                        {
+                        return true;
+                        }
+                    }
                 break;
 
             case PICKUP_TRENCH:
                 // picking up balls
                 // only applicable if Align Trench was previously stated
-              if(  pickupTrench()){
+                if (pickupTrench())
+                    {
 
-              
-
-                // this will be executed if there is time
-                path = Path.TURN_AND_FIRE;
-              }
+                    // this will be executed if there is time
+                    path = Path.TURN_AND_FIRE;
+                    }
                 break;
 
             case TURN_AND_FIRE:
                 // final attempt to turn and shoot more balls from trench
-                if(
-                turnFire()){
+                if (turnFire())
+                    {
                     return true;
-                }
+                    }
                 break;
 
             default:
@@ -472,34 +475,36 @@ public class Autonomous
                     }
 
                 break;
-                case FINISH:
+            case FINISH:
                 return true;
-
 
             }
         return false;
 
     }
-    public static enum pickupTrenchState {
+
+    public static enum pickupTrenchState
+        {
         DRIVE_FORWARD, FINISH
-    }
+        }
 
     public static pickupTrenchState pickup = pickupTrenchState.DRIVE_FORWARD;
 
     private static boolean pickupTrench()
     {
         // drive forward along balls picking them up
-    switch(pickup){
-        case DRIVE_FORWARD:
-         if (Hardware.drive.driveStraightInches(PICKUP_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
-     {
-    return true;
-    }
-    break;
-    case FINISH:
-    return true;
-}
-         return false; 
+        switch (pickup)
+            {
+            case DRIVE_FORWARD:
+                if (Hardware.drive.driveStraightInches(PICKUP_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
+                    {
+                    return true;
+                    }
+                break;
+            case FINISH:
+                return true;
+            }
+        return false;
     }
 
     public static enum AlignTrenchState
@@ -694,7 +699,7 @@ public class Autonomous
                         }
                     break;
                 case FINISH:
-                        return true;
+                    return true;
                 }
             }
 
@@ -702,53 +707,71 @@ public class Autonomous
         }
         return false;
     }
-public static enum GetOutState{
-    TURN, FINAL_DRIVE, FINIHS
-}
-public static GetOutState out = GetOutState.TURN;
+
+    public static enum GetOutState
+        {
+        TURN, FINAL_DRIVE, FINIHS
+        }
+
+    public static GetOutState out = GetOutState.TURN;
+
     private static boolean getOut()
     {
-        switch(out){
+        switch (out)
+            {
             case TURN:
-                if(position == Position.RIGHT){
-                    if (Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))  {
+                if (position == Position.RIGHT)
+                    {
+                    if (Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                        {
                         out = GetOutState.FINAL_DRIVE;
                         break;
                     }            
                   }else if(position == Position.LEFT){
                     if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
                     {
+                    if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                        {
                         out = GetOutState.FINAL_DRIVE;
                         break;
                     }
-                  }else{
+                else
+                    {
                     out = GetOutState.FINAL_DRIVE;
-                  }
-            break;
+                    }
+                }
+            }
+                break;
+                    
 
             case FINAL_DRIVE:
-                  if(position == Position.RIGHT){
+                if (position == Position.RIGHT)
+                    {
                     if (Hardware.drive.driveStraightInches(GET_OUT_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
-                    {
-                     out = GetOutState.FINIHS;
-                    }
-                  }else if(position == Position.LEFT){
-                    if (Hardware.drive.driveStraightInches(GET_OUT_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
-                    {
+                        {
                         out = GetOutState.FINIHS;
+                        }
                     }
-                  }else {
-                    if (Hardware.drive.driveStraightInches(GET_OUT_CENTER_DISTANCE, -DRIVE_SPEED, ACCELERATION, true))
+                else if (position == Position.LEFT)
                     {
-                    out = GetOutState.FINIHS;
+                    if (Hardware.drive.driveStraightInches(GET_OUT_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
+                        {
+                        out = GetOutState.FINIHS;
+                        }
                     }
-                  }
-            break;
+                else
+                    {
+                    if (Hardware.drive.driveStraightInches(GET_OUT_CENTER_DISTANCE, -DRIVE_SPEED, ACCELERATION, true))
+                        {
+                        out = GetOutState.FINIHS;
+                        }
+                    }
+                break;
             case FINIHS:
-            return true;
+                return true;
 
-        }
-    
+            }
+
         return false;
     }
 
@@ -776,7 +799,7 @@ public static GetOutState out = GetOutState.TURN;
     {
         // Drive Forward Then shoot
         // Drive towards target
-        if (Hardware.visionDriving.driveToTarget())
+        if (Hardware.visionDriving.driveToTarget(24, true))
             {
            
             //call methods to shoot

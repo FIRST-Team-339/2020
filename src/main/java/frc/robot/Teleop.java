@@ -92,24 +92,44 @@ public class Teleop
      * @written Jan 13, 2015
      */
 
-    public static boolean testBoolean = false;
+    public static boolean testBoolean1 = false;
+
+    public static boolean testBoolean2 = false;
 
     public static void periodic()
     {
         // =============== AUTOMATED SUBSYSTEMS ===============
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-        if (Hardware.rightOperator.getRawButton(2) == true)
+        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+
+        if (Hardware.rightOperator.getRawButton(6) == true)
             {
-            testBoolean = true;
+            testBoolean1 = true;
             }
-        if (testBoolean == true)
+        if (Hardware.leftOperator.getRawButton(6) == true)
             {
-            System.out.println("Gyro Angle " + Hardware.gyro.getAngle());
-
-            if (Hardware.drive.turnDegrees(720, .4, 0, true))
+            testBoolean2 = true;
+            }
+        if (testBoolean1 == true)
+            {
+            if (Hardware.visionDriving.driveToTarget(120, true))
                 {
-                testBoolean = false;
+                testBoolean1 = false;
                 }
+            }
+        else if (testBoolean2 == true)
+            {
+            if (Hardware.visionDriving.driveToTarget(40, true))
+                {
+                testBoolean2 = false;
+                }
+            }
+        else
+            {
+            teleopDrive();
             }
 
         //Color detectedColor = Hardware.colorSensor.getColor();
@@ -129,26 +149,25 @@ public class Teleop
         // ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
         // if (match.color == kBlueTarget)
-        Hardware.visionInterface.updateValues();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        int ballCount = 0;
-        if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5)
-            {
-            ballCount++;
-            SmartDashboard.putNumber("Ball Count", ballCount);
-            }
-        SmartDashboard.putNumber("Ball Count", ballCount);
 
-        if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
-            {
-            Hardware.intake.intake(Hardware.intakeButton);
-            Hardware.intake.outtake(Hardware.outtakeButton);
-            }
-        else
-            {
-            Hardware.intakeMotor.set(0);
-            }
-        SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
+        // int ballCount = 0;
+        // if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5)
+        //     {
+        //     ballCount++;
+        //     SmartDashboard.putNumber("Ball Count", ballCount);
+        //     }
+        // SmartDashboard.putNumber("Ball Count", ballCount);
+
+        // if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
+        //     {
+        //     Hardware.intake.intake(Hardware.intakeButton);
+        //     Hardware.intake.outtake(Hardware.outtakeButton);
+        //     }
+        // else
+        //     {
+        //     Hardware.intakeMotor.set(0);
+        //     }
+        // SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
 
         // if (Hardware.leftOperator.getRawButton(4))
         //     {
@@ -175,13 +194,13 @@ public class Teleop
         // SmartDashboard.putNumber("Green", detectedColor.green);
         // SmartDashboard.putNumber("Blue", detectedColor.blue);
         // SmartDashboard.putString("Detected Color", colorString);
-      
+        //teleopDrive();
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
 
-          individualTest();
-          teleopDrive();
+        // individualTest();
+        //teleopDrive();
 
     } // end Periodic()
 
@@ -207,8 +226,8 @@ public class Teleop
     {
         // people test functions
         // connerTest();
-        //craigTest();
-        chrisTest();
+        // craigTest();
+        //chrisTest();
         // dionTest();
         // chrisTest();
         // dionTest();

@@ -1,6 +1,7 @@
 package frc.vision;
 
 import frc.Hardware.Hardware;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * an alternate drive to vision class the also uses the ultrasonic to control
@@ -19,8 +20,18 @@ public class LimelightDriveWithVision
      *
      * @return
      */
-    public boolean driveToTarget()
+
+    Timer timer = new Timer();
+
+    public boolean driveToTarget(int distance, boolean overrideUltrasonic)
     {
+        this.timer.start();
+        System.out.println(this.timer.get() * 10000);
+        if (this.timer.get() * 100000 > 4)
+            {
+            Hardware.visionInterface.takePicture();
+            this.timer.reset();
+            }
         // offness recieved from network tables
         double offness = Hardware.visionInterface.getXOffSet();
 
@@ -28,8 +39,15 @@ public class LimelightDriveWithVision
         double adjustmentValueRight = 0;
         // right move speed
         double adjustmentValueLeft = 0;
-
-        if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST)
+        if (overrideUltrasonic)
+            {
+            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < distance)
+                {
+                this.timer.stop();
+                return true;
+                }
+            }
+        if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
             if (offness < 0)
@@ -59,6 +77,7 @@ public class LimelightDriveWithVision
         else
             {
             Hardware.transmission.drive(0, 0);
+            this.timer.stop();
             return true;
             }
         return false;

@@ -66,6 +66,7 @@ public class Robot extends TimedRobot
         Hardware.gyro.calibrate();
         Hardware.gyro.reset();
 
+        Hardware.frontUltraSonic.setOffsetDistanceFromNearestBumper(3);
         // ---------------------------------------
         // done setup - tell the user we are complete
         // setup
