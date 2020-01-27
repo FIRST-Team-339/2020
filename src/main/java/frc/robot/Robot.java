@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.Hardware.Hardware;
 
@@ -57,6 +58,13 @@ public class Robot extends TimedRobot
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
+
+        //AIR
+        Hardware.compressor.start();
+
+        //gyro 
+        Hardware.gyro.calibrate();
+        Hardware.gyro.reset();
 
         // ---------------------------------------
         // done setup - tell the user we are complete

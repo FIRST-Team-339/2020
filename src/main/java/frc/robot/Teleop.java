@@ -175,13 +175,13 @@ public class Teleop
         // SmartDashboard.putNumber("Green", detectedColor.green);
         // SmartDashboard.putNumber("Blue", detectedColor.blue);
         // SmartDashboard.putString("Detected Color", colorString);
-        teleopDrive();
+      
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
 
-        // individualTest();
-        // teleopDrive();
+          individualTest();
+          teleopDrive();
 
     } // end Periodic()
 
@@ -207,7 +207,7 @@ public class Teleop
     {
         // people test functions
         // connerTest();
-        // craigTest();
+        //craigTest();
         chrisTest();
         // dionTest();
         // chrisTest();
@@ -219,35 +219,38 @@ public class Teleop
     {
 
     }
-
+   public static boolean flag = true;
     public static void craigTest()
-    {
+    {   
+        //System.out.println("TESTINGGGGGGG");
+        //momentary settup
 
-        if (Hardware.rightDriver.getRawButton(4) == true)
-            {
-            if (Hardware.invertTempoMomentarySwitch.isOn())
-                {
-                Hardware.invertTempoMomentarySwitch.setValue(false);
-                }
-            else
-                {
-                Hardware.invertTempoMomentarySwitch.setValue(true);
-                }
-            }
-        if (Hardware.invertTempoMomentarySwitch.isOn())
-            {
-            // System.out.println("Should be inverted");
-            Hardware.rightFrontMotor.setInverted(true);
-            Hardware.leftFrontMotor.setInverted(true);
-            }
-        else
-            {
-            Hardware.leftFrontMotor.setInverted(false);
-            Hardware.rightFrontMotor.setInverted(false);
-            }
+        // if (Hardware.rightDriver.getRawButton(4) == true)
+        //     {
+        //     if (Hardware.invertTempoMomentarySwitch.isOn())
+        //         {
+        //         Hardware.invertTempoMomentarySwitch.setValue(false);
+        //         }
+        //     else
+        //         {
+        //         Hardware.invertTempoMomentarySwitch.setValue(true);
+        //         }
+        //     }
+        // if (Hardware.invertTempoMomentarySwitch.isOn())
+        //     {
+           
+        //     }
+        // else
+        //     {
+            
+        //     }
 
+       
+
+
+        //System.out.println("Degrees Gyro: "+ Hardware.gyro.getAngle());
         // System.out.println(Hardware.rightFrontMotor.getInverted());
-        System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
+        //System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
 
     }
 

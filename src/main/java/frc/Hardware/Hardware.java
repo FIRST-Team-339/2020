@@ -14,6 +14,7 @@
 // ====================================================================
 package frc.Hardware;
 
+import frc.HardwareInterfaces.DoubleSolenoid;
 import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
@@ -43,6 +44,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -155,6 +157,9 @@ public class Hardware
 
         // =============OTHER INIT============
 
+        //pneumatics
+        compressor = new Compressor();
+
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
 
@@ -216,6 +221,9 @@ public class Hardware
 
         leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
+
+        //pneumatics
+        compressor = new Compressor();
 
         // ==============RIO INIT==============
 
@@ -341,14 +349,16 @@ public class Hardware
     // **********************************************************
     // PNEUMATIC DEVICES
     // **********************************************************
-
+    public static DoubleSolenoid iDoubleSolenoid = new DoubleSolenoid(4, 5);
+    public static DoubleSolenoid lifDoubleSolenoid = new DoubleSolenoid(2,3);
+    public static Compressor compressor = null;
     // **********************************************************
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
 
     public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
-    public static KilroySPIGyro gyro = new KilroySPIGyro(false);
+    public static KilroySPIGyro gyro = new KilroySPIGyro(true);
 
     // **********************************************************
     // DRIVER STATION CLASSES

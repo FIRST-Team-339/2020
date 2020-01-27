@@ -881,7 +881,7 @@ public class Drive {
         }
 
         // Drive straight if we have not reached the distance
-        this.driveStraight(speed, acceleration, true);
+        this.driveStraight(speed, acceleration, isUsingGyro);
 
         return false;
     }
