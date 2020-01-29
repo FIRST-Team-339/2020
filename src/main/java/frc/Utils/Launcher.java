@@ -3,6 +3,9 @@ package frc.Utils;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
+
+import java.nio.charset.CharacterCodingException;
+
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -24,21 +27,29 @@ public class Launcher
 
     private enum ShootState
         {
-        PASSIVE, CHARsGE, LAUNCH,
+        PASSIVE, CHARGE, LAUNCH
         }
 
     public ShootState shootState = ShootState.PASSIVE;
 
     /**
-     * in case you could guess this function will shoot balls at whatever you
+     * in case you could not guess this function will shoot balls at whatever you
      * desire. whether it be the target or pesky those builders who have yet to
-     * finish the actual laucher
+     * finish the actual launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, boolean close)
     {
         switch (shootState)
             {
+            case PASSIVE:
+                break;
+            case CHARGE:
+                break;
+            case LAUNCH:
+                break;
+            default:
 
+                break;
             }
 
     }

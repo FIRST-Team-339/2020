@@ -113,18 +113,12 @@ public class Teleop
             {
             testBoolean2 = true;
             }
+
         if (testBoolean1 == true)
             {
-            if (Hardware.visionDriving.driveToTarget(120, true))
+            if (Hardware.visionDriving.alignToTarget())
                 {
                 testBoolean1 = false;
-                }
-            }
-        else if (testBoolean2 == true)
-            {
-            if (Hardware.visionDriving.driveToTarget(40, true))
-                {
-                testBoolean2 = false;
                 }
             }
         else
@@ -238,9 +232,11 @@ public class Teleop
     {
 
     }
-   public static boolean flag = true;
+
+    public static boolean flag = true;
+
     public static void craigTest()
-    {   
+    {
         //System.out.println("TESTINGGGGGGG");
         //momentary settup
 
@@ -257,15 +253,12 @@ public class Teleop
         //     }
         // if (Hardware.invertTempoMomentarySwitch.isOn())
         //     {
-           
+
         //     }
         // else
         //     {
-            
+
         //     }
-
-       
-
 
         //System.out.println("Degrees Gyro: "+ Hardware.gyro.getAngle());
         // System.out.println(Hardware.rightFrontMotor.getInverted());
