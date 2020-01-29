@@ -90,6 +90,39 @@ public class LimelightDriveWithVision
      */
     public boolean alignToTarget()
     {
+        double offness = Hardware.visionInterface.getXOffSet();
+
+        // left move speed
+        double adjustmentValueRight = 0;
+        // right move speed
+        double adjustmentValueLeft = 0;
+
+        if (offness < 1)
+            {
+            // adjust the speed for the left and right motors based off their offness and a
+            // preset proportional value
+            adjustmentValueLeft = -(Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+
+            adjustmentValueRight = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+            // drive raw so that we dont have to write addition gearing code in teleop
+            Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+            }
+
+        else if (offness > 1)
+            {
+
+            adjustmentValueLeft = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+
+            adjustmentValueRight = -(Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+
+            Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+            }
+        else
+            {
+            System.out.println("true");
+            return true;
+            }
+
         return false;
     }
 
@@ -101,6 +134,9 @@ public class LimelightDriveWithVision
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PORP_2019 = .02;//0.015
+   
+
+    final double ADJUST_PORP_2019_ALIGN = .04;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PORP_2020 = .015;// TODO
@@ -109,4 +145,5 @@ public class LimelightDriveWithVision
 
     // distance away from the target that the robot will stop at
     final double STOP_DISTANCE_TEST = 50;// TODO
+    final int ULTRA_OVERRIDE = 20;
     }
