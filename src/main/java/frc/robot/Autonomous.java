@@ -31,6 +31,8 @@
 // ====================================================================
 package frc.robot;
 
+import java.util.concurrent.TimeUnit;
+
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.Hardware.Hardware;
@@ -137,6 +139,9 @@ public class Autonomous
     public static void periodic()
     {
         Hardware.visionInterface.updateValues();
+
+        // printing out utilized states:
+
         // Cancel if the "cancelAuto" button is pressed
         if (Hardware.cancelAuto.get() == true)
             {
@@ -147,7 +152,7 @@ public class Autonomous
             {
 
             case INIT:
-                Hardware.iDoubleSolenoid.set(Value.kReverse);
+
                 Hardware.autoTimer.start();
 
                 autoState = State.DELAY;
@@ -177,7 +182,7 @@ public class Autonomous
                 break;
 
             case FINISH:
-                
+
                 Hardware.drive.drive(0, 0);
                 break;
 
@@ -214,46 +219,45 @@ public class Autonomous
             // robot is broken
             path = Path.NOTHING;
             autoState = State.FINISH;
-            
+
             }
         /*
          * 6 pos switch: this will determine the exiting strategy for each path
          */
-        if( Hardware.shootingPlan.getPosition() != Relay.Value.kOff){
-        if (Hardware.autoSixPosSwitch.getPosition() == 0)
+        if (Hardware.shootingPlan.getPosition() != Relay.Value.kOff)
             {
-            // positioning the robot for the center square
-            exit = Exit.ALIGN_SQUARE;
-            }
-        else if (Hardware.autoSixPosSwitch.getPosition() == 1)
-            {
-            // position the robot for the trench
-            exit = Exit.ALIGN_TRENCH;
-            }
-        else if (Hardware.autoSixPosSwitch.getPosition() == 2)
-            {
-          
-           
-            exit = Exit.TURN_AND_FIRE;
-            }
-        else if (Hardware.autoSixPosSwitch.getPosition() == 3)
-            {
-            
+            if (Hardware.autoSixPosSwitch.getPosition() == 0)
+                {
+                // positioning the robot for the center square
+                exit = Exit.ALIGN_SQUARE;
+                }
+            else if (Hardware.autoSixPosSwitch.getPosition() == 1)
+                {
+                // position the robot for the trench
+                exit = Exit.ALIGN_TRENCH;
+                }
+            else if (Hardware.autoSixPosSwitch.getPosition() == 2)
+                {
 
-             // move yourself out of the way, close to goal
-             exit = Exit.GET_OUT;
+                exit = Exit.TURN_AND_FIRE;
+                }
+            else if (Hardware.autoSixPosSwitch.getPosition() == 3)
+                {
+
+                // move yourself out of the way, close to goal
+                exit = Exit.GET_OUT;
+                }
+            else if (Hardware.autoSixPosSwitch.getPosition() == 4)
+                {
+                // path to move straight forward
+                path = Path.MOVE_FORWARD;
+                }
+            else
+                {
+                // path to move straight backwards
+                path = Path.MOVE_BACKWARDS;
+                }
             }
-        else if (Hardware.autoSixPosSwitch.getPosition() == 4)
-            {
-            // path to move straight forward
-            path = Path.MOVE_FORWARD;
-            }
-        else
-            {
-            // path to move straight backwards
-            path = Path.MOVE_BACKWARDS;
-            }
-        }
         // Switch case to execute the functions of auto path
     }
 
@@ -269,43 +273,43 @@ public class Autonomous
                 break;
 
             case SHOOT_FAR:
-            if (!hasShotTheEtHInG)
-            {
-            if (shootFar())
-                {
-                hasShotTheEtHInG = true;
-                }
-            }
-        if (hasShotTheEtHInG)
-            {
-           
-            if (exit == Exit.ALIGN_SQUARE)
-                {
-                // This is a function that works if the robot is aligned on the left side
-                path = Path.ALIGN_SQUARE;
-                }
-            else if (exit == Exit.ALIGN_TRENCH)
-                {
-                // this is a function that works if the robot is aligned on the right side
-                path = Path.ALIGN_TRENCH;
-                }
-            else if (exit == Exit.TURN_AND_FIRE)
-                {
-                // Continuation of Alinging trench, adding the process of picking up those balls
-                // and attepting to shoot, or alligning to shoot again.
-                path = Path.ALIGN_TRENCH;
-                }
-            // else if (exit.equals(Exit.GET_OUT) || exit == Exit.GET_OUT)
-            //     {
+                if (!hasShotTheEtHInG)
+                    {
+                    if (shootFar())
+                        {
+                        hasShotTheEtHInG = true;
+                        }
+                    }
+                if (hasShotTheEtHInG)
+                    {
 
-            //     // Move out of the way, staying close to goal to retreive missed balls
-            //     path = Path.GET_OUT;
+                    if (exit == Exit.ALIGN_SQUARE)
+                        {
+                        // This is a function that works if the robot is aligned on the left side
+                        path = Path.ALIGN_SQUARE;
+                        }
+                    else if (exit == Exit.ALIGN_TRENCH)
+                        {
+                        // this is a function that works if the robot is aligned on the right side
+                        path = Path.ALIGN_TRENCH;
+                        }
+                    else if (exit == Exit.TURN_AND_FIRE)
+                        {
+                        // Continuation of Alinging trench, adding the process of picking up those balls
+                        // and attepting to shoot, or alligning to shoot again.
+                        path = Path.ALIGN_TRENCH;
+                        }
+                    // else if (exit.equals(Exit.GET_OUT) || exit == Exit.GET_OUT)
+                    // {
 
-            //     }
-            }
-        // determining exit stategy
+                    // // Move out of the way, staying close to goal to retreive missed balls
+                    // path = Path.GET_OUT;
 
-        break;
+                    // }
+                    }
+                // determining exit stategy
+
+                break;
 
             case SHOOT_CLOSE:
                 // the action of moving closer before attempting to shoot in the goal
@@ -318,7 +322,7 @@ public class Autonomous
                     }
                 if (hasShotTheEtHInG)
                     {
-                   
+
                     if (exit == Exit.ALIGN_SQUARE)
                         {
                         // This is a function that works if the robot is aligned on the left side
@@ -358,11 +362,12 @@ public class Autonomous
 
             case MOVE_BACKWARDS:
 
-                if(moveBackward()){
+                if (moveBackward())
+                    {
                     return true;
-                }
+                    }
 
-            break;
+                break;
 
             case DONT_MOVE:
                 // doAnything?
@@ -370,7 +375,7 @@ public class Autonomous
 
             case GET_OUT:
                 // removing yourself from the way of robots
-               
+
                 if (getOut())
                     {
                     return true;
@@ -411,17 +416,20 @@ public class Autonomous
                 break;
 
             case PICKUP_TRENCH:
+                Hardware.iDoubleSolenoid.set(Value.kReverse);
                 // picking up balls
                 // only applicable if Align Trench was previously stated
                 if (pickupTrench())
                     {
 
                     // this will be executed if there is time
-                    path = Path.TURN_AND_FIRE;
+                    // path = Path.TURN_AND_FIRE;
+                    return true;
                     }
                 break;
 
             case TURN_AND_FIRE:
+
                 // final attempt to turn and shoot more balls from trench
                 if (turnFire())
                     {
@@ -459,11 +467,11 @@ public class Autonomous
                 break;
             case TURN1:
                 // turn towards target
-                if (Hardware.drive.turnDegrees(TURN_AND_FIRE_DEGREES, TURN_SPEED, ACCELERATION, false))
+                if (Hardware.drive.turnDegrees(TURN_AND_FIRE_DEGREES, TURN_SPEED, ACCELERATION, true))
                     {
                     turnAndFire = TurnAndFireState.FINAL_DRIVE;
                     break;
-                    
+
                     }
 
                 break;
@@ -516,75 +524,79 @@ public class Autonomous
 
     private static boolean alignTrench()
     {
-        if(Hardware.shootingPlan.getPosition() == Relay.Value.kReverse){
-        if (position == Position.RIGHT)
+        if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
             {
-            switch (trench)
-                {
-                case DRIVE_BACK:
-                    // drive backwards
-                    if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_MOVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION,
-                            true))
-                        {
-                        trench = AlignTrenchState.TURN1;
-                        }
-                    break;
-                case TURN1:
-                    // turn turn degrees right
-                    if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, false))
-                        {
-                        trench = AlignTrenchState.FINAL_DRIVE;
-                        break;
-                        }
-                    break;
-                case FINAL_DRIVE:
-                    // drive up to trench
-                    if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
-                            true))
-                        {
-                        trench = AlignTrenchState.FINISH;
-                        }
-
-                    break;
-                case FINISH:
-                    return true;
-                }
-
-            }
-        }else{
             if (position == Position.RIGHT)
-            {
-            switch (trench)
                 {
-                case DRIVE_BACK:
-                    // drive backwards
-                   
-                        trench = AlignTrenchState.TURN1;
-                        
-                    break;
-                case TURN1:
-                    // turn turn degrees right
-                    if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, false))
-                        {
-                        trench = AlignTrenchState.FINAL_DRIVE;
+                switch (trench)
+                    {
+                    case DRIVE_BACK:
+                        // drive backwards
+                        if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_MOVE_BACK_DISTANCE, -DRIVE_SPEED,
+                                ACCELERATION, true))
+                            {
+                            trench = AlignTrenchState.TURN1;
+                            }
                         break;
-                        }
-                    break;
-                case FINAL_DRIVE:
-                    // drive up to trench
-                    if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
-                            true))
-                        {
-                        trench = AlignTrenchState.FINISH;
-                        }
+                    case TURN1:
+                        // turn turn degrees right
+                        if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                            {
+                            trench = AlignTrenchState.FINAL_DRIVE;
+                            break;
+                            }
+                        break;
+                    case FINAL_DRIVE:
+                        // drive up to trench
+                        if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
+                                true))
+                            {
+                            trench = AlignTrenchState.FINISH;
+                            }
 
-                    break;
-                case FINISH:
-                    return true;
+                        break;
+                    case FINISH:
+                        return true;
+                    }
+
                 }
-
             }
-        }
+        else
+            {
+
+            if (position == Position.RIGHT)
+                {
+                switch (trench)
+                    {
+                    case DRIVE_BACK:
+                        // drive backwards
+
+                        trench = AlignTrenchState.TURN1;
+
+                        break;
+                    case TURN1:
+                        // turn turn degrees right
+                        if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                            {
+                            trench = AlignTrenchState.FINAL_DRIVE;
+                            break;
+                            }
+                        break;
+                    case FINAL_DRIVE:
+                        // drive up to trench
+                        if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
+                                true))
+                            {
+                            trench = AlignTrenchState.FINISH;
+                            }
+
+                        break;
+                    case FINISH:
+                        return true;
+                    }
+
+                }
+            }
 
         return false;
 
@@ -599,112 +611,119 @@ public class Autonomous
 
     private static boolean alignSquare()
     {
-        if(Hardware.shootingPlan.getPosition() == Relay.Value.kReverse){
-        if (position == Position.LEFT)
+        if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
             {
-            switch (square)
+            if (position == Position.LEFT)
                 {
-                case DRIVE_BACK:
-                    // drive back towards line
-                    if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_MOVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION,
-                            true))
-                        {
-                        square = AlignSquareState.TURN1;
-                        }
+                switch (square)
+                    {
+                    case DRIVE_BACK:
+                        // drive back towards line
+                        if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_MOVE_BACK_DISTANCE, -DRIVE_SPEED,
+                                ACCELERATION, true))
+                            {
+                            square = AlignSquareState.TURN1;
+                            }
 
-                    break;
-                case TURN1:
-                    // turn away from tower
-                    if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_DEGREES, TURN_SPEED, ACCELERATION, false))
-                        {
-                        square = AlignSquareState.ALIGN;
                         break;
-                        }
+                    case TURN1:
+                        // turn away from tower
+                        if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                            {
+                            square = AlignSquareState.ALIGN;
+                            break;
+                            }
 
-                    break;
-                case ALIGN:
-                    // drive away from tower
-                    if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
-                        {
-                //         square = AlignSquareState.TURN2;
-                //         }
-                //     break;
-                // case TURN2:
-                //     // turn towards square
-                //     if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_FINAL_DEGREES, TURN_SPEED, ACCELERATION, false))
-                //         {
-                //         square = AlignSquareState.FINAL_DRIVE;
-                //         break;
-                //         }
+                        break;
+                    case ALIGN:
+                        // drive away from tower
+                        if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION,
+                                true))
+                            {
+                            // square = AlignSquareState.TURN2;
+                            // }
+                            // break;
+                            // case TURN2:
+                            // // turn towards square
+                            // if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_FINAL_DEGREES, TURN_SPEED,
+                            // ACCELERATION, false))
+                            // {
+                            // square = AlignSquareState.FINAL_DRIVE;
+                            // break;
+                            // }
 
-                //     break;
-                // case FINAL_DRIVE:
+                            // break;
+                            // case FINAL_DRIVE:
 
-                //     // drive towards square final distance
-                //     if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_FINAL_DISTANCE, DRIVE_SPEED, ACCELERATION,
-                //             true))
-                //         {
-                        square = AlignSquareState.FINISH;
-                        }
-                    break;
-                case FINISH:
+                            // // drive towards square final distance
+                            // if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_FINAL_DISTANCE,
+                            // DRIVE_SPEED, ACCELERATION,
+                            // true))
+                            // {
+                            square = AlignSquareState.FINISH;
+                            }
+                        break;
+                    case FINISH:
                         return true;
+                    }
                 }
             }
-        }else{
+        else
+            {
 
             if (position == Position.LEFT)
-            {
-            switch (square)
                 {
-                case DRIVE_BACK:
-                    // drive back towards line
-                    
+                switch (square)
+                    {
+                    case DRIVE_BACK:
+                        // drive back towards line
+
                         square = AlignSquareState.TURN1;
-                
 
-                    break;
-                case TURN1:
-                    // turn away from tower
-                    if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_DEGREES, TURN_SPEED, ACCELERATION, false))
-                        {
-                        square = AlignSquareState.ALIGN;
                         break;
-                        }
+                    case TURN1:
+                        // turn away from tower
+                        if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                            {
+                            square = AlignSquareState.ALIGN;
+                            break;
+                            }
 
-                    break;
-                case ALIGN:
-                    // drive away from tower
-                    if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
-                        {
-                //         square = AlignSquareState.TURN2;
-                //         }
-                //     break;
-                // case TURN2:
-                //     // turn towards square
-                //     if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_FINAL_DEGREES, TURN_SPEED, ACCELERATION, false))
-                //         {
-                //         square = AlignSquareState.FINAL_DRIVE;
-                //         break;
-                //         }
+                        break;
+                    case ALIGN:
+                        // drive away from tower
+                        if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION,
+                                true))
+                            {
+                            // square = AlignSquareState.TURN2;
+                            // }
+                            // break;
+                            // case TURN2:
+                            // // turn towards square
+                            // if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_FINAL_DEGREES, TURN_SPEED,
+                            // ACCELERATION, false))
+                            // {
+                            // square = AlignSquareState.FINAL_DRIVE;
+                            // break;
+                            // }
 
-                //     break;
-                // case FINAL_DRIVE:
+                            // break;
+                            // case FINAL_DRIVE:
 
-                //     // drive towards square final distance
-                //     if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_FINAL_DISTANCE, DRIVE_SPEED, ACCELERATION,
-                //             true))
-                //         {
-                        square = AlignSquareState.FINISH;
-                        }
-                    break;
-                case FINISH:
-                    return true;
+                            // // drive towards square final distance
+                            // if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_FINAL_DISTANCE,
+                            // DRIVE_SPEED, ACCELERATION,
+                            // true))
+                            // {
+                            square = AlignSquareState.FINISH;
+                            }
+                        break;
+                    case FINISH:
+                        return true;
+                    }
                 }
+
             }
-
-
-        }
         return false;
     }
 
@@ -726,23 +745,24 @@ public class Autonomous
                         {
                         out = GetOutState.FINAL_DRIVE;
                         break;
-                    }            
-                  }else if(position == Position.LEFT){
-                    if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                        }
+                    }
+                else if (position == Position.LEFT)
                     {
                     if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
                         {
-                        out = GetOutState.FINAL_DRIVE;
-                        break;
+                        if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                            {
+                            out = GetOutState.FINAL_DRIVE;
+                            break;
+                            }
+                        else
+                            {
+                            out = GetOutState.FINAL_DRIVE;
+                            }
+                        }
                     }
-                else
-                    {
-                    out = GetOutState.FINAL_DRIVE;
-                    }
-                }
-            }
                 break;
-                    
 
             case FINAL_DRIVE:
                 if (position == Position.RIGHT)
@@ -761,7 +781,8 @@ public class Autonomous
                     }
                 else
                     {
-                    if (Hardware.drive.driveStraightInches(GET_OUT_CENTER_DISTANCE, -DRIVE_SPEED, ACCELERATION, true))
+                    if (Hardware.drive.driveStraightInches(GET_OUT_CENTER_DISTANCE, -GET_OUT_CENTER_SPEED, ACCELERATION,
+                            true))
                         {
                         out = GetOutState.FINIHS;
                         }
@@ -778,11 +799,11 @@ public class Autonomous
     private static boolean moveBackward()
     {
         if (Hardware.drive.driveStraightInches(OFF_LINE_DISTANCE, -.2, ACCELERATION, true))
-        {
-        return true;
-        }
-    return false;
-}
+            {
+            return true;
+            }
+        return false;
+    }
 
     private static boolean moveForward()
     {
@@ -801,8 +822,15 @@ public class Autonomous
         // Drive towards target
         if (Hardware.visionDriving.driveToTarget(24, true))
             {
-           
-            //call methods to shoot
+
+            try
+                {
+                TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e)
+                {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                }
             return true;
             }
         return false;
@@ -811,9 +839,14 @@ public class Autonomous
 
     private static boolean shootFar()
     {
-        // Call functions to Shoot
-
-        return false;
+        if (Hardware.visionDriving.driveToTarget(120, true))
+        {
+       
+        //call methods to shoot
+        return true;
+        }
+    return false;
+    
     }
 
     private static boolean hasShotTheEtHInG = false;
@@ -834,6 +867,7 @@ public class Autonomous
 
     // private final static int GET_OUT_CENTER_DEGREES = 0;
     private final static int GET_OUT_CENTER_DISTANCE = 120;
+    private final static double GET_OUT_CENTER_SPEED = .3;
 
     private final static int ALIGN_SQUARE_MOVE_BACK_DISTANCE = 80;
     private final static int ALIGN_SQUARE_LEFT_DEGREES = 120;
@@ -842,8 +876,8 @@ public class Autonomous
     // private final static int ALIGN_SQUARE_LEFT_FINAL_DISTANCE = 0;
 
     private final static int ALIGN_TRENCH_MOVE_BACK_DISTANCE = 96;
-    private final static int ALIGN_TRENCH_RIGHT_DEGREES = 120;
-    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 80;
+    private final static int ALIGN_TRENCH_RIGHT_DEGREES = -120;
+    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 24;
 
     // if the way i pick up the balls is just driving into them utilize this
     // constant

@@ -199,7 +199,7 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-        // individualTest();
+        individualTest();
         //teleopDrive();
 
     } // end Periodic()
@@ -226,7 +226,7 @@ public class Teleop
     {
         // people test functions
         // connerTest();
-        // craigTest();
+         craigTest();
         //chrisTest();
         // dionTest();
         // chrisTest();
@@ -241,6 +241,7 @@ public class Teleop
    public static boolean flag = true;
     public static void craigTest()
     {   
+        System.out.println("Distance: "+ Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         //System.out.println("TESTINGGGGGGG");
         //momentary settup
 

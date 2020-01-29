@@ -41,7 +41,7 @@ public class LimelightDriveWithVision
         double adjustmentValueLeft = 0;
         if (overrideUltrasonic)
             {
-            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < distance)
+            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < 20)
                 {
                 this.timer.stop();
                 return true;
@@ -94,13 +94,13 @@ public class LimelightDriveWithVision
     }
 
     // minimum speed a motor will move while aligning
-    final double MIN_MOVE_2019 = .2;
+    final double MIN_MOVE_2019 = .3;
 
     // after the robot is align the speed that the robot will continue at
     final double DRIVE_AFTER_ALIGN = .2;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2019 = .015;
+    final double ADJUST_PORP_2019 = .02;//0.015
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PORP_2020 = .015;// TODO
