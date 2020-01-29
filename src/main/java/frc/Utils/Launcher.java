@@ -1,8 +1,10 @@
 package frc.Utils;
 
 import frc.Hardware.Hardware;
+import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,15 +13,18 @@ public class Launcher
 
     // private motortype shootingMotor = null;
     // private motortype intakeMotor = null;
+    SpeedController firingMotors = null;
+    KilroyEncoder encoder = null;
 
-    public Launcher()
+    public Launcher(SpeedControllerGroup firingMotors, KilroyEncoder encoder)
         {
-
+            this.firingMotors = firingMotors;
+            this.encoder = encoder;
         }
 
     private enum ShootState
         {
-        PASSIVE, CHARGE, LAUNCH,
+        PASSIVE, CHARsGE, LAUNCH,
         }
 
     public ShootState shootState = ShootState.PASSIVE;
@@ -43,13 +48,37 @@ public class Launcher
 
     }
 
-    public boolean shootBallsAuto(JoystickButton overrideButton, boolean close)
+    public boolean shootBallsAuto(JoystickButton overrideButton, boolean isClose)
     {
+        return false;
+    }
+
+    private double speedAdjustment = 0;
+
+    public boolean prepareToShoot(double RPM)
+    {
+        if (this.encoder.getRate() >= RPM + 100)
+            {
+            return true;
+            }
+        else
+            {
+            if (this.encoder.getRate() < RPM)
+                {
+                speedAdjustment += .025;
+                }
+            else if (this.encoder.getRate() > RPM)
+                {
+                speedAdjustment -= .25;
+                }
+            }
+        this.firingMotors.set(.5 + speedAdjustment);
         return false;
     }
 
     public int getRPMPerDistance(int distance)
     {
+        //TDO
         return 0;
     }
 

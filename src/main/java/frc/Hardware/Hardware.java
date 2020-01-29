@@ -133,7 +133,7 @@ public class Hardware
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
         conveyorMotor1 = new WPI_TalonSRX(21);
-        conveyorMotor2 = new WPI_TalonSRX(22);//TODO
+        conveyorMotor2 = new WPI_TalonSRX(22);
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
 
@@ -353,7 +353,7 @@ public class Hardware
     // PNEUMATIC DEVICES
     // **********************************************************
     public static DoubleSolenoid iDoubleSolenoid = new DoubleSolenoid(4, 5);
-    public static DoubleSolenoid lifDoubleSolenoid = new DoubleSolenoid(2,3);
+    public static DoubleSolenoid lifDoubleSolenoid = new DoubleSolenoid(2, 3);
     public static Compressor compressor = null;
     // **********************************************************
     // roboRIO CONNECTIONS CLASSES
@@ -431,13 +431,16 @@ public class Hardware
     public static TankTransmission transmission = null;
 
     // launcher stuff
-    public static IntakeControl intake = new IntakeControl(launchTimer);
+    public static IntakeControl intake = new IntakeControl(launchTimer, iDoubleSolenoid, intakeMotor);
 
-    public static Launcher launcher = new Launcher();
+    public static Launcher launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
 
-    public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);
+    public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL,
+            conveyorMotorGroup);
 
     public static HoodControl hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
+
+    public static BallCounter ballcounter = new BallCounter(ballButtonTimer);
 
     // ------------------------------------------
     // Vision stuff

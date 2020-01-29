@@ -41,7 +41,7 @@ public class LimelightDriveWithVision
         double adjustmentValueLeft = 0;
         if (overrideUltrasonic)
             {
-            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < distance)
+            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < ULTRA_OVERRIDE)
                 {
                 this.timer.stop();
                 return true;
@@ -109,4 +109,5 @@ public class LimelightDriveWithVision
 
     // distance away from the target that the robot will stop at
     final double STOP_DISTANCE_TEST = 50;// TODO
+    final int ULTRA_OVERRIDE = 20;
     }
