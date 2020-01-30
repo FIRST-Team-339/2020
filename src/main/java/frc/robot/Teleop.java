@@ -99,96 +99,53 @@ public class Teleop
     public static void periodic()
     {
         // =============== AUTOMATED SUBSYSTEMS ===============
-        Hardware.visionInterface.updateValues();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        //Hardware.visionInterface.updateValues();
+        //Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
-        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        Color detectedColor = Hardware.colorSensor.getColor();
 
-        if (Hardware.rightOperator.getRawButton(6) == true)
+        final ColorMatch colorMatcher = new ColorMatch();
+        final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+        final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+        final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+        colorMatcher.addColorMatch(kBlueTarget);
+        colorMatcher.addColorMatch(kGreenTarget);
+        colorMatcher.addColorMatch(kRedTarget);
+        colorMatcher.addColorMatch(kYellowTarget);
+
+        String colorString;
+        ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+
+        if (match.color == kBlueTarget)
             {
-            testBoolean1 = true;
+            colorString = "Blue";
             }
-        if (Hardware.leftOperator.getRawButton(6) == true)
+        else if (match.color == kRedTarget)
             {
-            testBoolean2 = true;
+            colorString = "Red";
             }
-
-        if (testBoolean1 == true)
+        else if (match.color == kGreenTarget)
             {
-            if (Hardware.visionDriving.alignToTarget())
-                {
-                testBoolean1 = false;
-                }
+            colorString = "Green";
+            }
+        else if (match.color == kYellowTarget)
+            {
+            colorString = "Yellow";
             }
         else
             {
-            teleopDrive();
+            colorString = "Unknown";
             }
 
-        //Color detectedColor = Hardware.colorSensor.getColor();
-
-        // final ColorMatch colorMatcher = new ColorMatch();
-        // final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-        // final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-        // final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-        // final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
-
-        // colorMatcher.addColorMatch(kBlueTarget);
-        // colorMatcher.addColorMatch(kGreenTarget);
-        // colorMatcher.addColorMatch(kRedTarget);
-        // colorMatcher.addColorMatch(kYellowTarget);
-
-        // String colorString;
-        // ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-
-        // if (match.color == kBlueTarget)
-
-        // int ballCount = 0;
-        // if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5)
-        //     {
-        //     ballCount++;
-        //     SmartDashboard.putNumber("Ball Count", ballCount);
-        //     }
-        // SmartDashboard.putNumber("Ball Count", ballCount);
-
-        // if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
-        //     {
-        //     Hardware.intake.intake(Hardware.intakeButton);
-        //     Hardware.intake.outtake(Hardware.outtakeButton);
-        //     }
-        // else
-        //     {
-        //     Hardware.intakeMotor.set(0);
-        //     }
-        // SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
-
-        // if (Hardware.leftOperator.getRawButton(4))
-        //     {
-        //     colorString = "Blue";
-        //     }
-        // else if (match.color == kRedTarget)
-        //     {
-        //     colorString = "Red";
-        //     }
-        // else if (match.color == kGreenTarget)
-        //     {
-        //     colorString = "Green";
-        //     }
-        // else if (match.color == kYellowTarget)
-        //     {
-        //     colorString = "Yellow";
-        //     }
-        // else
-        //     {
-        //     colorString = "Unknown";
-        //     }
-
-        // SmartDashboard.putNumber("Red", detectedColor.red);
-        // SmartDashboard.putNumber("Green", detectedColor.green);
-        // SmartDashboard.putNumber("Blue", detectedColor.blue);
-        // SmartDashboard.putString("Detected Color", colorString);
-        //teleopDrive();
+        SmartDashboard.putNumber("Red", detectedColor.red);
+        SmartDashboard.putNumber("Green", detectedColor.green);
+        SmartDashboard.putNumber("Blue", detectedColor.blue);
+        SmartDashboard.putString("Detected Color", colorString);
+        teleopDrive();
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
@@ -220,7 +177,7 @@ public class Teleop
     {
         // people test functions
         // connerTest();
-         craigTest();
+        craigTest();
         //chrisTest();
         // dionTest();
         // chrisTest();
@@ -236,8 +193,8 @@ public class Teleop
     public static boolean flag = true;
 
     public static void craigTest()
-    {   
-        System.out.println("Distance: "+ Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+    {
+        System.out.println("Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         //System.out.println("TESTINGGGGGGG");
         //momentary settup
 
