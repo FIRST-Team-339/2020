@@ -81,7 +81,7 @@ public class Teleop
             }
 
         Hardware.drive.setGear(0);
-
+        Hardware.launcherMotorEncoder.reset();
     } // end Init
 
     /**
@@ -101,9 +101,9 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.get());
 
-        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        Hardware.storage.storageControlState();
 
         if (Hardware.rightOperator.getRawButton(6) == true)
             {
@@ -126,6 +126,62 @@ public class Teleop
             teleopDrive();
             }
 
+        // ================= OPERATOR CONTROLS ================
+
+        // ================== DRIVER CONTROLS =================
+        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
+
+        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+
+        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+
+        Hardware.ballcounter.subtractBall(Hardware.substractBall);
+        Hardware.ballcounter.addBall(Hardware.addBall);
+        Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+
+        //individualTest();
+        //teleopDrive();
+
+    } // end Periodic()
+
+    public static void teleopDrive()
+    {
+        Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
+
+        // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
+        // System.out.println("Speed levels: rightDriver" +
+        // Hardware.rightDriver.getY());
+        // System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
+
+        Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
+
+        if (Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER)
+            {
+            Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
+            }
+
+    }
+
+    public static void individualTest()
+    {
+        // people test functions
+        // connerTest();
+        //craigTest();
+        //chrisTest();
+        // dionTest();
+        // chrisTest();
+        // dionTest();
+        // patrickTest();
+        //colourTest();
+    }
+
+    public static void connerTest()
+    {
+
+    }
+
+    public static void colourTest()
+    {
         //Color detectedColor = Hardware.colorSensor.getColor();
 
         // final ColorMatch colorMatcher = new ColorMatch();
@@ -188,56 +244,13 @@ public class Teleop
         // SmartDashboard.putNumber("Green", detectedColor.green);
         // SmartDashboard.putNumber("Blue", detectedColor.blue);
         // SmartDashboard.putString("Detected Color", colorString);
-        //teleopDrive();
-        // ================= OPERATOR CONTROLS ================
-
-        // ================== DRIVER CONTROLS =================
-
-        individualTest();
-        //teleopDrive();
-
-    } // end Periodic()
-
-    public static void teleopDrive()
-    {
-        Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
-
-        // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
-        // System.out.println("Speed levels: rightDriver" +
-        // Hardware.rightDriver.getY());
-        // System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
-
-        Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
-
-        if (Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER)
-            {
-            Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
-            }
-
-    }
-
-    public static void individualTest()
-    {
-        // people test functions
-        // connerTest();
-         craigTest();
-        //chrisTest();
-        // dionTest();
-        // chrisTest();
-        // dionTest();
-        // patrickTest();
-    }
-
-    public static void connerTest()
-    {
-
     }
 
     public static boolean flag = true;
 
     public static void craigTest()
-    {   
-        System.out.println("Distance: "+ Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+    {
+        System.out.println("Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         //System.out.println("TESTINGGGGGGG");
         //momentary settup
 

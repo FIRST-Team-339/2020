@@ -2,6 +2,7 @@ package frc.Utils;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
 
@@ -33,12 +34,40 @@ public class StorageControl
 
     public void storageControlState()
     {
+
+        SmartDashboard.putNumber("", Hardware.ballcounter.getBallCount());
+
+        SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
+
+        SmartDashboard.putBoolean("Red", Hardware.visionInterface.getDistanceFromTarget() > 120);
+
         switch (state)
             {
             case INIT:
+                state = ControlState.PASSIVE;
                 break;
             case PASSIVE:
-                this.conveyorMotors.set(HOLDING_SPEED);
+                //this.conveyorMotors.set(HOLDING_SPEED);
+
+                if (this.intakeRL.get() && prevRL == false)
+                    {
+                    prevRL = true;
+                    if (Hardware.intake.intaking)
+                        {
+                        System.out.println("adding");
+                        Hardware.ballcounter.addBall();
+                        }
+                    else if (Hardware.intake.outtaking)
+                        {
+                        System.out.println("subtracting");
+                        Hardware.ballcounter.subtractBall();
+                        }
+                    }
+                if (!this.intakeRL.get())
+                    {
+                    prevRL = false;
+                    }
+
                 break;
             case UP:
                 conveyorUp();
@@ -57,12 +86,15 @@ public class StorageControl
         //sets the motors to UP_SPEED
         //whats UP_SPEED?
         //SPEED: not much, how about you?
-        this.conveyorMotors.set(UP_SPEED);
+
+        System.out.println("conveyor up");
+        Hardware.conveyorMotorGroup.set(UP_SPEED);
     }
 
     public void conveyorDown()
     {
-        this.conveyorMotors.set(DOWN_SPEED);
+        System.out.println("conveyor down");
+        Hardware.conveyorMotorGroup.set(DOWN_SPEED);
     }
 
     private enum ShootState
@@ -83,8 +115,10 @@ public class StorageControl
                     shootState = ShootState.INITIAL_UP;
                     break;
                 case INITIAL_UP:
+                    //TODO this might have to be the upperRL
                     if (this.shootRL.get())
                         {
+                        System.out.println("got shoot rl");
                         state = ControlState.PASSIVE;
                         shootState = ShootState.WAIT_FOR_POWER;
                         }
@@ -94,12 +128,9 @@ public class StorageControl
                         }
                     break;
                 case WAIT_FOR_POWER:
-                    if (Hardware.launcher.prepareToShoot(RPM_CLOSE))
-                        {
-                        preparedToFire = true;
-                        return true;
-                        }
-                    break;
+
+                    preparedToFire = true;
+                    return true;
                 default:
                     shootState = ShootState.INIT;
                     break;
@@ -111,11 +142,12 @@ public class StorageControl
 
     public boolean loadToFire()
     {
-        if (preparedToFire && Hardware.launcher.prepareToShoot(RPM_CLOSE))
+        if (preparedToFire)
             {
 
             if (this.shootRL.get())
                 {
+                System.out.println("shooting ball");
                 state = ControlState.UP;
                 }
             else
@@ -131,10 +163,9 @@ public class StorageControl
         return false;
     }
 
-    private static boolean preparedToFire = false;
+    private static boolean prevRL = false;
 
-    final double RPM_CLOSE = 1500;//TODO also figure all the unit(it might be inches/second or revs/second)
-    final double RPM_FAR = 4000;
+    private static boolean preparedToFire = false;
 
     final double HOLDING_SPEED = 0;
 

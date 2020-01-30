@@ -60,13 +60,14 @@ public class Robot extends TimedRobot
         Hardware.rightDriveEncoder.reset();
 
         //AIR
-        Hardware.compressor.start();
+        //Hardware.compressor.start();
 
-        //gyro 
+        //gyro
         Hardware.gyro.calibrate();
         Hardware.gyro.reset();
 
         Hardware.frontUltraSonic.setOffsetDistanceFromNearestBumper(3);
+        Hardware.launcherMotorEncoder.setDistancePerPulse((4 * Math.PI) / 5175);
         // ---------------------------------------
         // done setup - tell the user we are complete
         // setup

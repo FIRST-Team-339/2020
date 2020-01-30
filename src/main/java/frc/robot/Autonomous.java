@@ -139,6 +139,7 @@ public class Autonomous
     public static void periodic()
     {
         Hardware.visionInterface.updateValues();
+        Hardware.storage.storageControlState();
 
         // printing out utilized states:
 
@@ -840,13 +841,13 @@ public class Autonomous
     private static boolean shootFar()
     {
         if (Hardware.visionDriving.driveToTarget(120, true))
-        {
-       
-        //call methods to shoot
-        return true;
-        }
-    return false;
-    
+            {
+
+            //call methods to shoot
+            return true;
+            }
+        return false;
+
     }
 
     private static boolean hasShotTheEtHInG = false;

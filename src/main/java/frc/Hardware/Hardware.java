@@ -191,11 +191,11 @@ public class Hardware
 
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
 
-        //conveyorMotor1 = new WPI_TalonSRX(22);//TODO
+        conveyorMotor1 = new WPI_TalonSRX(22);
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
 
-        intakeMotor = new WPI_TalonSRX(22);//TODO 23
+        intakeMotor = new WPI_TalonSRX(23);
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
@@ -388,11 +388,14 @@ public class Hardware
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+    public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
     public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
     public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+    public static JoystickButton substractBall = new JoystickButton(Hardware.leftOperator, 8);
+    public static JoystickButton addBall = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
@@ -410,6 +413,8 @@ public class Hardware
     // Utility classes
     // ------------------------------------
     public static Timer autoTimer = new Timer();
+
+    public static Timer getSpeedTimer = new Timer();
 
     public static Timer telopTimer = new Timer();
 

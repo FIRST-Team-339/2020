@@ -5,6 +5,7 @@ import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
 
 import java.nio.charset.CharacterCodingException;
+import java.util.Timer;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -37,25 +38,34 @@ public class Launcher
      * desire. whether it be the target or pesky those builders who have yet to
      * finish the actual launcher
      */
-    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, boolean close)
+    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
+        System.out.println("shootState: " + shootState);
         switch (shootState)
             {
             case PASSIVE:
+                if (shootButton.get())
+                    {
+                    shootState = ShootState.CHARGE;
+                    }
                 break;
             case CHARGE:
+
+                if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                    {
+                    shootState = ShootState.LAUNCH;
+                    }
                 break;
             case LAUNCH:
+                if (Hardware.storage.loadToFire())
+                    {
+                    shootState = ShootState.PASSIVE;
+                    }
                 break;
             default:
 
                 break;
             }
-
-    }
-
-    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, int distance)
-    {
 
     }
 
@@ -65,25 +75,31 @@ public class Launcher
     }
 
     private double speedAdjustment = 0;
+    public boolean spedUp = false;
 
-    public boolean prepareToShoot(double RPM)
+    //speed in inches per second
+
+    public boolean prepareToShoot(double speed)
     {
-        if (this.encoder.getRate() >= RPM + 100)
+        Hardware.getSpeedTimer.start();
+
+        if (Hardware.launcherMotorEncoder.getRate() > speed - .1)
             {
+            Hardware.getSpeedTimer.stop();
+            Hardware.getSpeedTimer.reset();
+            spedUp = true;
+            System.out.println("super sped");
             return true;
             }
         else
             {
-            if (this.encoder.getRate() < RPM)
+            if (Hardware.launcherMotorEncoder.getRate() < speed)
                 {
-                speedAdjustment += .025;
-                }
-            else if (this.encoder.getRate() > RPM)
-                {
-                speedAdjustment -= .25;
+                spedUp = false;
+                speedAdjustment += .005;
                 }
             }
-        this.firingMotors.set(.5 + speedAdjustment);
+        Hardware.launcherMotorGroup.set(.5 + speedAdjustment);
         return false;
     }
 
