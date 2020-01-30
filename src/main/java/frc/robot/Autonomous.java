@@ -141,6 +141,11 @@ public class Autonomous
         Hardware.visionInterface.updateValues();
         Hardware.storage.storageControlState();
 
+        //System.out.println("ultrs" + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        //System.out.println("vision" +Hardware.visionInterface.getDistanceFromTarget());
+
+        Hardware.visionInterface.updateValues();
+
         // printing out utilized states:
 
         // Cancel if the "cancelAuto" button is pressed
@@ -264,6 +269,9 @@ public class Autonomous
 
     public static boolean runAuto()
     {
+    // System.out.println("Location: " + position);
+    // System.out.println("RunAuto Path: " + path);
+    // System.out.println("Exit Path" + exit);
         switch (path)
             {
             case NOTHING:
@@ -299,6 +307,8 @@ public class Autonomous
                         // Continuation of Alinging trench, adding the process of picking up those balls
                         // and attepting to shoot, or alligning to shoot again.
                         path = Path.ALIGN_TRENCH;
+                        }else{
+                            path =Path.MOVE_BACKWARDS;
                         }
                     // else if (exit.equals(Exit.GET_OUT) || exit == Exit.GET_OUT)
                     // {
@@ -313,6 +323,8 @@ public class Autonomous
                 break;
 
             case SHOOT_CLOSE:
+            /* TODO set the motors to ramp up here */
+            // Hardware.launcher.prepareToShoot(3000);
                 // the action of moving closer before attempting to shoot in the goal
                 if (!hasShotTheEtHInG)
                     {
@@ -374,7 +386,8 @@ public class Autonomous
                 // doAnything?
                 break;
 
-            case GET_OUT:
+            case GET_OUT: 
+           // System.out.println("Get Out: " + out);
                 // removing yourself from the way of robots
 
                 if (getOut())
@@ -757,12 +770,14 @@ public class Autonomous
                             out = GetOutState.FINAL_DRIVE;
                             break;
                             }
+                        }
+                    }
                         else
                             {
                             out = GetOutState.FINAL_DRIVE;
                             }
-                        }
-                    }
+                        
+                    
                 break;
 
             case FINAL_DRIVE:
@@ -819,20 +834,26 @@ public class Autonomous
 
     private static boolean shootClose()
     {
+        //System.out.println("Should Move");
         // Drive Forward Then shoot
         // Drive towards target
-        if (Hardware.visionDriving.driveToTarget(24, true))
+        if (Hardware.visionDriving.driveToTarget(35, true))
             {
+                if(Hardware.autoTimer.get() > 0){
 
-            try
-                {
-                TimeUnit.SECONDS.sleep(3);
-                } catch (InterruptedException e)
-                {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                }else{
+                  //  Hardware.autoTimer.reset();
+                    Hardware.autoTimer.start();
                 }
+                //Hardware.conveyorMotorGroup.set(.4);
+                System.out.println("Timer "+ Hardware.autoTimer.get() );
+                if(Hardware.autoTimer.get() > 3000.0){
+
+                
+
+            
             return true;
+                }
             }
         return false;
 
@@ -858,7 +879,7 @@ public class Autonomous
 
     private final static double AUTO_GEAR = 1.0;
 
-    private final static int OFF_LINE_DISTANCE = 120;
+    private final static int OFF_LINE_DISTANCE = 48;
 
     private final static int GET_OUT_LEFT_DEGREES = -120;
     private final static int GET_OUT_LEFT_DISTANCE = 36;
