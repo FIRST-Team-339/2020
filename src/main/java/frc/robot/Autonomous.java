@@ -268,9 +268,9 @@ public class Autonomous
 
     public static boolean runAuto()
     {
-    // System.out.println("Location: " + position);
-    // System.out.println("RunAuto Path: " + path);
-    // System.out.println("Exit Path" + exit);
+        // System.out.println("Location: " + position);
+        // System.out.println("RunAuto Path: " + path);
+        // System.out.println("Exit Path" + exit);
         switch (path)
             {
             case NOTHING:
@@ -306,8 +306,10 @@ public class Autonomous
                         // Continuation of Alinging trench, adding the process of picking up those balls
                         // and attepting to shoot, or alligning to shoot again.
                         path = Path.ALIGN_TRENCH;
-                        }else{
-                            path =Path.MOVE_BACKWARDS;
+                        }
+                    else
+                        {
+                        path = Path.MOVE_BACKWARDS;
                         }
                     // else if (exit.equals(Exit.GET_OUT) || exit == Exit.GET_OUT)
                     // {
@@ -322,8 +324,8 @@ public class Autonomous
                 break;
 
             case SHOOT_CLOSE:
-            /* TODO set the motors to ramp up here */
-            // Hardware.launcher.prepareToShoot(3000);
+                /* TODO set the motors to ramp up here */
+                // Hardware.launcher.prepareToShoot(3000);
                 // the action of moving closer before attempting to shoot in the goal
                 if (!hasShotTheEtHInG)
                     {
@@ -385,8 +387,8 @@ public class Autonomous
                 // doAnything?
                 break;
 
-            case GET_OUT: 
-           // System.out.println("Get Out: " + out);
+            case GET_OUT:
+                // System.out.println("Get Out: " + out);
                 // removing yourself from the way of robots
 
                 if (getOut())
@@ -771,12 +773,11 @@ public class Autonomous
                             }
                         }
                     }
-                        else
-                            {
-                            out = GetOutState.FINAL_DRIVE;
-                            }
-                        
-                    
+                else
+                    {
+                    out = GetOutState.FINAL_DRIVE;
+                    }
+
                 break;
 
             case FINAL_DRIVE:
@@ -838,20 +839,21 @@ public class Autonomous
         // Drive towards target
         if (Hardware.visionDriving.driveToTarget(35, true))
             {
-                if(Hardware.autoTimer.get() > 0){
+            if (Hardware.autoTimer.get() > 0)
+                {
 
-                }else{
-                  //  Hardware.autoTimer.reset();
-                    Hardware.autoTimer.start();
                 }
-                //Hardware.conveyorMotorGroup.set(.4);
-                System.out.println("Timer "+ Hardware.autoTimer.get() );
-                if(Hardware.autoTimer.get() > 3000.0){
+            else
+                {
+                //  Hardware.autoTimer.reset();
+                Hardware.autoTimer.start();
+                }
+            //Hardware.conveyorMotorGroup.set(.4);
+            System.out.println("Timer " + Hardware.autoTimer.get());
+            if (Hardware.autoTimer.get() > 3000.0)
+                {
 
-                
-
-            
-            return true;
+                return true;
                 }
             }
         return false;
@@ -861,13 +863,13 @@ public class Autonomous
     private static boolean shootFar()
     {
         if (Hardware.visionDriving.driveToTarget(120, true))
-        {
-       
-        //call methods to shoot
-        return true;
-        }
-    return false;
-    
+            {
+
+            //call methods to shoot
+            return true;
+            }
+        return false;
+
     }
 
     private static boolean hasShotTheEtHInG = false;
