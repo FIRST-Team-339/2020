@@ -98,12 +98,18 @@ public class Teleop
 
     public static void periodic()
     {
+        System.out.println("LE: " + Hardware.leftDriveEncoder.get());
+        System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.get());
 
         Hardware.storage.storageControlState();
+        if (Hardware.rightDriver.getRawButton(3))
+            {
+
+            }
 
         if (Hardware.rightOperator.getRawButton(6) == true)
             {
@@ -173,7 +179,7 @@ public class Teleop
     {
         // people test functions
         // connerTest();
-        //craigTest();
+        // craigTest();
         //chrisTest();
         // dionTest();
         // chrisTest();
@@ -184,6 +190,42 @@ public class Teleop
 
     public static void connerTest()
     {
+
+    }
+
+    public static boolean flag = true;
+
+    public static void craigTest()
+    {
+        //  System.out.println("Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        System.out.println("Delay: " + Hardware.delayPot.getValue());
+
+        //System.out.println("TESTINGGGGGGG");
+        //momentary settup
+
+        // if (Hardware.rightDriver.getRawButton(4) == true)
+        //     {
+        //     if (Hardware.invertTempoMomentarySwitch.isOn())
+        //         {
+        //         Hardware.invertTempoMomentarySwitch.setValue(false);
+        //         }
+        //     else
+        //         {
+        //         Hardware.invertTempoMomentarySwitch.setValue(true);
+        //         }
+        //     }
+        // if (Hardware.invertTempoMomentarySwitch.isOn())
+        //     {
+
+        //     }
+        // else
+        //     {
+
+        //     }
+
+        //System.out.println("Degrees Gyro: "+ Hardware.gyro.getAngle());
+        // System.out.println(Hardware.rightFrontMotor.getInverted());
+        //System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
 
     }
 
@@ -251,40 +293,6 @@ public class Teleop
         // SmartDashboard.putNumber("Green", detectedColor.green);
         // SmartDashboard.putNumber("Blue", detectedColor.blue);
         // SmartDashboard.putString("Detected Color", colorString);
-    }
-
-    public static boolean flag = true;
-
-    public static void craigTest()
-    {
-        System.out.println("Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
-        //System.out.println("TESTINGGGGGGG");
-        //momentary settup
-
-        // if (Hardware.rightDriver.getRawButton(4) == true)
-        //     {
-        //     if (Hardware.invertTempoMomentarySwitch.isOn())
-        //         {
-        //         Hardware.invertTempoMomentarySwitch.setValue(false);
-        //         }
-        //     else
-        //         {
-        //         Hardware.invertTempoMomentarySwitch.setValue(true);
-        //         }
-        //     }
-        // if (Hardware.invertTempoMomentarySwitch.isOn())
-        //     {
-
-        //     }
-        // else
-        //     {
-
-        //     }
-
-        //System.out.println("Degrees Gyro: "+ Hardware.gyro.getAngle());
-        // System.out.println(Hardware.rightFrontMotor.getInverted());
-        //System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
-
     }
 
     public static void dionTest()

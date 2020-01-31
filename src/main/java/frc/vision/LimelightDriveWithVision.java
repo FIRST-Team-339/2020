@@ -47,6 +47,9 @@ public class LimelightDriveWithVision
                 return true;
                 }
             }
+        if(!Hardware.visionInterface.getHasTargets()){
+            return true;
+        }
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
