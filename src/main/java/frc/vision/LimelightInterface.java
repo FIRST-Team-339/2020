@@ -143,12 +143,14 @@ public class LimelightInterface
         return this.x;
 
     }
-/**
- * if the vision has targets
- * @return boolean
- */
-    public boolean getHasTargets(){
-    return this.hasTargets;
+
+    /**
+     * if the vision has targets
+     * @return boolean
+     */
+    public boolean getHasTargets()
+    {
+        return this.hasTargets;
     }
 
     /**
@@ -448,34 +450,35 @@ public class LimelightInterface
      */
     public double getLowestYDegree()
     {
-
-        lowestY = this.ycorner[0];
-        // compare all the x coordinates in order to find the lowest
-        for (int i = 0; i < this.ycorner.length; i++)
+        if (hasTargets)
             {
-            if (this.ycorner[i] > lowestY)
+            lowestY = this.ycorner[0];
+            // compare all the x coordinates in order to find the lowest
+            for (int i = 0; i < this.ycorner.length; i++)
                 {
-                lowestY = this.ycorner[i];
+                if (this.ycorner[i] > lowestY)
+                    {
+                    lowestY = this.ycorner[i];
+                    }
+                }
+            // get the angle of the lowestY base off of the fov of the camera. lowestY is in
+            // pixels with 0 being at the top of the frame
+            // this is currently assuming that the resolution is 320x240 the lowest setting
+            // for the limelight camera
+
+            if (lowestY < 120)
+                {
+                lowestDegree = 24.85 - ((lowestY / 120) * 24.85);
+                }
+            else if (lowestY > 120)
+                {
+                lowestDegree = -((lowestY - 120) / 120) * (49.7 / 2);
+                }
+            else if (lowestY == 120)
+                {
+                lowestDegree = 0;
                 }
             }
-        // get the angle of the lowestY base off of the fov of the camera. lowestY is in
-        // pixels with 0 being at the top of the frame
-        // this is currently assuming that the resolution is 320x240 the lowest setting
-        // for the limelight camera
-
-        if (lowestY < 120)
-            {
-            lowestDegree = 24.85 - ((lowestY / 120) * 24.85);
-            }
-        else if (lowestY > 120)
-            {
-            lowestDegree = -((lowestY - 120) / 120) * (49.7 / 2);
-            }
-        else if (lowestY == 120)
-            {
-            lowestDegree = 0;
-            }
-
         return lowestDegree;
     }
 
