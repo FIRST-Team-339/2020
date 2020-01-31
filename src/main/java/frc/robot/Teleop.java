@@ -104,47 +104,49 @@ public class Teleop
         // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
         // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
-        Color detectedColor = Hardware.colorSensor.getColor();
+        //BELOW Color Sensor Test Code
 
-        final ColorMatch colorMatcher = new ColorMatch();
-        final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-        final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-        final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-        final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+        //Color detectedColor = Hardware.colorSensor.getColor();
 
-        colorMatcher.addColorMatch(kBlueTarget);
-        colorMatcher.addColorMatch(kGreenTarget);
-        colorMatcher.addColorMatch(kRedTarget);
-        colorMatcher.addColorMatch(kYellowTarget);
+        // final ColorMatch colorMatcher = new ColorMatch();
+        // final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        // // final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+        // final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+        // // final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
-        String colorString;
-        ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+        // colorMatcher.addColorMatch(kBlueTarget);
+        // colorMatcher.addColorMatch(kGreenTarget);
+        // colorMatcher.addColorMatch(kRedTarget);
+        // colorMatcher.addColorMatch(kYellowTarget);
 
-        if (match.color == kBlueTarget)
-            {
-            colorString = "Blue";
-            }
-        else if (match.color == kRedTarget)
-            {
-            colorString = "Red";
-            }
-        else if (match.color == kGreenTarget)
-            {
-            colorString = "Green";
-            }
-        else if (match.color == kYellowTarget)
-            {
-            colorString = "Yellow";
-            }
-        else
-            {
-            colorString = "Unknown";
-            }
+        // String colorString;
+        // // ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
 
-        SmartDashboard.putNumber("Red", detectedColor.red);
-        SmartDashboard.putNumber("Green", detectedColor.green);
-        SmartDashboard.putNumber("Blue", detectedColor.blue);
-        SmartDashboard.putString("Detected Color", colorString);
+        // if (match.color == kBlueTarget)
+        // {
+        // colorString = "Blue";
+        // }
+        // else if (match.color == kRedTarget)
+        // {
+        // colorString = "Red";
+        // }
+        // else if (match.color == kGreenTarget)
+        // {
+        // colorString = "Green";
+        // }
+        // else if (match.color == kYellowTarget)
+        // {
+        // colorString = "Yellow";
+        // }
+        // else
+        // {
+        // colorString = "Unknown";
+        // }
+
+        // SmartDashboard.putNumber("Red", detectedColor.red);
+        // SmartDashboard.putNumber("Green", detectedColor.green);
+        // SmartDashboard.putNumber("Blue", detectedColor.blue);
+        // SmartDashboard.putString("Detected Color", colorString);
         teleopDrive();
         // ================= OPERATOR CONTROLS ================
 
