@@ -314,6 +314,7 @@ public class Hardware
     // -------------------------------------------------------------
 
     public static SpeedController hoodAdjustmentMotor = null;
+    public static KilroyEncoder hoodAdjustmentMotorEncoder = null;
 
     // **********************************************************
     // DIGITAL I/O
