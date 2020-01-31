@@ -140,6 +140,11 @@ public class Autonomous
     {
         Hardware.visionInterface.updateValues();
 
+        //System.out.println("ultrs" + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        //System.out.println("vision" +Hardware.visionInterface.getDistanceFromTarget());
+
+        Hardware.visionInterface.updateValues();
+
         // printing out utilized states:
 
         // Cancel if the "cancelAuto" button is pressed
@@ -159,11 +164,14 @@ public class Autonomous
                 break;
 
             case DELAY:
+            //System.out.println("AutoTimer:  " + Hardware.autoTimer.get());
+            //System.out.println("Target: " + Hardware.delayPot.get(0, 5.0));
                 if (Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0))
                     {
 
                     autoState = State.CHOOSE_PATH;
                     Hardware.autoTimer.stop();
+
                     }
 
                 break;
@@ -175,6 +183,7 @@ public class Autonomous
 
                 break;
             case RUN:
+            // System.out.println("In Run State");
                 if (runAuto())
                     {
                     autoState = State.FINISH;
@@ -263,6 +272,9 @@ public class Autonomous
 
     public static boolean runAuto()
     {
+        // System.out.println("Location: " + position);
+        // System.out.println("RunAuto Path: " + path);
+        // System.out.println("Exit Path" + exit);
         switch (path)
             {
             case NOTHING:
@@ -299,6 +311,10 @@ public class Autonomous
                         // and attepting to shoot, or alligning to shoot again.
                         path = Path.ALIGN_TRENCH;
                         }
+                    else
+                        {
+                        path = Path.MOVE_BACKWARDS;
+                        }
                     // else if (exit.equals(Exit.GET_OUT) || exit == Exit.GET_OUT)
                     // {
 
@@ -312,6 +328,8 @@ public class Autonomous
                 break;
 
             case SHOOT_CLOSE:
+                /* TODO set the motors to ramp up here */
+                // Hardware.launcher.prepareToShoot(3000);
                 // the action of moving closer before attempting to shoot in the goal
                 if (!hasShotTheEtHInG)
                     {
@@ -374,6 +392,7 @@ public class Autonomous
                 break;
 
             case GET_OUT:
+                // System.out.println("Get Out: " + out);
                 // removing yourself from the way of robots
 
                 if (getOut())
@@ -736,9 +755,12 @@ public class Autonomous
 
     private static boolean getOut()
     {
+        
+        System.out.println("Out State: " + out);
         switch (out)
             {
             case TURN:
+           
                 if (position == Position.RIGHT)
                     {
                     if (Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
@@ -749,19 +771,19 @@ public class Autonomous
                     }
                 else if (position == Position.LEFT)
                     {
+
                     if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
                         {
-                        if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
-                            {
                             out = GetOutState.FINAL_DRIVE;
                             break;
                             }
-                        else
-                            {
-                            out = GetOutState.FINAL_DRIVE;
-                            }
-                        }
+                        
                     }
+                else
+                    {
+                    out = GetOutState.FINAL_DRIVE;
+                    }
+
                 break;
 
             case FINAL_DRIVE:
@@ -818,20 +840,16 @@ public class Autonomous
 
     private static boolean shootClose()
     {
+        //System.out.println("Should Move");
         // Drive Forward Then shoot
         // Drive towards target
-        if (Hardware.visionDriving.driveToTarget(24, true))
-            {
+        System.out.println("Camera Distance: " + Hardware.visionInterface.getDistanceFromTarget());
+        System.out.println("US Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
 
-            try
-                {
-                TimeUnit.SECONDS.sleep(3);
-                } catch (InterruptedException e)
-                {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                }
+        if (Hardware.visionDriving.driveToTarget(45, true))
+            {
             return true;
+                
             }
         return false;
 
@@ -839,7 +857,7 @@ public class Autonomous
 
     private static boolean shootFar()
     {
-        if (Hardware.visionDriving.driveToTarget(120, true))
+        if (Hardware.visionDriving.alignToTarget())
         {
        
         //call methods to shoot
@@ -857,7 +875,7 @@ public class Autonomous
 
     private final static double AUTO_GEAR = 1.0;
 
-    private final static int OFF_LINE_DISTANCE = 120;
+    private final static int OFF_LINE_DISTANCE = 48;
 
     private final static int GET_OUT_LEFT_DEGREES = -120;
     private final static int GET_OUT_LEFT_DISTANCE = 36;

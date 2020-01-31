@@ -26,7 +26,7 @@ public class LimelightDriveWithVision
     public boolean driveToTarget(int distance, boolean overrideUltrasonic)
     {
         this.timer.start();
-        System.out.println(this.timer.get() * 10000);
+        //System.out.println(this.timer.get() * 10000);
         if (this.timer.get() * 100000 > 4)
             {
             Hardware.visionInterface.takePicture();
@@ -47,6 +47,9 @@ public class LimelightDriveWithVision
                 return true;
                 }
             }
+        if(!Hardware.visionInterface.getHasTargets()){
+            return true;
+        }
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 

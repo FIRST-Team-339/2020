@@ -61,12 +61,12 @@ public class IntakeControl
     {
         if (deployIntake())
             {
-            if (Hardware.ballcounter.getBallCount() < 5 || overrideButton.get())
+            if (Hardware.ballcounter.getBallCount() <= 5 || overrideButton.get())
                 {
                 if (intakeButton.get())
                     {
                     intaking = true;
-                    Hardware.intakeMotor.set(INTAKE_SPEED);
+                    //Hardware.intakeMotor.set(INTAKE_SPEED);//TODO
                     }
                 else
                     {
@@ -110,12 +110,12 @@ public class IntakeControl
     {
         if (deployIntake())
             {
-            if (Hardware.ballcounter.getBallCount() < 5 || overrideButton.get())
+            if (Hardware.ballcounter.getBallCount() <= 5 || overrideButton.get())
                 {
                 if (outtakeButton.get())
                     {
                     outtaking = true;
-                    Hardware.intakeMotor.set(OUTTAKE_SPEED);
+                    //Hardware.intakeMotor.set(OUTTAKE_SPEED);//TODO
                     }
                 else
                     {

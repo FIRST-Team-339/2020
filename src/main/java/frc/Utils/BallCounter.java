@@ -22,7 +22,7 @@ public class BallCounter
 
     public void addBall()
     {
-        if (ballCount > MIN_BALLS)
+        if (ballCount < MAX_BALLS)
             {
             ballCount++;
             }
@@ -30,11 +30,11 @@ public class BallCounter
 
     public void addBall(JoystickButton button)
     {
-        if (button.get() && this.timer.get() > .1 || firstTime == true)
+        if (button.get() && this.timer.get() > .2 || firstTime == true)
             {
             timer.reset();
             firstTime = false;
-            if (ballCount > MIN_BALLS)
+            if (ballCount < MAX_BALLS)
                 {
                 ballCount++;
                 }
@@ -55,7 +55,7 @@ public class BallCounter
 
     public void subtractBall(JoystickButton button)
     {
-        if (button.get() && this.timer.get() > .1 || firstTime == true)
+        if (button.get() && this.timer.get() > .2 || firstTime == true)
             {
             timer.reset();
             firstTime = false;

@@ -2,6 +2,7 @@ package frc.Utils;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
 
@@ -33,12 +34,40 @@ public class StorageControl
 
     public void storageControlState()
     {
+
+        SmartDashboard.putNumber("", Hardware.ballcounter.getBallCount());
+
+        SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
+
+        SmartDashboard.putBoolean("Red", Hardware.visionInterface.getDistanceFromTarget() > 120);
+
         switch (state)
             {
             case INIT:
+                state = ControlState.PASSIVE;
                 break;
             case PASSIVE:
-                this.conveyorMotors.set(HOLDING_SPEED);
+                Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
+
+                if (this.intakeRL.get() && prevRL == false)
+                    {
+                    prevRL = true;
+                    if (Hardware.intake.intaking)
+                        {
+                        System.out.println("adding");
+                        Hardware.ballcounter.addBall();
+                        }
+                    else if (Hardware.intake.outtaking)
+                        {
+                        System.out.println("subtracting");
+                        Hardware.ballcounter.subtractBall();
+                        }
+                    }
+                if (!this.intakeRL.get())
+                    {
+                    prevRL = false;
+                    }
+
                 break;
             case UP:
                 conveyorUp();
@@ -57,12 +86,15 @@ public class StorageControl
         //sets the motors to UP_SPEED
         //whats UP_SPEED?
         //SPEED: not much, how about you?
-        this.conveyorMotors.set(UP_SPEED);
+
+        System.out.println("conveyor up");
+        Hardware.conveyorMotorGroup.set(UP_SPEED);
     }
 
     public void conveyorDown()
     {
-        this.conveyorMotors.set(DOWN_SPEED);
+        System.out.println("conveyor down");
+        Hardware.conveyorMotorGroup.set(DOWN_SPEED);
     }
 
     private enum ShootState
@@ -83,8 +115,10 @@ public class StorageControl
                     shootState = ShootState.INITIAL_UP;
                     break;
                 case INITIAL_UP:
+                    //TODO this might have to be the upperRL
                     if (this.shootRL.get())
                         {
+                        System.out.println("got shoot rl");
                         state = ControlState.PASSIVE;
                         shootState = ShootState.WAIT_FOR_POWER;
                         }
@@ -94,12 +128,10 @@ public class StorageControl
                         }
                     break;
                 case WAIT_FOR_POWER:
-                    if (Hardware.launcher.prepareToShoot(RPM_CLOSE))
-                        {
-                        preparedToFire = true;
-                        return true;
-                        }
-                    break;
+
+                    preparedToFire = true;
+                    shootState = ShootState.INIT;
+                    return true;
                 default:
                     shootState = ShootState.INIT;
                     break;
@@ -109,32 +141,65 @@ public class StorageControl
         return false;
     }
 
+    boolean stillShooting = false;
+
     public boolean loadToFire()
     {
-        if (preparedToFire && Hardware.launcher.prepareToShoot(RPM_CLOSE))
-            {
 
-            if (this.shootRL.get())
+        if (stillShooting)
+            {
+            if (this.shootRL.get() == false)
                 {
-                state = ControlState.UP;
+                shotBall = true;
                 }
-            else
+            }
+        if (Hardware.ballcounter.getBallCount() > 0)
+            {
+            if (preparedToFire)
                 {
-                state = ControlState.PASSIVE;
-                if (Hardware.ballcounter.getBallCount() > 1)
+                System.out.println("loading");
+                if (this.shootRL.get())
                     {
-                    prepareToShoot();
-                    return true;
+
+                    System.out.println("shooting ball");
+                    state = ControlState.UP;
+                    if (!stillShooting)
+                        {
+                        Hardware.ballcounter.subtractBall();
+                        }
+                    stillShooting = true;
+                    }
+                else if (shotBall)
+                    {
+                    stillShooting = false;
+                    shotBall = false;
+                    state = ControlState.PASSIVE;
+                    if (Hardware.ballcounter.getBallCount() > 0)
+                        {
+                        System.out.println(" preparing again");
+                        prepareToShoot();
+                        return true;
+                        }
+                    else
+                        {
+
+                        Hardware.launcher.unchargeShooter();
+                        return true;
+                        }
                     }
                 }
+            }
+        else
+            {
+            state = ControlState.PASSIVE;
             }
         return false;
     }
 
-    private static boolean preparedToFire = false;
+    private static boolean shotBall = false;
+    private static boolean prevRL = false;
 
-    final double RPM_CLOSE = 1500;//TODO also figure all the unit(it might be inches/second or revs/second)
-    final double RPM_FAR = 4000;
+    private static boolean preparedToFire = false;
 
     final double HOLDING_SPEED = 0;
 

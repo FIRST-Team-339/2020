@@ -5,6 +5,7 @@ import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
 
 import java.nio.charset.CharacterCodingException;
+import java.util.Timer;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -37,15 +38,30 @@ public class Launcher
      * desire. whether it be the target or pesky those builders who have yet to
      * finish the actual launcher
      */
-    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, boolean close)
+    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
+        // System.out.println("shootState: " + shootState);
         switch (shootState)
             {
             case PASSIVE:
+                if (shootButton.get())
+                    {
+                    shootState = ShootState.CHARGE;
+                    }
                 break;
             case CHARGE:
+
+                if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                    {
+                    shootState = ShootState.LAUNCH;
+                    }
                 break;
             case LAUNCH:
+                if (Hardware.storage.loadToFire())
+                    {
+                    System.out.println("loaded");
+                    shootState = ShootState.PASSIVE;
+                    }
                 break;
             default:
 
@@ -54,36 +70,89 @@ public class Launcher
 
     }
 
-    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, int distance)
-    {
+    private enum ShootStateAuto
+        {
+        CHARGE, LAUNCH
+        }
 
-    }
+    public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
 
-    public boolean shootBallsAuto(JoystickButton overrideButton, boolean isClose)
+    public boolean shootBallsAuto(boolean isClose)
     {
+        System.out.println("shootStateAuto: " + shootStateAuto);
+        if (Hardware.ballcounter.getBallCount() > 0)
+            {
+            switch (shootStateAuto)
+                {
+                case CHARGE:
+
+                    if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                        {
+                        shootState = ShootState.LAUNCH;
+                        }
+                    break;
+                case LAUNCH:
+                    for (int i = Hardware.ballcounter.getBallCount(); i > 0; i++)
+                        {
+                        if (Hardware.storage.loadToFire())
+                            {
+                            System.out.println("loaded");
+                            shootState = ShootState.PASSIVE;
+                            if (i == 1)
+                                {
+                                return true;
+                                }
+                            }
+                        }
+
+                    break;
+                default:
+
+                    break;
+                }
+            }
+        else
+            {
+            return true;
+            }
         return false;
     }
 
     private double speedAdjustment = 0;
+    public boolean spedUp = false;
 
-    public boolean prepareToShoot(double RPM)
+    //speed in inches per second
+
+    //estimated RPM
+    //short = 2300RPM
+    //long 5300RPM
+    public boolean prepareToShoot(double speed)
     {
-        if (this.encoder.getRate() >= RPM + 100)
+        Hardware.getSpeedTimer.start();
+
+        if (Hardware.launcherMotorEncoder.getRate() > speed - .1)
             {
+            Hardware.getSpeedTimer.stop();
+            Hardware.getSpeedTimer.reset();
+            spedUp = true;
+            System.out.println("charged");
             return true;
             }
         else
             {
-            if (this.encoder.getRate() < RPM)
+            if (Hardware.launcherMotorEncoder.getRate() < speed)
                 {
-                speedAdjustment += .025;
-                }
-            else if (this.encoder.getRate() > RPM)
-                {
-                speedAdjustment -= .25;
+                spedUp = false;
+                speedAdjustment += .005;
                 }
             }
-        this.firingMotors.set(.5 + speedAdjustment);
+        Hardware.launcherMotorGroup.set(.5 + speedAdjustment);
+        return false;
+    }
+
+    public boolean unchargeShooter()
+    {
+        Hardware.launcherMotorGroup.set(0);
         return false;
     }
 
