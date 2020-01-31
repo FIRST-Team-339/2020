@@ -47,7 +47,7 @@ public class StorageControl
                 state = ControlState.PASSIVE;
                 break;
             case PASSIVE:
-                //this.conveyorMotors.set(HOLDING_SPEED);
+                Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
 
                 if (this.intakeRL.get() && prevRL == false)
                     {
@@ -130,6 +130,7 @@ public class StorageControl
                 case WAIT_FOR_POWER:
 
                     preparedToFire = true;
+                    shootState = ShootState.INIT;
                     return true;
                 default:
                     shootState = ShootState.INIT;
@@ -140,29 +141,62 @@ public class StorageControl
         return false;
     }
 
+    boolean stillShooting = false;
+
     public boolean loadToFire()
     {
-        if (preparedToFire)
-            {
 
-            if (this.shootRL.get())
+        if (stillShooting)
+            {
+            if (this.shootRL.get() == false)
                 {
-                System.out.println("shooting ball");
-                state = ControlState.UP;
+                shotBall = true;
                 }
-            else
+            }
+        if (Hardware.ballcounter.getBallCount() > 0)
+            {
+            if (preparedToFire)
                 {
-                state = ControlState.PASSIVE;
-                if (Hardware.ballcounter.getBallCount() > 1)
+                System.out.println("loading");
+                if (this.shootRL.get())
                     {
-                    prepareToShoot();
-                    return true;
+
+                    System.out.println("shooting ball");
+                    state = ControlState.UP;
+                    if (!stillShooting)
+                        {
+                        Hardware.ballcounter.subtractBall();
+                        }
+                    stillShooting = true;
+                    }
+                else if (shotBall)
+                    {
+                    stillShooting = false;
+                    shotBall = false;
+                    state = ControlState.PASSIVE;
+                    if (Hardware.ballcounter.getBallCount() > 0)
+                        {
+                        System.out.println(" preparing again");
+                        prepareToShoot();
+                        return true;
+                        }
+                    else
+                        {
+
+                        Hardware.launcher.unchargeShooter();
+                        return true;
+                        }
                     }
                 }
+            }
+        else
+            {
+            state = ControlState.PASSIVE;
             }
         return false;
     }
 
+    private static boolean shotBall = false;
     private static boolean prevRL = false;
 
     private static boolean preparedToFire = false;

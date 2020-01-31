@@ -41,6 +41,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.cscore.MjpegServer;
@@ -49,6 +50,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -319,6 +321,8 @@ public class Hardware
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
+    public static I2C.Port i2cPort = I2C.Port.kOnboard;
+    public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     public static LightSensor intakeRL = new LightSensor(12); // bottom
     public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
@@ -345,7 +349,7 @@ public class Hardware
     // ANALOG I/O
     // **********************************************************
 
-    public static Potentiometer delayPot = new Potentiometer(0);
+    public static Potentiometer delayPot = new Potentiometer(2);
 
     public static Potentiometer hoodPot = new Potentiometer(1);
 
