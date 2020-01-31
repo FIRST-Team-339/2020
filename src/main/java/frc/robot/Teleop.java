@@ -122,8 +122,9 @@ public class Teleop
             }
         else if (testBoolean2 == true)
             {
-            if (Hardware.visionDriving.driveToTarget(40, true))
+            if (Hardware.launcher.shootBallsAuto(true))
                 {
+                Hardware.launcher.unchargeShooter();
                 testBoolean2 = false;
                 }
             }
@@ -251,7 +252,9 @@ public class Teleop
         // SmartDashboard.putNumber("Blue", detectedColor.blue);
         // SmartDashboard.putString("Detected Color", colorString);
     }
-   public static boolean flag = true;
+
+    public static boolean flag = true;
+
     public static void craigTest()
     {
         System.out.println("Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
@@ -271,15 +274,12 @@ public class Teleop
         //     }
         // if (Hardware.invertTempoMomentarySwitch.isOn())
         //     {
-           
+
         //     }
         // else
         //     {
-            
+
         //     }
-
-       
-
 
         //System.out.println("Degrees Gyro: "+ Hardware.gyro.getAngle());
         // System.out.println(Hardware.rightFrontMotor.getInverted());

@@ -40,7 +40,7 @@ public class Launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
-        System.out.println("shootState: " + shootState);
+        // System.out.println("shootState: " + shootState);
         switch (shootState)
             {
             case PASSIVE:
@@ -59,6 +59,7 @@ public class Launcher
             case LAUNCH:
                 if (Hardware.storage.loadToFire())
                     {
+                    System.out.println("loaded");
                     shootState = ShootState.PASSIVE;
                     }
                 break;
@@ -69,8 +70,51 @@ public class Launcher
 
     }
 
-    public boolean shootBallsAuto(JoystickButton overrideButton, boolean isClose)
+    private enum ShootStateAuto
+        {
+        CHARGE, LAUNCH
+        }
+
+    public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
+
+    public boolean shootBallsAuto(boolean isClose)
     {
+        System.out.println("shootStateAuto: " + shootStateAuto);
+        if (Hardware.ballcounter.getBallCount() > 0)
+            {
+            switch (shootStateAuto)
+                {
+                case CHARGE:
+
+                    if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                        {
+                        shootState = ShootState.LAUNCH;
+                        }
+                    break;
+                case LAUNCH:
+                    for (int i = Hardware.ballcounter.getBallCount(); i > 0; i++)
+                        {
+                        if (Hardware.storage.loadToFire())
+                            {
+                            System.out.println("loaded");
+                            shootState = ShootState.PASSIVE;
+                            if (i == 1)
+                                {
+                                return true;
+                                }
+                            }
+                        }
+
+                    break;
+                default:
+
+                    break;
+                }
+            }
+        else
+            {
+            return true;
+            }
         return false;
     }
 
@@ -79,6 +123,9 @@ public class Launcher
 
     //speed in inches per second
 
+    //estimated RPM
+    //short = 2300RPM
+    //long 5300RPM
     public boolean prepareToShoot(double speed)
     {
         Hardware.getSpeedTimer.start();
@@ -88,7 +135,7 @@ public class Launcher
             Hardware.getSpeedTimer.stop();
             Hardware.getSpeedTimer.reset();
             spedUp = true;
-            System.out.println("super sped");
+            System.out.println("charged");
             return true;
             }
         else
@@ -100,6 +147,12 @@ public class Launcher
                 }
             }
         Hardware.launcherMotorGroup.set(.5 + speedAdjustment);
+        return false;
+    }
+
+    public boolean unchargeShooter()
+    {
+        Hardware.launcherMotorGroup.set(0);
         return false;
     }
 
