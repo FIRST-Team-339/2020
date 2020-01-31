@@ -143,6 +143,13 @@ public class LimelightInterface
         return this.x;
 
     }
+/**
+ * if the vision has targets
+ * @return boolean
+ */
+    public boolean getHasTargets(){
+    return this.hasTargets;
+    }
 
     /**
      * The y offset from the center of camera
