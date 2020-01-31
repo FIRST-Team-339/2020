@@ -441,6 +441,7 @@ public class LimelightInterface
      */
     public double getLowestYDegree()
     {
+
         lowestY = this.ycorner[0];
         // compare all the x coordinates in order to find the lowest
         for (int i = 0; i < this.ycorner.length; i++)
