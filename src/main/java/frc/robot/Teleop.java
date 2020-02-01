@@ -42,7 +42,7 @@ import frc.Hardware.Hardware;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-import com.revrobotics.ColorSensorV3;
+//import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.ColorMatch;
@@ -98,8 +98,8 @@ public class Teleop
 
     public static void periodic()
     {
-        System.out.println("LE: " + Hardware.leftDriveEncoder.get());
-        System.out.println("RE: " + Hardware.rightDriveEncoder.get());
+        //System.out.println("LE: " + Hardware.leftDriveEncoder.get());
+        //System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
@@ -154,6 +154,7 @@ public class Teleop
 
         //individualTest();
         //teleopDrive();
+        printStatements();
 
     } // end Periodic()
 
@@ -180,12 +181,12 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-        //chrisTest();
+        // chrisTest();
         // dionTest();
         // chrisTest();
         // dionTest();
         // patrickTest();
-        //colourTest();
+        // colourTest();
     }
 
     public static void connerTest()
@@ -336,21 +337,21 @@ public class Teleop
         // ---------- DIGITAL ----------
         //encoders:
         // Encoder Distances
-        //Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
-        /*Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
-        Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.getDistance());
-        Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.getDistance());
-        Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.getDistance());
-        Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.getDistance());
-        Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.getDistance());
+        /*Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
+        Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
+        Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.get());
+        Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.get());
+        Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.get());
+        Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.get());
+        Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.get());
         // Encoder Raw Values
-        Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.get());
-        Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.get());
-        Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.get());
-        Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.get());
-        Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.get());
-        Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.get());
-        Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.get());
+        Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.getRaw());
+        Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.getRaw());
+        Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.getRaw());
+        Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.getRaw());
+        Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.getRaw());
+        Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
+        Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.getRaw());
         
         // Switch Values
         Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
@@ -367,7 +368,8 @@ public class Teleop
         Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         System.out.println("Delay Pot: " + Hardware.delayPot.get());
         System.out.println("Hood Pot: " + Hardware.hoodPot.get());
-        Hardware.telemetry.printToConsole("frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        Hardware.telemetry.printToConsole(
+                "frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         
         // ----------- CAN -------------
         
@@ -407,9 +409,9 @@ public class Teleop
         Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
         Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
         Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
-        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());
+        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());*/
         Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
-        Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
+        /*Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
         Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
         Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
         Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());

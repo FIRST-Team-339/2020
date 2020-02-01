@@ -41,7 +41,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorSensorV3;
+//import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.cscore.MjpegServer;
@@ -153,6 +153,8 @@ public class Hardware
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
+        hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX) hoodAdjustmentMotor);
+
         // ============ANALOG INIT============
 
         // ==============RIO INIT=============
@@ -185,11 +187,14 @@ public class Hardware
         // Motor Controllers
         leftFrontMotor = new CANSparkMax(13, MotorType.kBrushless);
         rightFrontMotor = new CANSparkMax(15, MotorType.kBrushless);
+        leftRearMotor = new WPI_TalonFX(12);
+        rightRearMotor = new WPI_TalonFX(14);
 
-        leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
-        rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
+        leftDriveGroup = new SpeedControllerGroup(leftFrontMotor, leftRearMotor);
+        rightDriveGroup = new SpeedControllerGroup(rightFrontMotor, rightRearMotor);
 
-        launcherMotor1 = new WPI_TalonSRX(26);
+        launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
+        launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
 
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
 
@@ -212,6 +217,8 @@ public class Hardware
         intakeMotorEncoder = new KilroyEncoder((WPI_TalonSRX) intakeMotor);
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+
+        hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX) hoodAdjustmentMotor);
 
         // ==============RIO INIT==============
 
@@ -322,7 +329,7 @@ public class Hardware
     // DIGITAL I/O
     // **********************************************************
     public static I2C.Port i2cPort = I2C.Port.kOnboard;
-    public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+    //public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     public static LightSensor intakeRL = new LightSensor(12); // bottom
     public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
