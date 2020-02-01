@@ -68,6 +68,9 @@ public class Robot extends TimedRobot
 
         Hardware.frontUltraSonic.setOffsetDistanceFromNearestBumper(3);
         Hardware.launcherMotorEncoder.setDistancePerPulse((4 * Math.PI) / 5175);
+
+
+
         // ---------------------------------------
         // done setup - tell the user we are complete
         // setup

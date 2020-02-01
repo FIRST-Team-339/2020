@@ -98,8 +98,11 @@ public class Teleop
 
     public static void periodic()
     {
-        System.out.println("LE: " + Hardware.leftDriveEncoder.get());
-        System.out.println("RE: " + Hardware.rightDriveEncoder.get());
+        System.out.println("revolutions per second" + Hardware.launcherMotorEncoder.getRPM());
+        Hardware.launcherMotorGroup.set(Hardware.leftOperator.getY());
+
+        // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
+        // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);

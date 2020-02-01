@@ -31,7 +31,7 @@ import frc.vision.*;
 import frc.Utils.*;
 import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
-
+import frc.Utils.BallCounter;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -203,7 +203,7 @@ public class Hardware
 
         // ==============DIO INIT=============
 
-        launcherMotorEncoder = new KilroyEncoder((WPI_TalonSRX) launcherMotor1);
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
 
         conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
 

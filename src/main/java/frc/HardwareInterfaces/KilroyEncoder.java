@@ -18,6 +18,7 @@ import com.ctre.phoenix.sensors.CANCoderStickyFaults;
 import com.ctre.phoenix.sensors.MagnetFieldStrength;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * A sensor class that is able to use both CAN features and DIO features
@@ -257,6 +258,32 @@ public class KilroyEncoder implements PIDSource
             default:
                 return this.get();
             }
+    }
+
+    private boolean firstRun = true;
+
+    private double lastSecondTicks = 0;
+    private static Timer encoderTimer = new Timer();
+
+    /**
+     * This returns the retoations
+     *
+     * @return the rotations per minute
+     */
+    public double getRPM()
+    {
+        if (firstRun)
+            {
+            encoderTimer.start();
+            firstRun = false;
+            }
+        if (encoderTimer.get() > 1)
+            {
+            lastSecondTicks = this.getRaw();
+            encoderTimer.reset();
+            }
+        return Math.abs((this.getRaw() - lastSecondTicks) / this.getTicksPerRevolution());
+
     }
 
     /**
