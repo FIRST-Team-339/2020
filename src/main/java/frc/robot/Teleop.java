@@ -39,10 +39,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
+import frc.HardwareInterfaces.KilroyUSBCamera;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-import com.revrobotics.ColorSensorV3;
+// import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.ColorMatch;
@@ -81,7 +82,7 @@ public class Teleop
             }
 
         Hardware.drive.setGear(0);
-        Hardware.launcherMotorEncoder.reset();
+        // Hardware.launcherMotorEncoder.reset();
     } // end Init
 
     /**
@@ -132,18 +133,19 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
+        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
-        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
-        Hardware.ballcounter.subtractBall(Hardware.substractBall);
-        Hardware.ballcounter.addBall(Hardware.addBall);
-        Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+        // Hardware.ballcounter.subtractBall(Hardware.substractBall);
+        // Hardware.ballcounter.addBall(Hardware.addBall);
+        // Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
-        //individualTest();
+        individualTest();
         //teleopDrive();
+        printStatements();
 
     } // end Periodic()
 
@@ -171,11 +173,11 @@ public class Teleop
         // connerTest();
         // craigTest();
         //chrisTest();
-        // dionTest();
+        //dionTest();
         // chrisTest();
         // dionTest();
         // patrickTest();
-        //colourTest();
+        // colourTest();
     }
 
     public static void connerTest()
@@ -287,25 +289,9 @@ public class Teleop
 
     public static void dionTest()
     {
-        if (Hardware.leftOperator.getRawButton(7) && (startOfMatch || cam0))
+        if (Hardware.leftOperator.getRawButton(7) && !boolthing)
             {
-            // CameraServer.getInstance().addCamera(Hardware.usbCam1);
-            // CameraServer.getInstance().addServer("usb0");
-            // Hardware.server.setSource(Hardware.usbCam0);
-            // Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
-            // CameraServer.getInstance().addServer("serve_usb1");
-            // CameraServer.getInstance().removeCamera("usb1");
-            // CameraServer.getInstance().removeServer("serve_usb1");
-            CameraServer.getInstance().addServer("serve_usb1");
-            CameraServer.getInstance().addCamera(Hardware.usbCam1);
-
-            startOfMatch = false;
-            cam0 = false;
-            }
-        if (Hardware.leftOperator.getRawButton(8) && !cam0)
-            {
-
-            cam0 = true;
+            Hardware.kilroyUSBCamera.switchCameras();
             }
     }
 
@@ -326,21 +312,21 @@ public class Teleop
         // ---------- DIGITAL ----------
         //encoders:
         // Encoder Distances
-        //Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
-        /*Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
-        Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.getDistance());
-        Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.getDistance());
-        Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.getDistance());
-        Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.getDistance());
-        Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.getDistance());
+        /*Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
+        Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
+        Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.get());
+        Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.get());
+        Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.get());
+        Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.get());
+        Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.get());
         // Encoder Raw Values
-        Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.get());
-        Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.get());
-        Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.get());
-        Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.get());
-        Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.get());
-        Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.get());
-        Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.get());
+        Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.getRaw());
+        Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.getRaw());
+        Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.getRaw());
+        Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.getRaw());
+        Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.getRaw());
+        Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
+        Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.getRaw());
         
         // Switch Values
         Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
@@ -357,7 +343,8 @@ public class Teleop
         Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         System.out.println("Delay Pot: " + Hardware.delayPot.get());
         System.out.println("Hood Pot: " + Hardware.hoodPot.get());
-        Hardware.telemetry.printToConsole("frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        Hardware.telemetry.printToConsole(
+                "frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         
         // ----------- CAN -------------
         
@@ -397,9 +384,9 @@ public class Teleop
         Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
         Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
         Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
-        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());
+        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());*/
         Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
-        Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
+        /*Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
         Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
         Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
         Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
@@ -416,9 +403,7 @@ public class Teleop
 
     }
 
-    private static boolean cam0 = true;
-
-    private static boolean startOfMatch = true;
+    private static boolean boolthing = false;
 
     private final static int MAX_GEAR_NUMBER = 2;
 
