@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDSource;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -18,6 +19,7 @@ import com.ctre.phoenix.sensors.CANCoderStickyFaults;
 import com.ctre.phoenix.sensors.MagnetFieldStrength;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -261,12 +263,12 @@ public class KilroyEncoder implements PIDSource
     }
 
     private boolean firstRun = true;
-
-    private double lastSecondTicks = 0;
+    private double lastRevs = 0;
+    private double lastTicks = .01;
     private static Timer encoderTimer = new Timer();
 
     /**
-     * This returns the retoations
+     * This returns the revations
      *
      * @return the rotations per minute
      */
@@ -277,13 +279,43 @@ public class KilroyEncoder implements PIDSource
             encoderTimer.start();
             firstRun = false;
             }
-        if (encoderTimer.get() > 1)
+        if (encoderTimer.get() > .1)
             {
-            lastSecondTicks = this.getRaw();
-            encoderTimer.reset();
-            }
-        return Math.abs((this.getRaw() - lastSecondTicks) / this.getTicksPerRevolution());
 
+            encoderTimer.reset();
+
+            lastRevs = Math.abs((this.getRaw() - lastTicks) / this.getTicksPerRevolution());
+            lastTicks = this.getRaw();
+            return lastRevs * 60;
+
+            }
+        SmartDashboard.putNumber("raw: ", this.getRaw());
+        SmartDashboard.putNumber("last ticks", lastTicks);
+        SmartDashboard.putNumber("ticks per revolution: ", this.getTicksPerRevolution());
+        return lastRevs * 600;
+
+    }
+
+    double speed = 0;
+
+    public void setRPM(double RPM, SpeedController motor)
+    {
+        double offness = Math.abs(RPM - this.getRPM());
+        if (this.getRPM() < RPM - (RPM * DEADAND_SCALE_RPM))
+            {
+            speed = speed + Math.abs(offness * RPM_PROP);
+            }
+        if (this.getRPM() > RPM + (RPM * DEADAND_SCALE_RPM))
+            {
+            speed = speed - (offness * RPM_PROP);
+            ;
+            }
+        if (Math.abs(speed) > 1)
+            {
+            speed = .8;
+            }
+        System.out.println("speed" + speed);
+        motor.set(speed);
     }
 
     /**
@@ -526,5 +558,9 @@ public class KilroyEncoder implements PIDSource
     private double distancePerTick = 1;
 
     private PIDSourceType sourceType = PIDSourceType.kDisplacement;
+
+    private static final double DEADAND_SCALE_RPM = 0;
+
+    private static final double RPM_PROP = .0001;
 
     }

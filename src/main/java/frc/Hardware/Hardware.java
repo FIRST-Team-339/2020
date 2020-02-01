@@ -205,7 +205,7 @@ public class Hardware
 
         // ==============DIO INIT=============
 
-        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+        launcherMotorEncoder = new KilroyEncoder((WPI_TalonSRX) launcherMotor1);
 
         conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
 

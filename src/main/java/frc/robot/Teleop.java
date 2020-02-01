@@ -98,8 +98,9 @@ public class Teleop
 
     public static void periodic()
     {
-        System.out.println("revolutions per second" + Hardware.launcherMotorEncoder.getRPM());
-        Hardware.launcherMotorGroup.set(Hardware.leftOperator.getY());
+        SmartDashboard.putNumber("revolutions per second", Hardware.launcherMotorEncoder.getRPM());
+
+        Hardware.launcherMotorEncoder.setRPM(100, Hardware.launcherMotorGroup);
 
         // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
         // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
