@@ -101,6 +101,12 @@ public class Teleop
         System.out.println("Distance is " + Hardware.intakeMotorEncoder.getDistance());
         //  System.out.println("LE: " + Hardware.leftDriveEncoder.get());
         //  System.out.println("RE: " + Hardware.rightDriveEncoder.get());
+        //SmartDashboard.putNumber("revolutions per second", Hardware.launcherMotorEncoder.getRPM());
+
+        //Hardware.launcherMotorEncoder.setRPM(100, Hardware.launcherMotorGroup);
+
+        // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
+        // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
