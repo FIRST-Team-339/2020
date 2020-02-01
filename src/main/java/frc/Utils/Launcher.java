@@ -128,25 +128,10 @@ public class Launcher
     //long 5300RPM
     public boolean prepareToShoot(double speed)
     {
-        Hardware.getSpeedTimer.start();
-
-        if (Hardware.launcherMotorEncoder.getRate() > speed - .1)
+        if (Hardware.launcherMotorEncoder.setRPM(speed, Hardware.launcherMotorGroup))
             {
-            Hardware.getSpeedTimer.stop();
-            Hardware.getSpeedTimer.reset();
-            spedUp = true;
-            System.out.println("charged");
             return true;
             }
-        else
-            {
-            if (Hardware.launcherMotorEncoder.getRate() < speed)
-                {
-                spedUp = false;
-                speedAdjustment += .005;
-                }
-            }
-        Hardware.launcherMotorGroup.set(.5 + speedAdjustment);
         return false;
     }
 

@@ -73,8 +73,10 @@ public class KilroyEncoder implements PIDSource
      * Creates the KilroyEncoder object with an encoder attached to a CAN motor
      * controller.
      *
-     * @param canMotorController The motor controller that the Encoder is attached
-     *                           to.
+     * @param canMotorController
+     *                               The motor controller that the Encoder is
+     *                               attached
+     *                               to.
      */
     public KilroyEncoder(BaseMotorController canMotorController)
         {
@@ -263,8 +265,11 @@ public class KilroyEncoder implements PIDSource
     }
 
     private boolean firstRun = true;
+
     private double lastRevs = 0;
+
     private double lastTicks = .01;
+
     private static Timer encoderTimer = new Timer();
 
     /**
@@ -279,26 +284,29 @@ public class KilroyEncoder implements PIDSource
             encoderTimer.start();
             firstRun = false;
             }
-        if (encoderTimer.get() > .1)
+        if (/* encoderTimer.get() > .05 */true)
             {
 
             encoderTimer.reset();
 
-            lastRevs = Math.abs((this.getRaw() - lastTicks) / this.getTicksPerRevolution());
+            lastRevs = (Math.abs((this.getRaw() - lastTicks) / this.getTicksPerRevolution())) * 900;
             lastTicks = this.getRaw();
-            return lastRevs * 60;
+            // return lastRevs;
+            return canEncoder.getEncoder().getVelocity();// TODO test
 
             }
-        SmartDashboard.putNumber("raw: ", this.getRaw());
+        // SmartDashboard.putNumber("raw: ", this.getRaw());
         SmartDashboard.putNumber("last ticks", lastTicks);
-        SmartDashboard.putNumber("ticks per revolution: ", this.getTicksPerRevolution());
-        return lastRevs * 600;
+        // SmartDashboard.putNumber("ticks per revolution: ",
+        // this.getTicksPerRevolution());
+        // return lastRevs;
+        return canEncoder.getEncoder().getVelocity();
 
     }
 
     double speed = 0;
 
-    public void setRPM(double RPM, SpeedController motor)
+    public boolean setRPM(double RPM, SpeedController motor)
     {
         double offness = Math.abs(RPM - this.getRPM());
         if (this.getRPM() < RPM - (RPM * DEADAND_SCALE_RPM))
@@ -310,12 +318,17 @@ public class KilroyEncoder implements PIDSource
             speed = speed - (offness * RPM_PROP);
             ;
             }
-        if (Math.abs(speed) > 1)
+        else
+            {
+            return true;
+            }
+        if (Math.abs(speed) > .9)
             {
             speed = .8;
             }
-        System.out.println("speed" + speed);
+        SmartDashboard.putNumber("speed", speed);
         motor.set(speed);
+        return false;
     }
 
     /**
@@ -342,7 +355,7 @@ public class KilroyEncoder implements PIDSource
                     return -canEncoder.getEncoder().getVelocity() / 60;
                 return canEncoder.getEncoder().getVelocity() / 60;
             case CAN_HAT:
-                return (talonSensor.getSelectedSensorVelocity(0)) /* * 10)*/ * distancePerTick;
+                return (talonSensor.getSelectedSensorVelocity(0))/* * 10) */ * distancePerTick;
             case FALC_ENC:
                 return this.sensorCollection.getIntegratedSensorVelocity();
             default:
@@ -394,8 +407,9 @@ public class KilroyEncoder implements PIDSource
      * position, and move the actuater a set number of units. Read the number of
      * ticks, and run the formula (x units)/(ticks).
      *
-     * @param value how far 1 tick is, translated to linear movement (usually
-     *              inches).
+     * @param value
+     *                  how far 1 tick is, translated to linear movement (usually
+     *                  inches).
      */
     public void setDistancePerPulse(double value)
     {
@@ -415,7 +429,8 @@ public class KilroyEncoder implements PIDSource
      * Sets whether or not the sensor is reading backwards. If so, it corrects by
      * returning the reverse of whatever it is receiving.
      *
-     * @param inverted Whether or not to invert reading of the encoder.
+     * @param inverted
+     *                     Whether or not to invert reading of the encoder.
      */
     public void setReverseDirection(boolean inverted)
     {
@@ -494,7 +509,8 @@ public class KilroyEncoder implements PIDSource
      * (velocity). This only determines what kind of value the PID loop will
      * receive.
      *
-     * @param pidSource Either kDisplacement or kRate
+     * @param pidSource
+     *                      Either kDisplacement or kRate
      */
     @Override
     public void setPIDSourceType(PIDSourceType pidSource)
@@ -502,7 +518,7 @@ public class KilroyEncoder implements PIDSource
         this.sourceType = pidSource;
     }
 
-    //TODO implement new PIDCommand and PIDSubsystem so that we can do PID stuffs
+    // TODO implement new PIDCommand and PIDSubsystem so that we can do PID stuffs
     /**
      * @return Either kDisplacement or kRate: whatever was set by the user, or
      *         default kDisplacement.
@@ -559,8 +575,8 @@ public class KilroyEncoder implements PIDSource
 
     private PIDSourceType sourceType = PIDSourceType.kDisplacement;
 
-    private static final double DEADAND_SCALE_RPM = 0;
+    private static final double DEADAND_SCALE_RPM = .1;
 
-    private static final double RPM_PROP = .0001;
+    private static final double RPM_PROP = .000005;
 
     }
