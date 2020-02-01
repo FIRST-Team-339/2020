@@ -122,12 +122,12 @@ public class KilroyColorSensor
                         0x07), kProximityData(
                                 0x08), kDataInfrared(0x0A), kDataGreen(0x0D), kDataBlue(0x10), kDataRed(0x13);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            Register(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        Register(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     enum MainControl
@@ -137,24 +137,24 @@ public class KilroyColorSensor
         kProximitySensorEnable(0x01), /* Proximity sensor active */
         OFF(0x00); /* Nothing on */
 
-            public final byte bVal;
+        public final byte bVal;
 
-            MainControl(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        MainControl(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     enum GainFactor
         {
         kGain1x(0x00), kGain3x(0x01), kGain6x(0x02), kGain9x(0x03), kGain18x(0x04);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            GainFactor(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        GainFactor(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     public enum LEDCurrent
@@ -163,12 +163,12 @@ public class KilroyColorSensor
                 0x05), kPulse100mA(0x06), /* default value */
         kPulse125mA(0x07);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            LEDCurrent(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        LEDCurrent(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     public enum LEDPulseFrequency
@@ -176,24 +176,24 @@ public class KilroyColorSensor
         kFreq60kHz(0x18), /* default value */
         kFreq70kHz(0x40), kFreq80kHz(0x28), kFreq90kHz(0x30), kFreq100kHz(0x38);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            LEDPulseFrequency(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        LEDPulseFrequency(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     enum ProximitySensorResolution
         {
         kProxRes8bit(0x00), kProxRes9bit(0x08), kProxRes10bit(0x10), kProxRes11bit(0x18);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            ProximitySensorResolution(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        ProximitySensorResolution(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     enum ProximitySensorMeasurementRate
@@ -202,12 +202,12 @@ public class KilroyColorSensor
                 0x05), /* default value */
         kProxRate200ms(0x06), kProxRate400ms(0x07);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            ProximitySensorMeasurementRate(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        ProximitySensorMeasurementRate(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     enum ColorSensorResolution
@@ -215,12 +215,12 @@ public class KilroyColorSensor
         kColorSensorRes20bit(0x00), kColorSensorRes19bit(0x08), kColorSensorRes18bit(0x10), kColorSensorRes17bit(
                 0x18), kColorSensorRes16bit(0x20), kColorSensorRes13bit(0x28);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            ColorSensorResolution(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        ColorSensorResolution(int i)
+            {
+                this.bVal = (byte) i;
+            }
         }
 
     enum ColorSensorMeasurementRate
@@ -228,12 +228,12 @@ public class KilroyColorSensor
         kColorRate25ms(0), kColorRate50ms(1), kColorRate100ms(2), kColorRate200ms(3), kColorRate500ms(
                 4), kColorRate1000ms(5), kColorRate2000ms(7);
 
-            public final byte bVal;
+        public final byte bVal;
 
-            ColorSensorMeasurementRate(int i)
-                {
-                    this.bVal = (byte) i;
-                }
+        ColorSensorMeasurementRate(int i)
+            {
+                this.bVal = (byte) i;
+            }
         };
 
     /**
