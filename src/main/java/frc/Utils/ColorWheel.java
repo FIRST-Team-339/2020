@@ -30,6 +30,21 @@ import frc.Hardware.Hardware;
 
 public class ColorWheel
     {
+
+    double speed = .2;
+
+    //Gets speed of wheelSpinnerMotor
+    public double getSpeed()
+    {
+        return speed;
+    }
+
+    //Sets speed of wheelSpinnerMotor
+    public void setSpeed(double s)
+    {
+        speed = s;
+    }
+
     /**
     * This method gets the FMS data for the shield 3 generator spin color. (What color we need to align with the field sensor)
     *
@@ -42,6 +57,7 @@ public class ColorWheel
     {
         String gameData;
 
+        //When we reach shield generator stage 3 this will recieve the FMS color data and will return a string. The string will be the first letter of the color.
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0)
             {
@@ -63,6 +79,12 @@ public class ColorWheel
         return "A";
     }
 
+    // public boolean Override()
+    // {
+    //     if()
+    //     return false;
+    // }
+
     /**
     * This method will spin the control panel 3-5 times for shield generator stage 2 (no color sensing capabilities)
     *   Parameter distance will be amount of times to spin the control panel x 100.5309
@@ -74,30 +96,31 @@ public class ColorWheel
     */
     public boolean spinControlPanel(double distance)
     {
-        // Runs once when the method runs the first time, and does not run again until after the method returns true.
+        // Resets wheelSpinnerEncoder
         if (driveStraightInchesInit == true)
             {
-            Hardware.wheelSpinnerEncoder.reset();
+            Hardware.launcherMotorEncoder.reset();
             driveStraightInchesInit = false;
             }
 
         // Check all encoders to see if they've reached the distance
-        if (Hardware.wheelSpinnerEncoder.getDistance() > distance)
+        if (Hardware.launcherMotorEncoder.getDistance() > distance)
             {
-            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.launcherMotorGroup.set(0);
             driveStraightInchesInit = true;
             return true;
             }
-
-        // Spin motor until specified distance has been reached
-        Hardware.wheelSpinnerMotor.set(.4);
+        else
+            {
+            // Spin motor until specified distance has been reached
+            Hardware.launcherMotorGroup.set(speed);
+            }
 
         return false;
     }
 
     /**
     * This method will align the specified color from the FMS under the sensor.
-    *
     *   Parameter color will be the FMS string that represents the designated color (G=green, B=blue, etc.)
     * @method spinControlPanelToColor
     * @author Guido Visioni
@@ -124,22 +147,22 @@ public class ColorWheel
         colorMatcher.addColorMatch(kYellowTarget);
 
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-        //Sets colorString equal to 1 of the 4 colors it detects. Will not be the actually color due to offset (The detected color will not be the actual color under the sensor so strings are edited accordinly)
+        // When the sensor detects a color it returns a string that represents the color under the control panel sensor. Sets colorString equal to 1 of the 4 colors.
         if (match.color == kBlueTarget)
             {
-            colorString = "Blue";
+            colorString = "G";
             }
         else if (match.color == kRedTarget)
             {
-            colorString = "Red";
+            colorString = "Y";
             }
         else if (match.color == kGreenTarget)
             {
-            colorString = "Green";
+            colorString = "R";
             }
         else if (match.color == kYellowTarget)
             {
-            colorString = "Yellow";
+            colorString = "B";
             }
         else
             {
@@ -149,20 +172,22 @@ public class ColorWheel
         // Resets wheelSpinnerEncoder
         if (driveStraightInchesInit == true)
             {
-            Hardware.wheelSpinnerEncoder.reset();
+            Hardware.launcherMotorEncoder.reset();
             driveStraightInchesInit = false;
             }
 
-        // Check to see if the color sensor sees the color
+        // Check to see if the color under the field sensor is the same as the FMS color data
         if (colorString == spinColor)
             {
-            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.launcherMotorGroup.set(0);
             driveStraightInchesInit = true;
             return true;
             }
-
-        // Spin the motor until we reach spinColor
-        Hardware.wheelSpinnerMotor.set(.3);
+        else
+            {
+            // Spin motor until specified distance has been reached
+            Hardware.launcherMotorGroup.set(speed);
+            }
 
         return false;
     }
