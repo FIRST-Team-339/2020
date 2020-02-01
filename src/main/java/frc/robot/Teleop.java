@@ -334,90 +334,95 @@ public class Teleop
         // ========== INPUTS ==========
 
         // ---------- DIGITAL ----------
-
+        //encoders:
         // Encoder Distances
-        // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
-        // Hardware.leftDriveEncoder.getDistance());
-        // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
-        // Hardware.rightDriveEncoder.getDistance());
-
+        //Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
+        /*Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
+        Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.getDistance());
+        Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.getDistance());
+        Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.getDistance());
+        Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.getDistance());
+        Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.getDistance());
         // Encoder Raw Values
-        // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
-        // Hardware.leftDriveEncoder.get());
-        // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
-        // Hardware.rightDriveEncoder.get());
-
+        Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.get());
+        Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.get());
+        Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.get());
+        Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.get());
+        Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.get());
+        Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.get());
+        Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.get());
+        
         // Switch Values
-        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
-        // Hardware.autoSixPosSwitch.getPosition());
-        // Hardware.telemetry.printToConsole("Auto Disable Sw: " +
-        // Hardware.autoDisableSwitch.isOn());
-
+        Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
+        Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
+        Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
+        Hardware.telemetry.printToConsole("autoLocation: " + Hardware.autoLocation.getPosition());
+        //red lights
+        Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
+        Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
+        Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
+        Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
+        
         // ---------- ANALOG -----------
-
-        // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
-
+        Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         System.out.println("Delay Pot: " + Hardware.delayPot.get());
-
+        System.out.println("Hood Pot: " + Hardware.hoodPot.get());
+        Hardware.telemetry.printToConsole("frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        
         // ----------- CAN -------------
-
+        
         // -------- SUBSYSTEMS ---------
-
-        // ---------- OTHER ------------
-
+        
+        // -------- JOYSTICKS ----------
         // Left Driver
-        // Hardware.telemetry.printToConsole("Left Driver X: " +
-        // Hardware.leftDriver.getX());
-        // Hardware.telemetry.printToConsole("Left Driver Y: " +
-        // Hardware.leftDriver.getY());
-        // Hardware.telemetry.printToConsole("Left Driver Z: " +
-        // Hardware.leftDriver.getZ());
-
+        Hardware.telemetry.printToConsole("Left Driver X: " + Hardware.leftDriver.getX());
+        Hardware.telemetry.printToConsole("Left Driver Y: " + Hardware.leftDriver.getY());
+        Hardware.telemetry.printToConsole("Left Driver Z: " + Hardware.leftDriver.getZ());
         // Right Driver
-        // Hardware.telemetry.printToConsole("Right Driver X: " +
-        // Hardware.rightDriver.getX());
-        // Hardware.telemetry.printToConsole("Right Driver Y: " +
-        // Hardware.rightDriver.getY());
-        // Hardware.telemetry.printToConsole("Right Driver Z: " +
-        // Hardware.rightDriver.getZ());
-
+        Hardware.telemetry.printToConsole("Right Driver X: " + Hardware.rightDriver.getX());
+        Hardware.telemetry.printToConsole("Right Driver Y: " + Hardware.rightDriver.getY());
+        Hardware.telemetry.printToConsole("Right Driver Z: " + Hardware.rightDriver.getZ());
         // Left Operator
-        // Hardware.telemetry.printToConsole("Left Op X: " +
-        // Hardware.leftOperator.getX());
-        // Hardware.telemetry.printToConsole("Left Op Y: " +
-        // Hardware.leftOperator.getY());
-        // Hardware.telemetry.printToConsole("Left Op Z: " +
-        // Hardware.leftOperator.getZ());
-
+        Hardware.telemetry.printToConsole("Left Op X: " + Hardware.leftOperator.getX());
+        Hardware.telemetry.printToConsole("Left Op Y: " + Hardware.leftOperator.getY());
+        Hardware.telemetry.printToConsole("Left Op Z: " + Hardware.leftOperator.getZ());
         // Right Operator
-        // Hardware.telemetry.printToConsole("Right Op X: " +
-        // Hardware.rightOperator.getX());
-        // Hardware.telemetry.printToConsole("Right Op Y: " +
-        // Hardware.rightOperator.getY());
-        // Hardware.telemetry.printToConsole("Right Op Z: " +
-        // Hardware.rightOperator.getZ());
-
+        Hardware.telemetry.printToConsole("Right Op X: " + Hardware.rightOperator.getX());
+        Hardware.telemetry.printToConsole("Right Op Y: " + Hardware.rightOperator.getY());
+        Hardware.telemetry.printToConsole("Right Op Z: " + Hardware.rightOperator.getZ());
+        
+        //----------- VISION -----------
+        //Hardware.telemetry.printToConsole("usb cam 0 target distance: " + Hardware.usbCam0.);
+        
         // ========== OUTPUTS ==========
-
+        
         // ---------- DIGITAL ----------
-
+        
         // ---------- ANALOG -----------
-
+        
         // ----------- CAN -------------
-
         // Motor Percentages
-        // Hardware.telemetry.printToConsole("L.R. Motor: " +
-        // Hardware.leftRearMotor.get());
-        // Hardware.telemetry.printToConsole("R.R. Motor: " +
-        // Hardware.rightRearMotor.get());
-        // Hardware.telemetry.printToConsole("L.F. Motor: " +
-        // Hardware.leftFrontMotor.get());
-        // Hardware.telemetry.printToConsole("R.F. Motor: " +
-        // Hardware.rightFrontMotor.get());
-
+        Hardware.telemetry.printToConsole("L.R. Motor: " + Hardware.leftRearMotor.get());
+        Hardware.telemetry.printToConsole("R.R. Motor: " + Hardware.rightRearMotor.get());
+        Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
+        Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
+        Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
+        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());
+        Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
+        Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
+        Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
+        Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
+        Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
+        
         // -------- SUBSYSTEMS ---------
-
-        // ---------- OTHER ------------
+        
+        // ---------- OTHER ------------ pdp, pneumatics
+        Hardware.telemetry.printToConsole("PDP voltage: " + Hardware.pdp.getVoltage());
+        Hardware.telemetry.printToConsole("iDoubleSolenoid forward: " + Hardware.iDoubleSolenoid.getForward());
+        Hardware.telemetry.printToConsole("iDoubleSolenoid reverse: " + Hardware.iDoubleSolenoid.getReverse());
+        Hardware.telemetry.printToConsole("lifDoubleSolenoid forward: " + Hardware.lifDoubleSolenoid.getForward());
+        Hardware.telemetry.printToConsole("lifDoubleSolenoid reverse: " + Hardware.lifDoubleSolenoid.getReverse());
+        Hardware.telemetry.printToConsole("compressor, is low: " + Hardware.compressor.getPressureSwitchValue());*/
 
     }
 
