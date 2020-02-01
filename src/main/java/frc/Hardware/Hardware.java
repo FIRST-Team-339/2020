@@ -19,6 +19,8 @@ import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
+import frc.HardwareInterfaces.KilroyUSBCamera;
+import frc.HardwareInterfaces.KilroyUSBCamera;
 import frc.HardwareInterfaces.LVMaxSonarEZ;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.MomentarySwitch;
@@ -41,11 +43,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ColorSensorV3;
+// import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -205,7 +207,7 @@ public class Hardware
 
         // ==============DIO INIT=============
 
-        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+        // launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
 
         conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
 
@@ -244,6 +246,9 @@ public class Hardware
 
         leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
         rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+
+        server = CameraServer.getInstance().getServer();
+        CameraServer.getInstance().removeServer("serve_usb1");
 
     } // end initizliePrevYear()
 
@@ -322,7 +327,7 @@ public class Hardware
     // DIGITAL I/O
     // **********************************************************
     public static I2C.Port i2cPort = I2C.Port.kOnboard;
-    public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+    // public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     public static LightSensor intakeRL = new LightSensor(12); // bottom
     public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
@@ -386,6 +391,7 @@ public class Hardware
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
+    public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
     public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
@@ -405,14 +411,10 @@ public class Hardware
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    // public static UsbCamera usbCam0 =
-    // CameraServer.getInstance().startAutomaticCapture("usb0", 0);
-    // public static UsbCamera usbCam1 =
-    // CameraServer.getInstance().addSwitchedCamera(null)
-
-    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
-    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
-    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
+    public static VideoSink server;
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(server, usbCam0, usbCam1, cameraSwitchButton);
 
     // ------------------------------------
     // Utility classes
@@ -422,10 +424,6 @@ public class Hardware
     public static Timer getSpeedTimer = new Timer();
 
     public static Timer telopTimer = new Timer();
-
-    public static Timer camTimer1 = new Timer();
-
-    public static Timer camTimer2 = new Timer();
 
     public static Timer launchTimer = new Timer();
 

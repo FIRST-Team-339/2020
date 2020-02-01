@@ -7,46 +7,70 @@
 
 package frc.HardwareInterfaces;
 
-import frc.Hardware.*;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 
 /**
  * Add your docs here.
  */
-public class KilroyUsbCamera
+public class KilroyUSBCamera
     {
-    private static boolean startOfMatch = false;
-    private static boolean cam0 = false;
+    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1)
+        {
+            initialize(server, cam0, cam1);
+        }
+
+    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button)
+        {
+            initialize(server, cam0, cam1);
+            this.button = button;
+        }
+
+    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button1,
+            MomentarySwitch button2)
+        {
+            initialize(server, cam0, cam1);
+            this.button1 = button1;
+            this.button2 = button2;
+        }
+
+    private void initialize(VideoSink server, UsbCamera cam0, UsbCamera cam1)
+    {
+        this.server = server;
+        this.cam0 = cam0;
+        this.cam1 = cam1;
+    }
 
     /**
-     *
+     * Method for switching  between the usb cameras on the robot
      */
-    public static void switchCameras()
+    public void switchCameras()
     {
-        if (startOfMatch && Hardware.leftOperator.getRawButton(7))
+        if (this.cam0.isConnected())
             {
-            Hardware.camTimer1.stop();
-            Hardware.camTimer1.reset();
-            Hardware.camTimer1.start();
-            Hardware.server.setSource(Hardware.usbCam1);
-            startOfMatch = false;
-            cam0 = false;
+            this.server.setSource(this.cam1);
             }
-        if (Hardware.leftOperator.getRawButton(7) && cam0 && Hardware.camTimer2.get() >= 1.0)
+        if (this.cam1.isConnected())
             {
-            Hardware.camTimer1.stop();
-            Hardware.camTimer1.reset();
-            Hardware.camTimer1.start();
-            Hardware.server.setSource(Hardware.usbCam1);
-            startOfMatch = false;
-            cam0 = false;
-            }
-        if (Hardware.leftOperator.getRawButton(7) && !cam0 && Hardware.camTimer1.get() >= 1.0)
-            {
-            Hardware.camTimer2.stop();
-            Hardware.camTimer2.reset();
-            Hardware.camTimer2.start();
-            Hardware.server.setSource(Hardware.usbCam0);
-            cam0 = true;
+            this.server.setSource(this.cam0);
             }
     }
+
+    public void switchCameras(MomentarySwitch button)
+    {
+
+    }
+
+    public void switchCameras(MomentarySwitch button1, MomentarySwitch button2)
+    {
+
+    }
+
+    private VideoSink server = null;
+    private MomentarySwitch button = null;
+    private MomentarySwitch button1 = null;
+    private MomentarySwitch button2 = null;
+    private UsbCamera cam0 = null;
+    private UsbCamera cam1 = null;
+    // end class
     }
