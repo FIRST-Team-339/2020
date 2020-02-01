@@ -1,6 +1,7 @@
 package frc.vision;
 
 import frc.Hardware.Hardware;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * an alternate drive to vision class the also uses the ultrasonic to control
@@ -19,8 +20,18 @@ public class LimelightDriveWithVision
      *
      * @return
      */
-    public boolean driveToTarget()
+
+    Timer timer = new Timer();
+
+    public boolean driveToTarget(int distance, boolean overrideUltrasonic)
     {
+        this.timer.start();
+        //System.out.println(this.timer.get() * 10000);
+        if (this.timer.get() * 100000 > 4)
+            {
+            Hardware.visionInterface.takePicture();
+            this.timer.reset();
+            }
         // offness recieved from network tables
         double offness = Hardware.visionInterface.getXOffSet();
 
@@ -28,8 +39,18 @@ public class LimelightDriveWithVision
         double adjustmentValueRight = 0;
         // right move speed
         double adjustmentValueLeft = 0;
-
-        if (Hardware.visionInterface.getDistanceFromTarget() >= STOP_DISTANCE_TEST)
+        if (overrideUltrasonic)
+            {
+            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < 20)
+                {
+                this.timer.stop();
+                return true;
+                }
+            }
+        if(!Hardware.visionInterface.getHasTargets()){
+            return true;
+        }
+        if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
             if (offness < 0)
@@ -59,6 +80,7 @@ public class LimelightDriveWithVision
         else
             {
             Hardware.transmission.drive(0, 0);
+            this.timer.stop();
             return true;
             }
         return false;
@@ -71,17 +93,53 @@ public class LimelightDriveWithVision
      */
     public boolean alignToTarget()
     {
+        double offness = Hardware.visionInterface.getXOffSet();
+
+        // left move speed
+        double adjustmentValueRight = 0;
+        // right move speed
+        double adjustmentValueLeft = 0;
+
+        if (offness < 1)
+            {
+            // adjust the speed for the left and right motors based off their offness and a
+            // preset proportional value
+            adjustmentValueLeft = -(Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+
+            adjustmentValueRight = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+            // drive raw so that we dont have to write addition gearing code in teleop
+            Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+            }
+
+        else if (offness > 1)
+            {
+
+            adjustmentValueLeft = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+
+            adjustmentValueRight = -(Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+
+            Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+            }
+        else
+            {
+            System.out.println("true");
+            return true;
+            }
+
         return false;
     }
 
     // minimum speed a motor will move while aligning
-    final double MIN_MOVE_2019 = .2;
+    final double MIN_MOVE_2019 = .3;
 
     // after the robot is align the speed that the robot will continue at
     final double DRIVE_AFTER_ALIGN = .2;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2019 = .015;
+    final double ADJUST_PORP_2019 = .02;//0.015
+   
+
+    final double ADJUST_PORP_2019_ALIGN = .04;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PORP_2020 = .015;// TODO
@@ -90,4 +148,5 @@ public class LimelightDriveWithVision
 
     // distance away from the target that the robot will stop at
     final double STOP_DISTANCE_TEST = 50;// TODO
+    final int ULTRA_OVERRIDE = 20;
     }

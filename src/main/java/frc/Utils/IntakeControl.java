@@ -4,85 +4,134 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.Hardware.*;
+import frc.HardwareInterfaces.DoubleSolenoid;
 
 public class IntakeControl
     {
 
     Timer timer = null;
-    WPI_TalonSRX intakeMotor = null;
+    SpeedController intakeMotor = null;
+    DoubleSolenoid solenoid = null;
 
-    public IntakeControl(Timer timer)
+    public IntakeControl(Timer timer, DoubleSolenoid solenoid, SpeedController intakeMotor)
         {
             this.timer = timer;
             this.timer.reset();
+            this.solenoid = solenoid;
             this.intakeMotor = intakeMotor;
 
         }
 
-    public void intake(JoystickButton intakeButton)
+    public boolean deployIntake()
     {
-        if (intakeButton.get())
+        if (!this.solenoid.getForward())
             {
-            intaking = true;
-            Hardware.intakeMotor.set(INTAKE_SPEED);
+            this.solenoid.set(Value.kForward);
             }
-        else
+        if (this.solenoid.getForward())
             {
-
-            intaking = false;
-            }
-    }
-
-    public boolean intake(int seconds)
-    {
-        this.timer.start();
-        if (this.timer.get() < seconds)
-            {
-            intaking = true;
-            Hardware.intakeMotor.set(INTAKE_SPEED);
-
-            }
-        else
-            {
-
-            intaking = false;
-            this.timer.stop();
-            this.timer.reset();
             return true;
             }
         return false;
     }
 
-    public void outtake(JoystickButton outtakeButton)
+    public boolean undeployIntake()
     {
-        if (outtakeButton.get())
+        if (this.solenoid.getForward())
             {
-            outtaking = true;
-            // set motor to vomit up the balls it sucked
-            Hardware.intakeMotor.set(OUTTAKE_SPEED);
+            this.solenoid.set(Value.kReverse);
             }
-        else
+        if (!this.solenoid.getForward())
             {
+            return true;
+            }
+        return false;
+    }
 
-            outtaking = false;
+    public boolean getDeployed()
+    {
+        //TODO find out if forward or backs is deployed or not
+        return this.solenoid.getForward();
+    }
+
+    public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
+    {
+        if (deployIntake())
+            {
+            if (Hardware.ballcounter.getBallCount() <= 5 || overrideButton.get())
+                {
+                if (intakeButton.get())
+                    {
+                    intaking = true;
+                    //Hardware.intakeMotor.set(INTAKE_SPEED);//TODO
+                    }
+                else
+                    {
+                    if (!outtaking)
+                        {
+                        Hardware.intakeMotor.set(0);
+                        }
+                    intaking = false;
+                    }
+                }
+            }
+    }
+
+    public boolean intake(int seconds)
+    {
+        if (deployIntake())
+            {
+            this.timer.start();
+            if (this.timer.get() < seconds)
+                {
+                intaking = true;
+                Hardware.intakeMotor.set(INTAKE_SPEED);
+
+                }
+            else
+                {
+                if (!outtaking)
+                    {
+                    Hardware.intakeMotor.set(0);
+                    }
+                intaking = false;
+                this.timer.stop();
+                this.timer.reset();
+                return true;
+                }
+            }
+        return false;
+    }
+
+    public void outtake(JoystickButton outtakeButton, JoystickButton overrideButton)
+    {
+        if (deployIntake())
+            {
+            if (Hardware.ballcounter.getBallCount() <= 5 || overrideButton.get())
+                {
+                if (outtakeButton.get())
+                    {
+                    outtaking = true;
+                    //Hardware.intakeMotor.set(OUTTAKE_SPEED);//TODO
+                    }
+                else
+                    {
+                    if (!intaking)
+                        {
+                        Hardware.intakeMotor.set(0);
+                        }
+                    outtaking = false;
+                    }
+                }
             }
     }
 
     public boolean outtake()
     {
-        if (Hardware.storage.getBallCount() > 0)
-            {
-            outtaking = true;
-            Hardware.intakeMotor.set(OUTTAKE_SPEED);
-            }
-        else
-            {
-
-            outtaking = false;
-            return true;
-            }
+        //TODO dont knwo if we need this
         return false;
     }
 

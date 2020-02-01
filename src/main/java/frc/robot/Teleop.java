@@ -81,7 +81,7 @@ public class Teleop
             }
 
         Hardware.drive.setGear(0);
-
+        Hardware.launcherMotorEncoder.reset();
     } // end Init
 
     /**
@@ -92,96 +92,71 @@ public class Teleop
      * @written Jan 13, 2015
      */
 
-    public static boolean testBoolean = false;
+    public static boolean testBoolean1 = false;
+
+    public static boolean testBoolean2 = false;
 
     public static void periodic()
     {
+        System.out.println("revolutions per second" + Hardware.launcherMotorEncoder.getRPM());
+        Hardware.launcherMotorGroup.set(Hardware.leftOperator.getY());
+
+        // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
+        // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
-
-        if (Hardware.rightOperator.getRawButton(2) == true)
-            {
-            testBoolean = true;
-            }
-        if (testBoolean == true)
-            {
-            System.out.println("Gyro Angle " + Hardware.gyro.getAngle());
-
-            if (Hardware.drive.turnDegrees(720, .4, 0, true))
-                {
-                testBoolean = false;
-                }
-            }
-
-        //Color detectedColor = Hardware.colorSensor.getColor();
-
-        // final ColorMatch colorMatcher = new ColorMatch();
-        // final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-        // final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-        // final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-        // final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
-
-        // colorMatcher.addColorMatch(kBlueTarget);
-        // colorMatcher.addColorMatch(kGreenTarget);
-        // colorMatcher.addColorMatch(kRedTarget);
-        // colorMatcher.addColorMatch(kYellowTarget);
-
-        // String colorString;
-        // ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-
-        // if (match.color == kBlueTarget)
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        int ballCount = 0;
-        if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5)
-            {
-            ballCount++;
-            SmartDashboard.putNumber("Ball Count", ballCount);
-            }
-        SmartDashboard.putNumber("Ball Count", ballCount);
+        SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.get());
 
-        if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
+        Hardware.storage.storageControlState();
+        if (Hardware.rightDriver.getRawButton(3))
             {
-            Hardware.intake.intake(Hardware.intakeButton);
-            Hardware.intake.outtake(Hardware.outtakeButton);
+
+            }
+
+        if (Hardware.rightOperator.getRawButton(6) == true)
+            {
+            testBoolean1 = true;
+            }
+        if (Hardware.leftOperator.getRawButton(6) == true)
+            {
+            testBoolean2 = true;
+            }
+        if (testBoolean1 == true)
+            {
+            if (Hardware.visionDriving.driveToTarget(120, true))
+                {
+                testBoolean1 = false;
+                }
+            }
+        else if (testBoolean2 == true)
+            {
+            if (Hardware.launcher.shootBallsAuto(true))
+                {
+                Hardware.launcher.unchargeShooter();
+                testBoolean2 = false;
+                }
             }
         else
             {
-            Hardware.intakeMotor.set(0);
+            teleopDrive();
             }
-        SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
 
-        // if (Hardware.leftOperator.getRawButton(4))
-        //     {
-        //     colorString = "Blue";
-        //     }
-        // else if (match.color == kRedTarget)
-        //     {
-        //     colorString = "Red";
-        //     }
-        // else if (match.color == kGreenTarget)
-        //     {
-        //     colorString = "Green";
-        //     }
-        // else if (match.color == kYellowTarget)
-        //     {
-        //     colorString = "Yellow";
-        //     }
-        // else
-        //     {
-        //     colorString = "Unknown";
-        //     }
-
-        // SmartDashboard.putNumber("Red", detectedColor.red);
-        // SmartDashboard.putNumber("Green", detectedColor.green);
-        // SmartDashboard.putNumber("Blue", detectedColor.blue);
-        // SmartDashboard.putString("Detected Color", colorString);
-        teleopDrive();
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
+        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
-        // individualTest();
-        // teleopDrive();
+        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+
+        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+
+        Hardware.ballcounter.subtractBall(Hardware.substractBall);
+        Hardware.ballcounter.addBall(Hardware.addBall);
+        Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+
+        //individualTest();
+        //teleopDrive();
 
     } // end Periodic()
 
@@ -208,11 +183,12 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-        chrisTest();
+        //chrisTest();
         // dionTest();
         // chrisTest();
         // dionTest();
         // patrickTest();
+        //colourTest();
     }
 
     public static void connerTest()
@@ -220,35 +196,106 @@ public class Teleop
 
     }
 
+    public static boolean flag = true;
+
     public static void craigTest()
     {
+        //  System.out.println("Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        System.out.println("Delay: " + Hardware.delayPot.getValue());
 
-        if (Hardware.rightDriver.getRawButton(4) == true)
-            {
-            if (Hardware.invertTempoMomentarySwitch.isOn())
-                {
-                Hardware.invertTempoMomentarySwitch.setValue(false);
-                }
-            else
-                {
-                Hardware.invertTempoMomentarySwitch.setValue(true);
-                }
-            }
-        if (Hardware.invertTempoMomentarySwitch.isOn())
-            {
-            // System.out.println("Should be inverted");
-            Hardware.rightFrontMotor.setInverted(true);
-            Hardware.leftFrontMotor.setInverted(true);
-            }
-        else
-            {
-            Hardware.leftFrontMotor.setInverted(false);
-            Hardware.rightFrontMotor.setInverted(false);
-            }
+        //System.out.println("TESTINGGGGGGG");
+        //momentary settup
 
+        // if (Hardware.rightDriver.getRawButton(4) == true)
+        //     {
+        //     if (Hardware.invertTempoMomentarySwitch.isOn())
+        //         {
+        //         Hardware.invertTempoMomentarySwitch.setValue(false);
+        //         }
+        //     else
+        //         {
+        //         Hardware.invertTempoMomentarySwitch.setValue(true);
+        //         }
+        //     }
+        // if (Hardware.invertTempoMomentarySwitch.isOn())
+        //     {
+
+        //     }
+        // else
+        //     {
+
+        //     }
+
+        //System.out.println("Degrees Gyro: "+ Hardware.gyro.getAngle());
         // System.out.println(Hardware.rightFrontMotor.getInverted());
-        System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
+        //System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
 
+    }
+
+    public static void colourTest()
+    {
+        //Color detectedColor = Hardware.colorSensor.getColor();
+
+        // final ColorMatch colorMatcher = new ColorMatch();
+        // final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        // final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+        // final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+        // final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+        // colorMatcher.addColorMatch(kBlueTarget);
+        // colorMatcher.addColorMatch(kGreenTarget);
+        // colorMatcher.addColorMatch(kRedTarget);
+        // colorMatcher.addColorMatch(kYellowTarget);
+
+        // String colorString;
+        // ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+
+        // if (match.color == kBlueTarget)
+
+        // int ballCount = 0;
+        // if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5)
+        //     {
+        //     ballCount++;
+        //     SmartDashboard.putNumber("Ball Count", ballCount);
+        //     }
+        // SmartDashboard.putNumber("Ball Count", ballCount);
+
+        // if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
+        //     {
+        //     Hardware.intake.intake(Hardware.intakeButton);
+        //     Hardware.intake.outtake(Hardware.outtakeButton);
+        //     }
+        // else
+        //     {
+        //     Hardware.intakeMotor.set(0);
+        //     }
+        // SmartDashboard.putNumber("ball count", Hardware.storage.getBallCount());
+
+        // if (Hardware.leftOperator.getRawButton(4))
+        //     {
+        //     colorString = "Blue";
+        //     }
+        // else if (match.color == kRedTarget)
+        //     {
+        //     colorString = "Red";
+        //     }
+        // else if (match.color == kGreenTarget)
+        //     {
+        //     colorString = "Green";
+        //     }
+        // else if (match.color == kYellowTarget)
+        //     {
+        //     colorString = "Yellow";
+        //     }
+        // else
+        //     {
+        //     colorString = "Unknown";
+        //     }
+
+        // SmartDashboard.putNumber("Red", detectedColor.red);
+        // SmartDashboard.putNumber("Green", detectedColor.green);
+        // SmartDashboard.putNumber("Blue", detectedColor.blue);
+        // SmartDashboard.putString("Detected Color", colorString);
     }
 
     public static void dionTest()
@@ -290,90 +337,95 @@ public class Teleop
         // ========== INPUTS ==========
 
         // ---------- DIGITAL ----------
-
+        //encoders:
         // Encoder Distances
-        // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
-        // Hardware.leftDriveEncoder.getDistance());
-        // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
-        // Hardware.rightDriveEncoder.getDistance());
-
+        //Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
+        /*Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
+        Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.getDistance());
+        Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.getDistance());
+        Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.getDistance());
+        Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.getDistance());
+        Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.getDistance());
         // Encoder Raw Values
-        // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
-        // Hardware.leftDriveEncoder.get());
-        // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
-        // Hardware.rightDriveEncoder.get());
-
+        Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.get());
+        Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.get());
+        Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.get());
+        Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.get());
+        Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.get());
+        Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.get());
+        Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.get());
+        
         // Switch Values
-        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
-        // Hardware.autoSixPosSwitch.getPosition());
-        // Hardware.telemetry.printToConsole("Auto Disable Sw: " +
-        // Hardware.autoDisableSwitch.isOn());
-
+        Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
+        Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
+        Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
+        Hardware.telemetry.printToConsole("autoLocation: " + Hardware.autoLocation.getPosition());
+        //red lights
+        Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
+        Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
+        Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
+        Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
+        
         // ---------- ANALOG -----------
-
-        // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
-
+        Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         System.out.println("Delay Pot: " + Hardware.delayPot.get());
-
+        System.out.println("Hood Pot: " + Hardware.hoodPot.get());
+        Hardware.telemetry.printToConsole("frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+        
         // ----------- CAN -------------
-
+        
         // -------- SUBSYSTEMS ---------
-
-        // ---------- OTHER ------------
-
+        
+        // -------- JOYSTICKS ----------
         // Left Driver
-        // Hardware.telemetry.printToConsole("Left Driver X: " +
-        // Hardware.leftDriver.getX());
-        // Hardware.telemetry.printToConsole("Left Driver Y: " +
-        // Hardware.leftDriver.getY());
-        // Hardware.telemetry.printToConsole("Left Driver Z: " +
-        // Hardware.leftDriver.getZ());
-
+        Hardware.telemetry.printToConsole("Left Driver X: " + Hardware.leftDriver.getX());
+        Hardware.telemetry.printToConsole("Left Driver Y: " + Hardware.leftDriver.getY());
+        Hardware.telemetry.printToConsole("Left Driver Z: " + Hardware.leftDriver.getZ());
         // Right Driver
-        // Hardware.telemetry.printToConsole("Right Driver X: " +
-        // Hardware.rightDriver.getX());
-        // Hardware.telemetry.printToConsole("Right Driver Y: " +
-        // Hardware.rightDriver.getY());
-        // Hardware.telemetry.printToConsole("Right Driver Z: " +
-        // Hardware.rightDriver.getZ());
-
+        Hardware.telemetry.printToConsole("Right Driver X: " + Hardware.rightDriver.getX());
+        Hardware.telemetry.printToConsole("Right Driver Y: " + Hardware.rightDriver.getY());
+        Hardware.telemetry.printToConsole("Right Driver Z: " + Hardware.rightDriver.getZ());
         // Left Operator
-        // Hardware.telemetry.printToConsole("Left Op X: " +
-        // Hardware.leftOperator.getX());
-        // Hardware.telemetry.printToConsole("Left Op Y: " +
-        // Hardware.leftOperator.getY());
-        // Hardware.telemetry.printToConsole("Left Op Z: " +
-        // Hardware.leftOperator.getZ());
-
+        Hardware.telemetry.printToConsole("Left Op X: " + Hardware.leftOperator.getX());
+        Hardware.telemetry.printToConsole("Left Op Y: " + Hardware.leftOperator.getY());
+        Hardware.telemetry.printToConsole("Left Op Z: " + Hardware.leftOperator.getZ());
         // Right Operator
-        // Hardware.telemetry.printToConsole("Right Op X: " +
-        // Hardware.rightOperator.getX());
-        // Hardware.telemetry.printToConsole("Right Op Y: " +
-        // Hardware.rightOperator.getY());
-        // Hardware.telemetry.printToConsole("Right Op Z: " +
-        // Hardware.rightOperator.getZ());
-
+        Hardware.telemetry.printToConsole("Right Op X: " + Hardware.rightOperator.getX());
+        Hardware.telemetry.printToConsole("Right Op Y: " + Hardware.rightOperator.getY());
+        Hardware.telemetry.printToConsole("Right Op Z: " + Hardware.rightOperator.getZ());
+        
+        //----------- VISION -----------
+        //Hardware.telemetry.printToConsole("usb cam 0 target distance: " + Hardware.usbCam0.);
+        
         // ========== OUTPUTS ==========
-
+        
         // ---------- DIGITAL ----------
-
+        
         // ---------- ANALOG -----------
-
+        
         // ----------- CAN -------------
-
         // Motor Percentages
-        // Hardware.telemetry.printToConsole("L.R. Motor: " +
-        // Hardware.leftRearMotor.get());
-        // Hardware.telemetry.printToConsole("R.R. Motor: " +
-        // Hardware.rightRearMotor.get());
-        // Hardware.telemetry.printToConsole("L.F. Motor: " +
-        // Hardware.leftFrontMotor.get());
-        // Hardware.telemetry.printToConsole("R.F. Motor: " +
-        // Hardware.rightFrontMotor.get());
-
+        Hardware.telemetry.printToConsole("L.R. Motor: " + Hardware.leftRearMotor.get());
+        Hardware.telemetry.printToConsole("R.R. Motor: " + Hardware.rightRearMotor.get());
+        Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
+        Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
+        Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
+        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());
+        Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
+        Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
+        Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
+        Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
+        Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
+        
         // -------- SUBSYSTEMS ---------
-
-        // ---------- OTHER ------------
+        
+        // ---------- OTHER ------------ pdp, pneumatics
+        Hardware.telemetry.printToConsole("PDP voltage: " + Hardware.pdp.getVoltage());
+        Hardware.telemetry.printToConsole("iDoubleSolenoid forward: " + Hardware.iDoubleSolenoid.getForward());
+        Hardware.telemetry.printToConsole("iDoubleSolenoid reverse: " + Hardware.iDoubleSolenoid.getReverse());
+        Hardware.telemetry.printToConsole("lifDoubleSolenoid forward: " + Hardware.lifDoubleSolenoid.getForward());
+        Hardware.telemetry.printToConsole("lifDoubleSolenoid reverse: " + Hardware.lifDoubleSolenoid.getReverse());
+        Hardware.telemetry.printToConsole("compressor, is low: " + Hardware.compressor.getPressureSwitchValue());*/
 
     }
 

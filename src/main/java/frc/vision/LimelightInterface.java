@@ -125,7 +125,7 @@ public class LimelightInterface
 
             this.xcorner = this.tcornx.getDoubleArray(new double[0]);
             this.ycorner = this.tcorny.getDoubleArray(new double[0]);
-
+            this.distance = this.getDistanceFromTarget();
             } catch (NullPointerException exception)
             {
             System.out.println(exception);
@@ -142,6 +142,13 @@ public class LimelightInterface
     {
         return this.x;
 
+    }
+/**
+ * if the vision has targets
+ * @return boolean
+ */
+    public boolean getHasTargets(){
+    return this.hasTargets;
     }
 
     /**
@@ -264,11 +271,10 @@ public class LimelightInterface
             SmartDashboard.putNumber("vertical ", this.vertical);
             SmartDashboard.putNumber("pipeline ", this.pipeline);
             SmartDashboard.putNumber("ledMode", this.led_Mode);
-            SmartDashboard.putNumber("distance", this.getDistanceFromTarget());
-
             SmartDashboard.putNumberArray("x corner", this.xcorner);
             SmartDashboard.putNumberArray("y corner", this.ycorner);
-            SmartDashboard.putNumber("lowest x degree", this.getLowestYDegree());
+            SmartDashboard.putNumber("lowest y degree", this.getLowestYDegree());
+            SmartDashboard.putNumber("distance", this.distance);
 
             }
     }
@@ -442,6 +448,7 @@ public class LimelightInterface
      */
     public double getLowestYDegree()
     {
+
         lowestY = this.ycorner[0];
         // compare all the x coordinates in order to find the lowest
         for (int i = 0; i < this.ycorner.length; i++)
@@ -460,11 +467,11 @@ public class LimelightInterface
             {
             lowestDegree = 24.85 - ((lowestY / 120) * 24.85);
             }
-        else if (lowestY < 120)
+        else if (lowestY > 120)
             {
-            lowestDegree = (lowestY - 120) / 120 * (49.7 / 2);
+            lowestDegree = -((lowestY - 120) / 120) * (49.7 / 2);
             }
-        else
+        else if (lowestY == 120)
             {
             lowestDegree = 0;
             }
@@ -495,7 +502,6 @@ public class LimelightInterface
 
         if (hasTargets == true)
             {
-
             return Math.abs(distance);
             }
         else

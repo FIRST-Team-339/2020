@@ -14,21 +14,24 @@
 // ====================================================================
 package frc.Hardware;
 
+import frc.HardwareInterfaces.DoubleSolenoid;
 import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
+import frc.HardwareInterfaces.LVMaxSonarEZ;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.MomentarySwitch;
 import frc.HardwareInterfaces.Potentiometer;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
+import frc.HardwareInterfaces.UltraSonic;
 import frc.vision.*;
+import frc.Utils.*;
+import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
-import frc.Utils.IntakeControl;
-import frc.Utils.Launcher;
-import frc.Utils.StorageControl;
+import frc.Utils.BallCounter;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -38,13 +41,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -136,9 +142,7 @@ public class Hardware
         intakeMotor = new WPI_TalonSRX(23);
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
-
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
-
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
@@ -154,6 +158,9 @@ public class Hardware
         // ==============RIO INIT=============
 
         // =============OTHER INIT============
+
+        //pneumatics
+        compressor = new Compressor();
 
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
@@ -198,7 +205,7 @@ public class Hardware
 
         // ==============DIO INIT=============
 
-        launcherMotorEncoder = new KilroyEncoder((WPI_TalonSRX) launcherMotor1);
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
 
         conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
 
@@ -216,6 +223,9 @@ public class Hardware
 
         leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
+
+        //pneumatics
+        compressor = new Compressor();
 
         // ==============RIO INIT==============
 
@@ -306,10 +316,13 @@ public class Hardware
     // -------------------------------------------------------------
 
     public static SpeedController hoodAdjustmentMotor = null;
+    public static KilroyEncoder hoodAdjustmentMotorEncoder = null;
 
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
+    public static I2C.Port i2cPort = I2C.Port.kOnboard;
+    public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     public static LightSensor intakeRL = new LightSensor(12); // bottom
     public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
@@ -336,19 +349,24 @@ public class Hardware
     // ANALOG I/O
     // **********************************************************
 
-    public static Potentiometer delayPot = new Potentiometer(0);
+    public static Potentiometer delayPot = new Potentiometer(2);
 
+    public static Potentiometer hoodPot = new Potentiometer(1);
+
+    public static LVMaxSonarEZ frontUltraSonic = new LVMaxSonarEZ(3);
     // **********************************************************
     // PNEUMATIC DEVICES
     // **********************************************************
-
+    public static DoubleSolenoid iDoubleSolenoid = new DoubleSolenoid(4, 5);
+    public static DoubleSolenoid lifDoubleSolenoid = new DoubleSolenoid(2, 3);
+    public static Compressor compressor = null;
     // **********************************************************
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
 
     public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
-    public static KilroySPIGyro gyro = new KilroySPIGyro(false);
+    public static KilroySPIGyro gyro = new KilroySPIGyro(true);
 
     // **********************************************************
     // DRIVER STATION CLASSES
@@ -375,10 +393,14 @@ public class Hardware
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+    public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
+    public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
     public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+    public static JoystickButton substractBall = new JoystickButton(Hardware.leftOperator, 8);
+    public static JoystickButton addBall = new JoystickButton(Hardware.leftOperator, 9);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
@@ -397,6 +419,8 @@ public class Hardware
     // ------------------------------------
     public static Timer autoTimer = new Timer();
 
+    public static Timer getSpeedTimer = new Timer();
+
     public static Timer telopTimer = new Timer();
 
     public static Timer camTimer1 = new Timer();
@@ -404,6 +428,8 @@ public class Hardware
     public static Timer camTimer2 = new Timer();
 
     public static Timer launchTimer = new Timer();
+
+    public static Timer ballButtonTimer = new Timer();
 
     public static Telemetry telemetry = new Telemetry(driverStation);
 
@@ -415,10 +441,17 @@ public class Hardware
     public static TankTransmission transmission = null;
 
     // launcher stuff
-    public static IntakeControl intake = new IntakeControl(launchTimer);
-    public static Launcher launcher = new Launcher();
+    public static IntakeControl intake = new IntakeControl(launchTimer, iDoubleSolenoid, intakeMotor);
 
-    public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL);
+    public static Launcher launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
+
+    public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL,
+            conveyorMotorGroup);
+
+    public static HoodControl hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
+
+    public static BallCounter ballcounter = new BallCounter(ballButtonTimer);
+
     // ------------------------------------------
     // Vision stuff
     // ----------------------------
