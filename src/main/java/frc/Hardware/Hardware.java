@@ -105,7 +105,7 @@ public class Hardware
         }
         };
 
-    public static Identifier robotIdentity = Identifier.PrevYear;
+    public static Identifier robotIdentity = Identifier.TestBoard;
 
     /**********************************************
      * initializePrevYear() function initializes all Hardware
@@ -256,7 +256,7 @@ public class Hardware
 
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
-        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor2);
     }
 
     /**********************************************
@@ -272,10 +272,12 @@ public class Hardware
         if (robotIdentity == Identifier.CurrentYear)
             {
             initializeCurrentYear();
+            generalInit();
             }
         else if (robotIdentity == Identifier.PrevYear)
             {
             initializePrevYear();
+            generalInit();
             }
         else if (robotIdentity == Identifier.TestBoard)
             {
@@ -284,6 +286,49 @@ public class Hardware
 
     } // end initialize()
 
+    public static void generalInit()
+    {
+        colorSensor = new ColorSensorV3(i2cPort);
+
+        intakeRL = new LightSensor(12); // bottom
+        lowStoreRL = new LightSensor(3); // lower middle
+        upStoreRL = new LightSensor(4); // upper middle
+        firingRL = new LightSensor(1); // top
+
+        autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
+        autoSwitch = new SingleThrowSwitch(0);
+
+        shootFar = new SingleThrowSwitch(22);
+        shootClose = new SingleThrowSwitch(23);
+        shootingPlan = new DoubleThrowSwitch(shootFar, shootClose);
+
+        leftAuto = new SingleThrowSwitch(24);
+        rightAuto = new SingleThrowSwitch(25);
+        autoLocation = new DoubleThrowSwitch(leftAuto, rightAuto);
+
+        // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
+        // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
+        // public static DoubleThrowSwitch autoTwoBalls = new
+        // DoubleThrowSwitch(autoZeroBallsIn, autoThreeBallsIn);
+
+        // **********************************************************
+        // ANALOG I/O
+        // **********************************************************
+
+        delayPot = new Potentiometer(2);
+
+        hoodPot = new Potentiometer(1);
+
+        frontUltraSonic = new LVMaxSonarEZ(3);
+        // **********************************************************
+        // PNEUMATIC DEVICES
+        // **********************************************************
+        iDoubleSolenoid = new DoubleSolenoid(4, 5);
+        lifDoubleSolenoid = new DoubleSolenoid(2, 3);
+
+
+        gyro = new KilroySPIGyro(true);
+    }
     // **********************************************************
     // CAN DEVICES
     // **********************************************************
@@ -338,23 +383,22 @@ public class Hardware
     // DIGITAL I/O
     // **********************************************************
     public static I2C.Port i2cPort = I2C.Port.kOnboard;
-    public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+    public static ColorSensorV3 colorSensor = null;
 
-    public static LightSensor intakeRL = new LightSensor(12); // bottom
-    public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
-    public static LightSensor upStoreRL = new LightSensor(4); // upper middle
-    public static LightSensor firingRL = new LightSensor(1); // top
+    public static LightSensor intakeRL = null; // bottom
+    public static LightSensor lowStoreRL = null; // lower middle
+    public static LightSensor upStoreRL = null; // upper middle
+    public static LightSensor firingRL = null; // top
 
-    public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);
-    public static SingleThrowSwitch autoSwitch = new SingleThrowSwitch(0);
+    public static SixPositionSwitch autoSixPosSwitch = null;
+    public static SingleThrowSwitch autoSwitch = null;
+    public static SingleThrowSwitch shootFar = null;
+    public static SingleThrowSwitch shootClose = null;
+    public static DoubleThrowSwitch shootingPlan = null;
 
-    public static SingleThrowSwitch shootFar = new SingleThrowSwitch(22);
-    public static SingleThrowSwitch shootClose = new SingleThrowSwitch(23);
-    public static DoubleThrowSwitch shootingPlan = new DoubleThrowSwitch(shootFar, shootClose);
-
-    public static SingleThrowSwitch leftAuto = new SingleThrowSwitch(24);
-    public static SingleThrowSwitch rightAuto = new SingleThrowSwitch(25);
-    public static DoubleThrowSwitch autoLocation = new DoubleThrowSwitch(leftAuto, rightAuto);
+    public static SingleThrowSwitch leftAuto = null;
+    public static SingleThrowSwitch rightAuto = null;
+    public static DoubleThrowSwitch autoLocation = null;
 
     // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
@@ -365,16 +409,16 @@ public class Hardware
     // ANALOG I/O
     // **********************************************************
 
-    public static Potentiometer delayPot = new Potentiometer(2);
+    public static Potentiometer delayPot = null;
 
-    public static Potentiometer hoodPot = new Potentiometer(1);
+    public static Potentiometer hoodPot = null;
 
-    public static LVMaxSonarEZ frontUltraSonic = new LVMaxSonarEZ(3);
+    public static LVMaxSonarEZ frontUltraSonic = null;
     // **********************************************************
     // PNEUMATIC DEVICES
     // **********************************************************
-    public static DoubleSolenoid iDoubleSolenoid = new DoubleSolenoid(4, 5);
-    public static DoubleSolenoid lifDoubleSolenoid = new DoubleSolenoid(2, 3);
+    public static DoubleSolenoid iDoubleSolenoid = null;
+    public static DoubleSolenoid lifDoubleSolenoid = null;
     public static Compressor compressor = null;
     // **********************************************************
     // roboRIO CONNECTIONS CLASSES
@@ -382,7 +426,7 @@ public class Hardware
 
     public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
-    public static KilroySPIGyro gyro = new KilroySPIGyro(true);
+    public static KilroySPIGyro gyro = null;
 
     // **********************************************************
     // DRIVER STATION CLASSES

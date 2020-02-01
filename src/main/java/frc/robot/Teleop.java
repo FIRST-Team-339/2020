@@ -101,7 +101,7 @@ public class Teleop
         SmartDashboard.putNumber("revolutions per minute", Hardware.launcherMotorEncoder.getRPM());
         System.out.println("throttle" + Hardware.rightOperator.getThrottle());
 
-        Hardware.launcherMotorEncoder.setRPM(30, Hardware.launcherMotorGroup);
+        Hardware.launcherMotorEncoder.setRPM(3000, Hardware.launcherMotorGroup);
 
         // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
         // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
