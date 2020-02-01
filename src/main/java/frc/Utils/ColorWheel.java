@@ -42,6 +42,7 @@ public class ColorWheel
     {
         String gameData;
 
+        //When we reach shield generator stage 3 this will recieve the FMS data and will return a string. The string will be the letter of the color.
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0)
             {
@@ -74,7 +75,7 @@ public class ColorWheel
     */
     public boolean spinControlPanel(double distance)
     {
-        // Runs once when the method runs the first time, and does not run again until after the method returns true.
+        // Resets wheelSpinnerEncoder
         if (driveStraightInchesInit == true)
             {
             Hardware.wheelSpinnerEncoder.reset();
@@ -97,7 +98,6 @@ public class ColorWheel
 
     /**
     * This method will align the specified color from the FMS under the sensor.
-    *
     *   Parameter color will be the FMS string that represents the designated color (G=green, B=blue, etc.)
     * @method spinControlPanelToColor
     * @author Guido Visioni
@@ -124,22 +124,22 @@ public class ColorWheel
         colorMatcher.addColorMatch(kYellowTarget);
 
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-        //Sets colorString equal to 1 of the 4 colors it detects. Will not be the actually color due to offset (The detected color will not be the actual color under the sensor so strings are edited accordinly)
+        //Sets colorString equal to 1 of the 4 colors it detects. What color it is set to will not be what it actually detects due to offset (The detected color will not be the actual color under the sensor so strings are edited accordinly)
         if (match.color == kBlueTarget)
             {
-            colorString = "Blue";
+            colorString = "G";
             }
         else if (match.color == kRedTarget)
             {
-            colorString = "Red";
+            colorString = "Y";
             }
         else if (match.color == kGreenTarget)
             {
-            colorString = "Green";
+            colorString = "R";
             }
         else if (match.color == kYellowTarget)
             {
-            colorString = "Yellow";
+            colorString = "B";
             }
         else
             {
