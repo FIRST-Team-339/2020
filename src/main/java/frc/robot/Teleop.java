@@ -98,17 +98,35 @@ public class Teleop
 
     public static void periodic()
     {
-        System.out.println("LE: " + Hardware.leftDriveEncoder.get());
-        System.out.println("RE: " + Hardware.rightDriveEncoder.get());
+        System.out.println("Distance is " + Hardware.intakeMotorEncoder.getDistance());
+        //  System.out.println("LE: " + Hardware.leftDriveEncoder.get());
+        //  System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.get());
 
         Hardware.storage.storageControlState();
-        if (Hardware.rightDriver.getRawButton(3))
-            {
 
+        if (Hardware.rightDriver.getRawButton(3) == true)
+            {
+            testBoolean1 = true;
+            }
+        if (testBoolean1 == true)
+            {
+            Hardware.colorWheel.spinControlPanel(25);
+            Hardware.colorWheel.setSpeed(.2);
+            testBoolean1 = false;
+            }
+        if (Hardware.rightDriver.getRawButton(4) == true)
+            {
+            testBoolean2 = true;
+            }
+        if (testBoolean2 == true)
+            {
+            Hardware.colorWheel.spinControlPanel(25);
+            Hardware.colorWheel.setSpeed(.4);
+            testBoolean2 = false;
             }
 
         if (Hardware.rightOperator.getRawButton(6) == true)

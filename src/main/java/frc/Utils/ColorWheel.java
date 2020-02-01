@@ -30,6 +30,21 @@ import frc.Hardware.Hardware;
 
 public class ColorWheel
     {
+
+    double speed = .3;
+
+    //Gets speed of wheelSpinerMotor
+    public double getSpeed()
+    {
+        return speed;
+    }
+
+    //Sets speed of wheelSpinnerMotor
+    public void setSpeed(double s)
+    {
+        speed = s;
+    }
+
     /**
     * This method gets the FMS data for the shield 3 generator spin color. (What color we need to align with the field sensor)
     *
@@ -42,7 +57,7 @@ public class ColorWheel
     {
         String gameData;
 
-        //When we reach shield generator stage 3 this will recieve the FMS data and will return a string. The string will be the letter of the color.
+        //When we reach shield generator stage 3 this will recieve the FMS color data and will return a string. The string will be the first letter of the color.
         gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData.length() > 0)
             {
@@ -78,20 +93,20 @@ public class ColorWheel
         // Resets wheelSpinnerEncoder
         if (driveStraightInchesInit == true)
             {
-            Hardware.wheelSpinnerEncoder.reset();
+            Hardware.intakeMotorEncoder.reset();
             driveStraightInchesInit = false;
             }
 
         // Check all encoders to see if they've reached the distance
-        if (Hardware.wheelSpinnerEncoder.getDistance() > distance)
+        if (Hardware.intakeMotorEncoder.getDistance() > distance)
             {
-            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.intakeMotor.set(0);
             driveStraightInchesInit = true;
             return true;
             }
 
         // Spin motor until specified distance has been reached
-        Hardware.wheelSpinnerMotor.set(.4);
+        Hardware.intakeMotor.set(speed);
 
         return false;
     }
@@ -124,7 +139,7 @@ public class ColorWheel
         colorMatcher.addColorMatch(kYellowTarget);
 
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-        //Sets colorString equal to 1 of the 4 colors it detects. What color it is set to will not be what it actually detects due to offset (The detected color will not be the actual color under the sensor so strings are edited accordinly)
+        // When the sensor detects a color it returns a string that represents the color under the control panel sensor. Sets colorString equal to 1 of the 4 colors.
         if (match.color == kBlueTarget)
             {
             colorString = "G";
@@ -162,7 +177,7 @@ public class ColorWheel
             }
 
         // Spin the motor until we reach spinColor
-        Hardware.wheelSpinnerMotor.set(.3);
+        Hardware.wheelSpinnerMotor.set(speed);
 
         return false;
     }

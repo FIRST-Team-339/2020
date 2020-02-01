@@ -452,6 +452,7 @@ public class Hardware
 
     public static BallCounter ballcounter = new BallCounter(ballButtonTimer);
 
+    public static ColorWheel colorWheel = new ColorWheel();
     // ------------------------------------------
     // Vision stuff
     // ----------------------------
