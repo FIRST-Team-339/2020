@@ -105,7 +105,7 @@ public class Hardware
         }
         };
 
-    public static Identifier robotIdentity = Identifier.PrevYear;
+    public static Identifier robotIdentity = Identifier.TestBoard;
 
     /**********************************************
      * initializePrevYear() function initializes all Hardware
@@ -257,6 +257,11 @@ public class Hardware
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+
+        colorTestMotor = new WPI_TalonSRX(21);
+
+        colorSensor = new ColorSensorV3(i2cPort);
+
     }
 
     /**********************************************
@@ -292,6 +297,8 @@ public class Hardware
     public static SpeedController rightRearMotor = null;
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
+
+    public static SpeedController colorTestMotor = null;
 
     public static SpeedControllerGroup leftDriveGroup = null;
     public static SpeedControllerGroup rightDriveGroup = null;

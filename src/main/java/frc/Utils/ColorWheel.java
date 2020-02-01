@@ -79,6 +79,12 @@ public class ColorWheel
         return "A";
     }
 
+    // public boolean Override()
+    // {
+    //     if()
+    //     return false;
+    // }
+
     /**
     * This method will spin the control panel 3-5 times for shield generator stage 2 (no color sensing capabilities)
     *   Parameter distance will be amount of times to spin the control panel x 100.5309

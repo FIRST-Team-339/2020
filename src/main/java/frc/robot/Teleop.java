@@ -121,10 +121,8 @@ public class Teleop
             }
         if (testBoolean1 == true)
             {
-            if (Hardware.colorWheel.spinControlPanel(50))
-                {
-                testBoolean1 = false;
-                }
+            Hardware.colorTestMotor.set(.2);
+            testBoolean1 = false;
             }
         else
             {
@@ -343,7 +341,7 @@ public class Teleop
         Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.get());
         Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.get());
         Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.get());
-
+        
         // Switch Values
         Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
         Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
@@ -354,17 +352,17 @@ public class Teleop
         Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
         Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
         Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
-
+        
         // ---------- ANALOG -----------
         Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         System.out.println("Delay Pot: " + Hardware.delayPot.get());
         System.out.println("Hood Pot: " + Hardware.hoodPot.get());
         Hardware.telemetry.printToConsole("frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
-
+        
         // ----------- CAN -------------
-
+        
         // -------- SUBSYSTEMS ---------
-
+        
         // -------- JOYSTICKS ----------
         // Left Driver
         Hardware.telemetry.printToConsole("Left Driver X: " + Hardware.leftDriver.getX());
@@ -382,16 +380,16 @@ public class Teleop
         Hardware.telemetry.printToConsole("Right Op X: " + Hardware.rightOperator.getX());
         Hardware.telemetry.printToConsole("Right Op Y: " + Hardware.rightOperator.getY());
         Hardware.telemetry.printToConsole("Right Op Z: " + Hardware.rightOperator.getZ());
-
+        
         //----------- VISION -----------
         //Hardware.telemetry.printToConsole("usb cam 0 target distance: " + Hardware.usbCam0.);
-
+        
         // ========== OUTPUTS ==========
-
+        
         // ---------- DIGITAL ----------
-
+        
         // ---------- ANALOG -----------
-
+        
         // ----------- CAN -------------
         // Motor Percentages
         Hardware.telemetry.printToConsole("L.R. Motor: " + Hardware.leftRearMotor.get());
@@ -405,9 +403,9 @@ public class Teleop
         Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
         Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
         Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
-
+        
         // -------- SUBSYSTEMS ---------
-
+        
         // ---------- OTHER ------------ pdp, pneumatics
         Hardware.telemetry.printToConsole("PDP voltage: " + Hardware.pdp.getVoltage());
         Hardware.telemetry.printToConsole("iDoubleSolenoid forward: " + Hardware.iDoubleSolenoid.getForward());
