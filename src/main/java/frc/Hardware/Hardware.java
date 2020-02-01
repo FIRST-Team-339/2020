@@ -83,7 +83,7 @@ public class Hardware
      *********************************************/
     public static enum Identifier
         {
-        CurrentYear("2020"), PrevYear("2019");
+        CurrentYear("2020"), PrevYear("2019"), TestBoard("Test");
 
         private final String name;
 
@@ -164,6 +164,7 @@ public class Hardware
 
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
 
     } // end initiaizeCurrentYear()
 
@@ -245,7 +246,18 @@ public class Hardware
         leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
         rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
     } // end initizliePrevYear()
+
+    public static void initializeTestBoard()
+    {
+        launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
+        launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
+
+        launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
+
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+    }
 
     /**********************************************
      * initialize() function initializes all Hardware items that REQUIRE
@@ -264,6 +276,10 @@ public class Hardware
         else if (robotIdentity == Identifier.PrevYear)
             {
             initializePrevYear();
+            }
+        else if (robotIdentity == Identifier.TestBoard)
+            {
+            initializeTestBoard();
             }
 
     } // end initialize()
@@ -390,17 +406,30 @@ public class Hardware
     public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
+
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
+
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
+
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+
     public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
+
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
+
     public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
+
     public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
+
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+
     public static JoystickButton substractBall = new JoystickButton(Hardware.leftOperator, 8);
+
     public static JoystickButton addBall = new JoystickButton(Hardware.leftOperator, 9);
+
+    public static JoystickButton toggleIntake = new JoystickButton(Hardware.leftOperator, 3);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************

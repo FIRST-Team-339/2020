@@ -98,9 +98,10 @@ public class Teleop
 
     public static void periodic()
     {
-        SmartDashboard.putNumber("revolutions per second", Hardware.launcherMotorEncoder.getRPM());
+        SmartDashboard.putNumber("revolutions per minute", Hardware.launcherMotorEncoder.getRPM());
+        System.out.println("throttle" + Hardware.rightOperator.getThrottle());
 
-        Hardware.launcherMotorEncoder.setRPM(100, Hardware.launcherMotorGroup);
+        Hardware.launcherMotorEncoder.setRPM(30, Hardware.launcherMotorGroup);
 
         // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
         // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
@@ -125,7 +126,7 @@ public class Teleop
             }
         if (testBoolean1 == true)
             {
-            if (Hardware.visionDriving.driveToTarget(120, true))
+            if (Hardware.visionDriving.driveToTarget(120, true, .33))
                 {
                 testBoolean1 = false;
                 }
