@@ -164,8 +164,8 @@ public class Autonomous
                 break;
 
             case DELAY:
-            //System.out.println("AutoTimer:  " + Hardware.autoTimer.get());
-            //System.out.println("Target: " + Hardware.delayPot.get(0, 5.0));
+                //System.out.println("AutoTimer:  " + Hardware.autoTimer.get());
+                //System.out.println("Target: " + Hardware.delayPot.get(0, 5.0));
                 if (Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0))
                     {
 
@@ -183,7 +183,7 @@ public class Autonomous
 
                 break;
             case RUN:
-            // System.out.println("In Run State");
+                // System.out.println("In Run State");
                 if (runAuto())
                     {
                     autoState = State.FINISH;
@@ -755,12 +755,12 @@ public class Autonomous
 
     private static boolean getOut()
     {
-        
+
         System.out.println("Out State: " + out);
         switch (out)
             {
             case TURN:
-           
+
                 if (position == Position.RIGHT)
                     {
                     if (Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
@@ -774,10 +774,10 @@ public class Autonomous
 
                     if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
                         {
-                            out = GetOutState.FINAL_DRIVE;
-                            break;
-                            }
-                        
+                        out = GetOutState.FINAL_DRIVE;
+                        break;
+                        }
+
                     }
                 else
                     {
@@ -846,10 +846,10 @@ public class Autonomous
         System.out.println("Camera Distance: " + Hardware.visionInterface.getDistanceFromTarget());
         System.out.println("US Distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
 
-        if (Hardware.visionDriving.driveToTarget(45, true))
+        if (Hardware.visionDriving.driveToTarget(45, true, .3))
             {
             return true;
-                
+
             }
         return false;
 
@@ -858,13 +858,13 @@ public class Autonomous
     private static boolean shootFar()
     {
         if (Hardware.visionDriving.alignToTarget())
-        {
-       
-        //call methods to shoot
-        return true;
-        }
-    return false;
-    
+            {
+
+            //call methods to shoot
+            return true;
+            }
+        return false;
+
     }
 
     private static boolean hasShotTheEtHInG = false;

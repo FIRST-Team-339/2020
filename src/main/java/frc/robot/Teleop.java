@@ -39,10 +39,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
+import frc.HardwareInterfaces.KilroyUSBCamera;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-//import com.revrobotics.ColorSensorV3;
+// import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.ColorMatch;
@@ -81,7 +82,7 @@ public class Teleop
             }
 
         Hardware.drive.setGear(0);
-        Hardware.launcherMotorEncoder.reset();
+        // Hardware.launcherMotorEncoder.reset();
     } // end Init
 
     /**
@@ -98,8 +99,13 @@ public class Teleop
 
     public static void periodic()
     {
-        //System.out.println("LE: " + Hardware.leftDriveEncoder.get());
-        //System.out.println("RE: " + Hardware.rightDriveEncoder.get());
+        SmartDashboard.putNumber("revolutions per minute", Hardware.launcherMotorEncoder.getRPM());
+        System.out.println("throttle" + Hardware.rightOperator.getThrottle());
+
+        Hardware.launcherMotorEncoder.setRPM(30, Hardware.launcherMotorGroup);
+
+        // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
+        // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
@@ -121,7 +127,7 @@ public class Teleop
             }
         if (testBoolean1 == true)
             {
-            if (Hardware.visionDriving.driveToTarget(120, true))
+            if (Hardware.visionDriving.driveToTarget(120, true, .33))
                 {
                 testBoolean1 = false;
                 }
@@ -142,17 +148,17 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
+        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
-        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
-        Hardware.ballcounter.subtractBall(Hardware.substractBall);
-        Hardware.ballcounter.addBall(Hardware.addBall);
-        Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+        // Hardware.ballcounter.subtractBall(Hardware.substractBall);
+        // Hardware.ballcounter.addBall(Hardware.addBall);
+        // Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
-        //individualTest();
+        individualTest();
         //teleopDrive();
         printStatements();
 
@@ -181,8 +187,8 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-        // chrisTest();
-        // dionTest();
+        //chrisTest();
+        //dionTest();
         // chrisTest();
         // dionTest();
         // patrickTest();
@@ -298,25 +304,9 @@ public class Teleop
 
     public static void dionTest()
     {
-        if (Hardware.leftOperator.getRawButton(7) && (startOfMatch || cam0))
+        if (Hardware.leftOperator.getRawButton(7) && !boolthing)
             {
-            // CameraServer.getInstance().addCamera(Hardware.usbCam1);
-            // CameraServer.getInstance().addServer("usb0");
-            // Hardware.server.setSource(Hardware.usbCam0);
-            // Hardware.usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
-            // CameraServer.getInstance().addServer("serve_usb1");
-            // CameraServer.getInstance().removeCamera("usb1");
-            // CameraServer.getInstance().removeServer("serve_usb1");
-            CameraServer.getInstance().addServer("serve_usb1");
-            CameraServer.getInstance().addCamera(Hardware.usbCam1);
-
-            startOfMatch = false;
-            cam0 = false;
-            }
-        if (Hardware.leftOperator.getRawButton(8) && !cam0)
-            {
-
-            cam0 = true;
+            Hardware.kilroyUSBCamera.switchCameras();
             }
     }
 
@@ -428,9 +418,7 @@ public class Teleop
 
     }
 
-    private static boolean cam0 = true;
-
-    private static boolean startOfMatch = true;
+    private static boolean boolthing = false;
 
     private final static int MAX_GEAR_NUMBER = 2;
 

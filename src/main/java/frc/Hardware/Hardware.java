@@ -19,6 +19,8 @@ import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
+import frc.HardwareInterfaces.KilroyUSBCamera;
+import frc.HardwareInterfaces.KilroyUSBCamera;
 import frc.HardwareInterfaces.LVMaxSonarEZ;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.MomentarySwitch;
@@ -31,7 +33,7 @@ import frc.vision.*;
 import frc.Utils.*;
 import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
-
+import frc.Utils.BallCounter;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -41,11 +43,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
-//import com.revrobotics.ColorSensorV3;
+// import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -83,7 +85,7 @@ public class Hardware
      *********************************************/
     public static enum Identifier
         {
-        CurrentYear("2020"), PrevYear("2019");
+        CurrentYear("2020"), PrevYear("2019"), TestBoard("Test");
 
         private final String name;
 
@@ -166,6 +168,7 @@ public class Hardware
 
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
 
     } // end initiaizeCurrentYear()
 
@@ -252,7 +255,21 @@ public class Hardware
         leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
         rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
 
+        server = CameraServer.getInstance().getServer();
+        CameraServer.getInstance().removeServer("serve_usb1");
+
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
     } // end initizliePrevYear()
+
+    public static void initializeTestBoard()
+    {
+        launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
+        launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
+
+        launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
+
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+    }
 
     /**********************************************
      * initialize() function initializes all Hardware items that REQUIRE
@@ -271,6 +288,10 @@ public class Hardware
         else if (robotIdentity == Identifier.PrevYear)
             {
             initializePrevYear();
+            }
+        else if (robotIdentity == Identifier.TestBoard)
+            {
+            initializeTestBoard();
             }
 
     } // end initialize()
@@ -329,7 +350,7 @@ public class Hardware
     // DIGITAL I/O
     // **********************************************************
     public static I2C.Port i2cPort = I2C.Port.kOnboard;
-    //public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+    // public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     public static LightSensor intakeRL = new LightSensor(12); // bottom
     public static LightSensor lowStoreRL = new LightSensor(3); // lower middle
@@ -393,33 +414,43 @@ public class Hardware
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
+    public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
     public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
     public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
+
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
+
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
+
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+
     public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
+
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
+
     public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
+
     public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
+
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+
     public static JoystickButton substractBall = new JoystickButton(Hardware.leftOperator, 8);
+
     public static JoystickButton addBall = new JoystickButton(Hardware.leftOperator, 9);
+
+    public static JoystickButton toggleIntake = new JoystickButton(Hardware.leftOperator, 3);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
 
-    // public static UsbCamera usbCam0 =
-    // CameraServer.getInstance().startAutomaticCapture("usb0", 0);
-    // public static UsbCamera usbCam1 =
-    // CameraServer.getInstance().addSwitchedCamera(null)
-
-    public static MjpegServer server = new MjpegServer("Robot camera", 1189);
-    public static UsbCamera usbCam0 = new UsbCamera("usb0", 0);
-    public static UsbCamera usbCam1 = new UsbCamera("usb1", 1);
+    public static VideoSink server;
+    public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+    public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(server, usbCam0, usbCam1, cameraSwitchButton);
 
     // ------------------------------------
     // Utility classes
@@ -429,10 +460,6 @@ public class Hardware
     public static Timer getSpeedTimer = new Timer();
 
     public static Timer telopTimer = new Timer();
-
-    public static Timer camTimer1 = new Timer();
-
-    public static Timer camTimer2 = new Timer();
 
     public static Timer launchTimer = new Timer();
 
