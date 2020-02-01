@@ -25,20 +25,31 @@ public class IntakeControl
 
         }
 
-    public boolean deployIntake()
+    public void toggleDeployIntake(JoystickButton button)
     {
+        if (this.solenoid.getForward())
+            {
+            this.solenoid.set(Value.kReverse);
+            }
         if (!this.solenoid.getForward())
             {
             this.solenoid.set(Value.kForward);
             }
-        if (this.solenoid.getForward())
-            {
-            return true;
-            }
-        return false;
     }
 
-    public boolean undeployIntake()
+    public void toggleDeployIntake()
+    {
+        if (this.solenoid.getForward())
+            {
+            this.solenoid.set(Value.kReverse);
+            }
+        if (!this.solenoid.getForward())
+            {
+            this.solenoid.set(Value.kForward);
+            }
+    }
+
+    public boolean undeployIntake(JoystickButton button)
     {
         if (this.solenoid.getForward())
             {
@@ -59,7 +70,7 @@ public class IntakeControl
 
     public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
     {
-        if (deployIntake())
+        if (getDeployed())
             {
             if (Hardware.ballcounter.getBallCount() <= 5 || overrideButton.get())
                 {
@@ -78,11 +89,15 @@ public class IntakeControl
                     }
                 }
             }
+        else
+            {
+            toggleDeployIntake();
+            }
     }
 
     public boolean intake(int seconds)
     {
-        if (deployIntake())
+        if (getDeployed())
             {
             this.timer.start();
             if (this.timer.get() < seconds)
@@ -103,12 +118,16 @@ public class IntakeControl
                 return true;
                 }
             }
+        else
+            {
+            toggleDeployIntake();
+            }
         return false;
     }
 
     public void outtake(JoystickButton outtakeButton, JoystickButton overrideButton)
     {
-        if (deployIntake())
+        if (getDeployed())
             {
             if (Hardware.ballcounter.getBallCount() <= 5 || overrideButton.get())
                 {
@@ -126,6 +145,10 @@ public class IntakeControl
                     outtaking = false;
                     }
                 }
+            }
+        else
+            {
+            toggleDeployIntake();
             }
     }
 

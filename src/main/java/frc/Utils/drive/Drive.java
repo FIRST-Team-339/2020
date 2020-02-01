@@ -17,7 +17,8 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
  * @author Ryan McGee
  * @written 7/26/2017
  */
-public class Drive {
+public class Drive
+    {
 
     /**
      * Creates the Drive object. If a sensor listed is not used (except for
@@ -30,21 +31,22 @@ public class Drive {
      * @param gyro              A sensor that is used to measure rotation
      */
     public Drive(TransmissionBase transmission, KilroyEncoder leftDriveEncoder, KilroyEncoder rightDriveEncoder,
-            GyroBase gyro) {
-        this.transmissionType = transmission.getType();
-        this.transmission = transmission;
-        this.encoders = new KilroyEncoder[2];
-        this.encoders[0] = leftDriveEncoder;
-        this.encoders[1] = rightDriveEncoder;
-        this.brakeMotorDirection = new int[2];
-        this.brakeMotorDirection[0] = 1;
-        this.brakeMotorDirection[1] = 1;
-        this.brakePrevEncoderVals = new int[2];
-        this.brakePrevEncoderVals[0] = Integer.MIN_VALUE;
-        this.brakePrevEncoderVals[1] = Integer.MIN_VALUE;
-        this.brakeInitialDirection = new int[2];
-        this.gyro = gyro;
-    }
+            GyroBase gyro)
+        {
+            this.transmissionType = transmission.getType();
+            this.transmission = transmission;
+            this.encoders = new KilroyEncoder[2];
+            this.encoders[0] = leftDriveEncoder;
+            this.encoders[1] = rightDriveEncoder;
+            this.brakeMotorDirection = new int[2];
+            this.brakeMotorDirection[0] = 1;
+            this.brakeMotorDirection[1] = 1;
+            this.brakePrevEncoderVals = new int[2];
+            this.brakePrevEncoderVals[0] = Integer.MIN_VALUE;
+            this.brakePrevEncoderVals[1] = Integer.MIN_VALUE;
+            this.brakeInitialDirection = new int[2];
+            this.gyro = gyro;
+        }
 
     /**
      * Creates the Drive object. If a sensor listed is not used (except for
@@ -61,28 +63,29 @@ public class Drive {
      * @param visionProcessor   The camera's vision processing code, as a sensor.
      */
     public Drive(TransmissionBase transmission, KilroyEncoder leftRearEncoder, KilroyEncoder rightRearEncoder,
-            KilroyEncoder leftFrontEncoder, KilroyEncoder rightFrontEncoder, GyroBase gyro) {
-        this.transmissionType = transmission.getType();
-        this.transmission = transmission;
-        this.encoders = new KilroyEncoder[4];
-        this.encoders[0] = leftRearEncoder;
-        this.encoders[1] = rightRearEncoder;
-        this.encoders[2] = leftFrontEncoder;
-        this.encoders[3] = rightFrontEncoder;
-        this.brakeMotorDirection = new int[4];
-        this.brakeMotorDirection[0] = 1;
-        this.brakeMotorDirection[1] = 1;
-        this.brakeMotorDirection[2] = 1;
-        this.brakeMotorDirection[3] = 1;
-        this.brakePrevEncoderVals = new int[4];
-        this.brakePrevEncoderVals[0] = Integer.MIN_VALUE;
-        this.brakePrevEncoderVals[1] = Integer.MIN_VALUE;
-        this.brakePrevEncoderVals[2] = Integer.MIN_VALUE;
-        this.brakePrevEncoderVals[3] = Integer.MIN_VALUE;
-        this.brakeInitialDirection = new int[4];
-        this.gyro = gyro;
+            KilroyEncoder leftFrontEncoder, KilroyEncoder rightFrontEncoder, GyroBase gyro)
+        {
+            this.transmissionType = transmission.getType();
+            this.transmission = transmission;
+            this.encoders = new KilroyEncoder[4];
+            this.encoders[0] = leftRearEncoder;
+            this.encoders[1] = rightRearEncoder;
+            this.encoders[2] = leftFrontEncoder;
+            this.encoders[3] = rightFrontEncoder;
+            this.brakeMotorDirection = new int[4];
+            this.brakeMotorDirection[0] = 1;
+            this.brakeMotorDirection[1] = 1;
+            this.brakeMotorDirection[2] = 1;
+            this.brakeMotorDirection[3] = 1;
+            this.brakePrevEncoderVals = new int[4];
+            this.brakePrevEncoderVals[0] = Integer.MIN_VALUE;
+            this.brakePrevEncoderVals[1] = Integer.MIN_VALUE;
+            this.brakePrevEncoderVals[2] = Integer.MIN_VALUE;
+            this.brakePrevEncoderVals[3] = Integer.MIN_VALUE;
+            this.brakeInitialDirection = new int[4];
+            this.gyro = gyro;
 
-    }
+        }
 
     /**
      * This method is related to accelerateTo, except that it keeps the
@@ -102,18 +105,21 @@ public class Drive {
      * @return True if we are done accelerating. It WILL continue driving after
      *         acceleration is done, at the input speed.
      */
-    public boolean accelerateProportionaly(double leftSpeed, double rightSpeed, double time) {
+    public boolean accelerateProportionaly(double leftSpeed, double rightSpeed, double time)
+    {
         // Avoid a divideByZero error.
-        if (time <= 0) {
+        if (time <= 0)
+            {
             this.transmission.driveRaw(leftSpeed, rightSpeed);
             return true;
-        }
+            }
 
         // If we timeout, then reset all the accelerate
-        if (System.currentTimeMillis() - lastAccelerateTime > INIT_TIMEOUT) {
+        if (System.currentTimeMillis() - lastAccelerateTime > INIT_TIMEOUT)
+            {
             lastAccelerateTime = System.currentTimeMillis();
             accelMotorPower = accelStartingSpeed;
-        }
+            }
 
         // main acceleration maths
         double deltaSeconds = (System.currentTimeMillis() - lastAccelerateTime) / 1000.0;
@@ -126,9 +132,10 @@ public class Drive {
         // Reset the "timer"
         lastAccelerateTime = System.currentTimeMillis();
 
-        if (accelMotorPower > 1.0) {
+        if (accelMotorPower > 1.0)
+            {
             return true;
-        }
+            }
         // We are not done accelerating
         return false;
     }
@@ -151,17 +158,20 @@ public class Drive {
      * @return Whether or not the robot has finished accelerating, and is at
      *         leftSpeed and rightSpeed
      */
-    public boolean accelerateTo(double leftSpeed, double rightSpeed, double percentPerSecond) {
+    public boolean accelerateTo(double leftSpeed, double rightSpeed, double percentPerSecond)
+    {
         // If the acceleration is 0, then just simply drive at speed. (disabled)
-        if (percentPerSecond == 0) {
+        if (percentPerSecond == 0)
+            {
             transmission.driveRaw(leftSpeed, rightSpeed);
             return true;
-        }
+            }
 
         // If we timeout, then reset all the accelerate values
-        if (System.currentTimeMillis() - lastAccelerateTime > INIT_TIMEOUT) {
+        if (System.currentTimeMillis() - lastAccelerateTime > INIT_TIMEOUT)
+            {
             timeBetweenAccelerations = System.currentTimeMillis();
-        }
+            }
 
         double leftOut, rightOut;
         long timeDelta = (System.currentTimeMillis() - timeBetweenAccelerations) / 1000;
@@ -207,18 +217,21 @@ public class Drive {
      *                         accelerate over.
      * @return Whether or not the robot has driven it's arc length.
      */
-    public boolean arc(double speed, double radius, double arcLength, double accelerationTime) {
+    public boolean arc(double speed, double radius, double arcLength, double accelerationTime)
+    {
         // Initialize by resetting the sensor.
-        if (arcInit == true) {
+        if (arcInit == true)
+            {
             this.resetEncoders();
             arcInit = false;
-        }
+            }
 
         // We have reached the arc length? then we are done.
-        if (getEncoderDistanceAverage(MotorPosition.ALL) > arcLength) {
+        if (getEncoderDistanceAverage(MotorPosition.ALL) > arcLength)
+            {
             getTransmission().stop();
             return true;
-        }
+            }
         // The circumference of the smaller circle
         double innerCircle = 2 * (radius - turningRadius) * Math.PI;
         // The circumference of the larger circle
@@ -228,13 +241,16 @@ public class Drive {
         // positive or
         // negative.
         double leftSide = 0, rightSide = 0;
-        if (radius > 0) {
+        if (radius > 0)
+            {
             leftSide = 1;
             rightSide = innerCircle / outerCircle;
-        } else if (radius < 0) {
+            }
+        else if (radius < 0)
+            {
             rightSide = 1;
             leftSide = innerCircle / outerCircle;
-        }
+            }
 
         double leftRate = getEncoderRate(MotorPosition.LEFT);
         double rightRate = getEncoderRate(MotorPosition.RIGHT);
@@ -246,13 +262,16 @@ public class Drive {
         // from
         // the encoders, and corrects based off of it.
         if (leftRate != 0 && rightRate != 0)
-            if (currentRateRatio > expectedRateRatio) {
+            if (currentRateRatio > expectedRateRatio)
+                {
                 leftSide -= driveStraightConstant;
                 rightSide += driveStraightConstant;
-            } else {
+                }
+            else
+                {
                 leftSide += driveStraightConstant;
                 rightSide -= driveStraightConstant;
-            }
+                }
 
         this.accelerateProportionaly(speed * leftSide, speed * rightSide, accelerationTime);
 
@@ -301,7 +320,8 @@ public class Drive {
     //
     // -----------------------------------------------------
 
-    public boolean brake(BrakeType type) {
+    public boolean brake(BrakeType type)
+    {
         // deadband and power to be used later
         int deadband = 0;
         double power = 0;
@@ -317,30 +337,32 @@ public class Drive {
         // if this is our first time through the
         // brake operations - setup the motor directions,
         // -------------------------------------
-        if (this.currentBrakeIteration == 1) {
+        if (this.currentBrakeIteration == 1)
+            {
             this.brakePrep();
             return false;
-        } // if
-        else {
+            } // if
+        else
+            {
             // if BrakeType is AFTER_DRIVE then set deadband to
             // brakeDriveDeadband and power to brakeDrivePower
             switch (type)
 
-            {
-            default:
-            case AFTER_DRIVE:
-                deadband = brakeDriveDeadband;
-                power = brakeDrivePower;
-                break;
+                {
+                default:
+                case AFTER_DRIVE:
+                    deadband = brakeDriveDeadband;
+                    power = brakeDrivePower;
+                    break;
 
-            // if Braketype is AFTER_TURN set the deadband to
-            // brakeTurnDeadband and set power to brakeTurnPower
-            case AFTER_TURN:
-                deadband = brakeTurnDeadband;
-                power = brakeTurnPower;
-                break;
-            } // switch
-              // print if requested
+                // if Braketype is AFTER_TURN set the deadband to
+                // brakeTurnDeadband and set power to brakeTurnPower
+                case AFTER_TURN:
+                    deadband = brakeTurnDeadband;
+                    power = brakeTurnPower;
+                    break;
+                } // switch
+                  // print if requested
             if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
                 System.out.println("deadband = " + deadband + "\npower = " + power);
 
@@ -351,15 +373,16 @@ public class Drive {
             brakeDeltas[1] = getEncoderTicks(MotorPosition.RIGHT_REAR) - brakePrevEncoderVals[1];
             if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
                 System.out.print("brake deltas LR RR LF RF = " + brakeDeltas[0] + " " + brakeDeltas[1]);
-            if (this.encoders.length > 2) {
+            if (this.encoders.length > 2)
+                {
                 brakeDeltas[2] = getEncoderTicks(MotorPosition.LEFT_FRONT) - brakePrevEncoderVals[2];
                 brakeDeltas[3] = getEncoderTicks(MotorPosition.RIGHT_FRONT) - brakePrevEncoderVals[3];
                 if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
                     System.out.print(" " + brakeDeltas[2] + " " + brakeDeltas[3]);
-            } // if
+                } // if
             if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
                 System.out.println();
-        } // else - not on first pass
+            } // else - not on first pass
 
         // -------------------------------------
         // -------------------------------------
@@ -401,31 +424,34 @@ public class Drive {
         // clean up everything for next time
         // return true
         // ======================================
-        if (finished == true) {
+        if (finished == true)
+            {
             this.brakeReset();
             return true;
-        } // if
-          // ====================================
-          // not finished. save values for next
-          // time and return a false
-          // ====================================
-          // sets present encoder tick values to
-          // the previous tick vals to be used
-          // for future computations - print if
-          // requested
+            } // if
+              // ====================================
+              // not finished. save values for next
+              // time and return a false
+              // ====================================
+              // sets present encoder tick values to
+              // the previous tick vals to be used
+              // for future computations - print if
+              // requested
         brakePrevEncoderVals[0] = getEncoderTicks(MotorPosition.LEFT_REAR);
         brakePrevEncoderVals[1] = getEncoderTicks(MotorPosition.RIGHT_REAR);
-        if (this.brakePrevEncoderVals.length > 2) {
+        if (this.brakePrevEncoderVals.length > 2)
+            {
             brakePrevEncoderVals[2] = getEncoderTicks(MotorPosition.LEFT_FRONT);
             brakePrevEncoderVals[3] = getEncoderTicks(MotorPosition.RIGHT_FRONT);
-        }
-        if (this.isDebugOn(debugType.DEBUG_BRAKING) == true) {
+            }
+        if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
+            {
             System.out
                     .print("present encoder LR RR LF RF = " + brakePrevEncoderVals[0] + " " + brakePrevEncoderVals[1]);
             if (this.brakeMotorDirection.length > 2)
                 System.out.print(" " + brakePrevEncoderVals[2] + " " + brakePrevEncoderVals[3]);
             System.out.println();
-        } // if
+            } // if
 
         // ==================================
         // finally we do the actual work
@@ -446,14 +472,15 @@ public class Drive {
         // in two wheel drive - print if
         // requested
         // ==================================
-        if (encoders.length >= 4) {
+        if (encoders.length >= 4)
+            {
             newSpeed[2] = -brakeMotorDirection[2] * this.brakeInitialDirection[2] * power;
             newSpeed[3] = -brakeMotorDirection[3] * this.brakeInitialDirection[3] * power;
             transmission.getSpeedController(MotorPosition.LEFT_FRONT).set(newSpeed[2]);
             transmission.getSpeedController(MotorPosition.RIGHT_FRONT).set(newSpeed[3]);
             if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
                 System.out.print(" " + newSpeed[2] + " " + newSpeed[3]);
-        } // if
+            } // if
         if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
             System.out.println();
         // -------------------------
@@ -472,7 +499,8 @@ public class Drive {
      *
      * @return Whether or not the robot has stopped moving.
      */
-    public boolean brakeOld(BrakeType type) {
+    public boolean brakeOld(BrakeType type)
+    {
         // prints out calling brake
         // System.out.println("Calling Brake");
 
@@ -482,18 +510,21 @@ public class Drive {
 
         // if BrakeType is AFTER_DRIVE then set deadband to brakeDriveDeadband
         // and power to brakeDrivePower
-        if (type == BrakeType.AFTER_DRIVE) {
+        if (type == BrakeType.AFTER_DRIVE)
+            {
             deadband = brakeDriveDeadband;
             power = brakeDrivePower;
-        }
+            }
         // if Braketype is AFTER_TURN set the deadband to brakeTurnDeadband
         // and set power to brakeTurnPower
-        else if (type == BrakeType.AFTER_TURN) {
+        else if (type == BrakeType.AFTER_TURN)
+            {
             deadband = brakeTurnDeadband;
             power = brakeTurnPower;
-        }
+            }
 
-        if (System.currentTimeMillis() - previousBrakeTime > INIT_TIMEOUT) {
+        if (System.currentTimeMillis() - previousBrakeTime > INIT_TIMEOUT)
+            {
             brakePrevEncoderVals = new int[4];
 
             // Get the direction of the motor values on the first start.
@@ -512,14 +543,15 @@ public class Drive {
 
             // If it's not a 2 wheel drive, get the direction of the other 2
             // wheels.
-            if (encoders.length >= 4) {
+            if (encoders.length >= 4)
+                {
                 if (transmission.getSpeedController(MotorPosition.LEFT_FRONT).getInverted() == true)
                     brakeMotorDirection[2] = -1;
 
                 if (transmission.getSpeedController(MotorPosition.RIGHT_FRONT).getInverted() == true)
                     brakeMotorDirection[3] = -1;
+                }
             }
-        }
 
         int[] brakeDeltas = new int[4];
         // sets values of brakeDelta array to the change in encoder ticks
@@ -548,31 +580,36 @@ public class Drive {
         // See if the motors are past the deadband
         if (brakeMotorDirection[0] * brakeDeltas[0] < deadband && brakeMotorDirection[1] * brakeDeltas[1] < deadband
                 && ((encoders.length < 3) || brakeMotorDirection[2] * brakeDeltas[2] < deadband
-                        || brakeMotorDirection[3] * brakeDeltas[3] < deadband)) {
+                        || brakeMotorDirection[3] * brakeDeltas[3] < deadband))
+            {
             // Increase the iteration
             currentBrakeIteration++;
-        } else {
+            }
+        else
+            {
             // Reset the iteration. We want x times ~in a row~.
             currentBrakeIteration = 0;
-        }
+            }
 
         brakeLoopThroughs = brakeLoopThroughs++;
 
         // If we have been within the deadband for x times, return true.
-        if (currentBrakeIteration >= totalBrakeIterations || brakeLoopThroughs >= maxBrakeIterations) {
+        if (currentBrakeIteration >= totalBrakeIterations || brakeLoopThroughs >= maxBrakeIterations)
+            {
             currentBrakeIteration = 0;
             transmission.stop();
             return true;
-        }
+            }
 
         // Set the rear wheels
         transmission.getSpeedController(MotorPosition.LEFT_REAR).set(-brakeMotorDirection[0] * power);
         transmission.getSpeedController(MotorPosition.RIGHT_REAR).set(-brakeMotorDirection[1] * power);
         // Set the front wheels if it's the right kind of drive
-        if (encoders.length >= 4) {
+        if (encoders.length >= 4)
+            {
             transmission.getSpeedController(MotorPosition.LEFT_FRONT).set(-brakeMotorDirection[2] * power);
             transmission.getSpeedController(MotorPosition.RIGHT_FRONT).set(-brakeMotorDirection[3] * power);
-        }
+            }
         // END SET MOTORS
         this.previousBrakeTime = System.currentTimeMillis();
         return false;
@@ -582,13 +619,15 @@ public class Drive {
      * Prepares the braking system so that it can be used to stop the robot.
      *
      */
-    private void brakePrep() {
+    private void brakePrep()
+    {
         // ====================================
         // print out the present (initial)
         // Motor controller values for
         // debug purposes
         // ====================================
-        if (this.isDebugOn(debugType.DEBUG_BRAKING) == true) {
+        if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
+            {
             System.out.print(
                     "present MC power LR RR LF RF = " + transmission.getSpeedController(MotorPosition.LEFT_REAR).get()
                             + " " + transmission.getSpeedController(MotorPosition.RIGHT_REAR).get());
@@ -596,44 +635,47 @@ public class Drive {
                 System.out.print(" " + transmission.getSpeedController(MotorPosition.LEFT_FRONT).get() + " "
                         + transmission.getSpeedController(MotorPosition.RIGHT_FRONT).get());
             System.out.println();
-        } // if
-          // ==================================
-          // First time through save the initial
-          // value of the encoders. This will be
-          // checked later to make sure that we
-          // haven't stopped the motors and suddenly
-          // reversed directions. Also print to
-          // screen if in debug mode
-          // ==================================
+            } // if
+              // ==================================
+              // First time through save the initial
+              // value of the encoders. This will be
+              // checked later to make sure that we
+              // haven't stopped the motors and suddenly
+              // reversed directions. Also print to
+              // screen if in debug mode
+              // ==================================
         brakePrevEncoderVals[0] = getEncoderTicks(MotorPosition.LEFT_REAR);
         brakePrevEncoderVals[1] = getEncoderTicks(MotorPosition.RIGHT_REAR);
-        if (this.encoders.length > 2) {
+        if (this.encoders.length > 2)
+            {
             brakePrevEncoderVals[2] = getEncoderTicks(MotorPosition.LEFT_FRONT);
             brakePrevEncoderVals[3] = getEncoderTicks(MotorPosition.RIGHT_FRONT);
-        } // if
-        if (this.isDebugOn(debugType.DEBUG_BRAKING) == true) {
+            } // if
+        if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
+            {
             System.out
                     .print("present encoder LR RR LF RF = " + brakePrevEncoderVals[0] + " " + brakePrevEncoderVals[1]);
             if (this.brakeMotorDirection.length > 2)
                 System.out.print(" " + brakePrevEncoderVals[2] + " " + brakePrevEncoderVals[3]);
             System.out.println();
-        } // if
-          // ========================================
-          // determine direction of each of the encoders
-          // (using the previously stored values)
-          // and print to screen if requested
-          // ========================================
+            } // if
+              // ========================================
+              // determine direction of each of the encoders
+              // (using the previously stored values)
+              // and print to screen if requested
+              // ========================================
         this.brakeInitialDirection[0] = (int) Math.signum(brakePrevEncoderVals[0]);
         this.brakeInitialDirection[1] = (int) Math.signum(brakePrevEncoderVals[1]);
         if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
             System.out.print("brake initial direction LR RR LF RF = " + this.brakeInitialDirection[0] + " "
                     + this.brakeInitialDirection[1]);
-        if (this.brakeInitialDirection.length > 2) {
+        if (this.brakeInitialDirection.length > 2)
+            {
             this.brakeInitialDirection[2] = (int) Math.signum(brakePrevEncoderVals[2]);
             this.brakeInitialDirection[3] = (int) Math.signum(brakePrevEncoderVals[3]);
             if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
                 System.out.print(" " + this.brakeInitialDirection[2] + " " + this.brakeInitialDirection[3]);
-        } // if
+            } // if
         if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
             System.out.println();
         // ==================================
@@ -648,7 +690,8 @@ public class Drive {
         if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
             System.out.print(
                     "motor reversed LR RR LF RF = " + this.brakeMotorDirection[0] + " " + this.brakeMotorDirection[1]);
-        if (this.brakeMotorDirection.length > 2) {
+        if (this.brakeMotorDirection.length > 2)
+            {
             if (this.transmission.getSpeedController(MotorPosition.LEFT_FRONT).getInverted() == true)
                 this.brakeMotorDirection[2] = -1;
 
@@ -656,7 +699,7 @@ public class Drive {
                 this.brakeMotorDirection[3] = -1;
             if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
                 System.out.print(" " + this.brakeMotorDirection[2] + " " + this.brakeMotorDirection[3]);
-        } // if
+            } // if
         if (this.isDebugOn(debugType.DEBUG_BRAKING) == true)
             System.out.println();
     } // end brakePrep
@@ -665,15 +708,17 @@ public class Drive {
      * Cleans up after the brake system thinks that it is stopped.
      *
      */
-    private void brakeReset() {
+    private void brakeReset()
+    {
         this.currentBrakeIteration = 0;
         transmission.stop();
         this.brakePrevEncoderVals[0] = Integer.MIN_VALUE;
         this.brakePrevEncoderVals[1] = Integer.MIN_VALUE;
-        if (this.brakePrevEncoderVals.length > 2) {
+        if (this.brakePrevEncoderVals.length > 2)
+            {
             this.brakePrevEncoderVals[2] = Integer.MIN_VALUE;
             this.brakePrevEncoderVals[3] = Integer.MIN_VALUE;
-        } // if
+            } // if
     } // end brakeReset
 
     /**
@@ -684,7 +729,8 @@ public class Drive {
      *                doubles the turning radius
      * @return The calculated value in inches.
      */
-    public double degreesToEncoderInches(double degrees, boolean pivot) {
+    public double degreesToEncoderInches(double degrees, boolean pivot)
+    {
         if (pivot == false)
             return turningRadius * Math.toRadians(Math.abs(degrees));
 
@@ -701,7 +747,8 @@ public class Drive {
      * @param rightJoystick thet right side joystick, controls the right side of the
      *                      robot
      */
-    public void drive(Joystick leftJoystick, Joystick rightJoystick) {
+    public void drive(Joystick leftJoystick, Joystick rightJoystick)
+    {
         this.drive(-leftJoystick.getY(), -rightJoystick.getY());
     }
 
@@ -714,13 +761,15 @@ public class Drive {
      * @param rightVal The right side joystick, controls the right side of the robot
      *                 From -1.0 (backwards) to 1.0 (forwards)
      */
-    public void drive(double leftVal, double rightVal) {
+    public void drive(double leftVal, double rightVal)
+    {
         // If the transmission input into Drive is of type Tank, then use it.
         if (transmission instanceof TankTransmission)
             ((TankTransmission) transmission).drive(leftVal, rightVal);
         // If the transmission input into Drive is some sort of Omni-Directional,
         // then use tank drive on it.
-        else if (transmission.getType() == TransmissionType.OMNI_DIR) {
+        else if (transmission.getType() == TransmissionType.OMNI_DIR)
+            {
             double direction = 0;
             double magnitude = (leftVal + rightVal) / 2.0;
             double rotation = (leftVal - rightVal) / 2.0;
@@ -730,7 +779,7 @@ public class Drive {
             magnitude = Math.abs(magnitude);
 
             this.drive(magnitude, direction, rotation);
-        }
+            }
     }
 
     /**
@@ -741,7 +790,8 @@ public class Drive {
      *                 of the robot. X and Y control lateral movement, Z controls
      *                 rotation.
      */
-    public void drive(Joystick joystick) {
+    public void drive(Joystick joystick)
+    {
         this.drive(joystick.getMagnitude(), joystick.getDirectionDegrees(), joystick.getZ());
     }
 
@@ -756,14 +806,16 @@ public class Drive {
      * @param rotation  Speed in turns, from -1.0 (left) to 1.0 (right) (Percentage
      *                  of a joystick)
      */
-    public void drive(double magnitude, double direction, double rotation) {
+    public void drive(double magnitude, double direction, double rotation)
+    {
         // if the transmission type input is Mecanum, then control it with that
         if (transmission instanceof MecanumTransmission)
             ((MecanumTransmission) transmission).drive(magnitude, direction, rotation);
 
         // AHHH! we are a Tank transmission! ...Switching to arcade drive I
         // guess?
-        else if (transmission instanceof TankTransmission) {
+        else if (transmission instanceof TankTransmission)
+            {
             // Arcade Drive
             double yVal = magnitude * Math.cos(Math.toRadians(direction));
             double xVal = magnitude * Math.sin(Math.toRadians(direction));
@@ -771,7 +823,7 @@ public class Drive {
             double rightVal = Math.min(Math.max(yVal - xVal, -1), 1);
 
             ((TankTransmission) transmission).drive(leftVal, rightVal);
-        }
+            }
     }
 
     /**
@@ -785,19 +837,22 @@ public class Drive {
      *                 backwards.
      * @return whether or not the robot has reached "distance".
      */
-    public boolean driveInches(int distance, double speed) {
+    public boolean driveInches(int distance, double speed)
+    {
         // Reset encoders on initialization.
-        if (this.driveInchesInit == true) {
+        if (this.driveInchesInit == true)
+            {
             this.resetEncoders();
             this.driveInchesInit = false;
-        }
+            }
 
         // Test if ANY encoder is past the distance. stop if there is
-        if (this.isAnyEncoderLargerThan(distance) == true) {
+        if (this.isAnyEncoderLargerThan(distance) == true)
+            {
             this.driveInchesInit = true;
             this.transmission.stop();
             return true;
-        }
+            }
 
         // sets transmission speed to the input
         this.transmission.driveRaw(speed, speed);
@@ -814,14 +869,15 @@ public class Drive {
      * @param isUsingGyro  If true, the chosen sensor is a gyro. If false, it uses
      *                     encoders.
      */
-    public void driveStraight(double speed, double acceleration, boolean isUsingGyro) {
+    public void driveStraight(double speed, double acceleration, boolean isUsingGyro)
+    {
         // "Reset" the encoders (will not mess with driveInches or such)
-        if (System.currentTimeMillis() - driveStraightLastTime > INIT_TIMEOUT) {
+        if (System.currentTimeMillis() - driveStraightLastTime > INIT_TIMEOUT)
+            {
             if (isUsingGyro == true)
                 this.gyro.reset();
-            else
-                this.resetEncoders();
-        }
+            else this.resetEncoders();
+            }
 
         double leftSpeed = 0;
         double rightSpeed = 0;
@@ -829,22 +885,28 @@ public class Drive {
         // left.
         // If right is greater than left, add more to left & subtract from
         // right.
-        if (isUsingGyro == true) {
+        if (isUsingGyro == true)
+            {
             leftSpeed = speed - (Math.signum(gyro.getAngle()) * driveStraightConstant);
             rightSpeed = speed + (Math.signum(gyro.getAngle()) * driveStraightConstant);
-        } else {
+            }
+        else
+            {
             int delta = getEncoderTicks(MotorPosition.LEFT) - getEncoderTicks(MotorPosition.RIGHT);
 
             leftSpeed = speed - ((Math.signum(delta) * driveStraightConstant));
             rightSpeed = speed + ((Math.signum(delta) * driveStraightConstant));
-        }
+            }
 
         // Only send the new power to the side lagging behind
-        if (leftSpeed > rightSpeed) {
+        if (leftSpeed > rightSpeed)
+            {
             rightSpeed = speed;
-        } else {
+            }
+        else
+            {
             leftSpeed = speed;
-        }
+            }
 
         this.accelerateProportionaly(leftSpeed, rightSpeed, acceleration);
         // Reset the "timer" to know when to "reset" the encoders for this
@@ -865,20 +927,23 @@ public class Drive {
      *                     encoders.
      * @return Whether or not the robot has finished traveling that given distance.
      */
-    public boolean driveStraightInches(double distance, double speed, double acceleration, boolean isUsingGyro) {
+    public boolean driveStraightInches(double distance, double speed, double acceleration, boolean isUsingGyro)
+    {
         // Runs once when the method runs the first time, and does not run again
         // until after the method returns true.
-        if (driveStraightInchesInit == true) {
+        if (driveStraightInchesInit == true)
+            {
             this.resetEncoders();
             driveStraightInchesInit = false;
-        }
+            }
 
         // Check all encoders to see if they've reached the distance
-        if (this.isAnyEncoderLargerThan(Math.abs(distance)) == true) {
+        if (this.isAnyEncoderLargerThan(Math.abs(distance)) == true)
+            {
             this.transmission.stop();
             driveStraightInchesInit = true;
             return true;
-        }
+            }
 
         // Drive straight if we have not reached the distance
         this.driveStraight(speed, acceleration, isUsingGyro);
@@ -891,7 +956,8 @@ public class Drive {
      *
      * @return expected distance during brake()
      */
-    public double getBrakeStoppingDistance() {
+    public double getBrakeStoppingDistance()
+    {
         // return distance required to brake
         return (this.distanceRequiredToBrake);
     } // end getBrakeStoppingDistance()
@@ -899,7 +965,8 @@ public class Drive {
     /**
      * @return the current software gear, starting at 0 as the slowest.
      */
-    public int getCurrentGear() {
+    public int getCurrentGear()
+    {
         return transmission.getCurrentGear();
     }
 
@@ -907,7 +974,8 @@ public class Drive {
      * @return the current ratio that is being multiplied onto the drive inputs,
      *         from 0.0 to 1.0
      */
-    public double getCurrentGearRatio() {
+    public double getCurrentGearRatio()
+    {
         return transmission.getCurrentGearRatio();
     }
 
@@ -916,14 +984,16 @@ public class Drive {
      * @return returns to the caller the status of debugOn flag. If debugOn is TRUE,
      *         then extra debug messages will be displayed to the console
      */
-    public debugType getDebugOnStatus() {
+    public debugType getDebugOnStatus()
+    {
         return this.debugOn;
     } // end getDebugOnStatus()
 
     /**
      * @return the defaultAcceleration, in seconds
      */
-    public double getDefaultAcceleration() {
+    public double getDefaultAcceleration()
+    {
         return defaultAcceleration;
     }
 
@@ -932,23 +1002,25 @@ public class Drive {
      *                into the Drive class, it will be returned as null.
      * @return The encoder attached to the respective wheel
      */
-    public KilroyEncoder getEncoder(MotorPosition encoder) {
-        switch (encoder) {
-        case LEFT:
-        case LEFT_REAR:
-            return this.encoders[0];
-        case RIGHT:
-        case RIGHT_REAR:
-            return this.encoders[1];
-        case LEFT_FRONT:
-            if (encoders.length > 2)
-                return this.encoders[2];
-        case RIGHT_FRONT:
-            if (encoders.length > 3)
-                return this.encoders[3];
-        default:
-            return null;
-        }
+    public KilroyEncoder getEncoder(MotorPosition encoder)
+    {
+        switch (encoder)
+            {
+            case LEFT:
+            case LEFT_REAR:
+                return this.encoders[0];
+            case RIGHT:
+            case RIGHT_REAR:
+                return this.encoders[1];
+            case LEFT_FRONT:
+                if (encoders.length > 2)
+                    return this.encoders[2];
+            case RIGHT_FRONT:
+                if (encoders.length > 3)
+                    return this.encoders[3];
+            default:
+                return null;
+            }
     }
 
     // ================ENCODER METHODS================
@@ -957,7 +1029,8 @@ public class Drive {
      * @return How many degrees the robot has turned in place since the encoders
      *         were reset.
      */
-    public double getEncoderDegreesTurned() {
+    public double getEncoderDegreesTurned()
+    {
         return Math.toDegrees(getEncoderDistanceAverage(MotorPosition.ALL) / turningRadius);
     }
 
@@ -969,29 +1042,31 @@ public class Drive {
      *                     RIGHT and ALL are accepted.
      * @return the final averaged distance
      */
-    public double getEncoderDistanceAverage(MotorPosition encoderGroup) {
+    public double getEncoderDistanceAverage(MotorPosition encoderGroup)
+    {
         double added = 0;
-        switch (encoderGroup) {
-        case LEFT:
-            // Average them, if necessary
-            for (int i = 0; i < encoders.length; i++)
-                if (i % 2 == 0)
-                    added += encoders[i].getDistance();
-            return added / (encoders.length / 2);
-        case RIGHT:
-            // Average them, if necessary
-            for (int i = 0; i < encoders.length; i++)
-                if (i % 2 == 1)
-                    added += encoders[i].getDistance();
-            return added / (encoders.length / 2);
-        default:
-        case ALL:
-            for (int i = 0; i < encoders.length; i++)
-                added += Math.abs(encoders[i].getDistance());
-            // System.out.println(added / encoders.length);
-            return added / encoders.length;
-        // Absolute value, in case turning makes it near 0
-        }
+        switch (encoderGroup)
+            {
+            case LEFT:
+                // Average them, if necessary
+                for (int i = 0; i < encoders.length; i++)
+                    if (i % 2 == 0)
+                        added += encoders[i].getDistance();
+                return added / (encoders.length / 2);
+            case RIGHT:
+                // Average them, if necessary
+                for (int i = 0; i < encoders.length; i++)
+                    if (i % 2 == 1)
+                        added += encoders[i].getDistance();
+                return added / (encoders.length / 2);
+            default:
+            case ALL:
+                for (int i = 0; i < encoders.length; i++)
+                    added += Math.abs(encoders[i].getDistance());
+                // System.out.println(added / encoders.length);
+                return added / encoders.length;
+            // Absolute value, in case turning makes it near 0
+            }
     }
 
     /**
@@ -1002,50 +1077,52 @@ public class Drive {
      * @return The rate of said encoder, in distance (determined by encoder
      *         distancePerPulse) per second.
      */
-    public double getEncoderRate(MotorPosition encoderGroup) {
-        switch (encoderGroup) {
-        // ===========================================================================
-        // Left side
-        // ===========================================================================
-        case LEFT_FRONT:
-            // If a four wheel system, get the left front. If not, the switch
-            // will move down
-            // the line and get the left encoder.
-            if (encoders.length == 4)
-                return encoders[2].getRate();
-        case LEFT:
-            // If a four wheel system, average the two left. If not, then get
-            // the left
-            // encoder.
-            if (encoders.length == 4)
-                return (encoders[0].getRate() + encoders[2].getRate()) / 2.0;
-        case LEFT_REAR:
-            return encoders[0].getRate();
-        // ===========================================================================
-        // Right side
-        // ===========================================================================
-        case RIGHT_FRONT:
-            if (encoders.length == 4)
-                return encoders[3].getRate();
-        case RIGHT:
-            if (encoders.length == 4)
-                return (encoders[1].getRate() + encoders[3].getRate()) / 2.0;
-        case RIGHT_REAR:
-            return encoders[1].getRate();
-        // ===========================================================================
-        // Average All
-        // ===========================================================================
-        case ALL:
-            // If a four wheel, then get the average of all 4. If not, then get
-            // the average
-            // of the two.
-            if (encoders.length == 4)
-                return (encoders[0].getRate() + encoders[1].getRate() + encoders[2].getRate() + encoders[3].getRate())
-                        / 4.0;
-            return (encoders[0].getRate() + encoders[1].getRate()) / 2.0;
-        default:
-            return 0;
-        }
+    public double getEncoderRate(MotorPosition encoderGroup)
+    {
+        switch (encoderGroup)
+            {
+            // ===========================================================================
+            // Left side
+            // ===========================================================================
+            case LEFT_FRONT:
+                // If a four wheel system, get the left front. If not, the switch
+                // will move down
+                // the line and get the left encoder.
+                if (encoders.length == 4)
+                    return encoders[2].getRate();
+            case LEFT:
+                // If a four wheel system, average the two left. If not, then get
+                // the left
+                // encoder.
+                if (encoders.length == 4)
+                    return (encoders[0].getRate() + encoders[2].getRate()) / 2.0;
+            case LEFT_REAR:
+                return encoders[0].getRate();
+            // ===========================================================================
+            // Right side
+            // ===========================================================================
+            case RIGHT_FRONT:
+                if (encoders.length == 4)
+                    return encoders[3].getRate();
+            case RIGHT:
+                if (encoders.length == 4)
+                    return (encoders[1].getRate() + encoders[3].getRate()) / 2.0;
+            case RIGHT_REAR:
+                return encoders[1].getRate();
+            // ===========================================================================
+            // Average All
+            // ===========================================================================
+            case ALL:
+                // If a four wheel, then get the average of all 4. If not, then get
+                // the average
+                // of the two.
+                if (encoders.length == 4)
+                    return (encoders[0].getRate() + encoders[1].getRate() + encoders[2].getRate()
+                            + encoders[3].getRate()) / 4.0;
+                return (encoders[0].getRate() + encoders[1].getRate()) / 2.0;
+            default:
+                return 0;
+            }
     }
 
     /**
@@ -1055,28 +1132,30 @@ public class Drive {
      * @param encoder Which encoder position to get.
      * @return Number of Ticks
      */
-    public int getEncoderTicks(MotorPosition encoder) {
-        switch (encoder) {
-        case LEFT:
-            if (encoders.length == 4)
-                return encoders[0].get() + encoders[2].get();
-        case LEFT_REAR:
-            return encoders[0].get();
-        case RIGHT:
-            if (encoders.length == 4)
-                return encoders[1].get() + encoders[3].get();
-        case RIGHT_REAR:
-            return encoders[1].get();
-        case LEFT_FRONT:
-            if (encoders.length > 2)
-                return encoders[2].get();
-        case RIGHT_FRONT:
-            if (encoders.length > 3)
-                return encoders[3].get();
-            // returns 0 to show default case was run
-        default:
-            return 0;
-        }
+    public int getEncoderTicks(MotorPosition encoder)
+    {
+        switch (encoder)
+            {
+            case LEFT:
+                if (encoders.length == 4)
+                    return encoders[0].get() + encoders[2].get();
+            case LEFT_REAR:
+                return encoders[0].get();
+            case RIGHT:
+                if (encoders.length == 4)
+                    return encoders[1].get() + encoders[3].get();
+            case RIGHT_REAR:
+                return encoders[1].get();
+            case LEFT_FRONT:
+                if (encoders.length > 2)
+                    return encoders[2].get();
+            case RIGHT_FRONT:
+                if (encoders.length > 3)
+                    return encoders[3].get();
+                // returns 0 to show default case was run
+            default:
+                return 0;
+            }
 
     }
 
@@ -1085,7 +1164,8 @@ public class Drive {
      *
      * @return - this class is Gyro
      */
-    public GyroBase getGyro() {
+    public GyroBase getGyro()
+    {
         return (this.gyro);
     }
 
@@ -1093,7 +1173,8 @@ public class Drive {
      *
      * @return current number of brake iterations that has been specified
      */
-    public int getMaxBrakeIterations() {
+    public int getMaxBrakeIterations()
+    {
         return this.maxBrakeIterations;
     }
 
@@ -1103,7 +1184,8 @@ public class Drive {
      *
      * @return The current transmission object used in the Drive class
      */
-    public TransmissionBase getTransmission() {
+    public TransmissionBase getTransmission()
+    {
         return this.transmission;
     }
 
@@ -1114,7 +1196,8 @@ public class Drive {
      * @param length The desired length
      * @return True when any encoder is past length
      */
-    public boolean isAnyEncoderLargerThan(double length) {
+    public boolean isAnyEncoderLargerThan(double length)
+    {
         for (KilroyEncoder enc : encoders)
             if (Math.abs(enc.getDistance()) > length)
                 return true;
@@ -1129,7 +1212,8 @@ public class Drive {
      *         or the requested debugTypeToCheck is on, then return true. All other
      *         cases return false
      */
-    public boolean isDebugOn(debugType debugTypeToCheck) {
+    public boolean isDebugOn(debugType debugTypeToCheck)
+    {
         if (this.getDebugOnStatus() == debugType.DEBUG_ALL || this.getDebugOnStatus() == debugTypeToCheck)
             return true;
         return false;
@@ -1148,46 +1232,49 @@ public class Drive {
      *                         it's sensor. If false, then it will rely on encoders.
      * @return Whether or not the robot has finished turning.
      */
-    public boolean pivotTurnDegrees(int degrees, double power, double accelerationTime, boolean usingGyro) {
+    public boolean pivotTurnDegrees(int degrees, double power, double accelerationTime, boolean usingGyro)
+    {
         // Reset the encoders on the first start only
-        if (pivotTurnDegreesInit == true) {
+        if (pivotTurnDegreesInit == true)
+            {
             if (usingGyro)
                 this.gyro.reset();
-            else
-                this.resetEncoders();
+            else this.resetEncoders();
             pivotTurnDegreesInit = false;
-        }
+            }
 
         boolean finished = false;
 
         // If we are using the gyro, and the gyro has been passed in, then check
         // it.
-        if (usingGyro && this.gyro != null) {
+        if (usingGyro && this.gyro != null)
+            {
             if (Math.abs(gyro.getAngle()) > Math.abs(degrees) - this.turnDegreesFudgeFactor)
                 finished = true;
-        }
+            }
         // If we are NOT using the gyro, use the encoders.
-        else {
+        else
+            {
             if (degrees > 0
                     && Math.abs(getEncoderDistanceAverage(MotorPosition.LEFT)) > degreesToEncoderInches(degrees, true))
                 finished = true;
             else if (Math.abs(getEncoderDistanceAverage(MotorPosition.RIGHT)) > degreesToEncoderInches(degrees, true))
                 finished = true;
-        }
+            }
 
         // We have reached the angle, so stop.
-        if (finished == true) {
+        if (finished == true)
+            {
             this.transmission.stop();
             pivotTurnDegreesInit = true;
             return true;
-        }
+            }
 
         // Turning clockwise
         if (degrees > 0)
             this.accelerateProportionaly(power, -pivotDegreesStationaryPercentage, accelerationTime);
         // Turning counter-clockwise
-        else
-            this.accelerateProportionaly(-pivotDegreesStationaryPercentage, power, accelerationTime);
+        else this.accelerateProportionaly(-pivotDegreesStationaryPercentage, power, accelerationTime);
 
         return false;
     }
@@ -1197,7 +1284,8 @@ public class Drive {
      *
      * This is to make sure initialization of each method works accordingly.
      */
-    public void reset() {
+    public void reset()
+    {
         // sets to true
         this.driveInchesInit = true;
         this.driveStraightInchesInit = true;
@@ -1227,13 +1315,15 @@ public class Drive {
     /**
      * Sets all the encoder's stored pulses back to zero.
      */
-    public void resetEncoders() {
-        for (KilroyEncoder enc : encoders) {
+    public void resetEncoders()
+    {
+        for (KilroyEncoder enc : encoders)
+            {
             enc.reset();
 
             // System.out.print("reset encoders is commented out temporarly");
 
-        }
+            }
     }
 
     /**
@@ -1241,7 +1331,8 @@ public class Drive {
      *
      * @param value Positive percentage / motor value
      */
-    public void setAccelStartingSpeed(double value) {
+    public void setAccelStartingSpeed(double value)
+    {
         // sets accelStartingSpeed to the input value
         this.accelStartingSpeed = value;
     }
@@ -1252,7 +1343,8 @@ public class Drive {
      *
      * @param ratios The ratios, from 0.0 to 1.0.
      */
-    public void setAllGearPercentages(double... ratios) {
+    public void setAllGearPercentages(double... ratios)
+    {
         this.transmission.setAllGearPercentages(ratios);
     }
 
@@ -1262,17 +1354,19 @@ public class Drive {
      * @param ticks Ticks on the encoder, not distance.
      * @param type  What kind of turn this is being called after
      */
-    public void setBrakeDeadband(int ticks, BrakeType type) {
-        switch (type) {
-        case AFTER_DRIVE:
-            this.brakeDriveDeadband = ticks;
-            break;
-        case AFTER_TURN:
-            this.brakeTurnDeadband = ticks;
-            break;
-        default:
-            break;
-        }
+    public void setBrakeDeadband(int ticks, BrakeType type)
+    {
+        switch (type)
+            {
+            case AFTER_DRIVE:
+                this.brakeDriveDeadband = ticks;
+                break;
+            case AFTER_TURN:
+                this.brakeTurnDeadband = ticks;
+                break;
+            default:
+                break;
+            }
     }
 
     /**
@@ -1280,7 +1374,8 @@ public class Drive {
      *
      * @param iterations
      */
-    public void setBrakeIterations(int iterations) {
+    public void setBrakeIterations(int iterations)
+    {
         this.totalBrakeIterations = iterations;
     }
 
@@ -1290,17 +1385,19 @@ public class Drive {
      * @param power percentage (0.0 to 1.0)
      * @param type  What kind of turn this is being called after
      */
-    public void setBrakePower(double power, BrakeType type) {
-        switch (type) {
-        case AFTER_DRIVE:
-            this.brakeDrivePower = power;
-            break;
-        case AFTER_TURN:
-            this.brakeTurnPower = power;
-            break;
-        default:
-            break;
-        }
+    public void setBrakePower(double power, BrakeType type)
+    {
+        switch (type)
+            {
+            case AFTER_DRIVE:
+                this.brakeDrivePower = power;
+                break;
+            case AFTER_TURN:
+                this.brakeTurnPower = power;
+                break;
+            default:
+                break;
+            }
     }
 
     /**
@@ -1309,7 +1406,8 @@ public class Drive {
      * @param brakeStoppingDistance - new stopping distance during braking
      * @return new stored distance during brake()
      */
-    public double setBrakeStoppingDistance(double brakeStoppingDistance) {
+    public double setBrakeStoppingDistance(double brakeStoppingDistance)
+    {
         // sets braking distance and returns it
         return (this.distanceRequiredToBrake = brakeStoppingDistance);
     } // end setBrakeStoppingDistance()
@@ -1320,7 +1418,8 @@ public class Drive {
      * @return returns to the caller the updated status of debugOn flag. If debugOn
      *         is TRUE, then extra debug messages will be displayed to the console
      */
-    public debugType setDebugOnStatus(debugType newDebugOnState) {
+    public debugType setDebugOnStatus(debugType newDebugOnState)
+    {
         this.debugOn = newDebugOnState;
         return this.getDebugOnStatus();
     } // end setDebugOnStatus()
@@ -1330,7 +1429,8 @@ public class Drive {
      *
      * @param value The acceleration period, in seconds
      */
-    public void setDefaultAcceleration(double value) {
+    public void setDefaultAcceleration(double value)
+    {
         // sets default acceleration to the input value
         this.defaultAcceleration = .8;
     }
@@ -1340,7 +1440,8 @@ public class Drive {
      *
      * @param value Percentage (0.0 to 1.0)
      */
-    public void setDriveStraightConstant(double value) {
+    public void setDriveStraightConstant(double value)
+    {
         // sets Drive Straight Constant to the input
         this.driveStraightConstant = value;
     }
@@ -1356,31 +1457,33 @@ public class Drive {
      * @param value   The encoder distance per pulse.
      * @param encoder Which encoder will be changed
      */
-    public void setEncoderDistancePerPulse(double value, MotorPosition encoder) {
-        switch (encoder) {
-        case ALL:
-            for (int i = 0; i < encoders.length; i++)
-                this.encoders[i].setDistancePerPulse(value);
-            break;
-        case LEFT_REAR:
-            // set distance per pulse to the left rear encoder
-            this.encoders[0].setDistancePerPulse(value);
-            break;
-        case RIGHT_REAR:
-            // set distance per pulse to the right rear encoder
-            this.encoders[1].setDistancePerPulse(value);
-            break;
-        case LEFT_FRONT:
-            // set distance per pulse to the left front encoder
-            this.encoders[2].setDistancePerPulse(value);
-            break;
-        case RIGHT_FRONT:
-            // set distance per pulse to the right front encoder
-            this.encoders[3].setDistancePerPulse(value);
-            break;
-        default:
-            break;
-        }
+    public void setEncoderDistancePerPulse(double value, MotorPosition encoder)
+    {
+        switch (encoder)
+            {
+            case ALL:
+                for (int i = 0; i < encoders.length; i++)
+                    this.encoders[i].setDistancePerPulse(value);
+                break;
+            case LEFT_REAR:
+                // set distance per pulse to the left rear encoder
+                this.encoders[0].setDistancePerPulse(value);
+                break;
+            case RIGHT_REAR:
+                // set distance per pulse to the right rear encoder
+                this.encoders[1].setDistancePerPulse(value);
+                break;
+            case LEFT_FRONT:
+                // set distance per pulse to the left front encoder
+                this.encoders[2].setDistancePerPulse(value);
+                break;
+            case RIGHT_FRONT:
+                // set distance per pulse to the right front encoder
+                this.encoders[3].setDistancePerPulse(value);
+                break;
+            default:
+                break;
+            }
     }
 
     /**
@@ -1388,7 +1491,8 @@ public class Drive {
      *
      * @param gear
      */
-    public void setGear(int gear) {
+    public void setGear(int gear)
+    {
         this.transmission.setGear(gear);
     }
 
@@ -1398,7 +1502,8 @@ public class Drive {
      * @param gear    0 is the lowest, increases.
      * @param percent value from 0.0 to 1.0
      */
-    public void setGearPercentage(int gear, double percent) {
+    public void setGearPercentage(int gear, double percent)
+    {
         this.transmission.setGearPercentage(gear, percent);
     }
 
@@ -1408,7 +1513,8 @@ public class Drive {
      * @return - this class is Gyro
      */
 
-    public Gyro setGyro(GyroBase newGyro) {
+    public Gyro setGyro(GyroBase newGyro)
+    {
         return (this.gyro = newGyro);
     }
 
@@ -1418,7 +1524,8 @@ public class Drive {
      *
      * @param value between 0.0 and 1.0
      */
-    public void setJoystickDeadband(double value) {
+    public void setJoystickDeadband(double value)
+    {
         this.transmission.setJoystickDeadband(value);
     }
 
@@ -1428,7 +1535,8 @@ public class Drive {
      *
      * @return updated number of brake iterations that has been specified
      */
-    public int setMaxBrakeIterations(int newMaxBrakeIterations) {
+    public int setMaxBrakeIterations(int newMaxBrakeIterations)
+    {
         this.maxBrakeIterations = newMaxBrakeIterations;
         return this.getMaxBrakeIterations();
     }
@@ -1439,7 +1547,8 @@ public class Drive {
      * @param scalar A scalar, in percent per degrees added to the rotation of the
      *               mecanum code.
      */
-    public void setStrafeStraightScalar(double scalar) {
+    public void setStrafeStraightScalar(double scalar)
+    {
         // sets strafe straight scalar to thr input
         this.strafeStraightScalar = scalar;
     }
@@ -1451,7 +1560,8 @@ public class Drive {
      * @param degrees How many degrees to subtract from during the turnDegrees
      *                method.
      */
-    public void setTurnDegreesFudgeFactor(double degrees) {
+    public void setTurnDegreesFudgeFactor(double degrees)
+    {
         this.turnDegreesFudgeFactor = degrees;
     }
 
@@ -1460,7 +1570,8 @@ public class Drive {
      *
      * @param radius Distance, in inches.
      */
-    public void setTurningRadius(double radius) {
+    public void setTurningRadius(double radius)
+    {
         turningRadius = radius;
     }
 
@@ -1472,14 +1583,16 @@ public class Drive {
      * @param upShiftButton   Button that controls the up shifting
      * @param downShiftButton Button that controls the down shifting
      */
-    public void shiftGears(boolean upShiftButton, boolean downShiftButton) {
+    public void shiftGears(boolean upShiftButton, boolean downShiftButton)
+    {
         this.transmission.shiftGears(upShiftButton, downShiftButton);
     }
 
     /**
      * Set all motor percentages to 0.
      */
-    public void stop() {
+    public void stop()
+    {
         this.transmission.stop();
     }
 
@@ -1495,25 +1608,28 @@ public class Drive {
      *                         forwards, -90 for left and 90 for right.
      * @return Whether or not we have finished strafing.
      */
-    public boolean strafeStraightInches(int inches, double speed, int directionDegrees) {
+    public boolean strafeStraightInches(int inches, double speed, int directionDegrees)
+    {
         // Wrong transmission type! we cant strafe if we dont have the right
         // transmission
         if (this.transmissionType != TransmissionType.OMNI_DIR)
             return true;
 
         // Reset the gyro and encoders on first start only
-        if (strafeStraightInchesInit) {
+        if (strafeStraightInchesInit)
+            {
             this.resetEncoders();
             this.gyro.reset();
             strafeStraightInchesInit = false;
-        }
+            }
 
         // If we have traveled past the distance requested, then stop.
-        if (this.getEncoderDistanceAverage(MotorPosition.ALL) > inches) {
+        if (this.getEncoderDistanceAverage(MotorPosition.ALL) > inches)
+            {
             strafeStraightInchesInit = true;
             this.transmission.stop();
             return true;
-        }
+            }
         // Run the rotation in a proportional loop based on the gyro.
         this.transmission.driveRaw(speed, Math.toRadians(directionDegrees), -(gyro.getAngle() * strafeStraightScalar));
 
@@ -1533,32 +1649,38 @@ public class Drive {
      * @return Whether or not the robot has finished turning
      */
     @Deprecated
-    public boolean turnDegrees(int angle, double speed) {
+    public boolean turnDegrees(int angle, double speed)
+    {
         // Only reset the encoders on the method's first start.
-        if (turnDegreesInit == true) {
+        if (turnDegreesInit == true)
+            {
             this.resetEncoders();
             turnDegreesInit = false;
-        }
+            }
 
         // Tests whether any encoder has driven the arc-length of the angle
         // (angle x radius)// took out +15 on Nov 4
 
         // Only check 4 encoders if we have a four wheel drive system
         // if two wheel drive checks, one of each side(called rear of that side)
-        if (this.getEncoderDistanceAverage(MotorPosition.ALL) > Math.toRadians(Math.abs(angle)) * turningRadius) {
+        if (this.getEncoderDistanceAverage(MotorPosition.ALL) > Math.toRadians(Math.abs(angle)) * turningRadius)
+            {
             // We have finished turning!
             this.transmission.stop();
             turnDegreesInit = true;
             return true;
-        }
+            }
 
         // Change which way the robot turns based on whether the angle is
         // positive or negative
-        if (angle < 0) {
+        if (angle < 0)
+            {
             this.transmission.driveRaw(-speed, speed);
-        } else {
+            }
+        else
+            {
             this.transmission.driveRaw(speed, -speed);
-        }
+            }
 
         return false;
     }
@@ -1576,30 +1698,35 @@ public class Drive {
      * @return Whether or not the robot has finished turning.
      */
     @Deprecated
-    public boolean turnDegrees2Stage(int degrees, double power) {
-        if (turnDegrees2StageInit == true) {
+    public boolean turnDegrees2Stage(int degrees, double power)
+    {
+        if (turnDegrees2StageInit == true)
+            {
             this.gyro.reset();
             turnDegrees2StageInit = false;
-        }
+            }
 
         // If we have turned (degrees) at all (left or right, just in case),
         // return
         // true.
-        if (Math.abs(gyro.getAngle()) > Math.abs(degrees) - turnDegreesFudgeFactor) {
+        if (Math.abs(gyro.getAngle()) > Math.abs(degrees) - turnDegreesFudgeFactor)
+            {
             this.transmission.stop();
             turnDegrees2StageInit = true;
             return true;
-        }
+            }
 
         // 2nd stage run slow
-        if (Math.abs(this.gyro.getAngle()) > Math.abs(degrees) - turnDegreesTriggerStage) {
+        if (Math.abs(this.gyro.getAngle()) > Math.abs(degrees) - turnDegreesTriggerStage)
+            {
             this.transmission.driveRaw(Math.signum(degrees) * turnDegrees2ndStagePower,
                     -Math.signum(degrees) * turnDegrees2ndStagePower);
-        }
+            }
         // 1st stage run (power)
-        else {
+        else
+            {
             this.transmission.driveRaw(Math.signum(degrees) * power, -Math.signum(degrees) * power);
-        }
+            }
 
         return false;
     }
@@ -1657,47 +1784,58 @@ public class Drive {
      * @return Whether or not the robot has finished turning the requested number of
      *         degrees, used in a state machine.
      */
-    public boolean turnDegrees(int degrees, double speed, double acceleration, boolean usingGyro) {
+    public boolean turnDegrees(int degrees, double speed, double acceleration, boolean usingGyro)
+    {
         // Only on initialization, reset the sensor.
-        if (turnDegreesInit == true) {
-            if (usingGyro) {
+        if (turnDegreesInit == true)
+            {
+            if (usingGyro)
+                {
                 System.out.println("using the gryo");
                 this.gyro.reset();
                 turnDegreesInit = false;
-            } else {
+                }
+            else
+                {
                 // System.out.print("not gyro");
                 this.resetEncoders();
 
                 turnDegreesInit = false;
+                }
             }
-        }
 
         // If either sensor has reached the target position, then stop motors
         // and return true.
         // using Gyro code
         // System.out.println("gyro: " + this.gyro.getAngle());
-        if (usingGyro && Math.abs(this.gyro.getAngle()) > Math.abs(degrees) - turnDegreesFudgeFactor) {
+        if (usingGyro && Math.abs(this.gyro.getAngle()) > Math.abs(degrees) - turnDegreesFudgeFactor)
+            {
             System.out.println("We have turned far enough");
             this.transmission.stop();
             turnDegreesInit = true;
             return true;
             // not using gyro
-        } else if (!usingGyro && this.getEncoderDistanceAverage(MotorPosition.ALL) > degreesToEncoderInches(
-                Math.abs(degrees) - turnDegreesFudgeFactor, false)) {
+            }
+        else if (!usingGyro && this.getEncoderDistanceAverage(MotorPosition.ALL) > degreesToEncoderInches(
+                Math.abs(degrees) - turnDegreesFudgeFactor, false))
+            {
             System.out.println(
                     "encoder required: " + degreesToEncoderInches(Math.abs(degrees) - turnDegreesFudgeFactor, false));
 
             this.transmission.stop();
             turnDegreesInit = true;
             return true;
-        }
+            }
 
         // If degrees is positive, then turn left. If not, then turn right.
-        if (degrees > 0) {
+        if (degrees > 0)
+            {
             this.accelerateProportionaly(speed, -speed, acceleration);
-        } else {
+            }
+        else
+            {
             this.accelerateProportionaly(-speed, speed, acceleration);
-        }
+            }
         return false;
     }
 
@@ -1714,12 +1852,13 @@ public class Drive {
      * @author Ryan McGee
      *
      */
-    public static enum BrakeType {
+    public static enum BrakeType
+        {
         /** Braking after driving in a direction */
         AFTER_DRIVE,
         /** Braking after turning */
         AFTER_TURN
-    }
+        }
 
     /**
      * Checks if the value input is in between -1 and 1 to keep it in range for
@@ -1728,7 +1867,8 @@ public class Drive {
      * @param val The input value
      * @return The correctly ranged value
      */
-    private double inRange(double val, double lowerVal, double upperVal) {
+    private double inRange(double val, double lowerVal, double upperVal)
+    {
         if (val > upperVal)
             return upperVal;
         else if (val < lowerVal)
@@ -1737,9 +1877,10 @@ public class Drive {
         return val;
     } // end inRange ()
 
-    public static enum debugType {
+    public static enum debugType
+        {
         DEBUG_NONE, DEBUG_ALL, DEBUG_BRAKING
-    };
+        };
 
     private KilroyEncoder[] encoders;
 
@@ -1841,4 +1982,4 @@ public class Drive {
     protected static final int INIT_TIMEOUT = 300;// Milliseconds until the
                                                   // initialization should
                                                   // reset.
-}
+    }
