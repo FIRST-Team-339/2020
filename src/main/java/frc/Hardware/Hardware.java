@@ -31,7 +31,7 @@ import frc.vision.*;
 import frc.Utils.*;
 import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
-import frc.Utils.BallCounter;
+
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
@@ -316,7 +316,6 @@ public class Hardware
     // -------------------------------------------------------------
 
     public static SpeedController hoodAdjustmentMotor = null;
-    public static KilroyEncoder hoodAdjustmentMotorEncoder = null;
 
     // **********************************************************
     // DIGITAL I/O
@@ -451,8 +450,8 @@ public class Hardware
     public static HoodControl hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
 
     public static BallCounter ballcounter = new BallCounter(ballButtonTimer);
-
     public static ColorWheel colorWheel = new ColorWheel();
+
     // ------------------------------------------
     // Vision stuff
     // ----------------------------

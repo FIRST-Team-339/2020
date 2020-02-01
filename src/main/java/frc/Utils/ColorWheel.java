@@ -31,9 +31,9 @@ import frc.Hardware.Hardware;
 public class ColorWheel
     {
 
-    double speed = .3;
+    double speed = .2;
 
-    //Gets speed of wheelSpinerMotor
+    //Gets speed of wheelSpinnerMotor
     public double getSpeed()
     {
         return speed;
@@ -93,20 +93,22 @@ public class ColorWheel
         // Resets wheelSpinnerEncoder
         if (driveStraightInchesInit == true)
             {
-            Hardware.intakeMotorEncoder.reset();
+            Hardware.launcherMotorEncoder.reset();
             driveStraightInchesInit = false;
             }
 
         // Check all encoders to see if they've reached the distance
-        if (Hardware.intakeMotorEncoder.getDistance() > distance)
+        if (Hardware.launcherMotorEncoder.getDistance() > distance)
             {
-            Hardware.intakeMotor.set(0);
+            Hardware.launcherMotorGroup.set(0);
             driveStraightInchesInit = true;
             return true;
             }
-
-        // Spin motor until specified distance has been reached
-        Hardware.intakeMotor.set(speed);
+        else
+            {
+            // Spin motor until specified distance has been reached
+            Hardware.launcherMotorGroup.set(speed);
+            }
 
         return false;
     }
@@ -164,20 +166,22 @@ public class ColorWheel
         // Resets wheelSpinnerEncoder
         if (driveStraightInchesInit == true)
             {
-            Hardware.wheelSpinnerEncoder.reset();
+            Hardware.launcherMotorEncoder.reset();
             driveStraightInchesInit = false;
             }
 
-        // Check to see if the color sensor sees the color
+        // Check to see if the color under the field sensor is the same as the FMS color data
         if (colorString == spinColor)
             {
-            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.launcherMotorGroup.set(0);
             driveStraightInchesInit = true;
             return true;
             }
-
-        // Spin the motor until we reach spinColor
-        Hardware.wheelSpinnerMotor.set(speed);
+        else
+            {
+            // Spin motor until specified distance has been reached
+            Hardware.launcherMotorGroup.set(speed);
+            }
 
         return false;
     }

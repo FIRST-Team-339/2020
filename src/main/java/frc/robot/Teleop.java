@@ -98,64 +98,32 @@ public class Teleop
 
     public static void periodic()
     {
-        System.out.println("Distance is " + Hardware.intakeMotorEncoder.getDistance());
+        //System.out.println("Distance is " + Hardware.launcherMotorEncoder.getDistance());
+        // System.out.println("RPM is " + Hardware.launcherMotorEncoder.getRPM());
+        // System.out.println("Speed is " + Hardware.colorWheel.getSpeed());
         //  System.out.println("LE: " + Hardware.leftDriveEncoder.get());
         //  System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         //SmartDashboard.putNumber("revolutions per second", Hardware.launcherMotorEncoder.getRPM());
-
-        //Hardware.launcherMotorEncoder.setRPM(100, Hardware.launcherMotorGroup);
 
         // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
         // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.get());
+        // SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.get());
 
         Hardware.storage.storageControlState();
 
+        //Color Wheel testing code
         if (Hardware.rightDriver.getRawButton(3) == true)
             {
             testBoolean1 = true;
             }
         if (testBoolean1 == true)
             {
-            Hardware.colorWheel.spinControlPanel(25);
-            Hardware.colorWheel.setSpeed(.2);
-            testBoolean1 = false;
-            }
-        if (Hardware.rightDriver.getRawButton(4) == true)
-            {
-            testBoolean2 = true;
-            }
-        if (testBoolean2 == true)
-            {
-            Hardware.colorWheel.spinControlPanel(25);
-            Hardware.colorWheel.setSpeed(.4);
-            testBoolean2 = false;
-            }
-
-        if (Hardware.rightOperator.getRawButton(6) == true)
-            {
-            testBoolean1 = true;
-            }
-        if (Hardware.leftOperator.getRawButton(6) == true)
-            {
-            testBoolean2 = true;
-            }
-        if (testBoolean1 == true)
-            {
-            if (Hardware.visionDriving.driveToTarget(120, true))
+            if (Hardware.colorWheel.spinControlPanel(50))
                 {
                 testBoolean1 = false;
-                }
-            }
-        else if (testBoolean2 == true)
-            {
-            if (Hardware.launcher.shootBallsAuto(true))
-                {
-                Hardware.launcher.unchargeShooter();
-                testBoolean2 = false;
                 }
             }
         else
