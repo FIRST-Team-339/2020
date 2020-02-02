@@ -107,7 +107,7 @@ public class Hardware
         }
         };
 
-    public static Identifier robotIdentity = Identifier.TestBoard;
+    public static Identifier robotIdentity = Identifier.PrevYear;
 
     /**********************************************
      * initializePrevYear() function initializes all Hardware
@@ -196,8 +196,8 @@ public class Hardware
         leftDriveGroup = new SpeedControllerGroup(leftFrontMotor, leftRearMotor);
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor, rightRearMotor);
 
-        launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
-        launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
+        launcherMotor1 = new WPI_TalonSRX(26);
+        //launcherMotor2 = new WPI_TalonSRX(27);
 
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
 
@@ -259,6 +259,7 @@ public class Hardware
         CameraServer.getInstance().removeServer("serve_usb1");
 
         Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
+
     } // end initizliePrevYear()
 
     public static void initializeTestBoard()
@@ -344,6 +345,8 @@ public class Hardware
         lifDoubleSolenoid = new DoubleSolenoid(2, 3);
 
         gyro = new KilroySPIGyro(true);
+
+        storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
     }
     // **********************************************************
     // CAN DEVICES
@@ -532,8 +535,7 @@ public class Hardware
 
     public static Launcher launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
 
-    public static StorageControl storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL,
-            conveyorMotorGroup);
+    public static StorageControl storage = null;
 
     public static HoodControl hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
 
