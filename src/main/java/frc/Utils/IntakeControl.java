@@ -72,6 +72,7 @@ public class IntakeControl
     {
         if (getDeployed())
             {
+            Hardware.storage.intakeStorageControl();
             if (Hardware.ballcounter.getBallCount() <= 5 || overrideButton.get())
                 {
                 if (intakeButton.get())

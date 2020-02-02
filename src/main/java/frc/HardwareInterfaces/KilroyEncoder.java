@@ -273,44 +273,35 @@ public class KilroyEncoder implements PIDSource
     private static Timer encoderTimer = new Timer();
 
     /**
-     * This returns the revations
+     * This returns the revations. Important note: this was written mid-build season
+     * so ididnt have time to do anything with controller other than the sparkmax
      *
      * @return the rotations per minute
      */
     public double getRPM()
     {
-        if (firstRun)
-            {
-            encoderTimer.start();
-            firstRun = false;
-            }
-        if (/* encoderTimer.get() > .05 */true)
-            {
 
-            encoderTimer.reset();
-
-            lastRevs = (Math.abs((this.getRaw() - lastTicks) / this.getTicksPerRevolution())) * 900;
-            lastTicks = this.getRaw();
-            // return lastRevs;
-            return canEncoder.getEncoder().getVelocity();// TODO test
-
-            }
-        // SmartDashboard.putNumber("raw: ", this.getRaw());
-        SmartDashboard.putNumber("last ticks", lastTicks);
-        // SmartDashboard.putNumber("ticks per revolution: ",
-        // this.getTicksPerRevolution());
-        // return lastRevs;
-        return canEncoder.getEncoder().getVelocity();
+        return Math.abs(canEncoder.getEncoder().getVelocity());
 
     }
 
-    double speed = 0;
+    public double speed = 0;
 
+    /**
+     * sets the RPM of a desired motor within a dead band
+     *
+     * @param RPM desired RPM
+     * @param motor the Speedcontroller object of the motor to set RPM too.
+     * @return at RPM
+     */
     public boolean setRPM(double RPM, SpeedController motor)
     {
+        //get offness
         double offness = Math.abs(RPM - this.getRPM());
+
         if (this.getRPM() < RPM - (RPM * DEADAND_SCALE_RPM))
             {
+            //p-loop to set speed
             speed = speed + Math.abs(offness * RPM_PROP);
             }
         if (this.getRPM() > RPM + (RPM * DEADAND_SCALE_RPM))
@@ -322,12 +313,34 @@ public class KilroyEncoder implements PIDSource
             {
             return true;
             }
-        if (Math.abs(speed) > .9)
-            {
-            speed = .8;
-            }
         SmartDashboard.putNumber("speed", speed);
         motor.set(speed);
+        return false;
+
+    }
+
+    double targetRPM = 0;
+
+    /**
+    * safely powers down a motor. This is useful for motor gong a high rpms such as shooter mechanisms.
+    *
+    * @param motor
+    * @return powered down
+    */
+    public boolean powerDownRPM(SpeedController motor)
+    {
+        double currentRPM = this.getRPM();
+        targetRPM = .5 * currentRPM;
+        if (this.getRPM() < targetRPM)
+            {
+            targetRPM = .5 * currentRPM;
+            }
+        if (this.getRPM() < 100)
+            {
+            motor.set(0);
+            return true;
+            }
+        this.setRPM(targetRPM, motor);
         return false;
     }
 
@@ -575,7 +588,7 @@ public class KilroyEncoder implements PIDSource
 
     private PIDSourceType sourceType = PIDSourceType.kDisplacement;
 
-    private static final double DEADAND_SCALE_RPM = .1;
+    private static final double DEADAND_SCALE_RPM = .02;
 
     private static final double RPM_PROP = .000005;
 

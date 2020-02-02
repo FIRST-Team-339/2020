@@ -197,11 +197,12 @@ public class Hardware
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor, rightRearMotor);
 
         launcherMotor1 = new WPI_TalonSRX(26);
-        //launcherMotor2 = new WPI_TalonSRX(27);
+        //launcherMotor2 = new WPI_TalonSRX(27); not on 2019
 
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
 
         conveyorMotor1 = new WPI_TalonSRX(22);
+        //no conveyorMotor2 on 2019
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
 
@@ -341,8 +342,8 @@ public class Hardware
         // **********************************************************
         // PNEUMATIC DEVICES
         // **********************************************************
-        iDoubleSolenoid = new DoubleSolenoid(4, 5);
-        lifDoubleSolenoid = new DoubleSolenoid(2, 3);
+        intakeSolenoid = new DoubleSolenoid(4, 5);
+        liftSolenoid = new DoubleSolenoid(2, 3);
 
         gyro = new KilroySPIGyro(true);
 
@@ -437,8 +438,8 @@ public class Hardware
     // **********************************************************
     // PNEUMATIC DEVICES
     // **********************************************************
-    public static DoubleSolenoid iDoubleSolenoid = null;
-    public static DoubleSolenoid lifDoubleSolenoid = null;
+    public static DoubleSolenoid intakeSolenoid = null;
+    public static DoubleSolenoid liftSolenoid = null;
     public static Compressor compressor = null;
     // **********************************************************
     // roboRIO CONNECTIONS CLASSES
@@ -470,8 +471,6 @@ public class Hardware
 
     public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
-    public static JoystickButton cancelAuto = new JoystickButton(Hardware.rightDriver, 5);
-
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
 
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
@@ -479,6 +478,10 @@ public class Hardware
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
     public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
+
+    public static JoystickButton shootCloseButton = new JoystickButton(Hardware.rightOperator, 4);
+
+    public static JoystickButton shootFarButton = new JoystickButton(Hardware.rightOperator, 3);
 
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
@@ -495,6 +498,8 @@ public class Hardware
     public static JoystickButton addBall = new JoystickButton(Hardware.leftOperator, 9);
 
     public static JoystickButton toggleIntake = new JoystickButton(Hardware.leftOperator, 3);
+
+    public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
@@ -527,7 +532,7 @@ public class Hardware
     public static TankTransmission transmission = null;
 
     // launcher stuff
-    public static IntakeControl intake = new IntakeControl(launchTimer, iDoubleSolenoid, intakeMotor);
+    public static IntakeControl intake = new IntakeControl(launchTimer, intakeSolenoid, intakeMotor);
 
     public static Launcher launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
 

@@ -148,7 +148,8 @@ public class Autonomous
         // printing out utilized states:
 
         // Cancel if the "cancelAuto" button is pressed
-        if (Hardware.cancelAuto.get() == true)
+        //TODO: Craig, fix me!
+        //if (Hardware.cancelAuto.get() == true)
             {
             autoState = State.FINISH;
             }
@@ -435,7 +436,7 @@ public class Autonomous
                 break;
 
             case PICKUP_TRENCH:
-                Hardware.iDoubleSolenoid.set(Value.kReverse);
+                Hardware.intakeSolenoid.set(Value.kReverse);
                 // picking up balls
                 // only applicable if Align Trench was previously stated
                 if (pickupTrench())
