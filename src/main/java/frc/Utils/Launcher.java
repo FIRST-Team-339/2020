@@ -38,7 +38,7 @@ public class Launcher
      * desire. whether it be the target or pesky those builders who have yet to
      * finish the actual launcher
      */
-    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
+    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, boolean isClose)
     {
         // System.out.println("shootState: " + shootState);
         switch (shootState)
@@ -51,7 +51,7 @@ public class Launcher
                 break;
             case CHARGE:
 
-                if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                if (prepareToShoot(isClose) && Hardware.storage.prepareToShoot())
                     {
                     shootState = ShootState.LAUNCH;
                     }
@@ -77,6 +77,13 @@ public class Launcher
 
     public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
 
+    /**
+     *
+     * shoots all of the balls that are in storage in auto. Calls storage control to move the conveyor belt to load balls and checks that the RPM is at the right speed
+     *
+     * @param isClose if we want to shoot at the tip of triangle(roughly 40 inches)
+     * @return shot all of the balls
+     */
     public boolean shootBallsAuto(boolean isClose)
     {
         System.out.println("shootStateAuto: " + shootStateAuto);
@@ -85,8 +92,8 @@ public class Launcher
             switch (shootStateAuto)
                 {
                 case CHARGE:
-
-                    if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                    //sets the RPM and makes sure that the conveyor is correct
+                    if (prepareToShoot(isClose) && Hardware.storage.prepareToShoot())
                         {
                         shootState = ShootState.LAUNCH;
                         }
@@ -118,7 +125,6 @@ public class Launcher
         return false;
     }
 
-    private double speedAdjustment = 0;
     public boolean spedUp = false;
 
     //speed in inches per second
@@ -126,11 +132,28 @@ public class Launcher
     //estimated RPM
     //short = 2300RPM
     //long 5300RPM
-    public boolean prepareToShoot(double speed)
+    /**
+     * prepares the launcher motor to shoot by settingthe RPM to either the  close value or the far value
+     * @param close
+     * @return
+     */
+    public boolean prepareToShoot(boolean isClose)
     {
-        if (Hardware.launcherMotorEncoder.setRPM(speed, Hardware.launcherMotorGroup))
+        if (isClose)
             {
-            return true;
+            if (Hardware.launcherMotorEncoder.setRPM(
+                    RPM_CLOSE + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
+                {
+                return true;
+                }
+            }
+        else
+            {
+            if (Hardware.launcherMotorEncoder.setRPM(
+                    RPM_FAR + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
+                {
+                return true;
+                }
             }
         return false;
     }
@@ -141,11 +164,14 @@ public class Launcher
         return false;
     }
 
-    public int getRPMPerDistance(int distance)
+    public boolean getDistance(double distance)
     {
-        //TDO
-        return 0;
+        return false;
     }
 
     public boolean launching = false;
+    private static final double RPM_FAR = 3500;
+    private static final double RPM_CLOSE = 2800;
+    private static final double DRIVER_CHANGE_ALLOWANCE = 100;
+
     }
