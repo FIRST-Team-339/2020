@@ -118,7 +118,6 @@ public class Launcher
         return false;
     }
 
-    private double speedAdjustment = 0;
     public boolean spedUp = false;
 
     //speed in inches per second
@@ -130,14 +129,16 @@ public class Launcher
     {
         if (close)
             {
-            if (Hardware.launcherMotorEncoder.setRPM(2800, Hardware.launcherMotorGroup))
+            if (Hardware.launcherMotorEncoder.setRPM(
+                    RPM_CLOSE + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
                 {
                 return true;
                 }
             }
         else
             {
-            if (Hardware.launcherMotorEncoder.setRPM(3500, Hardware.launcherMotorGroup))
+            if (Hardware.launcherMotorEncoder.setRPM(
+                    RPM_FAR + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
                 {
                 return true;
                 }
@@ -157,4 +158,8 @@ public class Launcher
     }
 
     public boolean launching = false;
+    private static final double RPM_FAR = 3500;
+    private static final double RPM_CLOSE = 2800;
+    private static final double DRIVER_CHANGE_ALLOWANCE = 100;
+
     }

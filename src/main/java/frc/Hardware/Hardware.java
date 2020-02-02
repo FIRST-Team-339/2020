@@ -499,6 +499,8 @@ public class Hardware
     public static JoystickButton addBall = new JoystickButton(Hardware.leftOperator, 9);
 
     public static JoystickButton toggleIntake = new JoystickButton(Hardware.leftOperator, 3);
+
+    public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************

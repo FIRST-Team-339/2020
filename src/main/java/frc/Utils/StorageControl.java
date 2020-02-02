@@ -1,7 +1,9 @@
 package frc.Utils;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
@@ -47,7 +49,11 @@ public class StorageControl
                 state = ControlState.PASSIVE;
                 break;
             case PASSIVE:
-                Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
+                if (!override)
+                    {
+                    Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
+                    }
+
                 if (this.intakeRL.get() && prevRL == false)
                     {
                     prevRL = true;
@@ -124,6 +130,29 @@ public class StorageControl
     {
         System.out.println("conveyor down");
         Hardware.conveyorMotorGroup.set(DOWN_SPEED);
+    }
+
+    private boolean override = false;
+
+    public void overrideConveyor(Joystick joystick, JoystickButton button)
+    {
+        if (button.get())
+            {
+            if (joystick.getY() > .3)
+                {
+                override = true;
+                conveyorUp();
+                }
+            else if (joystick.getY() < .3)
+                {
+                override = true;
+                conveyorDown();
+                }
+            else
+                {
+                override = false;
+                }
+            }
     }
 
     private enum ShootState

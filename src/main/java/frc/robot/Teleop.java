@@ -135,6 +135,7 @@ public class Teleop
             {
             shootClose = false;
             }
+        Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
         Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
 

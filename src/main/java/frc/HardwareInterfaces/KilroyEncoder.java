@@ -285,11 +285,12 @@ public class KilroyEncoder implements PIDSource
 
     }
 
-    double speed = 0;
+    public double speed = 0;
 
     public boolean setRPM(double RPM, SpeedController motor)
     {
         double offness = Math.abs(RPM - this.getRPM());
+
         if (this.getRPM() < RPM - (RPM * DEADAND_SCALE_RPM))
             {
             speed = speed + Math.abs(offness * RPM_PROP);
