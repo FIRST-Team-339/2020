@@ -157,8 +157,6 @@ public class Robot extends TimedRobot
         // setup
         // ---------------------------------------
         Hardware.launcherMotorGroup.set(0);
-        Hardware.launcherMotorEncoder.setRPM(0, Hardware.launcherMotorGroup);
-
         Hardware.launcherMotorEncoder.speed = 0;
 
         Hardware.leftDriveGroup.set(0);
