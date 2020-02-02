@@ -129,6 +129,7 @@ public class Teleop
             {
             teleopDrive();
             }
+        SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
 
         // ================= OPERATOR CONTROLS ================
 

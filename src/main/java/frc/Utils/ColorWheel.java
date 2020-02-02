@@ -31,7 +31,8 @@ import frc.Hardware.Hardware;
 public class ColorWheel
     {
 
-    double speed = .2;
+    double speed = .2; //-1 through 1
+    double range = 2.0; //inches
 
     //Gets speed of wheelSpinnerMotor
     public double getSpeed()
@@ -43,6 +44,22 @@ public class ColorWheel
     public void setSpeed(double s)
     {
         speed = s;
+    }
+
+    //Takes the range of the proximity sensor 0 (far) - through 2047 (close) and decides if the sensor is in range or out of range.
+    //One inch is 519.938
+    // public boolean inRange()
+    // {
+    //     //Checks to see if the sensor is within two inches of the color wheel
+    //    if (Hardware.colorSensor.getProximity() <= 1039.876)
+    //         {
+
+    //    }
+    // }
+
+    public void setRange(double r)
+    {
+        range = r;
     }
 
     /**
