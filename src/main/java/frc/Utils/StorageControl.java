@@ -48,14 +48,14 @@ public class StorageControl
                 break;
             case PASSIVE:
                 Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
-
+                intakeStorageControl();
                 if (this.intakeRL.get() && prevRL == false)
                     {
                     prevRL = true;
                     if (Hardware.intake.intaking)
                         {
                         System.out.println("adding");
-                        Hardware.ballcounter.addBall();
+
                         }
                     else if (Hardware.intake.outtaking)
                         {
@@ -79,6 +79,47 @@ public class StorageControl
                 state = ControlState.PASSIVE;
                 break;
             }
+    }
+
+    public boolean intakeStorageControl()
+    {
+        if (this.intakeRL.get() && prevRL == false)
+            {
+            prevRL = true;
+            if (Hardware.intake.intaking)
+                {
+                System.out.println("adding");
+                Hardware.ballcounter.addBall();
+                }
+            else if (Hardware.intake.outtaking)
+                {
+                System.out.println("subtracting");
+                Hardware.ballcounter.subtractBall();
+                }
+            }
+        if (!this.intakeRL.get())
+            {
+
+            if (!this.lowerRL.get())
+                {
+                state = ControlState.DOWN;
+                }
+            else
+                {
+                state = ControlState.PASSIVE;
+                }
+
+            }
+        else
+            {
+
+            if (!this.upperRL.get())
+                {
+                state = ControlState.UP;
+                }
+            }
+
+        return false;
     }
 
     public void conveyorUp()

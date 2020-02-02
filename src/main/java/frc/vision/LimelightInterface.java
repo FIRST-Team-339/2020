@@ -143,12 +143,14 @@ public class LimelightInterface
         return this.x;
 
     }
-/**
- * if the vision has targets
- * @return boolean
- */
-    public boolean getHasTargets(){
-    return this.hasTargets;
+
+    /**
+     * if the vision has targets
+     * @return boolean
+     */
+    public boolean getHasTargets()
+    {
+        return this.hasTargets;
     }
 
     /**

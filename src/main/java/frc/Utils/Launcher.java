@@ -38,7 +38,7 @@ public class Launcher
      * desire. whether it be the target or pesky those builders who have yet to
      * finish the actual launcher
      */
-    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
+    public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton, boolean isClose)
     {
         // System.out.println("shootState: " + shootState);
         switch (shootState)
@@ -51,7 +51,7 @@ public class Launcher
                 break;
             case CHARGE:
 
-                if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                if (prepareToShoot(isClose) && Hardware.storage.prepareToShoot())
                     {
                     shootState = ShootState.LAUNCH;
                     }
@@ -86,7 +86,7 @@ public class Launcher
                 {
                 case CHARGE:
 
-                    if (prepareToShoot(5) && Hardware.storage.prepareToShoot())
+                    if (prepareToShoot(isClose) && Hardware.storage.prepareToShoot())
                         {
                         shootState = ShootState.LAUNCH;
                         }
@@ -126,11 +126,21 @@ public class Launcher
     //estimated RPM
     //short = 2300RPM
     //long 5300RPM
-    public boolean prepareToShoot(double speed)
+    public boolean prepareToShoot(boolean close)
     {
-        if (Hardware.launcherMotorEncoder.setRPM(speed, Hardware.launcherMotorGroup))
+        if (close)
             {
-            return true;
+            if (Hardware.launcherMotorEncoder.setRPM(2800, Hardware.launcherMotorGroup))
+                {
+                return true;
+                }
+            }
+        else
+            {
+            if (Hardware.launcherMotorEncoder.setRPM(3500, Hardware.launcherMotorGroup))
+                {
+                return true;
+                }
             }
         return false;
     }
@@ -141,10 +151,9 @@ public class Launcher
         return false;
     }
 
-    public int getRPMPerDistance(int distance)
+    public boolean getDistance(double distance)
     {
-        //TDO
-        return 0;
+        return false;
     }
 
     public boolean launching = false;

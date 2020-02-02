@@ -477,6 +477,10 @@ public class Hardware
 
     public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
 
+    public static JoystickButton shootCloseButton = new JoystickButton(Hardware.rightOperator, 4);
+
+    public static JoystickButton shootFarButton = new JoystickButton(Hardware.rightOperator, 3);
+
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);

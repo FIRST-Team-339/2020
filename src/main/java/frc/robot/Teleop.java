@@ -97,21 +97,14 @@ public class Teleop
 
     public static boolean testBoolean2 = false;
 
+    public static boolean shootClose = false;
+
     public static void periodic()
     {
-        //System.out.println("Distance is " + Hardware.launcherMotorEncoder.getDistance());
-        // System.out.println("RPM is " + Hardware.launcherMotorEncoder.getRPM());
-        // System.out.println("Speed is " + Hardware.colorWheel.getSpeed());
-        //  System.out.println("LE: " + Hardware.leftDriveEncoder.get());
-        //  System.out.println("RE: " + Hardware.rightDriveEncoder.get());
-        //SmartDashboard.putNumber("revolutions per second", Hardware.launcherMotorEncoder.getRPM());
 
-        // System.out.println("LE: " + Hardware.leftDriveEncoder.get());
-        // System.out.println("RE: " + Hardware.rightDriveEncoder.get());
         // =============== AUTOMATED SUBSYSTEMS ===============
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        // SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.get());
 
         Hardware.storage.storageControlState();
 
@@ -133,15 +126,25 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
-        // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        if (Hardware.shootCloseButton.get())
+            {
+            shootClose = true;
+            }
+        if (Hardware.shootFarButton.get())
+            {
+            shootClose = false;
+            }
 
-        // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
 
-        // Hardware.ballcounter.subtractBall(Hardware.substractBall);
-        // Hardware.ballcounter.addBall(Hardware.addBall);
-        // Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+
+        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+
+        Hardware.ballcounter.subtractBall(Hardware.substractBall);
+        Hardware.ballcounter.addBall(Hardware.addBall);
+        Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
         individualTest();
         //teleopDrive();
@@ -385,7 +388,7 @@ public class Teleop
         Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
         Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
         Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());*/
-        Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
+        // Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
         /*Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
         Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
         Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
