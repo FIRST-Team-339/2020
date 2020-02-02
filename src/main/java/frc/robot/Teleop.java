@@ -384,12 +384,12 @@ public class Teleop
         Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
         Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
         Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
-        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());*/
+        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get()); //not on 2019
         Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
-        /*Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
-        Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
-        Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
-        Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
+        //Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get()); //not on 2019
+        Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());*/
+        //TODO Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
+        /*Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
         
         // -------- SUBSYSTEMS ---------
         
