@@ -356,6 +356,7 @@ public class Teleop
         
         // -------- JOYSTICKS ----------
         // Left Driver
+        
         Hardware.telemetry.printToConsole("Left Driver X: " + Hardware.leftDriver.getX());
         Hardware.telemetry.printToConsole("Left Driver Y: " + Hardware.leftDriver.getY());
         Hardware.telemetry.printToConsole("Left Driver Z: " + Hardware.leftDriver.getZ());
