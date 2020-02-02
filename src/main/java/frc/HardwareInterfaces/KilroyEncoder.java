@@ -287,12 +287,21 @@ public class KilroyEncoder implements PIDSource
 
     public double speed = 0;
 
+    /**
+     * sets the RPM of a desired motor within a dead band
+     *
+     * @param RPM desired RPM
+     * @param motor the Speedcontroller object of the motor to set RPM too.
+     * @return at RPM
+     */
     public boolean setRPM(double RPM, SpeedController motor)
     {
+        //get offness
         double offness = Math.abs(RPM - this.getRPM());
 
         if (this.getRPM() < RPM - (RPM * DEADAND_SCALE_RPM))
             {
+            //p-loop to set speed
             speed = speed + Math.abs(offness * RPM_PROP);
             }
         if (this.getRPM() > RPM + (RPM * DEADAND_SCALE_RPM))
@@ -313,8 +322,11 @@ public class KilroyEncoder implements PIDSource
     double targetRPM = 0;
 
     /**
-     * //TODO commnet
-     */
+    * safely powers down a motor. This is useful for motor gong a high rpms such as shooter mechanisms.
+    *
+    * @param motor
+    * @return powered down
+    */
     public boolean powerDownRPM(SpeedController motor)
     {
         double currentRPM = this.getRPM();

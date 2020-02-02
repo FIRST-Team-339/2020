@@ -77,6 +77,13 @@ public class Launcher
 
     public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
 
+    /**
+     *
+     * shoots all of the balls that are in storage in auto. Calls storage control to move the conveyor belt to load balls and checks that the RPM is at the right speed
+     *
+     * @param isClose if we want to shoot at the tip of triangle(roughly 40 inches)
+     * @return shot all of the balls
+     */
     public boolean shootBallsAuto(boolean isClose)
     {
         System.out.println("shootStateAuto: " + shootStateAuto);
@@ -85,7 +92,7 @@ public class Launcher
             switch (shootStateAuto)
                 {
                 case CHARGE:
-
+                    //sets the RPM and makes sure that the conveyor is correct
                     if (prepareToShoot(isClose) && Hardware.storage.prepareToShoot())
                         {
                         shootState = ShootState.LAUNCH;
@@ -125,9 +132,14 @@ public class Launcher
     //estimated RPM
     //short = 2300RPM
     //long 5300RPM
-    public boolean prepareToShoot(boolean close)
+    /**
+     * prepares the launcher motor to shoot by settingthe RPM to either the  close value or the far value
+     * @param close
+     * @return
+     */
+    public boolean prepareToShoot(boolean isClose)
     {
-        if (close)
+        if (isClose)
             {
             if (Hardware.launcherMotorEncoder.setRPM(
                     RPM_CLOSE + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
