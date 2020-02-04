@@ -254,6 +254,22 @@ public class StorageControl
         return false;
     }
 
+    public boolean clearStorage(JoystickButton button1, JoystickButton button2)
+    {
+        if (Hardware.ballcounter.getBallCount() == 0)
+            {
+            state = ControlState.PASSIVE;
+            return true;
+            }
+        else
+            {
+            state = ControlState.DOWN;
+            Hardware.intake.outtake(0);
+            }
+
+        return false;
+    }
+
     private static boolean shotBall = false;
     private static boolean prevRL = false;
 
