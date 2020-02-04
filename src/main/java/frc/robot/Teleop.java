@@ -103,10 +103,10 @@ public class Teleop
     {
 
         // =============== AUTOMATED SUBSYSTEMS ===============
-        Hardware.visionInterface.updateValues();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        // Hardware.visionInterface.updateValues();
+        // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        Hardware.storage.storageControlState();
+        // Hardware.storage.storageControlState();
 
         //Color Wheel testing code
         if (Hardware.rightDriver.getRawButton(3) == true)
@@ -123,6 +123,7 @@ public class Teleop
             teleopDrive();
             }
         SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
+        SmartDashboard.putBoolean("In Range", Hardware.colorWheel.inRange());
 
         // ================= OPERATOR CONTROLS ================
 
