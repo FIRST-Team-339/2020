@@ -39,7 +39,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
-import frc.HardwareInterfaces.KilroyUsbCamera;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -148,9 +147,9 @@ public class Teleop
         Hardware.ballcounter.addBall(Hardware.addBall);
         Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
-        individualTest();
-        //teleopDrive();
-        printStatements();
+        // individualTest();
+        //  teleopDrive();
+        // printStatements();
 
     } // end Periodic()
 
@@ -178,7 +177,7 @@ public class Teleop
         // connerTest();
         // craigTest();
         //chrisTest();
-        //dionTest();
+        // dionTest();
         // chrisTest();
         // dionTest();
         // patrickTest();
@@ -297,6 +296,7 @@ public class Teleop
         if (Hardware.leftOperator.getRawButton(7) && !boolthing)
             {
             Hardware.kilroyUSBCamera.switchCameras();
+            boolthing = true;
             }
     }
 

@@ -19,7 +19,7 @@ import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
-import frc.HardwareInterfaces.KilroyUsbCamera;
+import frc.HardwareInterfaces.KilroyUSBCamera;
 
 import frc.HardwareInterfaces.LVMaxSonarEZ;
 import frc.HardwareInterfaces.LightSensor;
@@ -507,7 +507,7 @@ public class Hardware
     public static VideoSink server;
     public static UsbCamera usbCam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
     public static UsbCamera usbCam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
-    public static KilroyUsbCamera kilroyUSBCamera = new KilroyUsbCamera(server, usbCam0, usbCam1, cameraSwitchButton);
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(server, usbCam0, usbCam1, cameraSwitchButton);
 
     // ------------------------------------
     // Utility classes
