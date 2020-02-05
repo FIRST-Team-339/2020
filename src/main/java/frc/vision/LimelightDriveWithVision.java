@@ -17,13 +17,14 @@ public class LimelightDriveWithVision
      * Aligns to vision targets using a one turn system. For use if already mostly.
      * Will drive up to deposit distance from the targets based off of botht the
      * ultrasonic and vision getDistance.
+     * speed shoult not be over .3
      *
      * @return
      */
 
     Timer timer = new Timer();
 
-    public boolean driveToTarget(int distance, boolean overrideUltrasonic)
+    public boolean driveToTarget(int distance, boolean overrideUltrasonic, double speed)
     {
         this.timer.start();
         //System.out.println(this.timer.get() * 10000);
@@ -47,9 +48,10 @@ public class LimelightDriveWithVision
                 return true;
                 }
             }
-        if(!Hardware.visionInterface.getHasTargets()){
+        if (!Hardware.visionInterface.getHasTargets())
+            {
             return true;
-        }
+            }
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
@@ -57,8 +59,8 @@ public class LimelightDriveWithVision
                 {
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
-                adjustmentValueLeft = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PORP_2019);
                 // drive raw so that we dont have to write addition gearing code in teleop
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
@@ -66,8 +68,8 @@ public class LimelightDriveWithVision
             else if (offness > 0)
                 {
 
-                adjustmentValueLeft = MIN_MOVE_2019 + (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = MIN_MOVE_2019 - (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PORP_2019);
 
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
@@ -137,7 +139,6 @@ public class LimelightDriveWithVision
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PORP_2019 = .02;//0.015
-   
 
     final double ADJUST_PORP_2019_ALIGN = .04;
     // an adjustment proportional value. Found with the tried and true method of

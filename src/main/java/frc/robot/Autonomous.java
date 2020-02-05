@@ -152,10 +152,7 @@ public static void periodic ()
     // printing out utilized states:
 
     // Cancel if the "cancelAuto" button is pressed
-    if (Hardware.cancelAuto.get() == true)
-        {
-        autoState = State.FINISH;
-        }
+
 
     switch (autoState)
         {
@@ -466,7 +463,7 @@ public static boolean runAuto ()
             break;
 
         case PICKUP_TRENCH:
-            Hardware.iDoubleSolenoid.set(Value.kReverse);
+            // TODO Picup drop down
             // TODO angle camera down
 
 
@@ -944,7 +941,7 @@ private static boolean shootClose ()
     System.out.println("US Distance: "
             + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
 
-    if (Hardware.visionDriving.driveToTarget(45, true))
+    if (Hardware.visionDriving.driveToTarget(45, true, .3))
         {
         return true;
 

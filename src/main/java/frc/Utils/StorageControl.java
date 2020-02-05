@@ -1,7 +1,9 @@
 package frc.Utils;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
@@ -47,7 +49,10 @@ public class StorageControl
                 state = ControlState.PASSIVE;
                 break;
             case PASSIVE:
-                //this.conveyorMotors.set(HOLDING_SPEED);
+                if (!override)
+                    {
+                    Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
+                    }
 
                 if (this.intakeRL.get() && prevRL == false)
                     {
@@ -81,6 +86,36 @@ public class StorageControl
             }
     }
 
+    public void intakeStorageControl()
+    {
+        if (Hardware.intake.intaking)
+            {
+            if (!this.intakeRL.get())
+                {
+                if (!this.lowerRL.get())
+                    {
+                    state = ControlState.DOWN;
+                    }
+                else
+                    {
+                    state = ControlState.PASSIVE;
+                    }
+                }
+            else
+                {
+                if (!this.upperRL.get())
+                    {
+                    state = ControlState.UP;
+                    }
+                }
+            }
+    }
+
+    public void outtakeStorageControl()
+    {
+        state = ControlState.DOWN;
+    }
+
     public void conveyorUp()
     {
         //sets the motors to UP_SPEED
@@ -95,6 +130,29 @@ public class StorageControl
     {
         System.out.println("conveyor down");
         Hardware.conveyorMotorGroup.set(DOWN_SPEED);
+    }
+
+    private boolean override = false;
+
+    public void overrideConveyor(Joystick joystick, JoystickButton button)
+    {
+        if (button.get())
+            {
+            if (joystick.getY() > .3)
+                {
+                override = true;
+                conveyorUp();
+                }
+            else if (joystick.getY() < .3)
+                {
+                override = true;
+                conveyorDown();
+                }
+            else
+                {
+                override = false;
+                }
+            }
     }
 
     private enum ShootState
@@ -130,6 +188,7 @@ public class StorageControl
                 case WAIT_FOR_POWER:
 
                     preparedToFire = true;
+                    shootState = ShootState.INIT;
                     return true;
                 default:
                     shootState = ShootState.INIT;
@@ -140,29 +199,78 @@ public class StorageControl
         return false;
     }
 
+    boolean stillShooting = false;
+
     public boolean loadToFire()
     {
-        if (preparedToFire)
-            {
 
-            if (this.shootRL.get())
+        if (stillShooting)
+            {
+            if (this.shootRL.get() == false)
                 {
-                System.out.println("shooting ball");
-                state = ControlState.UP;
+                shotBall = true;
                 }
-            else
+            }
+        if (Hardware.ballcounter.getBallCount() > 0)
+            {
+            if (preparedToFire)
                 {
-                state = ControlState.PASSIVE;
-                if (Hardware.ballcounter.getBallCount() > 1)
+                System.out.println("loading");
+                if (this.shootRL.get())
                     {
-                    prepareToShoot();
-                    return true;
+
+                    System.out.println("shooting ball");
+                    state = ControlState.UP;
+                    if (!stillShooting)
+                        {
+                        Hardware.ballcounter.subtractBall();
+                        }
+                    stillShooting = true;
+                    }
+                else if (shotBall)
+                    {
+                    stillShooting = false;
+                    shotBall = false;
+                    state = ControlState.PASSIVE;
+                    if (Hardware.ballcounter.getBallCount() > 0)
+                        {
+                        System.out.println(" preparing again");
+                        prepareToShoot();
+                        return true;
+                        }
+                    else
+                        {
+
+                        Hardware.launcher.unchargeShooter();
+                        return true;
+                        }
                     }
                 }
+            }
+        else
+            {
+            state = ControlState.PASSIVE;
             }
         return false;
     }
 
+    public boolean clearStorage(JoystickButton button1, JoystickButton button2)
+    {
+        if (Hardware.ballcounter.getBallCount() == 0)
+            {
+            state = ControlState.PASSIVE;
+            return true;
+            }
+        else
+            {
+            state = ControlState.DOWN;
+            Hardware.intake.outtake(0);
+            }
+
+        return false;
+    }
+
+    private static boolean shotBall = false;
     private static boolean prevRL = false;
 
     private static boolean preparedToFire = false;
