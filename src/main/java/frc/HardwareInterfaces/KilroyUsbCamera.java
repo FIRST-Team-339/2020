@@ -66,24 +66,25 @@ public class KilroyUSBCamera
     }
 
     /**
-     * Method for switching  between the usb cameras on the robot
+     * Method for switching between the usb cameras on the robot
      */
     public void switchCameras()
     {
         // TODO test
         System.out.println(this.cam0.isConnected());
         // if (this.cam0.isConnected())
-        //     {
-        //     this.server.setSource(this.cam1);
-        //     }
+        // {
+        // this.server.setSource(this.cam1);
+        // }
         // if (this.cam1.isConnected())
-        //     {
-        //     this.server.setSource(this.cam0);
-        //     }
+        // {
+        // this.server.setSource(this.cam0);
+        // }
     }
 
     /**
      * This overload takes in one button and calls the switchCameras() method
+     * 
      * @param button
      */
     public void switchCameras(MomentarySwitch button)
@@ -91,8 +92,8 @@ public class KilroyUSBCamera
         // button starts as off
         // if (/*momentary switch thing*/)
         // {
-        //     switchCameras();
-        //     // momentary switch thing
+        // switchCameras();
+        // // momentary switch thing
         // }
     }
 
@@ -107,8 +108,8 @@ public class KilroyUSBCamera
         // // button starts as off
         // if (/*momentary switch thing*/)
         // {
-        //     switchCameras();
-        //     // momentary switch thing
+        // switchCameras();
+        // // momentary switch thing
         // }
     }
 
