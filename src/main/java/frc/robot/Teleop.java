@@ -312,7 +312,7 @@ public class Teleop
     {
         if (Hardware.leftOperator.getRawButton(7) && !boolthing)
             {
-            Hardware.kilroyUSBCamera.switchCameras();
+            //Hardware.kilroyUSBCamera.switchCameras();
             boolthing = true;
             }
     }
