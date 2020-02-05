@@ -84,7 +84,7 @@ public class KilroyUSBCamera
 
     /**
      * This overload takes in one button and calls the switchCameras() method
-     * 
+     *
      * @param button
      */
     public void switchCameras(MomentarySwitch button)
