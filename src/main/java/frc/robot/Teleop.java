@@ -136,6 +136,16 @@ public class Teleop
         //     {
         //     shootClose = false;
         //     }
+
+        if (Hardware.rightDriver.getRawButton(11))
+            {
+            Hardware.visionInterface.setPipeline(2);
+            }
+        if (Hardware.rightDriver.getRawButton(12))
+            {
+            Hardware.visionInterface.setPipeline(0);
+            }
+
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
         Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
