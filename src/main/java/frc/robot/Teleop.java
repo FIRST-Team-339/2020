@@ -39,7 +39,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
-import frc.HardwareInterfaces.KilroyUsbCamera;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -82,6 +81,10 @@ public class Teleop
             }
 
         Hardware.drive.setGear(0);
+
+        //Servo initial starting position
+        Hardware.rotateServo.setAngle(125);
+
         // Hardware.launcherMotorEncoder.reset();
     } // end Init
 
@@ -137,6 +140,16 @@ public class Teleop
         //     {
         //     shootClose = false;
         //     }
+
+        if (Hardware.rightDriver.getRawButton(11))
+            {
+            Hardware.visionInterface.setPipeline(2);
+            }
+        if (Hardware.rightDriver.getRawButton(12))
+            {
+            Hardware.visionInterface.setPipeline(0);
+            }
+
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
         Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
@@ -151,8 +164,8 @@ public class Teleop
         Hardware.ballcounter.addBall(Hardware.addBall);
         Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
-        //  individualTest();
-        //teleopDrive();
+        // individualTest();
+        //  teleopDrive();
         // printStatements();
 
     } // end Periodic()
@@ -181,7 +194,7 @@ public class Teleop
         // connerTest();
         // craigTest();
         //chrisTest();
-        //dionTest();
+        // dionTest();
         // chrisTest();
         // dionTest();
         // patrickTest();
@@ -300,11 +313,20 @@ public class Teleop
         if (Hardware.leftOperator.getRawButton(7) && !boolthing)
             {
             Hardware.kilroyUSBCamera.switchCameras();
+            boolthing = true;
             }
     }
 
     public static void chrisTest()
     {
+        if (Hardware.rightOperator.getRawButton(6) == true)
+            {
+            Hardware.rotateServo.setAngle(125);
+            }
+        else if (Hardware.rightOperator.getRawButton(7) == true)
+            {
+            Hardware.rotateServo.setAngle(55);
+            }
 
     }
 

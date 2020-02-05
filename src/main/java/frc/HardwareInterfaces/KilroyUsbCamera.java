@@ -13,20 +13,44 @@ import edu.wpi.cscore.VideoSink;
 /**
  * Add your docs here.
  */
-public class KilroyUsbCamera
+public class KilroyUSBCamera
     {
-    public KilroyUsbCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1)
+    /**
+     * constructor
+     *
+     * @param server
+     * @param cam0
+     * @param cam1
+     */
+    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1)
         {
             initialize(server, cam0, cam1);
         }
 
-    public KilroyUsbCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button)
+    /**
+     * constructor
+     *
+     * @param server
+     * @param cam0
+     * @param cam1
+     * @param button
+     */
+    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button)
         {
             initialize(server, cam0, cam1);
             this.button = button;
         }
 
-    public KilroyUsbCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button1,
+    /**
+     * constructor
+     *
+     * @param server
+     * @param cam0
+     * @param cam1
+     * @param button1
+     * @param button2
+     */
+    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button1,
             MomentarySwitch button2)
         {
             initialize(server, cam0, cam1);
@@ -46,24 +70,46 @@ public class KilroyUsbCamera
      */
     public void switchCameras()
     {
-        if (this.cam0.isConnected())
-            {
-            this.server.setSource(this.cam1);
-            }
-        if (this.cam1.isConnected())
-            {
-            this.server.setSource(this.cam0);
-            }
+        // TODO test
+        System.out.println(this.cam0.isConnected());
+        // if (this.cam0.isConnected())
+        //     {
+        //     this.server.setSource(this.cam1);
+        //     }
+        // if (this.cam1.isConnected())
+        //     {
+        //     this.server.setSource(this.cam0);
+        //     }
     }
 
+    /**
+     * This overload takes in one button and calls the switchCameras() method
+     * @param button
+     */
     public void switchCameras(MomentarySwitch button)
     {
-
+        // button starts as off
+        // if (/*momentary switch thing*/)
+        // {
+        //     switchCameras();
+        //     // momentary switch thing
+        // }
     }
 
+    /**
+     * This overload takes in two buttons and calls the switchCameras() method
+     *
+     * @param button1
+     * @param button2
+     */
     public void switchCameras(MomentarySwitch button1, MomentarySwitch button2)
     {
-
+        // // button starts as off
+        // if (/*momentary switch thing*/)
+        // {
+        //     switchCameras();
+        //     // momentary switch thing
+        // }
     }
 
     private VideoSink server = null;

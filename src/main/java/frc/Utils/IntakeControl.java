@@ -98,30 +98,17 @@ public class IntakeControl
             }
     }
 
-    public boolean intake(int seconds)
+    public void intake()
     {
         if (getDeployed())
             {
-            this.timer.start();
-            if (this.timer.get() < seconds)
-                {
-                intaking = true;
-                Hardware.intakeMotor.set(INTAKE_SPEED);
-
-                }
-            else
-                {
-                intaking = false;
-                this.timer.stop();
-                this.timer.reset();
-                return true;
-                }
+            intaking = true;
+            Hardware.intakeMotor.set(INTAKE_SPEED);
             }
         else
             {
             toggleDeployIntake();
             }
-        return false;
     }
 
     public void outtake(JoystickButton outtakeButton, JoystickButton overrideButton)
@@ -153,6 +140,29 @@ public class IntakeControl
             {
             Hardware.intakeMotor.set(OUTTAKE_SPEED);
             }
+        return false;
+    }
+
+    //if first loop
+    boolean pickUpBallsVirgin = true;
+    int startBallCount = 0;
+
+    public boolean pickUpBallsVision()
+    {
+
+        if (pickUpBallsVirgin)
+            {
+            startBallCount = Hardware.ballcounter.getBallCount();
+            }
+        Hardware.visionInterface.setPipeline(2);
+        this.intake();
+        if (Hardware.visionDriving.driveToTargetNoDistance(.2)
+                && (this.intaking == false || startBallCount < Hardware.ballcounter.getBallCount()))
+            {
+            Hardware.visionInterface.setPipeline(0);
+            return true;
+            }
+
         return false;
     }
 
