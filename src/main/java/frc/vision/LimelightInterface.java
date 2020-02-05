@@ -386,10 +386,10 @@ public class LimelightInterface
      */
     public void setPipeline(int pipe)
     {
-
         if (pipe <= 9 && pipe >= 0)
             {
-            limelight.getEntry("pipeling").setNumber(pipe);
+            System.out.println("setting pipeline: " + pipe);
+            limelight.getEntry("pipeline").setNumber(pipe);
             }
     }
 
