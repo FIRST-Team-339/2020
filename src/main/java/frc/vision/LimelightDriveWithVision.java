@@ -90,6 +90,73 @@ public class LimelightDriveWithVision
     }
 
     /**
+     * Aligns to vision targets using a one turn system. For use if already mostly.
+     * will run toward the target until the target no longer exist. Use at your own discretion. Kilroy Robotics and the author of thiscode holds not responsibility for any damage to property or the guy that was hit with the robot
+     *
+     * thou speed shalt not be over a percentatage of 30. Put it to one if you want to have fun
+     *
+     * @return
+     */
+
+    public boolean driveToTargetNoDistance(double speed)
+    {
+        this.timer.start();
+        //System.out.println(this.timer.get() * 10000);
+        if (this.timer.get() * 100000 > 4)
+            {
+            Hardware.visionInterface.takePicture();
+            this.timer.reset();
+            }
+        // offness recieved from network tables
+        double offness = Hardware.visionInterface.getXOffSet();
+
+        // left move speed
+        double adjustmentValueRight = 0;
+        // right move speed
+        double adjustmentValueLeft = 0;
+
+        if (!Hardware.visionInterface.getHasTargets())
+            {
+            return true;
+            }
+        if (Hardware.visionInterface.getHasTargets())
+            {
+
+            if (offness < 0)
+                {
+                // adjust the speed for the left and right motors based off their offness and a
+                // preset proportional value
+                adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PORP_2019);
+                // drive raw so that we dont have to write addition gearing code in teleop
+                Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                }
+
+            else if (offness > 0)
+                {
+
+                adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PORP_2019);
+
+                Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                }
+            else
+                {
+                // drive raw at speed after aligning
+                Hardware.transmission.driveRaw(DRIVE_AFTER_ALIGN, DRIVE_AFTER_ALIGN);
+                }
+            }
+        else
+            {
+            Hardware.transmission.drive(0, 0);
+            this.timer.stop();
+            return true;
+            }
+        return false;
+
+    }
+
+    /**
      * TODO function. Will align to the target but not drive towards it
      *
      */
