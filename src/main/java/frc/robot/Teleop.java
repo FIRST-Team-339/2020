@@ -81,6 +81,10 @@ public class Teleop
             }
 
         Hardware.drive.setGear(0);
+
+        //Servo initial starting position
+        Hardware.rotateServo.setAngle(125);
+
         // Hardware.launcherMotorEncoder.reset();
     } // end Init
 
@@ -108,33 +112,43 @@ public class Teleop
         Hardware.storage.storageControlState();
 
         //Color Wheel testing code
-        if (Hardware.rightDriver.getRawButton(3) == true)
-            {
-            testBoolean1 = true;
-            }
-        if (testBoolean1 == true)
-            {
-            Hardware.colorTestMotor.set(.2);
-            testBoolean1 = false;
-            }
-        else
-            {
-            teleopDrive();
-            }
-        SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
+        // if (Hardware.rightDriver.getRawButton(3) == true)
+        //     {
+        //     testBoolean1 = true;
+        //     }
+        // if (testBoolean1 == true)
+        //     {
+        //     Hardware.colorTestMotor.set(.2);
+        //     testBoolean1 = false;
+        //     }
+        // else
+        //     {
+        teleopDrive();
+        // }
+        // SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
 
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
 
-        if (Hardware.shootCloseButton.get())
+        // if (Hardware.shootCloseButton.get())
+        //     {
+        //     shootClose = true;
+        //     }
+        // if (Hardware.shootFarButton.get())
+        //     {
+        //     shootClose = false;
+        //     }
+
+        if (Hardware.rightDriver.getRawButton(11))
             {
-            shootClose = true;
+            Hardware.visionInterface.setPipeline(2);
             }
-        if (Hardware.shootFarButton.get())
+        if (Hardware.rightDriver.getRawButton(12))
             {
-            shootClose = false;
+            Hardware.visionInterface.setPipeline(0);
             }
+
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
         Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
@@ -142,6 +156,8 @@ public class Teleop
         Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
         Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        //this is necessary becuase I organized the code wrong and its too late to rewrite intake
+        Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
 
         Hardware.ballcounter.subtractBall(Hardware.substractBall);
         Hardware.ballcounter.addBall(Hardware.addBall);
@@ -302,6 +318,14 @@ public class Teleop
 
     public static void chrisTest()
     {
+        if (Hardware.rightOperator.getRawButton(6) == true)
+            {
+            Hardware.rotateServo.setAngle(125);
+            }
+        else if (Hardware.rightOperator.getRawButton(7) == true)
+            {
+            Hardware.rotateServo.setAngle(55);
+            }
 
     }
 

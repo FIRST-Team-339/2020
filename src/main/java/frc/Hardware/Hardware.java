@@ -61,6 +61,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.Servo;
 
 /**
  * ------------------------------------------------------- puts all of the
@@ -75,7 +76,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Hardware
     {
-
+    
     /**********************************************
      * Identifier that determines which year's robot
      * we are testing.
@@ -108,7 +109,9 @@ public class Hardware
         };
 
     public static Identifier robotIdentity = Identifier.PrevYear;
-
+        // ==============Servo==============
+        public static Servo rotateServo = new Servo(9);
+        
     /**********************************************
      * initializePrevYear() function initializes all Hardware
      * items that are REQUIRED for this year
@@ -239,7 +242,7 @@ public class Hardware
         compressor = new Compressor();
 
         // ==============RIO INIT==============
-
+        
         // =============OTHER INIT============
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);

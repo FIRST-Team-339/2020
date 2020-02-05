@@ -51,21 +51,29 @@ public class IntakeControl
 
     public boolean undeployIntake(JoystickButton button)
     {
-        if (this.solenoid.getForward())
-            {
-            this.solenoid.set(Value.kReverse);
-            }
-        if (!this.solenoid.getForward())
-            {
-            return true;
-            }
-        return false;
+        // if (this.solenoid.getForward())
+        //     {
+        //     this.solenoid.set(Value.kReverse);
+        //     }
+        // if (!this.solenoid.getForward())
+        //     {
+        return true;
+        //     }
+        // return false;
     }
 
     public boolean getDeployed()
     {
         //TODO find out if forward or backs is deployed or not
-        return this.solenoid.getForward();
+        return true;/* this.solenoid.getForward(); *///TODO
+    }
+
+    public void makePassive(JoystickButton intakeButton, JoystickButton outtakeButton)
+    {
+        if (!intakeButton.get() || !outtakeButton.get() || !intaking || !outtaking)
+            {
+            Hardware.intakeMotor.set(PASSIVE_SPEED);
+            }
     }
 
     public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
@@ -78,16 +86,10 @@ public class IntakeControl
                 if (intakeButton.get())
                     {
                     intaking = true;
-                    //Hardware.intakeMotor.set(INTAKE_SPEED);//TODO
+                    System.out.println("intaking");
+                    Hardware.intakeMotor.set(INTAKE_SPEED);
                     }
-                else
-                    {
-                    if (!outtaking)
-                        {
-                        Hardware.intakeMotor.set(0);
-                        }
-                    intaking = false;
-                    }
+
                 }
             }
         else
@@ -96,34 +98,17 @@ public class IntakeControl
             }
     }
 
-    public boolean intake(int seconds)
+    public void intake()
     {
         if (getDeployed())
             {
-            this.timer.start();
-            if (this.timer.get() < seconds)
-                {
-                intaking = true;
-                Hardware.intakeMotor.set(INTAKE_SPEED);
-
-                }
-            else
-                {
-                if (!outtaking)
-                    {
-                    Hardware.intakeMotor.set(0);
-                    }
-                intaking = false;
-                this.timer.stop();
-                this.timer.reset();
-                return true;
-                }
+            intaking = true;
+            Hardware.intakeMotor.set(INTAKE_SPEED);
             }
         else
             {
             toggleDeployIntake();
             }
-        return false;
     }
 
     public void outtake(JoystickButton outtakeButton, JoystickButton overrideButton)
@@ -135,15 +120,7 @@ public class IntakeControl
                 if (outtakeButton.get())
                     {
                     outtaking = true;
-                    //Hardware.intakeMotor.set(OUTTAKE_SPEED);//TODO
-                    }
-                else
-                    {
-                    if (!intaking)
-                        {
-                        Hardware.intakeMotor.set(0);
-                        }
-                    outtaking = false;
+                    Hardware.intakeMotor.set(OUTTAKE_SPEED);
                     }
                 }
             }
@@ -153,9 +130,39 @@ public class IntakeControl
             }
     }
 
-    public boolean outtake()
+    public boolean outtake(int remainingBalls)
     {
-        //TODO dont knwo if we need this
+        if (Hardware.ballcounter.getBallCount() == remainingBalls)
+            {
+            return true;
+            }
+        else
+            {
+            Hardware.intakeMotor.set(OUTTAKE_SPEED);
+            }
+        return false;
+    }
+
+    //if first loop
+    boolean pickUpBallsVirgin = true;
+    int startBallCount = 0;
+
+    public boolean pickUpBallsVision()
+    {
+
+        if (pickUpBallsVirgin)
+            {
+            startBallCount = Hardware.ballcounter.getBallCount();
+            }
+        Hardware.visionInterface.setPipeline(2);
+        this.intake();
+        if (Hardware.visionDriving.driveToTargetNoDistance(.2)
+                && (this.intaking == false || startBallCount < Hardware.ballcounter.getBallCount()))
+            {
+            Hardware.visionInterface.setPipeline(0);
+            return true;
+            }
+
         return false;
     }
 
@@ -164,4 +171,5 @@ public class IntakeControl
 
     private final double INTAKE_SPEED = .5;// TODO
     private final double OUTTAKE_SPEED = -.5;
+    private final double PASSIVE_SPEED = 0;
     }

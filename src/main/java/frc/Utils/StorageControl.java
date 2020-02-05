@@ -86,6 +86,8 @@ public class StorageControl
             }
     }
 
+    boolean prevPassive = false;
+
     public void intakeStorageControl()
     {
         if (Hardware.intake.intaking)
@@ -95,17 +97,25 @@ public class StorageControl
                 if (!this.lowerRL.get())
                     {
                     state = ControlState.DOWN;
+                    prevPassive = false;
                     }
                 else
                     {
                     state = ControlState.PASSIVE;
+                    prevPassive = true;
                     }
                 }
             else
                 {
+                if (prevPassive)
+                    {
+                    Hardware.ballcounter.addBall();
+                    prevPassive = false;
+                    }
                 if (!this.upperRL.get())
                     {
                     state = ControlState.UP;
+                    prevPassive = false;
                     }
                 }
             }
@@ -251,6 +261,22 @@ public class StorageControl
             {
             state = ControlState.PASSIVE;
             }
+        return false;
+    }
+
+    public boolean clearStorage(JoystickButton button1, JoystickButton button2)
+    {
+        if (Hardware.ballcounter.getBallCount() == 0)
+            {
+            state = ControlState.PASSIVE;
+            return true;
+            }
+        else
+            {
+            state = ControlState.DOWN;
+            Hardware.intake.outtake(0);
+            }
+
         return false;
     }
 
