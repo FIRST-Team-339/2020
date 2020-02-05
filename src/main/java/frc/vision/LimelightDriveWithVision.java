@@ -16,8 +16,7 @@ public class LimelightDriveWithVision
     /**
      * Aligns to vision targets using a one turn system. For use if already mostly.
      * Will drive up to deposit distance from the targets based off of botht the
-     * ultrasonic and vision getDistance.
-     * speed shoult not be over .3
+     * ultrasonic and vision getDistance. speed shoult not be over .3
      *
      * @return
      */
@@ -27,7 +26,7 @@ public class LimelightDriveWithVision
     public boolean driveToTarget(int distance, boolean overrideUltrasonic, double speed)
     {
         this.timer.start();
-        //System.out.println(this.timer.get() * 10000);
+        // System.out.println(this.timer.get() * 10000);
         if (this.timer.get() * 100000 > 4)
             {
             Hardware.visionInterface.takePicture();
@@ -91,9 +90,13 @@ public class LimelightDriveWithVision
 
     /**
      * Aligns to vision targets using a one turn system. For use if already mostly.
-     * will run toward the target until the target no longer exist. Use at your own discretion. Kilroy Robotics and the author of thiscode holds not responsibility for any damage to property or the guy that was hit with the robot
+     * will run toward the target until the target no longer exist. Use at your own
+     * discretion. Kilroy Robotics and the author of thiscode holds not
+     * responsibility for any damage to property or the guy that was hit with the
+     * robot
      *
-     * thou speed shalt not be over a percentatage of 30. Put it to one if you want to have fun
+     * thou speed shalt not be over a percentatage of 30. Put it to one if you want
+     * to have fun
      *
      * @return
      */
@@ -101,7 +104,7 @@ public class LimelightDriveWithVision
     public boolean driveToTargetNoDistance(double speed)
     {
         this.timer.start();
-        //System.out.println(this.timer.get() * 10000);
+        // System.out.println(this.timer.get() * 10000);
         if (this.timer.get() * 100000 > 4)
             {
             Hardware.visionInterface.takePicture();
@@ -169,7 +172,7 @@ public class LimelightDriveWithVision
         // right move speed
         double adjustmentValueLeft = 0;
 
-        if (offness < 1)
+        if (offness < -3)
             {
             // adjust the speed for the left and right motors based off their offness and a
             // preset proportional value
@@ -180,7 +183,7 @@ public class LimelightDriveWithVision
             Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
 
-        else if (offness > 1)
+        else if (offness > 3)
             {
 
             adjustmentValueLeft = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
@@ -205,7 +208,7 @@ public class LimelightDriveWithVision
     final double DRIVE_AFTER_ALIGN = .2;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2019 = .02;//0.015
+    final double ADJUST_PORP_2019 = .02;// 0.015
 
     final double ADJUST_PORP_2019_ALIGN = .04;
     // an adjustment proportional value. Found with the tried and true method of

@@ -76,10 +76,9 @@ import edu.wpi.first.wpilibj.Servo;
 
 public class Hardware
     {
-    
+
     /**********************************************
-     * Identifier that determines which year's robot
-     * we are testing.
+     * Identifier that determines which year's robot we are testing.
      *
      * @author R. Brown
      * @date 1/25/2020
@@ -109,12 +108,12 @@ public class Hardware
         };
 
     public static Identifier robotIdentity = Identifier.PrevYear;
-        // ==============Servo==============
-        public static Servo rotateServo = new Servo(9);
-        
+    // ==============Servo==============
+    public static Servo rotateServo = new Servo(9);
+
     /**********************************************
-     * initializePrevYear() function initializes all Hardware
-     * items that are REQUIRED for this year
+     * initializePrevYear() function initializes all Hardware items that are
+     * REQUIRED for this year
      *
      * @author R. Brown
      * @date 1/25/2020
@@ -158,7 +157,8 @@ public class Hardware
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
-        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX) hoodAdjustmentMotor);//TODO
+        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
+        // hoodAdjustmentMotor);//TODO
 
         // ============ANALOG INIT============
 
@@ -166,7 +166,7 @@ public class Hardware
 
         // =============OTHER INIT============
 
-        //pneumatics
+        // pneumatics
         compressor = new Compressor();
 
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
@@ -200,12 +200,12 @@ public class Hardware
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor, rightRearMotor);
 
         launcherMotor1 = new WPI_TalonSRX(26);
-        //launcherMotor2 = new WPI_TalonSRX(27); not on 2019
+        // launcherMotor2 = new WPI_TalonSRX(27); not on 2019
 
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1);
 
         conveyorMotor1 = new WPI_TalonSRX(22);
-        //no conveyorMotor2 on 2019
+        // no conveyorMotor2 on 2019
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
 
@@ -225,7 +225,8 @@ public class Hardware
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
-        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX) hoodAdjustmentMotor);//TODO fix
+        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
+        // hoodAdjustmentMotor);//TODO fix
 
         // ==============RIO INIT==============
 
@@ -238,11 +239,11 @@ public class Hardware
         leftDriveGroup = new SpeedControllerGroup(leftFrontMotor);
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
 
-        //pneumatics
+        // pneumatics
         compressor = new Compressor();
 
         // ==============RIO INIT==============
-        
+
         // =============OTHER INIT============
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
@@ -293,13 +294,15 @@ public class Hardware
 
         if (robotIdentity == Identifier.CurrentYear)
             {
-            initializeCurrentYear();
             generalInit();
+            initializeCurrentYear();
+
             }
         else if (robotIdentity == Identifier.PrevYear)
             {
-            initializePrevYear();
             generalInit();
+            initializePrevYear();
+
             }
         else if (robotIdentity == Identifier.TestBoard)
             {
