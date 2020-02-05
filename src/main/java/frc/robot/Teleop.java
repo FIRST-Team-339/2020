@@ -82,6 +82,10 @@ public class Teleop
             }
 
         Hardware.drive.setGear(0);
+       
+        //Servo initial starting position 
+        Hardware.rotateServo.setAngle(125);
+       
         // Hardware.launcherMotorEncoder.reset();
     } // end Init
 
@@ -150,7 +154,7 @@ public class Teleop
         Hardware.ballcounter.addBall(Hardware.addBall);
         Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
-        //  individualTest();
+          individualTest();
         //teleopDrive();
         // printStatements();
 
@@ -179,7 +183,7 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-        //chrisTest();
+        chrisTest();
         //dionTest();
         // chrisTest();
         // dionTest();
@@ -304,12 +308,18 @@ public class Teleop
 
     public static void chrisTest()
     {
-
+        if(Hardware.rightOperator.getRawButton(6) == true){
+            Hardware.rotateServo.setAngle(125);
+        }
+        else if(Hardware.rightOperator.getRawButton(7) == true){
+            Hardware.rotateServo.setAngle(55);
+        }
+        
     }
 
     public static void patrickTest()
     {
-
+        
     }
 
     public static void printStatements()
