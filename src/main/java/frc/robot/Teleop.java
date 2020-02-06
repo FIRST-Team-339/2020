@@ -125,9 +125,27 @@ public class Teleop
         //     {
         teleopDrive();
         // }
-        SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
-        SmartDashboard.putBoolean("In Range of Target", Hardware.colorWheel.inRange());
+        // SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
+        // SmartDashboard.putBoolean("In Range of Target", Hardware.colorWheel.inRange());
 
+        if (Hardware.rightDriver.getRawButton(3) == true)
+            {
+            testBoolean1 = true;
+            }
+        if (testBoolean1 == true)
+            {
+            Hardware.colorWheel.spinControlPanel(3);
+            testBoolean1 = false;
+            }
+        if (Hardware.rightDriver.getRawButton(3) == true)
+            {
+            testBoolean1 = true;
+            }
+        if (testBoolean1 == true)
+            {
+            Hardware.colorWheel.spinControlPanelToColor();
+            testBoolean1 = false;
+            }
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
