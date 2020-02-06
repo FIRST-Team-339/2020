@@ -144,13 +144,13 @@ public class IntakeControl
     }
 
     //if first loop
-    boolean pickUpBallsVirgin = true;
+    boolean pickUpBallsFirstTime = true;
     int startBallCount = 0;
 
     public boolean pickUpBallsVision()
     {
 
-        if (pickUpBallsVirgin)
+        if (pickUpBallsFirstTime)
             {
             startBallCount = Hardware.ballcounter.getBallCount();
             }
