@@ -66,7 +66,7 @@ public class Teleop
      */
     public static void init()
     {
-
+    
         // Gear Inits
 
         if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear))
