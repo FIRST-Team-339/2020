@@ -367,6 +367,7 @@ public class LimelightInterface
             {
             case PROCESSOR:
                 limelight.getEntry("camMode").setNumber(0);
+
                 break;
             case CAMERA:
                 limelight.getEntry("camMode").setNumber(1);
@@ -388,8 +389,10 @@ public class LimelightInterface
     {
         if (pipe <= 9 && pipe >= 0)
             {
-            System.out.println("setting pipeline: " + pipe);
-            limelight.getEntry("pipeline").setNumber(pipe);
+
+            limelight.getEntry("pipeline").forceSetNumber(pipe);
+            // limelight.getEntry("pipeline").setNumber(pipe);
+            System.out.println("pipeline" + limelight.getEntry("pipeline").getDouble(0));
             }
     }
 
