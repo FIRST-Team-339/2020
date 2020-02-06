@@ -50,9 +50,9 @@ public class Robot extends TimedRobot
             }
         else if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
             {
-            Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
-            Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
-            Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
+            Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2020);
+            Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2020);
+            Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2020);
             }
 
         // Clearing TalonFX motor ticks
@@ -63,12 +63,12 @@ public class Robot extends TimedRobot
         //Hardware.compressor.start();
 
         //gyro
-        Hardware.gyro.calibrate();
-        Hardware.gyro.reset();
+        // Hardware.gyro.calibrate();//TODO
+        // Hardware.gyro.reset();
 
-        Hardware.frontUltraSonic.setOffsetDistanceFromNearestBumper(3);
+        // Hardware.frontUltraSonic.setOffsetDistanceFromNearestBumper(3);
 
-        Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
+        // Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
 
         // ---------------------------------------
         // done setup - tell the user we are complete
@@ -156,8 +156,8 @@ public class Robot extends TimedRobot
         // start setup - tell the user we are beginning
         // setup
         // ---------------------------------------
-        Hardware.launcherMotorGroup.set(0);
-        Hardware.launcherMotorEncoder.speed = 0;
+        // Hardware.launcherMotorGroup.set(0);
+        // Hardware.launcherMotorEncoder.speed = 0;//TODO
 
         Hardware.leftDriveGroup.set(0);
         Hardware.rightDriveGroup.set(0);
@@ -260,4 +260,8 @@ public class Robot extends TimedRobot
     private final double CAMERA_HEIGHT_2019 = 34.25;
     private final double TARGET_HEIGHT_2019 = 83.7;
     private final double MOUNTING_ANGLE_2019 = 35;
+
+    private final double CAMERA_HEIGHT_2020 = 34.25;
+    private final double TARGET_HEIGHT_2020 = 83.7;
+    private final double MOUNTING_ANGLE_2020 = 35;
     }

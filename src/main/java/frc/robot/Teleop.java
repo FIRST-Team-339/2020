@@ -123,10 +123,10 @@ public class Teleop
         //     }
         // else
         //     {
-        teleopDrive();
+
         // }
-        SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
-        SmartDashboard.putBoolean("In Range of Target", Hardware.colorWheel.inRange());
+        // SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
+        // SmartDashboard.putBoolean("In Range of Target", Hardware.colorWheel.inRange());
 
         // ================= OPERATOR CONTROLS ================
 
@@ -150,22 +150,22 @@ public class Teleop
             Hardware.visionInterface.setPipeline(0);
             }
 
-        Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
+        // Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
-        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
+        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
 
-        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
         //this is necessary becuase I organized the code wrong and its too late to rewrite intake
-        Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
+        // Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
 
-        Hardware.ballcounter.subtractBall(Hardware.substractBall);
-        Hardware.ballcounter.addBall(Hardware.addBall);
-        Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+        // Hardware.ballcounter.subtractBall(Hardware.substractBall);
+        // Hardware.ballcounter.addBall(Hardware.addBall);
+        // Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
         // individualTest();
-        //  teleopDrive();
+        teleopDrive();
         // printStatements();
 
     } // end Periodic()
