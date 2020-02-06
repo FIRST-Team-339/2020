@@ -145,14 +145,13 @@ public static void periodic ()
     // System.out.println("ultrs" +
     // Hardware.frontUltraSonic.getDistanceFromNearestBumper());
     // System.out.println("vision"
-    // +Hardware.visionInterface.getDistanceFromTarget());
+    // Hardware.visionInterface.getDistanceFromTarget());
 
     Hardware.visionInterface.updateValues();
 
     // printing out utilized states:
 
     // Cancel if the "cancelAuto" button is pressed
-
 
     switch (autoState)
         {
@@ -466,7 +465,6 @@ public static boolean runAuto ()
             // TODO Picup drop down
             // TODO angle camera down
 
-
             // picking up balls
             // only applicable if Align Trench was previously stated
             if (pickupTrench())
@@ -576,9 +574,8 @@ private static boolean pickupTrench ()
         case DRIVE_FORWARD:
 
             // drive for balls`
-            // TODO add in vision implimentation for balls
-            if (Hardware.drive.driveStraightInches(PICKUP_DISTANCE,
-                    DRIVE_SPEED, ACCELERATION, true))
+
+            if (Hardware.intake.pickUpBallsVision())
                 {
                 return true;
                 }
@@ -978,7 +975,6 @@ private static boolean shootFar ()
                 }
             break;
 
-
         case FINISH:
             return true;
 
@@ -1019,7 +1015,7 @@ private final static int ALIGN_SQUARE_LEFT_DISTANCE = 45;
 // private final static int ALIGN_SQUARE_LEFT_FINAL_DEGREES = 45;
 // private final static int ALIGN_SQUARE_LEFT_FINAL_DISTANCE = 0;
 
-private final static int ALIGN_TRENCH_MOVE_BACK_DISTANCE = 96;
+// private final static int ALIGN_TRENCH_MOVE_BACK_DISTANCE = 96;
 
 private final static int ALIGN_TRENCH_RIGHT_DEGREES = -120;
 

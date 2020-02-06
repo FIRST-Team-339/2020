@@ -100,7 +100,7 @@ public class ColorWheel
 
     /**
     * This method will spin the control panel 3-5 times for shield generator stage 2 (no color sensing capabilities)
-    *   Parameter distance will be amount of times to spin the control panel x 100.5309
+    *   Parameter distance will be amount of times to spin the control panel x 100.5309. When calling the method distance will be the amount of rotations i.e. 3 for 3 rotations.
         Circumference of Control Panel = 100.5309
     * @method spinControlPanel
     * @author Guido Visioni
@@ -117,7 +117,7 @@ public class ColorWheel
             }
 
         // Check all encoders to see if they've reached the distance
-        if (Hardware.launcherMotorEncoder.getDistance() > distance)
+        if (Hardware.launcherMotorEncoder.getDistance() > distance * 100.5309)
             {
             Hardware.launcherMotorGroup.set(0);
             driveStraightInchesInit = true;
