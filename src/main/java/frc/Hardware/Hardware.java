@@ -136,12 +136,14 @@ public class Hardware
         // launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
         // launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
 
-        // launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
+        // launcherMotorGroup = new SpeedControllerGroup(launcherMotor1,
+        // launcherMotor2);
 
         // conveyorMotor1 = new WPI_TalonSRX(21);
         // conveyorMotor2 = new WPI_TalonSRX(22);
 
-        // conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
+        // conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1,
+        // conveyorMotor2);
 
         // intakeMotor = new WPI_TalonSRX(23);
 
@@ -172,7 +174,7 @@ public class Hardware
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         // drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, null);
-        //  Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
+        // Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
         Hardware.leftFrontMotor.setInverted(true);
         Hardware.leftRearMotor.setInverted(true);
 
@@ -563,5 +565,7 @@ public class Hardware
     // -------------------
     // Subassemblies
     // -------------------
+
+    public static CameraServo cameraServo = new CameraServo();
 
     } // end class
