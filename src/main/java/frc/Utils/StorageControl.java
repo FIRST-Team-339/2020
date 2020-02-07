@@ -105,19 +105,19 @@ public class StorageControl
                     prevPassive = true;
                     }
                 }
-            else
-                {
-                if (prevPassive)
-                    {
-                    Hardware.ballcounter.addBall();
-                    prevPassive = false;
-                    }
-                if (!this.upperRL.get())
-                    {
-                    state = ControlState.UP;
-                    prevPassive = false;
-                    }
-                }
+            // else
+            //     {
+            //     if (prevPassive)
+            //         {
+            //         Hardware.ballcounter.addBall();
+            //         prevPassive = false;
+            //         }
+            //     if (!this.upperRL.get())
+            //         {
+            //         state = ControlState.UP;
+            //         prevPassive = false;
+            //         }
+            //     }
             }
     }
 

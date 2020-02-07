@@ -66,7 +66,7 @@ public class Teleop
      */
     public static void init()
     {
-    
+
         // Gear Inits
 
         if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear))
@@ -106,10 +106,11 @@ public class Teleop
     {
 
         // =============== AUTOMATED SUBSYSTEMS ===============
-        // Hardware.visionInterface.updateValues();
-        // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        // Hardware.storage.storageControlState();
+        Hardware.storage.storageControlState();
+        Hardware.storage.intakeStorageControl();
 
         //Color Wheel testing code
         // if (Hardware.rightDriver.getRawButton(3) == true)
@@ -134,18 +135,10 @@ public class Teleop
             }
         if (testBoolean1 == true)
             {
-            Hardware.colorWheel.spinControlPanel(3);
+
             testBoolean1 = false;
             }
-        if (Hardware.rightDriver.getRawButton(3) == true)
-            {
-            testBoolean1 = true;
-            }
-        if (testBoolean1 == true)
-            {
-            Hardware.colorWheel.spinControlPanelToColor();
-            testBoolean1 = false;
-            }
+
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
@@ -159,28 +152,19 @@ public class Teleop
         //     shootClose = false;
         //     }
 
-        if (Hardware.rightDriver.getRawButton(11))
-            {
-            Hardware.visionInterface.setPipeline(2);
-            }
-        if (Hardware.rightDriver.getRawButton(12))
-            {
-            Hardware.visionInterface.setPipeline(0);
-            }
+        Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
-        // Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
+        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
 
-        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
+        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-        // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        // this is necessary becuase I organized the code wrong and its too late to rewrite intake
+        Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
 
-        // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
-        //this is necessary becuase I organized the code wrong and its too late to rewrite intake
-        // Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
-
-        // Hardware.ballcounter.subtractBall(Hardware.substractBall);
-        // Hardware.ballcounter.addBall(Hardware.addBall);
-        // Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+        Hardware.ballcounter.subtractBall(Hardware.substractBall);
+        Hardware.ballcounter.addBall(Hardware.addBall);
+        Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
         // individualTest();
         teleopDrive();

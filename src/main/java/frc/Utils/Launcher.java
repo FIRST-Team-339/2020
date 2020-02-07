@@ -127,6 +127,7 @@ public class Launcher
 
     public boolean spedUp = false;
 
+    public boolean aligned = false;
     //speed in inches per second
 
     //estimated RPM
@@ -141,19 +142,33 @@ public class Launcher
     {
         if (isClose)
             {
+            if (Hardware.visionDriving.driveToTarget(35, true, .3))
+                {
+                aligned = true;
+                }
             if (Hardware.launcherMotorEncoder.setRPM(
                     RPM_CLOSE + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
                 {
-                return true;
+                spedUp = true;
                 }
             }
         else
             {
+            if (Hardware.visionDriving.driveToTarget(120, true, .3))
+                {
+                aligned = true;
+                }
             if (Hardware.launcherMotorEncoder.setRPM(
                     RPM_FAR + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
                 {
-                return true;
+                spedUp = true;
                 }
+            }
+        if (aligned && spedUp)
+            {
+            aligned = false;
+            spedUp = false;
+            return true;
             }
         return false;
     }
