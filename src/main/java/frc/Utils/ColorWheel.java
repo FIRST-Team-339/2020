@@ -85,18 +85,18 @@ public class ColorWheel
                 case 'Y':
                     return "Y";
                 default:
-                    break;
+                    return "";
                 }
             }
         //Returns random letter if FMS data not detected
         return "A";
     }
 
-    // public boolean Override()
-    // {
-    //     if()
-    //     return false;
-    // }
+    public boolean Override()
+    {
+        Hardware.launcherMotorGroup.set(0);
+        return false;
+    }
 
     /**
     * This method will spin the control panel 3-5 times for shield generator stage 2 (no color sensing capabilities)
