@@ -59,10 +59,10 @@ public class Robot extends TimedRobot
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
 
-        //AIR
-        //Hardware.compressor.start();
+        // AIR
+        // Hardware.compressor.start();
 
-        //gyro
+        // gyro
         // Hardware.gyro.calibrate();//TODO
         // Hardware.gyro.reset();
 
@@ -161,6 +161,7 @@ public class Robot extends TimedRobot
 
         Hardware.leftDriveGroup.set(0);
         Hardware.rightDriveGroup.set(0);
+        Hardware.visionInterface.setPipeline(0);
 
         // ---------------------------------------
         // done setup - tell the user we are complete
