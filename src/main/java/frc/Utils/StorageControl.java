@@ -51,6 +51,24 @@ public class StorageControl
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
 
         SmartDashboard.putBoolean("Red", Hardware.visionInterface.getDistanceFromTarget() > 120);
+        if (this.intakeRL.get() && prevRL == false)
+            {
+            prevRL = true;
+            if (Hardware.intake.intaking)
+                {
+                System.out.println("adding");
+                Hardware.ballcounter.addBall();
+                }
+            else if (Hardware.intake.outtaking)
+                {
+                System.out.println("subtracting");
+                Hardware.ballcounter.subtractBall();
+                }
+            }
+        if (!this.intakeRL.get())
+            {
+            prevRL = false;
+            }
 
         switch (state)
             {
@@ -66,24 +84,6 @@ public class StorageControl
                     }
 
                 //gets data from the inake Redlight to add or subtract balls from our internal ball count when a ball enters or leaves the system through the bottem
-                if (this.intakeRL.get() && prevRL == false)
-                    {
-                    prevRL = true;
-                    if (Hardware.intake.intaking)
-                        {
-                        System.out.println("adding");
-                        Hardware.ballcounter.addBall();
-                        }
-                    else if (Hardware.intake.outtaking)
-                        {
-                        System.out.println("subtracting");
-                        Hardware.ballcounter.subtractBall();
-                        }
-                    }
-                if (!this.intakeRL.get())
-                    {
-                    prevRL = false;
-                    }
 
                 break;
             case UP:
@@ -132,7 +132,7 @@ public class StorageControl
                 if (prevPassive)
                     {
                     //TODO check if we need this. While commenting i dont think we do the other controll state should be good enough to add balls
-                    Hardware.ballcounter.addBall();
+                    // Hardware.ballcounter.addBall();
                     prevPassive = false;
                     }
                 if (!this.upperRL.get())

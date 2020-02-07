@@ -110,7 +110,7 @@ public class Teleop
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
         Hardware.storage.storageControlState();
-        Hardware.storage.intakeStorageControl();
+        //Hardware.storage.intakeStorageControl();
 
         //Color Wheel testing code
         // if (Hardware.rightDriver.getRawButton(3) == true)
