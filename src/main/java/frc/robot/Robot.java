@@ -41,14 +41,13 @@ public class Robot extends TimedRobot
 
         Hardware.initialize();
 
-        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear))
+        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
             Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
             Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
             Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
-
             }
-        else if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
+        else if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
             {
             Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2020);
             Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2020);

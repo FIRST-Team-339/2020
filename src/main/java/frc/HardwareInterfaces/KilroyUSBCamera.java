@@ -9,115 +9,136 @@ package frc.HardwareInterfaces;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * Add your docs here.
  */
 public class KilroyUSBCamera
     {
+
     /**
      * constructor
-     *
-     * @param server
-     * @param cam0
-     * @param cam1
      */
-    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1)
+    public KilroyUSBCamera()
         {
-            initialize(server, cam0, cam1);
+            this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
         }
 
     /**
      * constructor
      *
-     * @param server
-     * @param cam0
-     * @param cam1
      * @param button
      */
-    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button)
+    public KilroyUSBCamera(MomentarySwitch button)
         {
-            initialize(server, cam0, cam1);
+            this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            CameraServer.getInstance().removeServer("serve_usb1");
+            this.server = CameraServer.getInstance().getServer();
             this.button = button;
         }
 
     /**
      * constructor
      *
-     * @param server
-     * @param cam0
-     * @param cam1
      * @param button1
      * @param button2
      */
-    public KilroyUSBCamera(VideoSink server, UsbCamera cam0, UsbCamera cam1, MomentarySwitch button1,
-            MomentarySwitch button2)
+    public KilroyUSBCamera(JoystickButton button1, JoystickButton button2)
         {
-            initialize(server, cam0, cam1);
+            cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            CameraServer.getInstance().removeServer("serve_usb1");
+            server = CameraServer.getInstance().getServer();
             this.button1 = button1;
             this.button2 = button2;
         }
 
-    private void initialize(VideoSink server, UsbCamera cam0, UsbCamera cam1)
+    public void setCamera(int cameraNum)
     {
-        this.server = server;
-        this.cam0 = cam0;
-        this.cam1 = cam1;
+        if (cameraNum == 0)
+            {
+            this.server.setSource(this.cam0);
+            }
+        if (cameraNum == 1)
+            {
+            this.server.setSource(this.cam1);
+            }
     }
 
     /**
-     * Method for switching between the usb cameras on the robot
+     * Toggles which camera is being displayed on the driver's station
      */
     public void switchCameras()
     {
-        // TODO test
-        System.out.println(this.cam0.isConnected());
-        // if (this.cam0.isConnected())
-        // {
-        // this.server.setSource(this.cam1);
-        // }
-        // if (this.cam1.isConnected())
-        // {
-        // this.server.setSource(this.cam0);
-        // }
+        if (this.cam1 != null)
+            {
+            if (this.cam0.isEnabled())
+                {
+                server.setSource(this.cam1);
+                }
+            else
+                {
+                server.setSource(this.cam0);
+                }
+            }
     }
 
     /**
-     * This overload takes in one button and calls the switchCameras() method
+     * Toggles the cameras with a momentary switch
      *
      * @param button
      */
     public void switchCameras(MomentarySwitch button)
     {
-        // button starts as off
-        // if (/*momentary switch thing*/)
-        // {
-        // switchCameras();
-        // // momentary switch thing
-        // }
+        if (this.button.isOnCheckNow() && firstCheck == true)
+            {
+            switchCameras();
+            firstCheck = false;
+            }
+        if (this.button.isOnCheckNow() == false && firstCheck != true)
+            {
+            switchCameras();
+            firstCheck = true;
+            }
     }
 
     /**
-     * This overload takes in two buttons and calls the switchCameras() method
+     * button1 sets camera1 to be displayed to the driver's station, button2 sets camera0 to be displayed to the driver's station
      *
      * @param button1
      * @param button2
      */
-    public void switchCameras(MomentarySwitch button1, MomentarySwitch button2)
+    public void switchCameras(JoystickButton button1, JoystickButton button2)
     {
-        // // button starts as off
-        // if (/*momentary switch thing*/)
-        // {
-        // switchCameras();
-        // // momentary switch thing
-        // }
+        if (this.cam1 != null)
+            {
+            if (this.button1.get())
+                {
+                server.setSource(this.cam1);
+                }
+            if (this.button2.get())
+                {
+                server.setSource(this.cam0);
+                }
+            }
     }
 
-    private VideoSink server = null;
-    private MomentarySwitch button = null;
-    private MomentarySwitch button1 = null;
-    private MomentarySwitch button2 = null;
     private UsbCamera cam0 = null;
+
     private UsbCamera cam1 = null;
+
+    private VideoSink server;
+
+    private MomentarySwitch button = null;
+
+    private JoystickButton button1 = null;
+
+    private JoystickButton button2 = null;
+
+    private boolean firstCheck = true;
+
     // end class
     }
