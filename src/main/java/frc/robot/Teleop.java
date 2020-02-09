@@ -182,7 +182,7 @@ public class Teleop
         // Hardware.ballcounter.addBall(Hardware.addBall);
         // Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
 
-        // individualTest();
+        individualTest();
         teleopDrive();
         // printStatements();
 
@@ -213,7 +213,7 @@ public class Teleop
         // craigTest();
         //chrisTest();
         // dionTest();
-        // chrisTest();
+     chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();
@@ -340,6 +340,7 @@ public class Teleop
         if (Hardware.rightOperator.getRawButton(6) == true)
             {
             Hardware.rotateServo.setAngle(125);
+            
             }
         else if (Hardware.rightOperator.getRawButton(7) == true)
             {
