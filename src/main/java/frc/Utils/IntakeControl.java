@@ -52,20 +52,20 @@ public class IntakeControl
     public boolean undeployIntake(JoystickButton button)
     {
         // if (this.solenoid.getForward())
-        //     {
-        //     this.solenoid.set(Value.kReverse);
-        //     }
+        // {
+        // this.solenoid.set(Value.kReverse);
+        // }
         // if (!this.solenoid.getForward())
-        //     {
+        // {
         return true;
-        //     }
+        // }
         // return false;
     }
 
     public boolean getDeployed()
     {
-        //TODO find out if forward or backs is deployed or not
-        return true;/* this.solenoid.getForward(); *///TODO
+        // TODO find out if forward or backs is deployed or not
+        return true;/* this.solenoid.getForward(); */// TODO
     }
 
     public void makePassive(JoystickButton intakeButton, JoystickButton outtakeButton)
@@ -143,7 +143,7 @@ public class IntakeControl
         return false;
     }
 
-    //if first loop
+    // if first loop
     boolean pickUpBallsFirstTime = true;
     int startBallCount = 0;
 
@@ -156,8 +156,9 @@ public class IntakeControl
             }
         Hardware.visionInterface.setPipeline(2);
         this.intake();
-        if (Hardware.visionDriving.driveToTargetNoDistance(.2)
+        if ((Hardware.visionDriving.driveToTargetNoDistance(.2)
                 && (this.intaking == false || startBallCount < Hardware.ballcounter.getBallCount()))
+                || Hardware.ballcounter.getBallCount() >= startBallCount + 3)
             {
             Hardware.visionInterface.setPipeline(0);
             return true;

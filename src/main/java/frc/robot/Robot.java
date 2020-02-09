@@ -41,14 +41,13 @@ public class Robot extends TimedRobot
 
         Hardware.initialize();
 
-        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear))
+        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
             Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
             Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
             Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
-
             }
-        else if (Hardware.robotIdentity.equals(Hardware.Identifier.CurrentYear))
+        else if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
             {
             Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2020);
             Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2020);
@@ -59,10 +58,10 @@ public class Robot extends TimedRobot
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
 
-        //AIR
-        //Hardware.compressor.start();
+        // AIR
+        // Hardware.compressor.start();
 
-        //gyro
+        // gyro
         // Hardware.gyro.calibrate();//TODO
         // Hardware.gyro.reset();
 
@@ -161,6 +160,7 @@ public class Robot extends TimedRobot
 
         Hardware.leftDriveGroup.set(0);
         Hardware.rightDriveGroup.set(0);
+        Hardware.visionInterface.setPipeline(0);
 
         // ---------------------------------------
         // done setup - tell the user we are complete

@@ -66,18 +66,19 @@ public class Teleop
      */
     public static void init()
     {
-    
+
         // Gear Inits
 
-        if (Hardware.robotIdentity.equals(Hardware.Identifier.PrevYear))
+        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
-            Hardware.drive.setGearPercentage(0, FIRST_GEAR);
-            Hardware.drive.setGearPercentage(1, SECOND_GEAR);
-            Hardware.drive.setGearPercentage(2, FORBIDDEN_THIRD_GEAR);
+            Hardware.drive.setGearPercentage(0, PREV_YEAR_FIRST_GEAR);
+            Hardware.drive.setGearPercentage(1, PREV_YEAR_SECOND_GEAR);
+            Hardware.launcherMotorEncoder.reset();
             }
         else
             {
-            // TODO
+            Hardware.drive.setGearPercentage(0, CURRENT_YEAR_FIRST_GEAR);
+            Hardware.drive.setGearPercentage(1, CURRENT_YEAR_SECOND_GEAR);
             }
 
         Hardware.drive.setGear(0);
@@ -85,7 +86,6 @@ public class Teleop
         //Servo initial starting position
         Hardware.rotateServo.setAngle(125);
 
-        // Hardware.launcherMotorEncoder.reset();
     } // end Init
 
     /**
@@ -106,10 +106,14 @@ public class Teleop
     {
 
         // =============== AUTOMATED SUBSYSTEMS ===============
-        // Hardware.visionInterface.updateValues();
-        // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        // Hardware.storage.storageControlState();
+        if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
+            {
+            Hardware.storage.storageControlState();
+            }
+        //Hardware.storage.intakeStorageControl();
 
         //Color Wheel testing code
         // if (Hardware.rightDriver.getRawButton(3) == true)
@@ -134,18 +138,10 @@ public class Teleop
             }
         if (testBoolean1 == true)
             {
-            Hardware.colorWheel.spinControlPanel(3);
+
             testBoolean1 = false;
             }
-        if (Hardware.rightDriver.getRawButton(3) == true)
-            {
-            testBoolean1 = true;
-            }
-        if (testBoolean1 == true)
-            {
-            Hardware.colorWheel.spinControlPanelToColor();
-            testBoolean1 = false;
-            }
+
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
@@ -159,32 +155,35 @@ public class Teleop
         //     shootClose = false;
         //     }
 
-        if (Hardware.rightDriver.getRawButton(11))
+        if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
-            Hardware.visionInterface.setPipeline(2);
+            Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
+
+            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
+
+            Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+
+            Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+            // this is necessary becuase I organized the code wrong and its too late to rewrite intake
+            Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
+
+            Hardware.ballcounter.subtractBall(Hardware.substractBall);
+            Hardware.ballcounter.addBall(Hardware.addBall);
+            Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
             }
-        if (Hardware.rightDriver.getRawButton(12))
-            {
-            Hardware.visionInterface.setPipeline(0);
-            }
 
-        // Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
-
-        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
-
-        // Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
-
-        // Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
-        //this is necessary becuase I organized the code wrong and its too late to rewrite intake
-        // Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
-
-        // Hardware.ballcounter.subtractBall(Hardware.substractBall);
-        // Hardware.ballcounter.addBall(Hardware.addBall);
-        // Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
-
+<<<<<<< HEAD
         individualTest();
+=======
+        // individualTest();
+        if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
+                || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
+            {
+            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton);
+            }
+>>>>>>> 1a91944a5e9a2cf3cea0904ad6b8e03ac3391a7b
         teleopDrive();
-        // printStatements();
+        printStatements();
 
     } // end Periodic()
 
@@ -199,9 +198,19 @@ public class Teleop
 
         Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
 
-        if (Hardware.drive.getCurrentGear() >= MAX_GEAR_NUMBER)
+        if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
-            Hardware.drive.setGear(MAX_GEAR_NUMBER - 1);
+            if (Hardware.drive.getCurrentGear() >= PREV_YEAR_MAX_GEAR_NUMBER)
+                {
+                Hardware.drive.setGear(PREV_YEAR_MAX_GEAR_NUMBER - 1);
+                }
+            }
+        else
+            {
+            if (Hardware.drive.getCurrentGear() >= CURRENT_YEAR_MAX_GEAR_NUMBER)
+                {
+                Hardware.drive.setGear(CURRENT_YEAR_MAX_GEAR_NUMBER - 1);
+                }
             }
 
     }
@@ -361,106 +370,110 @@ public class Teleop
         // ---------- DIGITAL ----------
         //encoders:
         // Encoder Distances
-        /*Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
-        Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
-        Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.get());
-        Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.get());
-        Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.get());
-        Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.get());
-        Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.get());
+        // Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.get());
+        // Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.get());
+        // Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.get());
+        // Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.get());
+        // Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.get());
         // Encoder Raw Values
-        Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.getRaw());
-        Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.getRaw());
-        Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.getRaw());
-        Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.getRaw());
-        Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.getRaw());
-        Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
-        Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.getRaw());
-        
+        // Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.getRaw());
+
         // Switch Values
         Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
-        Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
-        Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
-        Hardware.telemetry.printToConsole("autoLocation: " + Hardware.autoLocation.getPosition());
+        // Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
+        // Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
+        // Hardware.telemetry.printToConsole("autoLocation: " + Hardware.autoLocation.getPosition());
         //red lights
-        Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
-        Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
-        Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
-        Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
-        
+        // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
+        // Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
+        // Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
+        // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
+
         // ---------- ANALOG -----------
-        Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
-        System.out.println("Delay Pot: " + Hardware.delayPot.get());
-        System.out.println("Hood Pot: " + Hardware.hoodPot.get());
-        Hardware.telemetry.printToConsole(
-                "frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
-        
+        // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
+        // System.out.println("Delay Pot: " + Hardware.delayPot.get());
+        // System.out.println("Hood Pot: " + Hardware.hoodPot.get());
+        // Hardware.telemetry.printToConsole(
+        //         "frontUltraSonic bumper distance: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
+
         // ----------- CAN -------------
-        
+
         // -------- SUBSYSTEMS ---------
-        
+
         // -------- JOYSTICKS ----------
         // Left Driver
-        
-        Hardware.telemetry.printToConsole("Left Driver X: " + Hardware.leftDriver.getX());
-        Hardware.telemetry.printToConsole("Left Driver Y: " + Hardware.leftDriver.getY());
-        Hardware.telemetry.printToConsole("Left Driver Z: " + Hardware.leftDriver.getZ());
+
+        // Hardware.telemetry.printToConsole("Left Driver X: " + Hardware.leftDriver.getX());
+        // Hardware.telemetry.printToConsole("Left Driver Y: " + Hardware.leftDriver.getY());
+        // Hardware.telemetry.printToConsole("Left Driver Z: " + Hardware.leftDriver.getZ());
         // Right Driver
-        Hardware.telemetry.printToConsole("Right Driver X: " + Hardware.rightDriver.getX());
-        Hardware.telemetry.printToConsole("Right Driver Y: " + Hardware.rightDriver.getY());
-        Hardware.telemetry.printToConsole("Right Driver Z: " + Hardware.rightDriver.getZ());
+        // Hardware.telemetry.printToConsole("Right Driver X: " + Hardware.rightDriver.getX());
+        // Hardware.telemetry.printToConsole("Right Driver Y: " + Hardware.rightDriver.getY());
+        // Hardware.telemetry.printToConsole("Right Driver Z: " + Hardware.rightDriver.getZ());
         // Left Operator
-        Hardware.telemetry.printToConsole("Left Op X: " + Hardware.leftOperator.getX());
-        Hardware.telemetry.printToConsole("Left Op Y: " + Hardware.leftOperator.getY());
-        Hardware.telemetry.printToConsole("Left Op Z: " + Hardware.leftOperator.getZ());
+        // Hardware.telemetry.printToConsole("Left Op X: " + Hardware.leftOperator.getX());
+        // Hardware.telemetry.printToConsole("Left Op Y: " + Hardware.leftOperator.getY());
+        // Hardware.telemetry.printToConsole("Left Op Z: " + Hardware.leftOperator.getZ());
         // Right Operator
-        Hardware.telemetry.printToConsole("Right Op X: " + Hardware.rightOperator.getX());
-        Hardware.telemetry.printToConsole("Right Op Y: " + Hardware.rightOperator.getY());
-        Hardware.telemetry.printToConsole("Right Op Z: " + Hardware.rightOperator.getZ());
-        
+        // Hardware.telemetry.printToConsole("Right Op X: " + Hardware.rightOperator.getX());
+        // Hardware.telemetry.printToConsole("Right Op Y: " + Hardware.rightOperator.getY());
+        // Hardware.telemetry.printToConsole("Right Op Z: " + Hardware.rightOperator.getZ());
+
         //----------- VISION -----------
         //Hardware.telemetry.printToConsole("usb cam 0 target distance: " + Hardware.usbCam0.);
-        
+
         // ========== OUTPUTS ==========
-        
+
         // ---------- DIGITAL ----------
-        
+
         // ---------- ANALOG -----------
-        
+
         // ----------- CAN -------------
         // Motor Percentages
-        Hardware.telemetry.printToConsole("L.R. Motor: " + Hardware.leftRearMotor.get());
-        Hardware.telemetry.printToConsole("R.R. Motor: " + Hardware.rightRearMotor.get());
-        Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
-        Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
-        Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
-        Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());*/
+        // Hardware.telemetry.printToConsole("L.R. Motor: " + Hardware.leftRearMotor.get());
+        // Hardware.telemetry.printToConsole("R.R. Motor: " + Hardware.rightRearMotor.get());
+        // Hardware.telemetry.printToConsole("L.F. Motor: " + Hardware.leftFrontMotor.get());
+        // Hardware.telemetry.printToConsole("R.F. Motor: " + Hardware.rightFrontMotor.get());
+        // Hardware.telemetry.printToConsole("launch motor #1: " + Hardware.launcherMotor1.get());
+        // Hardware.telemetry.printToConsole("launch motor #2: " + Hardware.launcherMotor2.get());
         // Hardware.telemetry.printToConsole("conveyor motor #1: " + Hardware.conveyorMotor1.get());
-        /*Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
-        Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
-        Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
-        Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
-        
+        // Hardware.telemetry.printToConsole("conveyor motor #2: " + Hardware.conveyorMotor2.get());
+        // Hardware.telemetry.printToConsole("intake motor: " + Hardware.intakeMotor.get());
+        // Hardware.telemetry.printToConsole("wheel spin motor: " + Hardware.wheelSpinnerMotor.get());
+        // Hardware.telemetry.printToConsole("hood adjust motor: " + Hardware.hoodAdjustmentMotor.get());
+
         // -------- SUBSYSTEMS ---------
-        
+
         // ---------- OTHER ------------ pdp, pneumatics
-        Hardware.telemetry.printToConsole("PDP voltage: " + Hardware.pdp.getVoltage());
-        Hardware.telemetry.printToConsole("iDoubleSolenoid forward: " + Hardware.iDoubleSolenoid.getForward());
-        Hardware.telemetry.printToConsole("iDoubleSolenoid reverse: " + Hardware.iDoubleSolenoid.getReverse());
-        Hardware.telemetry.printToConsole("lifDoubleSolenoid forward: " + Hardware.lifDoubleSolenoid.getForward());
-        Hardware.telemetry.printToConsole("lifDoubleSolenoid reverse: " + Hardware.lifDoubleSolenoid.getReverse());
-        Hardware.telemetry.printToConsole("compressor, is low: " + Hardware.compressor.getPressureSwitchValue());*/
+        // Hardware.telemetry.printToConsole("PDP voltage: " + Hardware.pdp.getVoltage());
+        // Hardware.telemetry.printToConsole("iDoubleSolenoid forward: " + Hardware.iDoubleSolenoid.getForward());
+        // Hardware.telemetry.printToConsole("iDoubleSolenoid reverse: " + Hardware.iDoubleSolenoid.getReverse());
+        // Hardware.telemetry.printToConsole("lifDoubleSolenoid forward: " + Hardware.lifDoubleSolenoid.getForward());
+        // Hardware.telemetry.printToConsole("lifDoubleSolenoid reverse: " + Hardware.lifDoubleSolenoid.getReverse());
+        // Hardware.telemetry.printToConsole("compressor, is low: " + Hardware.compressor.getPressureSwitchValue());
 
     }
 
     private static boolean boolthing = false;
 
-    private final static int MAX_GEAR_NUMBER = 2;
+    private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 
-    private final static double FIRST_GEAR = .3;
+    private final static int CURRENT_YEAR_MAX_GEAR_NUMBER = 2;
 
-    private final static double SECOND_GEAR = .5;
+    private final static double PREV_YEAR_FIRST_GEAR = .3;
 
-    private final static double FORBIDDEN_THIRD_GEAR = 1.0;
+    private final static double PREV_YEAR_SECOND_GEAR = .5;
+
+    private final static double CURRENT_YEAR_FIRST_GEAR = .3;
+
+    private final static double CURRENT_YEAR_SECOND_GEAR = .5;
 
     } // end class

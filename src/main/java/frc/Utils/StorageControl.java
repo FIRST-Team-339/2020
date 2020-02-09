@@ -8,6 +8,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
 
+/**
+ * code for controlling the conveyor storage system and moving the conveyor to intake and laucnher balls. Referenes BallCounter to add/subtrack balls based off of the redlights. For the 2020 season
+ * @author Conner McKevitt
+ */
 public class StorageControl
     {
     LightSensor intakeRL = null;
@@ -27,6 +31,7 @@ public class StorageControl
             this.conveyorMotors = conveyorMotors;
         }
 
+    //control state to update what the conveyor should b doing
     private enum ControlState
         {
         INIT, PASSIVE, UP, DOWN
@@ -34,49 +39,58 @@ public class StorageControl
 
     public ControlState state = ControlState.INIT;
 
+    /**
+     * state updated for the conveyor belt. This should always be running in teleop
+     */
     public void storageControlState()
     {
 
+        //these puts are not test code. Send important robot data to the robot for the drivers to see
         SmartDashboard.putNumber("", Hardware.ballcounter.getBallCount());
 
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
 
         SmartDashboard.putBoolean("Red", Hardware.visionInterface.getDistanceFromTarget() > 120);
+        if (this.intakeRL.get() && prevRL == false)
+            {
+            prevRL = true;
+            if (Hardware.intake.intaking)
+                {
+                System.out.println("adding");
+                Hardware.ballcounter.addBall();
+                }
+            else if (Hardware.intake.outtaking)
+                {
+                System.out.println("subtracting");
+                Hardware.ballcounter.subtractBall();
+                }
+            }
+        if (!this.intakeRL.get())
+            {
+            prevRL = false;
+            }
 
         switch (state)
             {
+            //just in case need later
             case INIT:
                 state = ControlState.PASSIVE;
                 break;
             case PASSIVE:
+                //if moving the conveyor is not being called set the motor to the holding speed
                 if (!override)
                     {
                     Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
                     }
 
-                if (this.intakeRL.get() && prevRL == false)
-                    {
-                    prevRL = true;
-                    if (Hardware.intake.intaking)
-                        {
-                        System.out.println("adding");
-                        Hardware.ballcounter.addBall();
-                        }
-                    else if (Hardware.intake.outtaking)
-                        {
-                        System.out.println("subtracting");
-                        Hardware.ballcounter.subtractBall();
-                        }
-                    }
-                if (!this.intakeRL.get())
-                    {
-                    prevRL = false;
-                    }
+                //gets data from the inake Redlight to add or subtract balls from our internal ball count when a ball enters or leaves the system through the bottem
 
                 break;
             case UP:
+                //move up towards launcher
                 conveyorUp();
                 break;
+            //move down towards intake
             case DOWN:
                 conveyorDown();
                 break;
@@ -88,32 +102,42 @@ public class StorageControl
 
     boolean prevPassive = false;
 
+    /**
+     *
+     */
     public void intakeStorageControl()
     {
         if (Hardware.intake.intaking)
             {
+            //if the intake RL is not triggered
             if (!this.intakeRL.get())
                 {
                 if (!this.lowerRL.get())
                     {
+                    //move down if lower RL is false
                     state = ControlState.DOWN;
                     prevPassive = false;
                     }
                 else
                     {
+                    //if lower RL is on dont move
                     state = ControlState.PASSIVE;
                     prevPassive = true;
                     }
                 }
+
             else
                 {
+                //if the intake Rl is true
                 if (prevPassive)
                     {
-                    Hardware.ballcounter.addBall();
+                    //TODO check if we need this. While commenting i dont think we do the other controll state should be good enough to add balls
+                    // Hardware.ballcounter.addBall();
                     prevPassive = false;
                     }
                 if (!this.upperRL.get())
                     {
+                    //if the upper RL is not on move up until on
                     state = ControlState.UP;
                     prevPassive = false;
                     }
