@@ -21,9 +21,17 @@ public class KilroyUSBCamera
     /**
      * constructor
      */
-    public KilroyUSBCamera()
+    public KilroyUSBCamera(boolean twoFeeds)
         {
-            this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            if (twoFeeds == true)
+                {
+                this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+                this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+                }
+            else
+                {
+                this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+                }
         }
 
     /**
@@ -36,7 +44,7 @@ public class KilroyUSBCamera
             this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
             this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
             CameraServer.getInstance().removeServer("serve_usb1");
-            this.server = CameraServer.getInstance().getServer();
+            this.server = CameraServer.getInstance().getServer("serve_usb0");
             this.button = button;
         }
 
@@ -51,7 +59,7 @@ public class KilroyUSBCamera
             cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
             cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
             CameraServer.getInstance().removeServer("serve_usb1");
-            server = CameraServer.getInstance().getServer();
+            server = CameraServer.getInstance().getServer("serve_usb0");
             this.button1 = button1;
             this.button2 = button2;
         }
