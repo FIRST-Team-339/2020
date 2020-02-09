@@ -225,7 +225,6 @@ public class KilroyEncoder implements PIDSource
                     }
                 else
                     {
-
                     return (int) (this.sensorCollection.getIntegratedSensorAbsolutePosition());
                     }
                 // can talonSRX read the encoder as 4X instead of 1X, so the
@@ -258,7 +257,7 @@ public class KilroyEncoder implements PIDSource
             case CAN_HAT:
                 return distancePerTick * this.get();
             case FALC_ENC:
-                return 0;
+                return distancePerTick * this.get();
             default:
                 return this.get();
             }

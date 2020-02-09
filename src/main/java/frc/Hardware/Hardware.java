@@ -108,7 +108,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(9);
@@ -125,15 +125,25 @@ public class Hardware
         // ==============CAN INIT=============
         // Motor Controllers
         leftFrontMotor = new WPI_TalonFX(13);
+        leftFrontMotor.setInverted(false);
         rightFrontMotor = new WPI_TalonFX(12);
+        rightFrontMotor.setInverted(true);
+
         leftRearMotor = new WPI_TalonFX(15);
+        leftRearMotor.setInverted(false);
         rightRearMotor = new WPI_TalonFX(14);
+        rightRearMotor.setInverted(true);
 
         leftDriveGroup = new SpeedControllerGroup(leftRearMotor, leftFrontMotor);
         rightDriveGroup = new SpeedControllerGroup(rightRearMotor, rightFrontMotor);
 
         leftDriveEncoder = new KilroyEncoder((WPI_TalonFX) leftFrontMotor);
+        leftDriveEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK);
+        leftDriveEncoder.setReverseDirection(true);
+
         rightDriveEncoder = new KilroyEncoder((WPI_TalonFX) rightFrontMotor);
+        rightDriveEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK);
+        rightDriveEncoder.setReverseDirection(true);
 
         // launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
         // launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
@@ -154,11 +164,6 @@ public class Hardware
         // ==============DIO INIT=============
 
         // launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
-
-        // conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
-
-        // intakeMotorEncoder = new KilroyEncoder((WPI_TalonSRX) intakeMotor);
-
         // wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
         // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
@@ -171,13 +176,9 @@ public class Hardware
         // =============OTHER INIT============
 
         // pneumatics
-        // compressor = new Compressor();
 
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
-        Hardware.leftFrontMotor.setInverted(true);
-        Hardware.leftRearMotor.setInverted(true);
-
         kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton);
         // Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
 
@@ -226,10 +227,6 @@ public class Hardware
 
         launcherMotorEncoder = new KilroyEncoder(7, 25);
 
-        conveyorMotorEncoder = new KilroyEncoder((WPI_TalonSRX) conveyorMotor1);
-
-        intakeMotorEncoder = new KilroyEncoder((WPI_TalonSRX) intakeMotor);
-
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
         // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
@@ -247,7 +244,6 @@ public class Hardware
         rightDriveGroup = new SpeedControllerGroup(rightFrontMotor);
 
         // pneumatics
-        compressor = new Compressor();
 
         // ==============RIO INIT==============
 
@@ -264,8 +260,8 @@ public class Hardware
         Hardware.leftFrontMotor.setInverted(false);
         Hardware.rightFrontMotor.setInverted(true);
 
-        leftDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
-        rightDriveEncoder.setDistancePerPulse(DISTANCE_PER_TICK_XIX);
+        leftDriveEncoder.setDistancePerPulse(PREV_YEAR_DISTANCE_PER_TICK);
+        rightDriveEncoder.setDistancePerPulse(PREV_YEAR_DISTANCE_PER_TICK);
 
         Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
 
@@ -377,13 +373,9 @@ public class Hardware
 
     public static SpeedControllerGroup conveyorMotorGroup = null;
 
-    public static KilroyEncoder conveyorMotorEncoder = null;
-
     // ------------------------------------------------------------
 
     public static SpeedController intakeMotor = null;
-
-    public static KilroyEncoder intakeMotorEncoder = null;
 
     // ------------------------------------------------------------
 
@@ -435,7 +427,7 @@ public class Hardware
     // **********************************************************
     public static DoubleSolenoid intakeSolenoid = null;
     public static DoubleSolenoid liftSolenoid = null;
-    public static Compressor compressor = null;
+    public static Compressor compressor = new Compressor();
     // **********************************************************
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
@@ -542,7 +534,9 @@ public class Hardware
 
     public static LimelightInterface visionInterface = new LimelightInterface();
 
-    public final static double DISTANCE_PER_TICK_XIX = 23 / 13.8;// .0346;
+    public final static double PREV_YEAR_DISTANCE_PER_TICK = 23 / 13.8;// .0346;
+    public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;
+
     // -------------------
     // Subassemblies
     // -------------------

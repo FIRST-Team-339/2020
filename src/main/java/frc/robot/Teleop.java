@@ -79,6 +79,7 @@ public class Teleop
             {
             Hardware.drive.setGearPercentage(0, CURRENT_YEAR_FIRST_GEAR);
             Hardware.drive.setGearPercentage(1, CURRENT_YEAR_SECOND_GEAR);
+            Hardware.drive.resetEncoders();
             }
 
         Hardware.drive.setGear(0);
@@ -259,10 +260,6 @@ public class Teleop
 
         //     }
 
-        //System.out.println("Degrees Gyro: "+ Hardware.gyro.getAngle());
-        // System.out.println(Hardware.rightFrontMotor.getInverted());
-        //System.out.println("Ticks: " + Hardware.rightDriveEncoder.getRate());
-
     }
 
     public static void colourTest()
@@ -365,25 +362,23 @@ public class Teleop
         // ---------- DIGITAL ----------
         //encoders:
         // Encoder Distances
+        //Hardware.telemetry.printToConsole("L. Encoder Ticks: " + Hardware.leftDriveEncoder.get());
         // Hardware.telemetry.printToConsole("L. Encoder Dist: " + Hardware.leftDriveEncoder.getDistance());
-        // Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("R. Encoder Ticks: " + Hardware.rightDriveEncoder.get());
+        Hardware.telemetry.printToConsole("R. Encoder Dist: " + Hardware.rightDriveEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.getRaw());
         // Hardware.telemetry.printToConsole("launch encoder: " + Hardware.launcherMotorEncoder.get());
-        // Hardware.telemetry.printToConsole("conveyor encoder: " + Hardware.conveyorMotorEncoder.get());
-        // Hardware.telemetry.printToConsole("intake encoder: " + Hardware.intakeMotorEncoder.get());
         // Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.get());
         // Hardware.telemetry.printToConsole("hood adjust encoder: " + Hardware.hoodAdjustmentMotorEncoder.get());
         // Encoder Raw Values
-        // Hardware.telemetry.printToConsole("L. Encoder Raw: " + Hardware.leftDriveEncoder.getRaw());
-        // Hardware.telemetry.printToConsole("R. Encoder Raw: " + Hardware.rightDriveEncoder.getRaw());
         // Hardware.telemetry.printToConsole("launch encoder raw: " + Hardware.launcherMotorEncoder.getRaw());
-        // Hardware.telemetry.printToConsole("conveyor encoder raw: " + Hardware.conveyorMotorEncoder.getRaw());
-        // Hardware.telemetry.printToConsole("intake encoder raw: " + Hardware.intakeMotorEncoder.getRaw());
         // Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
         // Hardware.telemetry.printToConsole("hood adjust encoder raw: " + Hardware.hoodAdjustmentMotorEncoder.getRaw());
 
         // Switch Values
-        Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
+        // Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
         // Hardware.telemetry.printToConsole("autoLocation: " + Hardware.autoLocation.getPosition());
         //red lights
