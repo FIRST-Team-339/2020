@@ -172,16 +172,13 @@ public class Teleop
             Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
             }
 
-<<<<<<< HEAD
         individualTest();
-=======
         // individualTest();
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
                 || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton);
             }
->>>>>>> 1a91944a5e9a2cf3cea0904ad6b8e03ac3391a7b
         teleopDrive();
         printStatements();
 
