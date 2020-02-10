@@ -175,11 +175,10 @@ public class Hardware
 
         // =============OTHER INIT============
 
-        // pneumatics
-
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
-        kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton);
+        // pneumatics
+
         // Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
 
     } // end initiaizeCurrentYear()
@@ -248,6 +247,7 @@ public class Hardware
         // ==============RIO INIT==============
 
         // =============OTHER INIT============
+
         transmission = new TankTransmission(leftDriveGroup, rightDriveGroup);
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
 
@@ -274,8 +274,6 @@ public class Hardware
         hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
 
         ballcounter = new BallCounter(ballButtonTimer);
-
-        kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton);
 
     } // end initizliePrevYear()
 
@@ -428,10 +426,10 @@ public class Hardware
     public static DoubleSolenoid intakeSolenoid = null;
     public static DoubleSolenoid liftSolenoid = null;
     public static Compressor compressor = new Compressor();
+
     // **********************************************************
     // roboRIO CONNECTIONS CLASSES
     // **********************************************************
-
     public static PowerDistributionPanel pdp = new PowerDistributionPanel(2);
 
     public static KilroySPIGyro gyro = new KilroySPIGyro(true);
@@ -439,7 +437,6 @@ public class Hardware
     // **********************************************************
     // DRIVER STATION CLASSES
     // **********************************************************
-
     public static DriverStation driverStation = DriverStation.getInstance();
 
     public static Joystick leftDriver = new Joystick(0);
@@ -450,7 +447,6 @@ public class Hardware
     // **********************************************************
     // Buttons
     // **********************************************************
-
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
@@ -487,11 +483,11 @@ public class Hardware
     public static JoystickButton toggleIntake = new JoystickButton(Hardware.leftOperator, 3);
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
+
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
-
-    public static KilroyUSBCamera kilroyUSBCamera = null;
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton);
 
     // ------------------------------------
     // Utility classes
@@ -511,9 +507,9 @@ public class Hardware
     // ------------------------------------
     // Drive system
     // ------------------------------------
-    public static Drive drive = null;
-
     public static TankTransmission transmission = null;
+
+    public static Drive drive = null;
 
     // launcher stuff
     public static IntakeControl intake = null;
@@ -540,7 +536,6 @@ public class Hardware
     // -------------------
     // Subassemblies
     // -------------------
-
     public static CameraServo cameraServo = new CameraServo();
 
     } // end class
