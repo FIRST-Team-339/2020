@@ -111,7 +111,7 @@ public class Hardware
     public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
 
     // ==============Servo==============
-    public static Servo rotateServo = new Servo(8);
+    public static Servo rotateServo = new Servo(9);
 
     /**********************************************
      * initializePrevYear() function initializes all Hardware items that are
