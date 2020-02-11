@@ -531,7 +531,7 @@ public class Hardware
     public static LimelightInterface visionInterface = new LimelightInterface();
 
     public final static double PREV_YEAR_DISTANCE_PER_TICK = 23 / 13.8;// .0346;
-    public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;
+    public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;//.000746
 
     // -------------------
     // Subassemblies
