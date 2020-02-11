@@ -156,10 +156,10 @@ public class IntakeControl
             }
         Hardware.visionInterface.setPipeline(2);
         this.intake();
-        if ((Hardware.visionDriving.driveToTargetNoDistance(.2)
-                && (this.intaking == false || startBallCount < Hardware.ballcounter.getBallCount()))
+        if (Hardware.visionDriving.driveToTargetNoDistance(.2)
                 || Hardware.ballcounter.getBallCount() >= startBallCount + 3)
             {
+            System.out.println("picked up all of the balls");
             Hardware.visionInterface.setPipeline(0);
             return true;
             }
