@@ -141,9 +141,19 @@ public class Teleop
             }
         if (testBoolean1 == true)
             {
-
-            testBoolean1 = false;
+            if (Hardware.visionDriving.driveToTargetNoDistance(.1))
+                {
+                testBoolean1 = false;
+                }
             }
+        else
+            {
+            teleopDrive();
+            }
+        // SmartDashboard.putNumber("Proximity from target",
+        // Hardware.colorSensor.getProximity());
+        // SmartDashboard.putBoolean("In Range of Target",
+        // Hardware.colorWheel.inRange());
 
         // ================= OPERATOR CONTROLS ================
 
@@ -182,9 +192,8 @@ public class Teleop
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton);
             }
-        teleopDrive();
-        printStatements();
-
+        // teleopDrive();
+        // printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
