@@ -138,14 +138,26 @@ public class Autonomous
 
     public static void periodic()
     {
+        // ===========================================
+        // important code to make stuff do other stuff
+        // ============================================
         Hardware.visionInterface.updateValues();
+        Hardware.storage.storageControlState();
+        Hardware.storage.intakeStorageControl();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        // ==================================================
+        // end important code that make stuff do other stuff
+        // ===================================================
+
+        // System.out.println("auto state: " + autoState);
+        // System.out.println("path: " + path);
 
         // System.out.println("ultrs" +
         // Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         // System.out.println("vision"
         // Hardware.visionInterface.getDistanceFromTarget());
 
-        Hardware.visionInterface.updateValues();
+        System.out.println(Hardware.gyro.getAngle());
 
         // printing out utilized states:
 
@@ -284,6 +296,7 @@ public class Autonomous
                 break;
 
             case SHOOT_FAR:
+                System.out.println("has shot the thing: " + hasShotTheEtHInG);
                 if (!hasShotTheEtHInG)
                     {
                     if (shootFar())
@@ -553,10 +566,14 @@ public class Autonomous
             // break;
             case DRIVE_FORWARD:
 
-                // drive for balls`
+                // drive for balls
+                System.out.println("picking up balls");
+                Hardware.visionInterface.setPipeline(2);
+
                 Hardware.cameraServo.setCameraAngleDown();
                 if (Hardware.intake.pickUpBallsVision())
                     {
+                    Hardware.visionInterface.setPipeline(0);
                     return true;
                     }
                 break;
@@ -912,18 +929,28 @@ public class Autonomous
             case DRIVE_BACK:
                 if (Hardware.drive.driveStraightInches(SHOOT_FAR_DRIVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION, true))
                     {
+                    Hardware.autoTimer.start();//TODO
                     far = farState.ALIGN;
                     }
 
                 break;
             case ALIGN:
+
                 if (Hardware.visionDriving.alignToTarget())
                     {
-                    far = farState.FINISH;
+                    //TODO
+                    if (Hardware.autoTimer.get() > 1)
+                        {
+                        far = farState.FINISH;
+                        Hardware.autoTimer.reset();
+                        Hardware.autoTimer.stop();
+
+                        }
                     }
                 break;
 
             case FINISH:
+
                 return true;
 
             }

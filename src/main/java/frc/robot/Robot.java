@@ -41,17 +41,18 @@ public class Robot extends TimedRobot
 
         Hardware.initialize();
 
-        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
+        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
             {
-            Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2019);
-            Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2019);
-            Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2019);
+            Hardware.visionInterface.setCameraHeight(PREV_YEAR_CAMERA_HEIGHT);
+            Hardware.visionInterface.setTargetHeight(PREV_YEAR_TARGET_HEIGHT);
+            Hardware.visionInterface.setMountingAngle(PREV_YEAR_MOUNTING_ANGLE);
+            Hardware.drive.setJoystickDeadband(0.2);
             }
         else if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
             {
-            Hardware.visionInterface.setCameraHeight(CAMERA_HEIGHT_2020);
-            Hardware.visionInterface.setTargetHeight(TARGET_HEIGHT_2020);
-            Hardware.visionInterface.setMountingAngle(MOUNTING_ANGLE_2020);
+            Hardware.visionInterface.setCameraHeight(_CURRENT_YEAR_CAMERA_HEIGHT);
+            Hardware.visionInterface.setTargetHeight(CURRENT_YEAR_TARGET_HEIGHT);
+            Hardware.visionInterface.setMountingAngle(CURRENT_YEAR_MOUNTING_ANGLE);
             }
 
         // Clearing TalonFX motor ticks
@@ -257,11 +258,11 @@ public class Robot extends TimedRobot
         Teleop.periodic();
     } // end testPeriodic()
 
-    private final double CAMERA_HEIGHT_2019 = 34.25;
-    private final double TARGET_HEIGHT_2019 = 83.7;
-    private final double MOUNTING_ANGLE_2019 = 35;
+    private final double PREV_YEAR_CAMERA_HEIGHT = 34.25;
+    private final double PREV_YEAR_TARGET_HEIGHT = 83.7;
+    private final double PREV_YEAR_MOUNTING_ANGLE = 35;
 
-    private final double CAMERA_HEIGHT_2020 = 34.25;
-    private final double TARGET_HEIGHT_2020 = 83.7;
-    private final double MOUNTING_ANGLE_2020 = 35;
+    private final double _CURRENT_YEAR_CAMERA_HEIGHT = 34.25;
+    private final double CURRENT_YEAR_TARGET_HEIGHT = 83.7;
+    private final double CURRENT_YEAR_MOUNTING_ANGLE = 35;
     }

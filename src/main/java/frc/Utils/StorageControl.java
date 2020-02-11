@@ -50,7 +50,6 @@ public class StorageControl
 
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
 
-        SmartDashboard.putBoolean("Red", Hardware.visionInterface.getDistanceFromTarget() > 120);
         if (this.intakeRL.get() && prevRL == false)
             {
             prevRL = true;
@@ -103,7 +102,7 @@ public class StorageControl
     boolean prevPassive = false;
 
     /**
-     *
+     *controls the conveyor belt if the robot is intaking balls. Note: Mst be called continuously in Teleop and auto
      */
     public void intakeStorageControl()
     {
@@ -145,11 +144,17 @@ public class StorageControl
             }
     }
 
+    /**
+     * sets the conveyor control state to move down
+     */
     public void outtakeStorageControl()
     {
         state = ControlState.DOWN;
     }
 
+    /**
+     * set power to the conveyor motors to move them up
+     */
     public void conveyorUp()
     {
         //sets the motors to UP_SPEED
@@ -160,14 +165,23 @@ public class StorageControl
         Hardware.conveyorMotorGroup.set(UP_SPEED);
     }
 
+    /**
+     * set power to the conveyor motors to move them down
+     */
     public void conveyorDown()
     {
         System.out.println("conveyor down");
         Hardware.conveyorMotorGroup.set(DOWN_SPEED);
     }
 
+    //override boolean
     private boolean override = false;
 
+    /**
+     * overrides the conveyor movement with joystick controls
+     * @param joystick
+     * @param button
+     */
     public void overrideConveyor(Joystick joystick, JoystickButton button)
     {
         if (button.get())
@@ -196,6 +210,9 @@ public class StorageControl
 
     ShootState shootState = ShootState.INIT;
 
+    /**
+     *prepares the ball in the storage system to be fired
+     */
     public boolean prepareToShoot()
     {
 
@@ -207,6 +224,7 @@ public class StorageControl
                     shootState = ShootState.INITIAL_UP;
                     break;
                 case INITIAL_UP:
+                    //moves the balls up to the shootRL(or maybe upperRL) in preparation to be moved into the rotating shooter
                     //TODO this might have to be the upperRL
                     if (this.shootRL.get())
                         {
