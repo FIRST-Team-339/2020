@@ -50,7 +50,6 @@ public class StorageControl
 
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
 
-        SmartDashboard.putBoolean("Red", Hardware.visionInterface.getDistanceFromTarget() > 120);
         if (this.intakeRL.get() && prevRL == false)
             {
             prevRL = true;
