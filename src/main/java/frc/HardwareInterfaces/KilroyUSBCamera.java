@@ -13,7 +13,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
- * Add your docs here.
+ * Class for controlling the USB cameras on the robot
  */
 public class KilroyUSBCamera
     {
@@ -51,6 +51,22 @@ public class KilroyUSBCamera
     /**
      * constructor
      *
+     * @param switch1
+     * @param switch2
+     */
+    public KilroyUSBCamera(MomentarySwitch switch1, MomentarySwitch switch2)
+        {
+            this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            CameraServer.getInstance().removeServer("serve_usb1");
+            this.server = CameraServer.getInstance().getServer("serve_usb0");
+            this.switch1 = switch1;
+            this.switch2 = switch2;
+        }
+
+    /**
+     * constructor
+     *
      * @param button1
      * @param button2
      */
@@ -64,6 +80,11 @@ public class KilroyUSBCamera
             this.button2 = button2;
         }
 
+    /**
+     * Sets a given camera to be diplayed to the driver's station
+     *
+     * @param cameraNum
+     */
     public void setCamera(int cameraNum)
     {
         if (cameraNum == 0)
@@ -113,6 +134,30 @@ public class KilroyUSBCamera
             }
     }
 
+    public void switchCameras(MomentarySwitch switch1, MomentarySwitch switch2)
+    {
+        if (this.switch1.isOnCheckNow() && firstCheck == true)
+            {
+            switchCameras();
+            firstCheck = false;
+            }
+        if (this.switch1.isOnCheckNow() == false && firstCheck != true)
+            {
+            switchCameras();
+            firstCheck = true;
+            }
+        if (this.switch2.isOnCheckNow() && firstCheck2 == true)
+            {
+            switchCameras();
+            firstCheck2 = false;
+            }
+        if (this.switch2.isOnCheckNow() == false && firstCheck2 != true)
+            {
+            switchCameras();
+            firstCheck2 = true;
+            }
+    }
+
     /**
      * button1 sets camera1 to be displayed to the driver's station, button2 sets camera0 to be displayed to the driver's station
      *
@@ -142,11 +187,17 @@ public class KilroyUSBCamera
 
     private MomentarySwitch button = null;
 
+    private MomentarySwitch switch1 = null;
+
+    private MomentarySwitch switch2 = null;
+
     private JoystickButton button1 = null;
 
     private JoystickButton button2 = null;
 
     private boolean firstCheck = true;
+
+    private boolean firstCheck2 = true;
 
     // end class
     }

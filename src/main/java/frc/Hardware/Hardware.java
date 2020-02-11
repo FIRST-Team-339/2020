@@ -456,6 +456,8 @@ public class Hardware
 
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
 
+    public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
+
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
 
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
@@ -487,7 +489,7 @@ public class Hardware
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
-    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton);
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton, cameraSwitchButton2);
 
     // ------------------------------------
     // Utility classes

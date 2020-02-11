@@ -177,10 +177,10 @@ public class Teleop
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
                 || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
-            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton);
+            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
             }
         teleopDrive();
-        printStatements();
+        // printStatements();
 
     } // end Periodic()
 
