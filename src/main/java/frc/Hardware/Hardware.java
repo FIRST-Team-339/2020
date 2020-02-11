@@ -108,7 +108,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(9);

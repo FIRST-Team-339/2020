@@ -145,7 +145,7 @@ public class Autonomous
         // System.out.println("vision"
         // Hardware.visionInterface.getDistanceFromTarget());
 
-        Hardware.visionInterface.updateValues();
+        System.out.println(Hardware.gyro.getAngle());
 
         // printing out utilized states:
 
