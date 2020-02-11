@@ -113,34 +113,26 @@ public class Teleop
             {
             Hardware.storage.storageControlState();
             }
-        //Hardware.storage.intakeStorageControl();
+        Hardware.storage.intakeStorageControl();
 
         //Color Wheel testing code
-        // if (Hardware.rightDriver.getRawButton(3) == true)
-        //     {
-        //     testBoolean1 = true;
-        //     }
-        // if (testBoolean1 == true)
-        //     {
-        //     Hardware.colorTestMotor.set(.2);
-        //     testBoolean1 = false;
-        //     }
-        // else
-        //     {
-
-        // }
-        // SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
-        // SmartDashboard.putBoolean("In Range of Target", Hardware.colorWheel.inRange());
-
         if (Hardware.rightDriver.getRawButton(3) == true)
             {
             testBoolean1 = true;
             }
         if (testBoolean1 == true)
             {
-
-            testBoolean1 = false;
+            if (Hardware.visionDriving.driveToTargetNoDistance(.1))
+                {
+                testBoolean1 = false;
+                }
             }
+        else
+            {
+            teleopDrive();
+            }
+        // SmartDashboard.putNumber("Proximity from target", Hardware.colorSensor.getProximity());
+        // SmartDashboard.putBoolean("In Range of Target", Hardware.colorWheel.inRange());
 
         // ================= OPERATOR CONTROLS ================
 
@@ -178,9 +170,8 @@ public class Teleop
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton);
             }
-        teleopDrive();
-        printStatements();
-
+        // teleopDrive();
+        // printStatements();
     } // end Periodic()
 
     public static void teleopDrive()

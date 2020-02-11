@@ -138,14 +138,21 @@ public class Autonomous
 
     public static void periodic()
     {
+        //===========================================
+        //important code to make stuff do other stuff
+        //============================================
         Hardware.visionInterface.updateValues();
+        Hardware.storage.storageControlState();
+        Hardware.storage.intakeStorageControl();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        //==================================================
+        //end important code that make stuff do other stuff
+        //===================================================
 
         // System.out.println("ultrs" +
         // Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         // System.out.println("vision"
         // Hardware.visionInterface.getDistanceFromTarget());
-
-        Hardware.visionInterface.updateValues();
 
         // printing out utilized states:
 
