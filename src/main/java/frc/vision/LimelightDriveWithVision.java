@@ -118,10 +118,6 @@ public class LimelightDriveWithVision
         // right move speed
         double adjustmentValueLeft = 0;
 
-        if (!Hardware.visionInterface.getHasTargets())
-            {
-            return true;
-            }
         if (Hardware.visionInterface.getHasTargets())
             {
 
@@ -194,7 +190,7 @@ public class LimelightDriveWithVision
             }
         else
             {
-            System.out.println("true");
+
             return true;
             }
 
@@ -210,7 +206,7 @@ public class LimelightDriveWithVision
     // randomly plugging in number until it works
     final double ADJUST_PORP_2019 = .02;// 0.015
 
-    final double ADJUST_PORP_2019_ALIGN = .04;
+    final double ADJUST_PORP_2019_ALIGN = .03;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PORP_2020 = .015;// TODO
