@@ -114,6 +114,8 @@ public class Teleop
             {
             Hardware.storage.storageControlState();
             }
+
+        SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
         // Hardware.storage.intakeStorageControl();
 
         // Color Wheel testing code

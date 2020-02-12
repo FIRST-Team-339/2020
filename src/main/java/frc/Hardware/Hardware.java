@@ -225,6 +225,7 @@ public class Hardware
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder(7, 25);
+        launcherMotorEncoder.setTicksPerRevolution(10);
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 

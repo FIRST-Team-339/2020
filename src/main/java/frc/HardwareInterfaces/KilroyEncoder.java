@@ -280,7 +280,34 @@ public class KilroyEncoder implements PIDSource
     public double getRPM()
     {
 
-        return Math.abs(canEncoder.getEncoder().getVelocity());
+        switch (type)
+            {
+            case CAN:
+                return 0;
+            case D_IO:
+                if (firstRun)
+                    {
+                    encoderTimer.start();
+                    firstRun = false;
+                    }
+                if (encoderTimer.get() > .1)
+                    {
+
+                    encoderTimer.reset();
+
+                    lastRevs = (Math.abs((this.getRaw() - lastTicks) / this.getTicksPerRevolution())) * 450;
+                    lastTicks = this.getRaw();
+                    }
+                return lastRevs;
+            case REV_CAN:
+                return Math.abs(canEncoder.getEncoder().getVelocity());
+            case CAN_HAT:
+                return Math.abs(canEncoder.getEncoder().getVelocity());
+            case FALC_ENC:
+                return Math.abs(canEncoder.getEncoder().getVelocity());
+            default:
+                return Math.abs(canEncoder.getEncoder().getVelocity());
+            }
 
     }
 
@@ -470,14 +497,14 @@ public class KilroyEncoder implements PIDSource
 
     /**
      * sets the number of ticks per revolution for Spark max
-     *
+     *TODO
      * @param ticksPerRevolution
      * @return
      */
 
-    public int setTicksPerRevolution(int ticksPerRevolution)
+    public double setTicksPerRevolution(double ticksPerRevolution)
     {
-        return this.sparkTicksPerRevolution = ticksPerRevolution;
+        return this.ticksPerRevolution = ticksPerRevolution;
 
     }
 
@@ -500,6 +527,7 @@ public class KilroyEncoder implements PIDSource
                 canSensor.setSelectedSensorPosition(0, 0, 0);
                 break;
             case D_IO:
+                encoderTimer.reset();
                 dioSensor.reset();
                 break;
             case REV_CAN:
@@ -582,6 +610,8 @@ public class KilroyEncoder implements PIDSource
     // variable at which rotational measurements of the Spark Max is translated to
     // "ticks" (not really ticks)
     private int sparkTicksPerRevolution = 1;
+
+    private double ticksPerRevolution = 1;
 
     private double distancePerTick = 1;
 
