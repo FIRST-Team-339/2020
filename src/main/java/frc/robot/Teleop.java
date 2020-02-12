@@ -71,9 +71,7 @@ public class Teleop
      */
     public static void init()
     {
-
         // Gear Inits
-
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
             Hardware.drive.setGearPercentage(0, PREV_YEAR_FIRST_GEAR);
@@ -93,7 +91,6 @@ public class Teleop
         Hardware.rotateServo.setAngle(125);
         // Solenoid Pistons start up
         Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
-        
 
     } // end Init
 
@@ -124,26 +121,7 @@ public class Teleop
             }
 
         SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
-        // Hardware.storage.intakeStorageControl();
-
-        // Color Wheel testing code
-        // if (Hardware.rightDriver.getRawButton(3) == true)
-        // {
-        // testBoolean1 = true;
-        // }
-        // if (testBoolean1 == true)
-        // {
-        // Hardware.colorTestMotor.set(.2);
-        // testBoolean1 = false;
-        // }
-        // else
-        // {
-
-        // }
-        // SmartDashboard.putNumber("Proximity from target",
-        // Hardware.colorSensor.getProximity());
-        // SmartDashboard.putBoolean("In Range of Target",
-        // Hardware.colorWheel.inRange());
+        Hardware.storage.intakeStorageControl();
 
         if (Hardware.rightDriver.getRawButton(3) == true)
             {
@@ -169,14 +147,14 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-        // if (Hardware.shootCloseButton.get())
-        // {
-        // shootClose = true;
-        // }
-        // if (Hardware.shootFarButton.get())
-        // {
-        // shootClose = false;
-        // }
+        if (Hardware.shootCloseButton.get())
+            {
+            shootClose = true;
+            }
+        if (Hardware.shootFarButton.get())
+            {
+            shootClose = false;
+            }
 
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
@@ -196,14 +174,13 @@ public class Teleop
             Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
             }
 
-        individualTest();
-        // individualTest();
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
                 || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
             }
         // teleopDrive();
+        // individualTest();
         // printStatements();
     } // end Periodic()
 
@@ -242,10 +219,10 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-     chrisTest();
+        //chrisTest();
         // dionTest();
         // patrickTest();
-       //  colourTest();
+        //  colourTest();
     }
 
     public static void connerTest()
@@ -312,7 +289,7 @@ public class Teleop
         //     ballCount++;
         //     SmartDashboard.putNumber("Ball Count", ballCount);
         //     }
-         //SmartDashboard.putNumber("Ball Count", ballCount);
+        //SmartDashboard.putNumber("Ball Count", ballCount);
         // if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 ||
         // ballCount < 5)
         // {
@@ -367,37 +344,43 @@ public class Teleop
             boolthing = true;
             }
     }
+
     public static int telopTimer = 2;
+
     public static void chrisTest()
     {/* Servo
-         if (Hardware.rightOperator.getRawButton(6) == true)
+      if (Hardware.rightOperator.getRawButton(6) == true)
+      {
+      Hardware.rotateServo.setAngle(125);
+     
+      }
+     else if (Hardware.rightOperator.getRawButton(7) == true)
+      {
+      Hardware.rotateServo.setAngle(55);
+      }
+      */
+        //Claw mech
+
+        if (Hardware.leftOperator.getRawButton(6) == true)
             {
-            Hardware.rotateServo.setAngle(125);
-            
+            Hardware.liftSolenoid.set(Value.kForward); //Piston goes down
             }
-        else if (Hardware.rightOperator.getRawButton(7) == true)
+        else if (Hardware.leftOperator.getRawButton(7) == true)
             {
-            Hardware.rotateServo.setAngle(55);
+            Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
             }
-            */
-            //Claw mech
-            
-            if(Hardware.leftOperator.getRawButton(6) == true){
-               Hardware.liftSolenoid.set(Value.kForward); //Piston goes down
+        if (Hardware.leftOperator.getRawButton(9) == true)
+            {
+            //Hardware.telopTimer.start();
+            Hardware.wheelSpinnerMotor.set(.5);
+            //Hardware.telopTimer.reset();
             }
-            else if(Hardware.leftOperator.getRawButton(7) == true){
-                Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
+        //For Test
+        else if (Hardware.leftOperator.getRawButton(10) == true)
+            {
+            Hardware.wheelSpinnerMotor.set(0);
             }
-            if(Hardware.leftOperator.getRawButton(9) == true){
-                 //Hardware.telopTimer.start();
-                Hardware.wheelSpinnerMotor.set(.5);
-               //Hardware.telopTimer.reset();
-            }
-            //For Test
-            else if(Hardware.leftOperator.getRawButton(10) == true){
-                Hardware.wheelSpinnerMotor.set(0);
-            }
-            
+
     }
 
     public static void patrickTest()
