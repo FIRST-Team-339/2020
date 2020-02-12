@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Code to count the balls stored inside the conveyor system for the 2020 season
+ * 
  * @author Conner McKevitt
  */
 public class BallCounter
@@ -28,6 +29,11 @@ public class BallCounter
         return ballCount;
     }
 
+    public void setBallCount(int i)
+    {
+        ballCount = i;
+    }
+
     /**
      * adds a ball to ballcount
      */
@@ -40,12 +46,15 @@ public class BallCounter
     }
 
     /**
-     *adds a ball based if button is pushed
-     * @param button button to push
+     * adds a ball based if button is pushed
+     * 
+     * @param button
+     *                   button to push
      */
     public void addBall(JoystickButton button)
     {
-        //starts a timer the first time the button is pressed. this prevents the count from changing to fast
+        // starts a timer the first time the button is pressed. this prevents the count
+        // from changing to fast
         if (button.get() && this.timer.get() > .2 || firstTime == true)
             {
             timer.reset();
@@ -72,11 +81,13 @@ public class BallCounter
 
     /**
      * subtracts from ballCount once the button is pushed
+     * 
      * @param button
      */
     public void subtractBall(JoystickButton button)
     {
-        //starts a timer the first time the button is pressed. this prevents the count from changing to fast
+        // starts a timer the first time the button is pressed. this prevents the count
+        // from changing to fast
         if (button.get() && this.timer.get() > .2 || firstTime == true)
             {
             timer.reset();
@@ -100,6 +111,7 @@ public class BallCounter
 
     /**
      * set the count to zero if both buttons are true
+     * 
      * @param button1
      * @param button2
      */
@@ -111,7 +123,7 @@ public class BallCounter
             }
     }
 
-    //for the add/sutract by button to start the timer
+    // for the add/sutract by button to start the timer
     private boolean firstTime = true;
 
     private final int MAX_BALLS = 5;

@@ -94,6 +94,10 @@ public class Autonomous
             position = Position.CENTER;
             }
 
+        // TODO add in switch to determine ball count: Hardware change first
+
+        Hardware.ballcounter.setBallCount(3);
+
     } // end Init
 
     /*
@@ -907,7 +911,10 @@ public class Autonomous
 
         if (Hardware.visionDriving.driveToTarget(45, true, .3))
             {
-            return true;
+            if (Hardware.launcher.shootBallsAuto(false))
+                {
+                return true;
+                }
 
             }
         return false;
@@ -929,7 +936,7 @@ public class Autonomous
             case DRIVE_BACK:
                 if (Hardware.drive.driveStraightInches(SHOOT_FAR_DRIVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION, true))
                     {
-                    Hardware.autoTimer.start();//TODO
+                    Hardware.autoTimer.start();// TODO
                     far = farState.ALIGN;
                     }
 
@@ -938,14 +945,12 @@ public class Autonomous
 
                 if (Hardware.visionDriving.alignToTarget())
                     {
-                    //TODO
-                    if (Hardware.autoTimer.get() > 1)
+                    // TODO
+                    if (Hardware.launcher.shootBallsAuto(false))
                         {
                         far = farState.FINISH;
-                        Hardware.autoTimer.reset();
-                        Hardware.autoTimer.stop();
-
                         }
+
                     }
                 break;
 

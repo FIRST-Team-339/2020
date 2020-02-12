@@ -227,6 +227,8 @@ public class Hardware
 
         launcherMotorEncoder = new KilroyEncoder(7, 25);
 
+        launcherMotorEncoder.setTicksPerRevolution(10);
+
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
         // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
