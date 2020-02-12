@@ -36,6 +36,7 @@ import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,6 +46,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 // import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
+
+import javax.management.timer.Timer;
+
 import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.ColorMatch;
 
@@ -87,6 +91,9 @@ public class Teleop
 
         // Servo initial starting position
         Hardware.rotateServo.setAngle(125);
+        // Solenoid Pistons start up
+        Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
+        
 
     } // end Init
 
@@ -298,14 +305,12 @@ public class Teleop
         // if (match.color == kBlueTarget)
 
         // int ballCount = 0;
-<<<<<<< HEAD
         // if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 || ballCount < 5)
         //     {
         //     ballCount++;
         //     SmartDashboard.putNumber("Ball Count", ballCount);
         //     }
          //SmartDashboard.putNumber("Ball Count", ballCount);
-=======
         // if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 ||
         // ballCount < 5)
         // {
@@ -314,7 +319,6 @@ public class Teleop
         // }
         // SmartDashboard.putNumber("Ball Count", ballCount);
 
->>>>>>> 9d1cedae1f4a06e0bdd33098c9bb5ba8fe372efe
         // if (Hardware.intakeButton.get() || Hardware.outtakeButton.get())
         // {
         // Hardware.intake.intake(Hardware.intakeButton);
@@ -361,10 +365,10 @@ public class Teleop
             boolthing = true;
             }
     }
-
+    public static int telopTimer = 2;
     public static void chrisTest()
-    {
-        if (Hardware.rightOperator.getRawButton(6) == true)
+    {/* Servo
+         if (Hardware.rightOperator.getRawButton(6) == true)
             {
             Hardware.rotateServo.setAngle(125);
             
@@ -372,6 +376,24 @@ public class Teleop
         else if (Hardware.rightOperator.getRawButton(7) == true)
             {
             Hardware.rotateServo.setAngle(55);
+            }
+            */
+            //Claw mech
+            
+            if(Hardware.leftOperator.getRawButton(6) == true){
+               Hardware.liftSolenoid.set(Value.kForward); //Piston goes down
+            }
+            else if(Hardware.leftOperator.getRawButton(7) == true){
+                Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
+            }
+            if(Hardware.leftOperator.getRawButton(9) == true){
+                 //Hardware.telopTimer.start();
+                Hardware.wheelSpinnerMotor.set(.5);
+               //Hardware.telopTimer.reset();
+            }
+            //For Test
+            else if(Hardware.leftOperator.getRawButton(10) == true){
+                Hardware.wheelSpinnerMotor.set(0);
             }
             
     }

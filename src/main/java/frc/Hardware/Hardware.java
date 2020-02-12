@@ -62,6 +62,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.Servo;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 /**
  * ------------------------------------------------------- puts all of the
@@ -336,7 +337,7 @@ public class Hardware
         // **********************************************************
         intakeSolenoid = new DoubleSolenoid(4, 5);
         liftSolenoid = new DoubleSolenoid(2, 3);
-
+        
     }
     // **********************************************************
     // CAN DEVICES
