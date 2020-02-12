@@ -290,7 +290,7 @@ public class KilroyEncoder implements PIDSource
                     encoderTimer.reset();
                     encoderTimer.start();
                     }
-                return (Math.abs(this.getRaw()) / encoderTimer.get() * 60 * 1000);
+                return ((Math.abs(this.getRaw()) / ticksPerRevolution) / (encoderTimer.get() * 60));
             case REV_CAN:
                 return Math.abs(canEncoder.getEncoder().getVelocity());
             case CAN_HAT:
