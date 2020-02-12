@@ -9,7 +9,10 @@ import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
 
 /**
- * code for controlling the conveyor storage system and moving the conveyor to intake and laucnher balls. Referenes BallCounter to add/subtrack balls based off of the redlights. For the 2020 season
+ * code for controlling the conveyor storage system and moving the conveyor to
+ * intake and laucnher balls. Referenes BallCounter to add/subtrack balls based
+ * off of the redlights. For the 2020 season
+ *
  * @author Conner McKevitt
  */
 public class StorageControl
@@ -31,7 +34,7 @@ public class StorageControl
             this.conveyorMotors = conveyorMotors;
         }
 
-    //control state to update what the conveyor should b doing
+    // control state to update what the conveyor should b doing
     private enum ControlState
         {
         INIT, PASSIVE, UP, DOWN
@@ -45,7 +48,8 @@ public class StorageControl
     public void storageControlState()
     {
 
-        //these puts are not test code. Send important robot data to the robot for the drivers to see
+        // these puts are not test code. Send important robot data to the robot for the
+        // drivers to see
         SmartDashboard.putNumber("", Hardware.ballcounter.getBallCount());
 
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
@@ -71,25 +75,26 @@ public class StorageControl
 
         switch (state)
             {
-            //just in case need later
+            // just in case need later
             case INIT:
                 state = ControlState.PASSIVE;
                 break;
             case PASSIVE:
-                //if moving the conveyor is not being called set the motor to the holding speed
+                // if moving the conveyor is not being called set the motor to the holding speed
                 if (!override)
                     {
                     Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
                     }
 
-                //gets data from the inake Redlight to add or subtract balls from our internal ball count when a ball enters or leaves the system through the bottem
+                // gets data from the inake Redlight to add or subtract balls from our internal
+                // ball count when a ball enters or leaves the system through the bottem
 
                 break;
             case UP:
-                //move up towards launcher
+                // move up towards launcher
                 conveyorUp();
                 break;
-            //move down towards intake
+            // move down towards intake
             case DOWN:
                 conveyorDown();
                 break;
@@ -102,24 +107,25 @@ public class StorageControl
     boolean prevPassive = false;
 
     /**
-     *controls the conveyor belt if the robot is intaking balls. Note: Mst be called continuously in Teleop and auto
+     * controls the conveyor belt if the robot is intaking balls. Note: Mst be
+     * called continuously in Teleop and auto
      */
     public void intakeStorageControl()
     {
         if (Hardware.intake.intaking)
             {
-            //if the intake RL is not triggered
+            // if the intake RL is not triggered
             if (!this.intakeRL.get())
                 {
                 if (!this.lowerRL.get())
                     {
-                    //move down if lower RL is false
+                    // move down if lower RL is false
                     state = ControlState.DOWN;
                     prevPassive = false;
                     }
                 else
                     {
-                    //if lower RL is on dont move
+                    // if lower RL is on dont move
                     state = ControlState.PASSIVE;
                     prevPassive = true;
                     }
@@ -127,16 +133,17 @@ public class StorageControl
 
             else
                 {
-                //if the intake Rl is true
+                // if the intake Rl is true
                 if (prevPassive)
                     {
-                    //TODO check if we need this. While commenting i dont think we do the other controll state should be good enough to add balls
+                    // TODO check if we need this. While commenting i dont think we do the other
+                    // controll state should be good enough to add balls
                     // Hardware.ballcounter.addBall();
                     prevPassive = false;
                     }
                 if (!this.upperRL.get())
                     {
-                    //if the upper RL is not on move up until on
+                    // if the upper RL is not on move up until on
                     state = ControlState.UP;
                     prevPassive = false;
                     }
@@ -157,9 +164,9 @@ public class StorageControl
      */
     public void conveyorUp()
     {
-        //sets the motors to UP_SPEED
-        //whats UP_SPEED?
-        //SPEED: not much, how about you?
+        // sets the motors to UP_SPEED
+        // whats UP_SPEED?
+        // SPEED: not much, how about you?
 
         System.out.println("conveyor up");
         Hardware.conveyorMotorGroup.set(UP_SPEED);
@@ -174,11 +181,12 @@ public class StorageControl
         Hardware.conveyorMotorGroup.set(DOWN_SPEED);
     }
 
-    //override boolean
+    // override boolean
     private boolean override = false;
 
     /**
      * overrides the conveyor movement with joystick controls
+     *
      * @param joystick
      * @param button
      */
@@ -211,7 +219,7 @@ public class StorageControl
     ShootState shootState = ShootState.INIT;
 
     /**
-     *prepares the ball in the storage system to be fired
+     * prepares the ball in the storage system to be fired
      */
     public boolean prepareToShoot()
     {
@@ -224,8 +232,10 @@ public class StorageControl
                     shootState = ShootState.INITIAL_UP;
                     break;
                 case INITIAL_UP:
-                    //moves the balls up to the shootRL(or maybe upperRL) in preparation to be moved into the rotating shooter
-                    //TODO this might have to be the upperRL
+                    System.out.println("shoot RL" + this.shootRL.get());
+                    // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
+                    // moved into the rotating shooter
+                    // TODO this might have to be the upperRL
                     if (this.shootRL.get())
                         {
                         System.out.println("got shoot rl");
@@ -293,7 +303,7 @@ public class StorageControl
                     else
                         {
 
-                        Hardware.launcher.unchargeShooter();
+                        // Hardware.launcher.unchargeShooter();
                         return true;
                         }
                     }

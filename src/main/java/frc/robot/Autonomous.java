@@ -145,6 +145,14 @@ public class Autonomous
         // ===========================================
         // important code to make stuff do other stuff
         // ============================================
+
+        if (Hardware.launcher.prepareToShoot(false, true))
+            {
+
+            System.out.println("YAAAA *Jazz Hands*");
+
+            }
+
         Hardware.visionInterface.updateValues();
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
@@ -160,8 +168,6 @@ public class Autonomous
         // Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         // System.out.println("vision"
         // Hardware.visionInterface.getDistanceFromTarget());
-
-        System.out.println(Hardware.gyro.getAngle());
 
         // printing out utilized states:
 
@@ -300,6 +306,7 @@ public class Autonomous
                 break;
 
             case SHOOT_FAR:
+                Hardware.launcher.prepareToShoot(false, true);
                 System.out.println("has shot the thing: " + hasShotTheEtHInG);
                 if (!hasShotTheEtHInG)
                     {
@@ -524,6 +531,9 @@ public class Autonomous
 
                 break;
             case ALIGN:
+
+                System.out.println(Hardware.gyro.getAngle());
+
                 if (Hardware.visionDriving.alignToTarget())
                     {
                     turnAndFire = TurnAndFireState.FINISH;
@@ -930,6 +940,7 @@ public class Autonomous
 
     private static boolean shootFar()
     {
+
         switch (far)
             {
 
@@ -948,6 +959,7 @@ public class Autonomous
                     // TODO
                     if (Hardware.launcher.shootBallsAuto(false))
                         {
+                        System.out.println("shot all balls");
                         far = farState.FINISH;
                         }
 

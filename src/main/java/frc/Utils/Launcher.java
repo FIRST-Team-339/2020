@@ -58,7 +58,7 @@ public class Launcher
                 break;
             case CHARGE:
 
-                if (prepareToShoot(isClose) && Hardware.storage.prepareToShoot())
+                if (prepareToShoot(isClose, false) && Hardware.storage.prepareToShoot())
                     {
                     shootState = ShootState.LAUNCH;
                     }
@@ -84,11 +84,19 @@ public class Launcher
 
     public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
 
+    private int startBallCount = 0;
+
+    private boolean firstRun = true;
+
     /**
      *
-     * shoots all of the balls that are in storage in auto. Calls storage control to move the conveyor belt to load balls and checks that the RPM is at the right speed
+     * shoots all of the balls that are in storage in auto. Calls storage control to
+     * move the conveyor belt to load balls and checks that the RPM is at the right
+     * speed
      *
-     * @param isClose if we want to shoot at the tip of triangle(roughly 40 inches)
+     * @param isClose
+     *                    if we want to shoot at the tip of triangle(roughly 40
+     *                    inches)
      * @return shot all of the balls
      */
     public boolean shootBallsAuto(boolean isClose)
@@ -99,21 +107,27 @@ public class Launcher
             switch (shootStateAuto)
                 {
                 case CHARGE:
-                    //sets the RPM and makes sure that the conveyor is correct
-                    if (prepareToShoot(isClose) && Hardware.storage.prepareToShoot())
+                    // sets the RPM and makes sure that the conveyor is correct
+                    if (prepareToShoot(isClose, true) && Hardware.storage.prepareToShoot())
                         {
                         shootState = ShootState.LAUNCH;
                         }
                     break;
                 case LAUNCH:
-                    for (int i = Hardware.ballcounter.getBallCount(); i > 0; i++)
+                    if (firstRun)
                         {
-                        if (Hardware.storage.loadToFire())
+                        startBallCount = Hardware.ballcounter.getBallCount();
+                        firstRun = false;
+                        }
+                    for (int i = startBallCount; i > 0; i++)
+                        {
+                        if (Hardware.storage.loadToFire() && Hardware.launcher.prepareToShoot(isClose, true))
                             {
                             System.out.println("loaded");
                             shootState = ShootState.PASSIVE;
                             if (i == 1)
                                 {
+                                firstRun = true;
                                 return true;
                                 }
                             }
@@ -135,40 +149,68 @@ public class Launcher
     public boolean spedUp = false;
 
     public boolean aligned = false;
-    //speed in inches per second
+    // speed in inches per second
 
-    //estimated RPM
-    //short = 2300RPM
-    //long 5300RPM
+    // estimated RPM
+    // short = 2300RPM
+    // long 5300RPM
     /**
-     * prepares the launcher motor to shoot by settingthe RPM to either the  close value or the far value
+     * prepares the launcher motor to shoot by settingthe RPM to either the close
+     * value or the far value
+     *
      * @param close
      * @return
      */
-    public boolean prepareToShoot(boolean isClose)
+    public boolean prepareToShoot(boolean isClose, boolean inAuto)
     {
         if (isClose)
             {
-            if (Hardware.visionDriving.driveToTarget(35, true, .3))
+            if (inAuto || Hardware.visionDriving.driveToTarget(35, true, .3))
                 {
                 aligned = true;
                 }
-            if (Hardware.launcherMotorEncoder.setRPM(
-                    RPM_CLOSE + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
+            if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
-                spedUp = true;
+                if (Hardware.launcherMotorEncoder.setRPM(
+                        RPM_CLOSE_2020 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
+                        Hardware.launcherMotorGroup))
+                    {
+                    spedUp = true;
+                    }
+                }
+            else
+                {
+                if (Hardware.launcherMotorEncoder.setRPM(
+                        RPM_CLOSE_2019 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
+                        Hardware.launcherMotorGroup))
+                    {
+                    spedUp = true;
+                    }
                 }
             }
         else
             {
-            if (Hardware.visionDriving.driveToTarget(120, true, .3))
+            if (inAuto || Hardware.visionDriving.driveToTarget(120, true, .3))
                 {
                 aligned = true;
                 }
-            if (Hardware.launcherMotorEncoder.setRPM(
-                    RPM_FAR + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE), Hardware.launcherMotorGroup))
+            if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
-                spedUp = true;
+                if (Hardware.launcherMotorEncoder.setRPM(
+                        RPM_FAR_2020 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
+                        Hardware.launcherMotorGroup))
+                    {
+                    spedUp = true;
+                    }
+                }
+            else
+                {
+                if (Hardware.launcherMotorEncoder.setRPM(
+                        RPM_FAR_2019 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
+                        Hardware.launcherMotorGroup))
+                    {
+                    spedUp = true;
+                    }
                 }
             }
         if (aligned && spedUp)
@@ -192,8 +234,10 @@ public class Launcher
     }
 
     public boolean launching = false;
-    private static final double RPM_FAR = 3500;
-    private static final double RPM_CLOSE = 2800;
+    private static final double RPM_FAR_2020 = 3500;
+    private static final double RPM_CLOSE_2020 = 2800;
+    private static final double RPM_FAR_2019 = 200;
+    private static final double RPM_CLOSE_2019 = 100;
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
 
     }
