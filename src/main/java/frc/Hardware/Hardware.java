@@ -507,6 +507,8 @@ public class Hardware
 
     public static Telemetry telemetry = new Telemetry(driverStation);
 
+    public static Timer timer = new Timer();
+
     // ------------------------------------
     // Drive system
     // ------------------------------------
