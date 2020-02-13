@@ -66,6 +66,7 @@ public class KilroyEncoder implements PIDSource
         {
             this.dioSensor = new Encoder(digitalPort1, digitalPort2);
             type = SensorType.D_IO;
+            encoderTimer.reset();
 
         }
 
@@ -286,18 +287,10 @@ public class KilroyEncoder implements PIDSource
             case D_IO:
                 if (firstRun)
                     {
-                    encoderTimer.start();
-                    firstRun = false;
-                    }
-                if (encoderTimer.get() > .1)
-                    {
-
                     encoderTimer.reset();
-
-                    lastRevs = (Math.abs((this.getRaw() - lastTicks) / this.getTicksPerRevolution())) * 450;
-                    lastTicks = this.getRaw();
+                    encoderTimer.start();
                     }
-                return Math.abs(lastRevs);
+                return ((Math.abs(this.getRaw()) / ticksPerRevolution) / (encoderTimer.get() * 60));
             case REV_CAN:
                 return Math.abs(canEncoder.getEncoder().getVelocity());
             case CAN_HAT:
@@ -540,6 +533,7 @@ public class KilroyEncoder implements PIDSource
                 break;
             case D_IO:
                 encoderTimer.reset();
+                firstRun = true;
                 dioSensor.reset();
                 break;
             case REV_CAN:

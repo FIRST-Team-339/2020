@@ -146,17 +146,17 @@ public class Autonomous
         // important code to make stuff do other stuff
         // ============================================
 
+        Hardware.visionInterface.updateValues();
+        Hardware.storage.storageControlState();
+        Hardware.storage.intakeStorageControl();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+
         if (Hardware.launcher.prepareToShoot(false, true))
             {
 
             System.out.println("YAAAA *Jazz Hands*");
 
             }
-
-        Hardware.visionInterface.updateValues();
-        Hardware.storage.storageControlState();
-        Hardware.storage.intakeStorageControl();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         // ==================================================
         // end important code that make stuff do other stuff
         // ===================================================
