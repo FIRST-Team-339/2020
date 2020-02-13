@@ -71,9 +71,7 @@ public class Teleop
      */
     public static void init()
     {
-
         // Gear Inits
-
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
             Hardware.drive.setGearPercentage(0, PREV_YEAR_FIRST_GEAR);
@@ -93,9 +91,14 @@ public class Teleop
         Hardware.rotateServo.setAngle(125);
         // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
+<<<<<<< HEAD
         Hardware.telopTimer.reset();
         Hardware.telopTimer.start();
         
+=======
+        Hardware.timer.reset();
+        Hardware.timer.start();
+>>>>>>> b4a3eda55fe319fa753626db75fa28e08c0b5592
 
     } // end Init
 
@@ -124,28 +127,8 @@ public class Teleop
             {
             Hardware.storage.storageControlState();
             }
-
-        SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
-        // Hardware.storage.intakeStorageControl();
-
-        // Color Wheel testing code
-        // if (Hardware.rightDriver.getRawButton(3) == true)
-        // {
-        // testBoolean1 = true;
-        // }
-        // if (testBoolean1 == true)
-        // {
-        // Hardware.colorTestMotor.set(.2);
-        // testBoolean1 = false;
-        // }
-        // else
-        // {
-
-        // }
-        // SmartDashboard.putNumber("Proximity from target",
-        // Hardware.colorSensor.getProximity());
-        // SmartDashboard.putBoolean("In Range of Target",
-        // Hardware.colorWheel.inRange());
+        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
+        Hardware.storage.intakeStorageControl();
 
         if (Hardware.rightDriver.getRawButton(3) == true)
             {
@@ -171,14 +154,14 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-        // if (Hardware.shootCloseButton.get())
-        // {
-        // shootClose = true;
-        // }
-        // if (Hardware.shootFarButton.get())
-        // {
-        // shootClose = false;
-        // }
+        if (Hardware.shootCloseButton.get())
+            {
+            shootClose = true;
+            }
+        if (Hardware.shootFarButton.get())
+            {
+            shootClose = false;
+            }
 
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
@@ -198,14 +181,13 @@ public class Teleop
             Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
             }
 
-        individualTest();
-        // individualTest();
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
                 || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
             }
         // teleopDrive();
+        // individualTest();
         // printStatements();
     } // end Periodic()
 
@@ -244,10 +226,10 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-     chrisTest();
+        //chrisTest();
         // dionTest();
         // patrickTest();
-       //  colourTest();
+        //  colourTest();
     }
 
     public static void connerTest()
@@ -314,7 +296,7 @@ public class Teleop
         //     ballCount++;
         //     SmartDashboard.putNumber("Ball Count", ballCount);
         //     }
-         //SmartDashboard.putNumber("Ball Count", ballCount);
+        //SmartDashboard.putNumber("Ball Count", ballCount);
         // if (Hardware.rightOperator.getRawButton(6) == true && ballCount >= 0 ||
         // ballCount < 5)
         // {
@@ -369,27 +351,41 @@ public class Teleop
             boolthing = true;
             }
     }
-    
+
     public static void chrisTest()
     {/* Servo
-         if (Hardware.rightOperator.getRawButton(6) == true)
+      if (Hardware.rightOperator.getRawButton(6) == true)
+      {
+      Hardware.rotateServo.setAngle(125);
+     
+      }
+     else if (Hardware.rightOperator.getRawButton(7) == true)
+      {
+      Hardware.rotateServo.setAngle(55);
+      }
+      */
+        //Claw mech
+
+        if (Hardware.leftOperator.getRawButton(6) == true)
             {
-            Hardware.rotateServo.setAngle(125);
-            
+            Hardware.liftSolenoid.set(Value.kForward); //Piston goes down
             }
-        else if (Hardware.rightOperator.getRawButton(7) == true)
+        else if (Hardware.leftOperator.getRawButton(7) == true)
             {
             Hardware.rotateServo.setAngle(55);
             }
-            */
-            //Claw mech
-             
-            if(Hardware.leftOperator.getRawButton(6) == true){
-               Hardware.liftSolenoid.set(Value.kForward); //Piston goes down
+
+        //Claw mech
+
+        if (Hardware.leftOperator.getRawButton(6) == true)
+            {
+            Hardware.liftSolenoid.set(Value.kForward); //Piston goes down
             }
-            else if(Hardware.leftOperator.getRawButton(7) == true){
-                Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
+        else if (Hardware.leftOperator.getRawButton(7) == true)
+            {
+            Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
             }
+<<<<<<< HEAD
             if(Hardware.leftOperator.getRawButton(11) == true){
                 Hardware.telopTimer.start();
             }
@@ -407,15 +403,28 @@ public class Teleop
                 Hardware.wheelSpinnerMotor.set(0);
                 Hardware.telopTimer.stop();
                 Hardware.telopTimer.reset();
+=======
+
+        if (Hardware.timer.get() < 2)
+            {
+            Hardware.wheelSpinnerMotor.set(.5); //Start Motor
             }
-                 
-    }           
-                
-              
-    
-            
-            
-    
+        else if (Hardware.timer.get() > 2)
+            {
+            Hardware.wheelSpinnerMotor.set(0); //Stop Motor
+            Hardware.liftSolenoid.set(Value.kForward); // Pistons come down
+            Hardware.timer.reset(); //Reset Timer
+>>>>>>> b4a3eda55fe319fa753626db75fa28e08c0b5592
+            }
+        //For Test && resets resets motor and piston
+        if (Hardware.leftOperator.getRawButton(10) == true)
+            {
+            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.timer.reset();
+
+            }
+
+    }
 
     public static void patrickTest()
     {

@@ -53,6 +53,7 @@ public class StorageControl
         SmartDashboard.putNumber("", Hardware.ballcounter.getBallCount());
 
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
+        SmartDashboard.putString("conveyor state: ", state.toString());
 
         if (this.intakeRL.get() && prevRL == false)
             {
@@ -168,7 +169,6 @@ public class StorageControl
         // whats UP_SPEED?
         // SPEED: not much, how about you?
 
-        System.out.println("conveyor up");
         Hardware.conveyorMotorGroup.set(UP_SPEED);
     }
 
@@ -177,7 +177,7 @@ public class StorageControl
      */
     public void conveyorDown()
     {
-        System.out.println("conveyor down");
+
         Hardware.conveyorMotorGroup.set(DOWN_SPEED);
     }
 
@@ -223,9 +223,11 @@ public class StorageControl
      */
     public boolean prepareToShoot()
     {
+        SmartDashboard.putString("prepare conveoyr", shootState.toString());
 
         if (Hardware.ballcounter.getBallCount() > 0)
             {
+
             switch (shootState)
                 {
                 case INIT:
@@ -236,14 +238,17 @@ public class StorageControl
                     // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
                     // moved into the rotating shooter
                     // TODO this might have to be the upperRL
-                    if (this.shootRL.get())
+                    if (Hardware.firingRL.get() && !preparedToFire)
                         {
                         System.out.println("got shoot rl");
+                        preparedToFire = true;
                         state = ControlState.PASSIVE;
-                        shootState = ShootState.WAIT_FOR_POWER;
+                        shootState = ShootState.INIT;
+                        return true;
                         }
                     else
                         {
+                        preparedToFire = false;
                         state = ControlState.UP;
                         }
                     break;
@@ -257,7 +262,6 @@ public class StorageControl
                     break;
                 }
             }
-
         return false;
     }
 

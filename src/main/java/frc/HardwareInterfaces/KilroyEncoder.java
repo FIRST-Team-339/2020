@@ -287,18 +287,23 @@ public class KilroyEncoder implements PIDSource
             case D_IO:
                 if (firstRun)
                     {
-                    encoderTimer.reset();
+
                     encoderTimer.start();
+                    firstRun = false;
                     }
-                return ((Math.abs(this.getRaw()) / ticksPerRevolution) / (encoderTimer.get() * 60));
+                if (encoderTimer.get() > 1)
+                    {
+                    return 900;
+                    }
+                return 500;/* ((Math.abs(this.getRaw()) / ticksPerRevolution) / (encoderTimer.get() * 60)); *///TODO
             case REV_CAN:
-                return Math.abs(canEncoder.getEncoder().getVelocity());
+                return canEncoder.getEncoder().getVelocity();
             case CAN_HAT:
-                return Math.abs(canEncoder.getEncoder().getVelocity());
+                return canEncoder.getEncoder().getVelocity();
             case FALC_ENC:
-                return Math.abs(canEncoder.getEncoder().getVelocity());
+                return canEncoder.getEncoder().getVelocity();
             default:
-                return Math.abs(canEncoder.getEncoder().getVelocity());
+                return canEncoder.getEncoder().getVelocity();
             }
 
     }
@@ -316,7 +321,7 @@ public class KilroyEncoder implements PIDSource
      */
     public boolean setRPM(double RPM, SpeedController motor)
     {
-        System.out.println("rpm: " + this.getRPM());
+
         // get offness
         double offness = Math.abs(RPM - this.getRPM());
 
@@ -327,6 +332,8 @@ public class KilroyEncoder implements PIDSource
             }
         else if (this.getRPM() > RPM + (RPM * DEADAND_SCALE_RPM))
             {
+            // System.out.println("motor adjustment: " + ((offness * RPM_PROP)));
+            // System.out.println("offness: " + offness);
             speed = speed - (offness * RPM_PROP);
             ;
             }
@@ -343,7 +350,7 @@ public class KilroyEncoder implements PIDSource
             {
             speed = -.98;
             }
-        System.out.println("speed: " + speed);
+
         motor.set(speed);
         return false;
 

@@ -88,6 +88,12 @@ public class Launcher
 
     private boolean firstRun = true;
 
+    private boolean launcherReadyTemp = false;
+
+    private boolean conveyorReadyTemp = false;
+
+    private boolean loadReadyTemp = false;
+
     /**
      *
      * shoots all of the balls that are in storage in auto. Calls storage control to
@@ -101,16 +107,30 @@ public class Launcher
      */
     public boolean shootBallsAuto(boolean isClose)
     {
-        System.out.println("shootStateAuto: " + shootStateAuto);
+        SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
+        SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
+        SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
+        SmartDashboard.putBoolean("load ready", loadReadyTemp);
         if (Hardware.ballcounter.getBallCount() > 0)
             {
             switch (shootStateAuto)
                 {
                 case CHARGE:
                     // sets the RPM and makes sure that the conveyor is correct
-                    if (prepareToShoot(isClose, true) && Hardware.storage.prepareToShoot())
+                    if (launcherReadyTemp || prepareToShoot(isClose, true))
                         {
-                        shootState = ShootState.LAUNCH;
+                        launcherReadyTemp = true;
+                        }
+                    if (conveyorReadyTemp || Hardware.storage.prepareToShoot())
+                        {
+                        System.out.println("prepared to shoot");
+                        conveyorReadyTemp = true;
+                        }
+                    if (launcherReadyTemp && conveyorReadyTemp)
+                        {
+                        launcherReadyTemp = false;
+                        conveyorReadyTemp = false;
+                        shootStateAuto = ShootStateAuto.LAUNCH;
                         }
                     break;
                 case LAUNCH:
@@ -119,31 +139,54 @@ public class Launcher
                         startBallCount = Hardware.ballcounter.getBallCount();
                         firstRun = false;
                         }
-                    for (int i = startBallCount; i > 0; i++)
+                    if (Hardware.ballcounter.getBallCount() > 1)
                         {
-                        if (Hardware.storage.loadToFire() && Hardware.launcher.prepareToShoot(isClose, true))
+                        System.out.println("loading to fire");
+                        if (Hardware.storage.loadToFire())
                             {
-                            System.out.println("loaded");
-                            shootState = ShootState.PASSIVE;
-                            if (i == 1)
-                                {
-                                firstRun = true;
-                                return true;
-                                }
+                            loadReadyTemp = true;
+                            }
+                        if (Hardware.launcher.prepareToShoot(isClose, true))
+                            {
+                            launcherReadyTemp = true;
+                            }
+                        if (loadReadyTemp && launcherReadyTemp)
+                            {
+                            loadReadyTemp = false;
+                            launcherReadyTemp = false;
                             }
                         }
+                    else if (Hardware.ballcounter.getBallCount() == 1)
+                        {
+                        System.out.println("loading to fire");
+                        if (Hardware.storage.loadToFire())
+                            {
+                            loadReadyTemp = true;
+                            }
+                        if (Hardware.launcher.prepareToShoot(isClose, true))
+                            {
+                            launcherReadyTemp = true;
+                            }
+                        if (loadReadyTemp && launcherReadyTemp)
+                            {
+                            loadReadyTemp = false;
+                            launcherReadyTemp = false;
+                            shootStateAuto = ShootStateAuto.CHARGE;
+                            }
 
+                        }
+                    else
+                        {
+                        firstRun = true;
+                        return true;
+                        }
                     break;
                 default:
-
                     break;
                 }
             }
-        else
-            {
-            return true;
-            }
         return false;
+
     }
 
     public boolean spedUp = false;
@@ -197,7 +240,7 @@ public class Launcher
             if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
                 if (Hardware.launcherMotorEncoder.setRPM(
-                        RPM_FAR_2020 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
+                        RPM_FAR_2020 /*+  (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE )*/,
                         Hardware.launcherMotorGroup))
                     {
                     spedUp = true;
@@ -206,7 +249,7 @@ public class Launcher
             else
                 {
                 if (Hardware.launcherMotorEncoder.setRPM(
-                        RPM_FAR_2019 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
+                        RPM_FAR_2019 /*+ (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE )*/,
                         Hardware.launcherMotorGroup))
                     {
                     spedUp = true;
@@ -236,7 +279,7 @@ public class Launcher
     public boolean launching = false;
     private static final double RPM_FAR_2020 = 3500;
     private static final double RPM_CLOSE_2020 = 2800;
-    private static final double RPM_FAR_2019 = 200;
+    private static final double RPM_FAR_2019 = 900;
     private static final double RPM_CLOSE_2019 = 100;
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
 
