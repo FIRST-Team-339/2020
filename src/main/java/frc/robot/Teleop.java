@@ -93,8 +93,8 @@ public class Teleop
         Hardware.rotateServo.setAngle(125);
         // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
-        Hardware.timer.reset();
-        Hardware.timer.start();
+        Hardware.telopTimer.reset();
+        Hardware.telopTimer.start();
         
 
     } // end Init
@@ -390,20 +390,23 @@ public class Teleop
             else if(Hardware.leftOperator.getRawButton(7) == true){
                 Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
             }
-            
-            if(Hardware.timer.get() < 2){
+            if(Hardware.leftOperator.getRawButton(11) == true){
+                Hardware.telopTimer.start();
+            }
+            if(Hardware.telopTimer.get() < 2){
                 Hardware.wheelSpinnerMotor.set(.5); //Start Motor
             }
-                else if(Hardware.timer.get() > 2){
+                else{
             Hardware.wheelSpinnerMotor.set(0); //Stop Motor
-            Hardware.liftSolenoid.set(Value.kForward); // Pistons come down
-            Hardware.timer.reset(); //Reset Timer
+            //Hardware.liftSolenoid.set(Value.kForward); // Pistons come down
+            Hardware.telopTimer.stop();
+            Hardware.telopTimer.reset(); //Reset Timer
                 }   
                 //For Test && resets resets motor and piston
             if(Hardware.leftOperator.getRawButton(10) == true){
                 Hardware.wheelSpinnerMotor.set(0);
-                Hardware.timer.reset();
-               
+                Hardware.telopTimer.stop();
+                Hardware.telopTimer.reset();
             }
                  
     }           
