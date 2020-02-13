@@ -130,7 +130,7 @@ public class Launcher
                         {
                         launcherReadyTemp = false;
                         conveyorReadyTemp = false;
-                        shootState = ShootState.LAUNCH;
+                        shootStateAuto = ShootStateAuto.LAUNCH;
                         }
                     break;
                 case LAUNCH:
@@ -139,7 +139,7 @@ public class Launcher
                         startBallCount = Hardware.ballcounter.getBallCount();
                         firstRun = false;
                         }
-                    for (int i = startBallCount; i > 0; i++)
+                    if (Hardware.ballcounter.getBallCount() > 1)
                         {
                         System.out.println("loading to fire");
                         if (Hardware.storage.loadToFire())
@@ -154,28 +154,39 @@ public class Launcher
                             {
                             loadReadyTemp = false;
                             launcherReadyTemp = false;
-
-                            shootState = ShootState.PASSIVE;
-                            if (i == 1)
-                                {
-                                firstRun = true;
-                                return true;
-                                }
                             }
                         }
+                    else if (Hardware.ballcounter.getBallCount() == 1)
+                        {
+                        System.out.println("loading to fire");
+                        if (Hardware.storage.loadToFire())
+                            {
+                            loadReadyTemp = true;
+                            }
+                        if (Hardware.launcher.prepareToShoot(isClose, true))
+                            {
+                            launcherReadyTemp = true;
+                            }
+                        if (loadReadyTemp && launcherReadyTemp)
+                            {
+                            loadReadyTemp = false;
+                            launcherReadyTemp = false;
+                            shootStateAuto = ShootStateAuto.CHARGE;
+                            }
 
+                        }
+                    else
+                        {
+                        firstRun = true;
+                        return true;
+                        }
                     break;
                 default:
-
                     break;
                 }
             }
-        else
-
-            {
-            return true;
-            }
         return false;
+
     }
 
     public boolean spedUp = false;
