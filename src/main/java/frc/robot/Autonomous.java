@@ -955,16 +955,16 @@ public class Autonomous
 
                 if (Hardware.visionDriving.alignToTarget())
                     {
-                    if (Hardware.launcher.shootBallsAuto(false))
-                        {
-                        System.out.println("shot all balls");
-                        far = farState.FINISH;
-                        }
+                    far = farState.SHOOT;
 
                     }
                 break;
             case SHOOT:
-
+                if (Hardware.launcher.shootBallsAuto(false))
+                    {
+                    System.out.println("shot all balls");
+                    far = farState.FINISH;
+                    }
                 break;
 
             case FINISH:
