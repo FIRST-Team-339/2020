@@ -227,7 +227,7 @@ public class Hardware
 
         launcherMotorEncoder = new KilroyEncoder(7, 25);
 
-        launcherMotorEncoder.setTicksPerRevolution(10);
+        launcherMotorEncoder.setTicksPerRevolution(400);
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
@@ -265,8 +265,6 @@ public class Hardware
 
         leftDriveEncoder.setDistancePerPulse(PREV_YEAR_DISTANCE_PER_TICK);
         rightDriveEncoder.setDistancePerPulse(PREV_YEAR_DISTANCE_PER_TICK);
-
-        Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
 
         intake = new IntakeControl(launchTimer, intakeSolenoid, intakeMotor);
 
@@ -339,7 +337,7 @@ public class Hardware
         // **********************************************************
         intakeSolenoid = new DoubleSolenoid(4, 5);
         liftSolenoid = new DoubleSolenoid(2, 3);
-        
+
     }
     // **********************************************************
     // CAN DEVICES

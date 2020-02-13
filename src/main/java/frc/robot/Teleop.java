@@ -119,8 +119,7 @@ public class Teleop
             {
             Hardware.storage.storageControlState();
             }
-
-        SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
+        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
         Hardware.storage.intakeStorageControl();
 
         if (Hardware.rightDriver.getRawButton(3) == true)

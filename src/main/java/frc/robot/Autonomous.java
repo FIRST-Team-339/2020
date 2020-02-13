@@ -142,6 +142,7 @@ public class Autonomous
 
     public static void periodic()
     {
+
         // ===========================================
         // important code to make stuff do other stuff
         // ============================================
@@ -153,8 +154,6 @@ public class Autonomous
 
         if (Hardware.launcher.prepareToShoot(false, true))
             {
-
-            System.out.println("YAAAA *Jazz Hands*");
 
             }
         // ==================================================
@@ -933,7 +932,7 @@ public class Autonomous
 
     public static enum farState
         {
-        DRIVE_BACK, ALIGN, FINISH
+        DRIVE_BACK, ALIGN, SHOOT, FINISH
         }
 
     public static farState far = farState.DRIVE_BACK;
@@ -956,7 +955,6 @@ public class Autonomous
 
                 if (Hardware.visionDriving.alignToTarget())
                     {
-                    // TODO
                     if (Hardware.launcher.shootBallsAuto(false))
                         {
                         System.out.println("shot all balls");
@@ -964,6 +962,9 @@ public class Autonomous
                         }
 
                     }
+                break;
+            case SHOOT:
+
                 break;
 
             case FINISH:
