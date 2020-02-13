@@ -91,8 +91,10 @@ public class Teleop
 
         // Servo initial starting position
         Hardware.rotateServo.setAngle(125);
-        // Solenoid Pistons start up
+        // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
+        Hardware.timer.reset();
+        Hardware.timer.start();
         
 
     } // end Init
@@ -367,7 +369,7 @@ public class Teleop
             boolthing = true;
             }
     }
-    public static int telopTimer = 2;
+    
     public static void chrisTest()
     {/* Servo
          if (Hardware.rightOperator.getRawButton(6) == true)
@@ -381,24 +383,36 @@ public class Teleop
             }
             */
             //Claw mech
-            
+             
             if(Hardware.leftOperator.getRawButton(6) == true){
                Hardware.liftSolenoid.set(Value.kForward); //Piston goes down
             }
             else if(Hardware.leftOperator.getRawButton(7) == true){
                 Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
             }
-            if(Hardware.leftOperator.getRawButton(9) == true){
-                 //Hardware.telopTimer.start();
-                Hardware.wheelSpinnerMotor.set(.5);
-               //Hardware.telopTimer.reset();
-            }
-            //For Test
-            else if(Hardware.leftOperator.getRawButton(10) == true){
-                Hardware.wheelSpinnerMotor.set(0);
-            }
             
-    }
+            if(Hardware.timer.get() < 2){
+                Hardware.wheelSpinnerMotor.set(.5); //Start Motor
+            }
+                else if(Hardware.timer.get() > 2){
+            Hardware.wheelSpinnerMotor.set(0); //Stop Motor
+            Hardware.liftSolenoid.set(Value.kForward); // Pistons come down
+            Hardware.timer.reset(); //Reset Timer
+                }   
+                //For Test && resets resets motor and piston
+            if(Hardware.leftOperator.getRawButton(10) == true){
+                Hardware.wheelSpinnerMotor.set(0);
+                Hardware.timer.reset();
+               
+            }
+                 
+    }           
+                
+              
+    
+            
+            
+    
 
     public static void patrickTest()
     {
