@@ -79,7 +79,7 @@ public class Launcher
 
     private enum ShootStateAuto
         {
-        CHARGE, LAUNCH
+        CHARGE, LAUNCH, FINISH
         }
 
     public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
@@ -107,21 +107,28 @@ public class Launcher
      */
     public boolean shootBallsAuto(boolean isClose)
     {
+        System.out.println("Balls: " + Hardware.ballcounter.getBallCount());
         SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
         SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
         SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
         SmartDashboard.putBoolean("load ready", loadReadyTemp);
-        if (Hardware.ballcounter.getBallCount() > 0)
+        if (Hardware.ballcounter.getBallCount() >= 0)
             {
+            System.out.println("Shoot State Launcher: " + shootStateAuto);
             switch (shootStateAuto)
                 {
+
                 case CHARGE:
                     // sets the RPM and makes sure that the conveyor is correct
                     if (launcherReadyTemp || prepareToShoot(isClose, true))
                         {
+                        System.out.println("Setting Launcher");
+
                         launcherReadyTemp = true;
                         }
-                    if (conveyorReadyTemp || Hardware.storage.prepareToShoot())
+                    if (conveyorReadyTemp || Hardware.storage.prepareToShoot()
+                            || Hardware.ballcounter.getBallCount() == 0)
+
                         {
                         System.out.println("prepared to shoot");
                         conveyorReadyTemp = true;
@@ -131,6 +138,7 @@ public class Launcher
                         launcherReadyTemp = false;
                         conveyorReadyTemp = false;
                         shootStateAuto = ShootStateAuto.LAUNCH;
+                        System.out.println("State Launch");
                         }
                     break;
                 case LAUNCH:
@@ -141,7 +149,7 @@ public class Launcher
                         }
                     if (Hardware.ballcounter.getBallCount() > 1)
                         {
-                        System.out.println("loading to fire");
+                        // System.out.println("loading to fire");
                         if (Hardware.storage.loadToFire())
                             {
                             loadReadyTemp = true;
@@ -158,29 +166,44 @@ public class Launcher
                         }
                     else if (Hardware.ballcounter.getBallCount() == 1)
                         {
-                        System.out.println("loading to fire");
+                        // System.out.println("loading to fire last ball");
                         if (Hardware.storage.loadToFire())
                             {
                             loadReadyTemp = true;
+                            // System.out.println("load temp set");
                             }
                         if (Hardware.launcher.prepareToShoot(isClose, true))
                             {
                             launcherReadyTemp = true;
+                            // System.out.println("Launcher ready set");
                             }
                         if (loadReadyTemp && launcherReadyTemp)
                             {
                             loadReadyTemp = false;
                             launcherReadyTemp = false;
+                            System.out.println("before state change");
                             shootStateAuto = ShootStateAuto.CHARGE;
+
+                            // Isue here: You set it back to charge so it never checks to see if its at 0
+
+                            // If statement at the top stops as soon as it hits 0 so you cancel the switch
+                            // case
+
+                            // firstRun = true;
+                            // System.out.println("Returning true!!!!!!");
+                            // return true;
                             }
 
                         }
                     else
                         {
                         firstRun = true;
+                        System.out.println("Returning true!!!!!!");
                         return true;
+
                         }
                     break;
+
                 default:
                     break;
                 }
@@ -240,7 +263,7 @@ public class Launcher
             if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
                 if (Hardware.launcherMotorEncoder.setRPM(
-                        RPM_FAR_2020 /*+  (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE )*/,
+                        RPM_FAR_2020 /* + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE ) */,
                         Hardware.launcherMotorGroup))
                     {
                     spedUp = true;
@@ -249,7 +272,7 @@ public class Launcher
             else
                 {
                 if (Hardware.launcherMotorEncoder.setRPM(
-                        RPM_FAR_2019 /*+ (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE )*/,
+                        RPM_FAR_2019 /* + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE ) */,
                         Hardware.launcherMotorGroup))
                     {
                     spedUp = true;
