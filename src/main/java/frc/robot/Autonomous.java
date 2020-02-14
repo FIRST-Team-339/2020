@@ -70,10 +70,12 @@ public class Autonomous
          */
         if (Hardware.autoSwitch.isOn() == false)
             {
+            System.out.println("Off");
             autoState = State.FINISH;
             }
         else
             {
+            System.out.println("ON");
             autoState = State.INIT;
             }
 
@@ -453,9 +455,10 @@ public class Autonomous
                 // robot is on the right side or center
 
                 // calling align
+                // System.out.println("Starting Align");
                 if (alignTrench())
                     {
-
+                    // System.out.println("finished Align");
                     // are we collecting?
                     if (exit == Exit.TURN_AND_FIRE)
                         {
@@ -607,6 +610,7 @@ public class Autonomous
 
     private static boolean alignTrench()
     {
+        System.out.println("Trench State: " + trench);
         if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
             {
             if (position == Position.RIGHT)
@@ -625,10 +629,11 @@ public class Autonomous
                     // break;
                     case TURN1:
                         // turn turn degrees right
+
                         if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
                             {
                             trench = AlignTrenchState.FINISH;
-                            break;
+
                             }
                         break;
                     // case FINAL_DRIVE:
@@ -663,10 +668,14 @@ public class Autonomous
                         break;
                     case TURN1:
                         // turn turn degrees right
+                        System.out.println("Gyro: " + Hardware.gyro.getAngle());
+                        System.out.println("Left Motor: " + Hardware.leftDriveGroup.get());
+                        System.out.println("Right Motor: " + Hardware.rightDriveGroup.get());
+
                         if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
                             {
                             trench = AlignTrenchState.FINAL_DRIVE;
-                            break;
+
                             }
                         break;
                     case FINAL_DRIVE:
