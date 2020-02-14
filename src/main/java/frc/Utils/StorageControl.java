@@ -234,13 +234,13 @@ public class StorageControl
                     shootState = ShootState.INITIAL_UP;
                     break;
                 case INITIAL_UP:
-                    System.out.println("shoot RL" + this.shootRL.get());
+                    // System.out.println("shoot RL" + this.shootRL.get());
                     // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
                     // moved into the rotating shooter
                     // TODO this might have to be the upperRL
                     if (Hardware.firingRL.get() && !preparedToFire)
                         {
-                        System.out.println("got shoot rl");
+                        // System.out.println("got shoot rl");
                         preparedToFire = true;
                         state = ControlState.PASSIVE;
                         shootState = ShootState.INIT;
@@ -281,15 +281,22 @@ public class StorageControl
             {
             if (preparedToFire)
                 {
-                System.out.println("loading");
+                // System.out.println("loading");
                 if (this.shootRL.get())
                     {
 
-                    System.out.println("shooting ball");
+                    // System.out.println("shooting ball");
                     state = ControlState.UP;
                     if (!stillShooting)
                         {
                         Hardware.ballcounter.subtractBall();
+
+                        // Change made by Craig Kimball, Question statement to determine wether there
+                        // are balls left to continue the further states
+                        if (Hardware.ballcounter.getBallCount() == 0)
+                            {
+                            return true;
+                            }
                         }
                     stillShooting = true;
                     }
@@ -300,7 +307,7 @@ public class StorageControl
                     state = ControlState.PASSIVE;
                     if (Hardware.ballcounter.getBallCount() > 0)
                         {
-                        System.out.println(" preparing again");
+                        // System.out.println(" preparing again");
                         prepareToShoot();
                         return true;
                         }

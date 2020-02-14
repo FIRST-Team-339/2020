@@ -294,8 +294,10 @@ public class Autonomous
         // System.out.println("Location: " + position);
         // System.out.println("RunAuto Path: " + path);
         // System.out.println("Exit Path" + exit);
+        System.out.println(path);
         switch (path)
             {
+
             case NOTHING:
 
                 // This will be for the insatnce where the robot is not a in a
@@ -306,7 +308,7 @@ public class Autonomous
 
             case SHOOT_FAR:
                 Hardware.launcher.prepareToShoot(false, true);
-                System.out.println("has shot the thing: " + hasShotTheEtHInG);
+                // System.out.println("has shot the thing: " + hasShotTheEtHInG);
                 if (!hasShotTheEtHInG)
                     {
                     if (shootFar())
@@ -939,6 +941,7 @@ public class Autonomous
 
     private static boolean shootFar()
     {
+        // System.out.println(far);
 
         switch (far)
             {
