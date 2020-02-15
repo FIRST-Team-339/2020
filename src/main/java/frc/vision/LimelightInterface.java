@@ -146,6 +146,7 @@ public class LimelightInterface
 
     /**
      * if the vision has targets
+     * 
      * @return boolean
      */
     public boolean getHasTargets()
@@ -392,13 +393,15 @@ public class LimelightInterface
 
             limelight.getEntry("pipeline").forceSetNumber(pipe);
             // limelight.getEntry("pipeline").setNumber(pipe);
-            System.out.println("pipeline" + limelight.getEntry("pipeline").getDouble(0));
+            System.out.println("pipeline " + limelight.getEntry(" pipeline ").getDouble(0));
             }
     }
 
     /**
      * takePictureWithButtons passes in two joystick buttons and when they are both
-     * pressed, it takes a single picture. Uses two booleans to make sure the camera code is only run once per each button press, regardless of how long they are held
+     * pressed, it takes a single picture. Uses two booleans to make sure the camera
+     * code is only run once per each button press, regardless of how long they are
+     * held
      *
      * @author Patrick
      *
@@ -407,21 +410,25 @@ public class LimelightInterface
      */
     public void takePictureWithButtons(JoystickButton leftOp1, JoystickButton leftOp2)
     {
-        //avoids a null pointer exception
+        // avoids a null pointer exception
         if (leftOp1 != null && leftOp2 != null)
             {
-            //if both buttons are pressed and they aren't already pressed,this takes a picture and registers that the buttons have been pressed so that way they won't take another picture
+            // if both buttons are pressed and they aren't already pressed,this takes a
+            // picture and registers that the buttons have been pressed so that way they
+            // won't take another picture
             if (leftOp1.get() && leftOp2.get() && this.buttonHasBeenPressed && !this.hasButtonBeenPressed)
                 {
                 this.hasButtonBeenPressed = true;
                 this.takePicture();
                 }
 
-            //if both buttons return true, and are not already pressed, than the boolean registers the buttons have been pressed.
+            // if both buttons return true, and are not already pressed, than the boolean
+            // registers the buttons have been pressed.
             if (leftOp1.get() && leftOp2.get() && !this.buttonHasBeenPressed)
                 this.buttonHasBeenPressed = true;
 
-            //if only one of the buttons or neither button is pressed, this makes sure both booleans are false
+            // if only one of the buttons or neither button is pressed, this makes sure both
+            // booleans are false
             if (!leftOp1.get() && !leftOp2.get())
                 {
                 this.buttonHasBeenPressed = false;

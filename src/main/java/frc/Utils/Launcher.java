@@ -199,6 +199,7 @@ public class Launcher
                         {
                         firstRun = true;
                         // System.out.println("Returning true!!!!!!");
+                        Hardware.intake.intake();
                         return true;
 
                         }
