@@ -402,6 +402,7 @@ public class Hardware
     public static SingleThrowSwitch shootFar = new SingleThrowSwitch(19);
     public static SingleThrowSwitch shootClose = new SingleThrowSwitch(20);
     public static DoubleThrowSwitch shootingPlan = new DoubleThrowSwitch(shootFar, shootClose);
+    public static SingleThrowSwitch ballStart = new SingleThrowSwitch(6);
 
     public static SingleThrowSwitch leftAuto = new SingleThrowSwitch(11);
     public static SingleThrowSwitch rightAuto = new SingleThrowSwitch(12);
@@ -534,7 +535,7 @@ public class Hardware
     public static LimelightInterface visionInterface = new LimelightInterface();
 
     public final static double PREV_YEAR_DISTANCE_PER_TICK = 23 / 13.8;// .0346;
-    public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;//.000746
+    public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;// .000746
 
     // -------------------
     // Subassemblies

@@ -117,6 +117,7 @@ public class LimelightDriveWithVision
         double adjustmentValueRight = 0;
         // right move speed
         double adjustmentValueLeft = 0;
+        System.out.println("Target: " + Hardware.visionInterface.getHasTargets());
 
         if (Hardware.visionInterface.getHasTargets())
             {
@@ -148,8 +149,8 @@ public class LimelightDriveWithVision
         else
             {
             Hardware.transmission.drive(0, 0);
-            this.timer.stop();
-            return true;
+            // this.timer.stop();
+            // return true;
             }
         return false;
 
@@ -198,13 +199,13 @@ public class LimelightDriveWithVision
     }
 
     // minimum speed a motor will move while aligning
-    final double MIN_MOVE_2019 = .3;
+    final double MIN_MOVE_2019 = .15;
 
     // after the robot is align the speed that the robot will continue at
     final double DRIVE_AFTER_ALIGN = .2;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2019 = .02;// 0.015
+    final double ADJUST_PORP_2019 = .015;// 0.015
 
     final double ADJUST_PORP_2019_ALIGN = .02;
     // an adjustment proportional value. Found with the tried and true method of

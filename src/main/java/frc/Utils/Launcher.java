@@ -107,14 +107,14 @@ public class Launcher
      */
     public boolean shootBallsAuto(boolean isClose)
     {
-        System.out.println("Balls: " + Hardware.ballcounter.getBallCount());
+        // System.out.println("Balls: " + Hardware.ballcounter.getBallCount());
         SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
         SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
         SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
         SmartDashboard.putBoolean("load ready", loadReadyTemp);
         if (Hardware.ballcounter.getBallCount() >= 0)
             {
-            System.out.println("Shoot State Launcher: " + shootStateAuto);
+            // System.out.println("Shoot State Launcher: " + shootStateAuto);
             switch (shootStateAuto)
                 {
 
@@ -122,7 +122,7 @@ public class Launcher
                     // sets the RPM and makes sure that the conveyor is correct
                     if (launcherReadyTemp || prepareToShoot(isClose, true))
                         {
-                        System.out.println("Setting Launcher");
+                        // System.out.println("Setting Launcher");
 
                         launcherReadyTemp = true;
                         }
@@ -130,7 +130,7 @@ public class Launcher
                             || Hardware.ballcounter.getBallCount() == 0)
 
                         {
-                        System.out.println("prepared to shoot");
+                        // System.out.println("prepared to shoot");
                         conveyorReadyTemp = true;
                         }
                     if (launcherReadyTemp && conveyorReadyTemp)
@@ -138,7 +138,7 @@ public class Launcher
                         launcherReadyTemp = false;
                         conveyorReadyTemp = false;
                         shootStateAuto = ShootStateAuto.LAUNCH;
-                        System.out.println("State Launch");
+                        // System.out.println("State Launch");
                         }
                     break;
                 case LAUNCH:
@@ -181,7 +181,7 @@ public class Launcher
                             {
                             loadReadyTemp = false;
                             launcherReadyTemp = false;
-                            System.out.println("before state change");
+                            // System.out.println("before state change");
                             shootStateAuto = ShootStateAuto.CHARGE;
 
                             // Isue here: You set it back to charge so it never checks to see if its at 0
@@ -198,7 +198,7 @@ public class Launcher
                     else
                         {
                         firstRun = true;
-                        System.out.println("Returning true!!!!!!");
+                        // System.out.println("Returning true!!!!!!");
                         return true;
 
                         }

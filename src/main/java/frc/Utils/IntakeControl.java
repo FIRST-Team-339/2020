@@ -153,14 +153,20 @@ public class IntakeControl
         if (pickUpBallsFirstTime)
             {
             startBallCount = Hardware.ballcounter.getBallCount();
+            pickUpBallsFirstTime = false;
             }
         Hardware.visionInterface.setPipeline(2);
         this.intake();
-        if (Hardware.visionDriving.driveToTargetNoDistance(.2)
-                || Hardware.ballcounter.getBallCount() >= startBallCount + 3)
+        Hardware.visionDriving.driveToTargetNoDistance(.2);
+        if (Hardware.ballcounter.getBallCount() >= startBallCount + 3)
             {
-            System.out.println("picked up all of the balls");
+            // System.out.println("picked up all of the balls");
             Hardware.visionInterface.setPipeline(0);
+            pickUpBallsFirstTime = true;
+            // System.out.println("Ball count: " + Hardware.ballcounter.getBallCount());
+
+            Hardware.intakeMotor.set(0);
+
             return true;
             }
 
