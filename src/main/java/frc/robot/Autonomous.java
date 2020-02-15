@@ -293,6 +293,8 @@ public class Autonomous
 
     public static boolean runAuto()
     {
+        // System.out.println("Exit: " + exit);
+        // System.out.println("Path: " + path);
         // System.out.println("Location: " + position);
         // System.out.println("RunAuto Path: " + path);
         // System.out.println("Exit Path" + exit);
@@ -348,7 +350,7 @@ public class Autonomous
                     // else if (exit.equals(Exit.GET_OUT) || exit == Exit.GET_OUT)
                     // {
 
-                    // // Move out of the way, staying close to goal to retreive
+                    // Move out of the way, staying close to goal to retreive
                     // missed balls
                     // path = Path.GET_OUT;
 
@@ -482,13 +484,22 @@ public class Autonomous
                     {
 
                     // this will be executed if there is time
-                    path = Path.TURN_AND_FIRE;
-                    return true;
+                    System.out.println("picked up trench complete");
+
+                    if (exit == Exit.TURN_AND_FIRE)
+                        {
+                        path = Path.TURN_AND_FIRE;
+                        }
+                    else
+                        {
+                        return true;
+                        }
+
                     }
                 break;
 
             case TURN_AND_FIRE:
-
+                System.out.println("IN TURN AND FIRE");
                 // final attempt to turn and shoot more balls from trench
                 if (turnFire())
                     {
@@ -506,7 +517,7 @@ public class Autonomous
 
     public static enum TurnAndFireState
         {
-        DRIVE_BACK, TURN1, ALIGN, FINAL_DRIVE, FINISH
+        DRIVE_BACK, TURN1, ALIGN, SHOOT, FINISH
         }
 
     public static TurnAndFireState turnAndFire = TurnAndFireState.DRIVE_BACK;
@@ -518,7 +529,8 @@ public class Autonomous
 
             case DRIVE_BACK:
                 // drive backwards towards line
-                if (Hardware.drive.driveStraightInches(TURN_AND_FIRE_GO_BACK_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
+                if (Hardware.drive.driveStraightInches(TURN_AND_FIRE_GO_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION,
+                        true))
                     {
                     turnAndFire = TurnAndFireState.TURN1;
                     }
@@ -536,25 +548,26 @@ public class Autonomous
                 break;
             case ALIGN:
 
-                System.out.println(Hardware.gyro.getAngle());
-
-                if (Hardware.visionDriving.alignToTarget())
+                System.out.println("Aligning");
+                System.out.println("Is there targets: " + Hardware.visionInterface.getHasTargets());
+                if (Hardware.visionDriving.driveToTarget(144, true, .3))
                     {
-                    turnAndFire = TurnAndFireState.FINISH;
+
+                    System.out.println("Aligned");
+                    turnAndFire = TurnAndFireState.SHOOT;
                     }
 
                 break;
-            // case FINAL_DRIVE:
-            // // hail marry
-            // if (Hardware.drive.driveStraightInches(
-            // TURN_AND_FIRE_DISTANCE, DRIVE_SPEED, ACCELERATION,
-            // true))
-            // {
-            // turnAndFire = TurnAndFireState.FINISH;
-            // }
+            case SHOOT:
+                System.out.println("Shooting");
+                if (Hardware.launcher.shootBallsAuto(false))
+                    {
+                    turnAndFire = TurnAndFireState.FINISH;
+                    }
+                break;
 
-            // break;
             case FINISH:
+
                 return true;
 
             }
@@ -564,7 +577,7 @@ public class Autonomous
 
     public static enum pickupTrenchState
         {
-        TURN, DRIVE_FORWARD, FINISH
+        DRIVE_FORWARD, FINISH
         }
 
     public static pickupTrenchState pickup = pickupTrenchState.DRIVE_FORWARD;
@@ -574,14 +587,6 @@ public class Autonomous
         // drive forward along balls picking them up
         switch (pickup)
             {
-            // case TURN:
-            // if (Hardware.drive.turnDegrees(ALIGN_SQUARE_LEFT_DEGREES,
-            // DRIVE_SPEED, ACCELERATION, true))
-            // {
-
-            // }
-
-            // break;
             case DRIVE_FORWARD:
 
                 // drive for balls
@@ -610,88 +615,45 @@ public class Autonomous
 
     private static boolean alignTrench()
     {
-        System.out.println("Trench State: " + trench);
-        if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
+        // System.out.println("Trench State: " + trench);
+        // System.out.println("shootingPlan: " + Hardware.shootingPlan.getPosition());
+        // System.out.println("Position: " + position);
+
+        if (position == Position.RIGHT)
             {
-            if (position == Position.RIGHT)
+            switch (trench)
                 {
-                switch (trench)
-                    {
-                    // case DRIVE_BACK:
-                    // // drive backwards
-                    // if (Hardware.drive.driveStraightInches(
-                    // ALIGN_TRENCH_MOVE_BACK_DISTANCE,
-                    // -DRIVE_SPEED,
-                    // ACCELERATION, true))
-                    // {
-                    // trench = AlignTrenchState.TURN1;
-                    // }
-                    // break;
-                    case TURN1:
-                        // turn turn degrees right
+                case DRIVE_BACK:
+                    // drive backwards
 
-                        if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
-                            {
-                            trench = AlignTrenchState.FINISH;
+                    trench = AlignTrenchState.TURN1;
 
-                            }
-                        break;
-                    // case FINAL_DRIVE:
-                    // // drive up to trench
-                    // if (Hardware.drive.driveStraightInches(
-                    // ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED,
-                    // ACCELERATION,
-                    // true))
-                    // {
-                    // trench = AlignTrenchState.FINISH;
-                    // }
+                    break;
+                case TURN1:
+                    // turn turn degrees right
+                    // System.out.println("Gyro: " + Hardware.gyro.getAngle());
+                    // System.out.println("Left Motor: " + Hardware.leftDriveGroup.get());
+                    // System.out.println("Right Motor: " + Hardware.rightDriveGroup.get());
 
-                    // break;
-                    case FINISH:
-                        return true;
-                    }
+                    if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                        {
+                        trench = AlignTrenchState.FINAL_DRIVE;
 
+                        }
+                    break;
+                case FINAL_DRIVE:
+                    // drive up to trench
+                    if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
+                            true))
+                        {
+                        trench = AlignTrenchState.FINISH;
+                        }
+
+                    break;
+                case FINISH:
+                    return true;
                 }
-            }
-        else
-            {
 
-            if (position == Position.RIGHT)
-                {
-                switch (trench)
-                    {
-                    case DRIVE_BACK:
-                        // drive backwards
-
-                        trench = AlignTrenchState.TURN1;
-
-                        break;
-                    case TURN1:
-                        // turn turn degrees right
-                        System.out.println("Gyro: " + Hardware.gyro.getAngle());
-                        System.out.println("Left Motor: " + Hardware.leftDriveGroup.get());
-                        System.out.println("Right Motor: " + Hardware.rightDriveGroup.get());
-
-                        if (Hardware.drive.turnDegrees(ALIGN_TRENCH_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
-                            {
-                            trench = AlignTrenchState.FINAL_DRIVE;
-
-                            }
-                        break;
-                    case FINAL_DRIVE:
-                        // drive up to trench
-                        if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
-                                true))
-                            {
-                            trench = AlignTrenchState.FINISH;
-                            }
-
-                        break;
-                    case FINISH:
-                        return true;
-                    }
-
-                }
             }
 
         return false;
@@ -965,10 +927,19 @@ public class Autonomous
                 break;
             case ALIGN:
 
-                if (Hardware.visionDriving.alignToTarget())
+                if (Hardware.visionInterface.getHasTargets())
                     {
-                    far = farState.SHOOT;
 
+                    if (Hardware.visionDriving.alignToTarget())
+                        {
+                        far = farState.SHOOT;
+
+                        }
+                    }
+                else
+                    {
+                    path = Path.NOTHING;
+                    // far = farState.FINISH;
                     }
                 break;
             case SHOOT:
@@ -1030,9 +1001,9 @@ public class Autonomous
     // constant
     private final static int PICKUP_DISTANCE = 120;
 
-    private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 120;
+    private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 96;
 
-    private final static int TURN_AND_FIRE_DEGREES = -150;
+    private final static int TURN_AND_FIRE_DEGREES = 150;
 
     private final static int TURN_AND_FIRE_DISTANCE = 0;
 
