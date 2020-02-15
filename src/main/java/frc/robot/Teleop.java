@@ -366,11 +366,11 @@ public class Teleop
         Hardware.wheelSpinnerMotor.set(.5); //Motor set to .5
         Hardware.telopTimer.stop();
      }
-       /*else if( Hardware.leftOperator.getRawButton(6) == true &&Hardware.telopTimer.get() >= timer ){
+       else if( Hardware.leftOperator.getRawButton(6) == true && Hardware.telopTimer.get() >= timer ){
           Hardware.liftSolenoid.set(Value.kForward);
           Hardware.telopTimer.reset();
         }  
-        */
+        
           if(Hardware.telopTimer.get() >= timer){
           Hardware.wheelSpinnerMotor.set(0.0); //Motor set to zero
           Hardware.telopTimer.stop(); //Stops timer
