@@ -490,7 +490,8 @@ public class Hardware
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
-    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton, cameraSwitchButton2);
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton, cameraSwitchButton2, 340,
+            240, 20, 30);
 
     // ------------------------------------
     // Utility classes

@@ -93,8 +93,6 @@ public class Teleop
         Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
         //Hardware.telopTimer.reset();
         //Hardware.telopTimer.start();
-        
-        
 
     } // end Init
 
@@ -183,7 +181,7 @@ public class Teleop
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
             }
         // teleopDrive();
-         individualTest();
+        individualTest();
         // printStatements();
     } // end Periodic()
 
@@ -222,7 +220,7 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-        chrisTest();
+        // chrisTest();
         // dionTest();
         // patrickTest();
         //  colourTest();
@@ -341,11 +339,7 @@ public class Teleop
 
     public static void dionTest()
     {
-        if (Hardware.leftOperator.getRawButton(7) && !boolthing)
-            {
-            // Hardware.kilroyUSBCamera.switchCameras();
-            boolthing = true;
-            }
+
     }
 
     public static void chrisTest()
@@ -360,42 +354,42 @@ public class Teleop
       Hardware.rotateServo.setAngle(55);
       }
       */
-       double timer = 1.35;
-      if(Hardware.leftOperator.getRawButton(6) == true && Hardware.telopTimer.get() < timer){
-        Hardware.telopTimer.start(); //Starts timer
-        Hardware.wheelSpinnerMotor.set(.5); //Motor set to .5
-        Hardware.telopTimer.stop();
-     }
-       /*else if( Hardware.leftOperator.getRawButton(6) == true &&Hardware.telopTimer.get() >= timer ){
-          Hardware.liftSolenoid.set(Value.kForward);
-          Hardware.telopTimer.reset();
-        }  
-        */
-          if(Hardware.telopTimer.get() >= timer){
-          Hardware.wheelSpinnerMotor.set(0.0); //Motor set to zero
-          Hardware.telopTimer.stop(); //Stops timer
-          //Hardware.telopTimer.reset(); //Resets timer
-          //Hardware.liftSolenoid.set(Value.kForward); //Brings pistons down
-         }
-     
-     if(Hardware.leftOperator.getRawButton(7) == true){
-          Hardware.telopTimer.stop();
-          Hardware.telopTimer.reset();
-          Hardware.liftSolenoid.set(Value.kForward);
-      }  
-    
-   
-      
-       
-                //For Test && full resets motor and piston
-            /*if(Hardware.leftOperator.getRawButton(10) == true){
-                Hardware.wheelSpinnerMotor.set(0);
-                Hardware.telopTimer.stop();
-                Hardware.telopTimer.reset();
-                Hardware.liftSolenoid.set(Value.kReverse);
-                Hardware.liftSolenoid.set(Value.kOff);
+        double timer = 1.35;
+        if (Hardware.leftOperator.getRawButton(6) == true && Hardware.telopTimer.get() < timer)
+            {
+            Hardware.telopTimer.start(); //Starts timer
+            Hardware.wheelSpinnerMotor.set(.5); //Motor set to .5
+            Hardware.telopTimer.stop();
             }
-       */
+        /*else if( Hardware.leftOperator.getRawButton(6) == true &&Hardware.telopTimer.get() >= timer ){
+          Hardware.liftSolenoid.set(Value.kForward);
+          Hardware.telopTimer.reset();
+        }
+        */
+        if (Hardware.telopTimer.get() >= timer)
+            {
+            Hardware.wheelSpinnerMotor.set(0.0); //Motor set to zero
+            Hardware.telopTimer.stop(); //Stops timer
+            //Hardware.telopTimer.reset(); //Resets timer
+            //Hardware.liftSolenoid.set(Value.kForward); //Brings pistons down
+            }
+
+        if (Hardware.leftOperator.getRawButton(7) == true)
+            {
+            Hardware.telopTimer.stop();
+            Hardware.telopTimer.reset();
+            Hardware.liftSolenoid.set(Value.kForward);
+            }
+
+        //For Test && full resets motor and piston
+        /*if(Hardware.leftOperator.getRawButton(10) == true){
+            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.telopTimer.stop();
+            Hardware.telopTimer.reset();
+            Hardware.liftSolenoid.set(Value.kReverse);
+            Hardware.liftSolenoid.set(Value.kOff);
+        }
+        */
     }
 
     public static void patrickTest()
