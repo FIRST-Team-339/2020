@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.Hardware.Hardware;
 
 /**
- * Code for raising and lowering te camera serv for the 2020 season
+ * Code for raising and lowering te camera servo for the 2020 season
  * @author Conner McKevitt
  */
 public class CameraServo
@@ -103,8 +103,10 @@ public class CameraServo
 
     //up angle
     final double UP_POSITION = 125;
+
     //down angle
     final double DOWN_POSITION = 55;
+
     //position that is ok but not really what you want(just like your grades)
     final double ACCEPTABLE_OFFSET = 1;
     }

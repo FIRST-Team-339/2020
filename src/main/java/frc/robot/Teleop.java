@@ -109,19 +109,19 @@ public class Teleop
 
     public static boolean testBoolean2 = false;
 
-    public static boolean shootClose = false;
+    private static boolean isShootClose = false;
 
     public static void periodic()
     {
 
         // =============== AUTOMATED SUBSYSTEMS ===============
+        //control loops======================
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        Hardware.storage.intakeStorageControl();
+        Hardware.storage.storageControlState();
+        //end control loops ==========================
 
-        if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
-            {
-            Hardware.storage.storageControlState();
-            }
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
         Hardware.storage.intakeStorageControl();
 
@@ -148,32 +148,45 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-
+        //change the wanted shoot distance
         if (Hardware.shootCloseButton.get())
-            {
-            shootClose = true;
+            {//close
+            isShootClose = true;
             }
         if (Hardware.shootFarButton.get())
             {
-            shootClose = false;
+            //far
+            isShootClose = false;
+
             }
 
+        //TODO remove this check
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
+
+            //override convyor movement
             Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
-            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, shootClose);
+            //shoot balls
+            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, isShootClose);
 
+            //intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
+            //outtake
             Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+
             // this is necessary becuase I organized the code wrong and its too late to
             // rewrite intake
+            //makes conveyor stop if not intakeing or outtaking
             Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
 
-            Hardware.ballcounter.subtractBall(Hardware.substractBall);
-            Hardware.ballcounter.addBall(Hardware.addBall);
-            Hardware.ballcounter.clearCount(Hardware.substractBall, Hardware.addBall);
+            //subtract ball
+            Hardware.ballCounter.subtractBall(Hardware.subtractBall);
+            //add ball
+            Hardware.ballCounter.addBall(Hardware.addBall);
+            //sets count to 0
+            Hardware.ballCounter.clearCount(Hardware.subtractBall, Hardware.addBall);
             }
 
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
@@ -182,7 +195,7 @@ public class Teleop
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
             }
         // teleopDrive();
-        individualTest();
+        // individualTest();
         // printStatements();
     } // end Periodic()
 

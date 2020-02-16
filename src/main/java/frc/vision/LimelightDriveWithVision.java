@@ -89,9 +89,9 @@ public class LimelightDriveWithVision
     }
 
     /**
-     * Aligns to vision targets using a one turn system. For use if already mostly.
+     *  For use if auto mostly.
      * will run toward the target until the target no longer exist. Use at your own
-     * discretion. Kilroy Robotics and the author of thiscode holds not
+     * discretion. Kilroy Robotics and the author of this code holds no
      * responsibility for any damage to property or the guy that was hit with the
      * robot
      *

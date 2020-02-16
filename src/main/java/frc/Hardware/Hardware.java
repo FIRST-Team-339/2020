@@ -225,7 +225,7 @@ public class Hardware
 
         // ==============DIO INIT=============
 
-        launcherMotorEncoder = new KilroyEncoder(7, 25);
+        launcherMotorEncoder = new KilroyEncoder(7, 6);
 
         launcherMotorEncoder.setTicksPerRevolution(400);
 
@@ -274,7 +274,7 @@ public class Hardware
 
         hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
 
-        ballcounter = new BallCounter(ballButtonTimer);
+        ballCounter = new BallCounter(ballButtonTimer);
 
     } // end initizliePrevYear()
 
@@ -286,8 +286,6 @@ public class Hardware
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor2);
-
-        colorTestMotor = new WPI_TalonSRX(21);
 
     }
 
@@ -331,12 +329,9 @@ public class Hardware
         // ANALOG I/O
         // **********************************************************
 
-        frontUltraSonic = new LVMaxSonarEZ(3);
         // **********************************************************
         // PNEUMATIC DEVICES
         // **********************************************************
-        intakeSolenoid = new DoubleSolenoid(4, 5);
-        liftSolenoid = new DoubleSolenoid(2, 3);
 
     }
     // **********************************************************
@@ -347,8 +342,6 @@ public class Hardware
     public static SpeedController rightRearMotor = null;
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
-
-    public static SpeedController colorTestMotor = null;
 
     public static SpeedControllerGroup leftDriveGroup = null;
     public static SpeedControllerGroup rightDriveGroup = null;
@@ -402,7 +395,7 @@ public class Hardware
     public static SingleThrowSwitch shootFar = new SingleThrowSwitch(19);
     public static SingleThrowSwitch shootClose = new SingleThrowSwitch(20);
     public static DoubleThrowSwitch shootingPlan = new DoubleThrowSwitch(shootFar, shootClose);
-    public static SingleThrowSwitch ballStart = new SingleThrowSwitch(6);
+    public static SingleThrowSwitch ballStart = new SingleThrowSwitch(25);
 
     public static SingleThrowSwitch leftAuto = new SingleThrowSwitch(11);
     public static SingleThrowSwitch rightAuto = new SingleThrowSwitch(12);
@@ -421,12 +414,12 @@ public class Hardware
 
     public static Potentiometer hoodPot = new Potentiometer(1);
 
-    public static LVMaxSonarEZ frontUltraSonic = null;
+    public static LVMaxSonarEZ frontUltraSonic = new LVMaxSonarEZ(3);
     // **********************************************************
     // PNEUMATIC DEVICES
     // **********************************************************
-    public static DoubleSolenoid intakeSolenoid = null;
-    public static DoubleSolenoid liftSolenoid = null;
+    public static DoubleSolenoid intakeSolenoid = new DoubleSolenoid(4, 5);
+    public static DoubleSolenoid liftSolenoid = new DoubleSolenoid(2, 3);
     public static Compressor compressor = new Compressor();
 
     // **********************************************************
@@ -449,12 +442,10 @@ public class Hardware
     // **********************************************************
     // Buttons
     // **********************************************************
-    public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
-    public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
-    public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
+    public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
 
@@ -480,7 +471,7 @@ public class Hardware
 
     public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
 
-    public static JoystickButton substractBall = new JoystickButton(Hardware.leftOperator, 8);
+    public static JoystickButton subtractBall = new JoystickButton(Hardware.leftOperator, 8);
 
     public static JoystickButton addBall = new JoystickButton(Hardware.leftOperator, 9);
 
@@ -525,7 +516,7 @@ public class Hardware
 
     public static HoodControl hoodControl = null;
 
-    public static BallCounter ballcounter = null;
+    public static BallCounter ballCounter = null;
     public static ColorWheel colorWheel = new ColorWheel();
 
     // ------------------------------------------

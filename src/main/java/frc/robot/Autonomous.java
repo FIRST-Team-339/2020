@@ -98,7 +98,7 @@ public class Autonomous
 
         // TODO add in switch to determine ball count: Hardware change first
 
-        Hardware.ballcounter.setBallCount(3);
+        Hardware.ballCounter.setBallCount(3);
 
     } // end Init
 
@@ -152,12 +152,11 @@ public class Autonomous
         Hardware.visionInterface.updateValues();
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
+        Hardware.intake.makePassive();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        if (Hardware.launcher.prepareToShoot(false, true))
-            {
+        // Hardware.launcher.prepareToShoot(false, true);
 
-            }
         // ==================================================
         // end important code that make stuff do other stuff
         // ===================================================

@@ -50,7 +50,7 @@ public class StorageControl
 
         // these puts are not test code. Send important robot data to the robot for the
         // drivers to see
-        SmartDashboard.putNumber("", Hardware.ballcounter.getBallCount());
+        SmartDashboard.putNumber("", Hardware.ballCounter.getBallCount());
 
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
         SmartDashboard.putString("conveyor state: ", state.toString());
@@ -62,12 +62,12 @@ public class StorageControl
             if (Hardware.intake.intaking)
                 {
                 // System.out.println("adding");
-                Hardware.ballcounter.addBall();
+                Hardware.ballCounter.addBall();
                 }
             else if (Hardware.intake.outtaking)
                 {
                 // System.out.println("subtracting");
-                Hardware.ballcounter.subtractBall();
+                Hardware.ballCounter.subtractBall();
                 }
             }
         if (!this.intakeRL.get())
@@ -233,7 +233,7 @@ public class StorageControl
     {
         // SmartDashboard.putString("prepare conveoyr", shootState.toString());
 
-        if (Hardware.ballcounter.getBallCount() > 0)
+        if (Hardware.ballCounter.getBallCount() > 0)
             {
 
             switch (shootState)
@@ -300,7 +300,7 @@ public class StorageControl
                 stillShooting = false;
                 }
             }
-        if (Hardware.ballcounter.getBallCount() > 0)
+        if (Hardware.ballCounter.getBallCount() > 0)
             {
             //if prepared to fire as notified true
             if (preparedToFire)
@@ -315,10 +315,10 @@ public class StorageControl
                     state = ControlState.UP;
                     if (!stillShooting)
                         {
-                        Hardware.ballcounter.subtractBall();
+                        Hardware.ballCounter.subtractBall();
 
                         // extra check to see if there are balls left to continue the further states
-                        if (Hardware.ballcounter.getBallCount() == 0)
+                        if (Hardware.ballCounter.getBallCount() == 0)
                             {
                             return true;
                             }
@@ -334,7 +334,7 @@ public class StorageControl
                     //stop moving conveyor
                     state = ControlState.PASSIVE;
                     //if we still have balls
-                    if (Hardware.ballcounter.getBallCount() > 0)
+                    if (Hardware.ballCounter.getBallCount() > 0)
                         {
                         // System.out.println(" preparing again");
                         //prepared the next ball
@@ -362,7 +362,7 @@ public class StorageControl
     public boolean clearStorage(JoystickButton button1, JoystickButton button2)
     {
 
-        if (Hardware.ballcounter.getBallCount() == 0)
+        if (Hardware.ballCounter.getBallCount() == 0)
             {
             //if no balls return true, stop conveyor
             state = ControlState.PASSIVE;
