@@ -37,11 +37,13 @@ import frc.Utils.drive.Drive;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -113,7 +115,7 @@ public class Hardware
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(9);
-
+    //TalonSRX climbMotors = new TalonSRX(29);
     /**********************************************
      * initializePrevYear() function initializes all Hardware items that are
      * REQUIRED for this year
@@ -223,6 +225,7 @@ public class Hardware
 
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
+        climbMotor = new WPI_TalonSRX(29);
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder(7, 25);
@@ -386,6 +389,10 @@ public class Hardware
 
     public static SpeedController hoodAdjustmentMotor = null;
 
+    // -------------------------------------------------------------
+
+    public static SpeedController climbMotor = null;
+
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
@@ -488,6 +495,13 @@ public class Hardware
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
+    public static JoystickButton pistonsUpSolenoid = new JoystickButton(Hardware.rightOperator, 6);
+
+    public static JoystickButton pistonsDownSolenoid = new JoystickButton(Hardware.rightOperator, 7);
+
+    public static JoystickButton climbReverse = new JoystickButton(Hardware.rightOperator, 8 + 9);
+
+    public static JoystickButton climbMotorUp = new JoystickButton(Hardware.rightOperator, 10);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
