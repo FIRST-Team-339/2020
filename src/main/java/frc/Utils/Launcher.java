@@ -33,6 +33,7 @@ public class Launcher
             this.encoder = encoder;
         }
 
+    //enum to the main shooting state
     private enum ShootState
         {
         PASSIVE, CHARGE, LAUNCH
@@ -51,22 +52,36 @@ public class Launcher
         switch (shootState)
             {
             case PASSIVE:
+                //until shoot button dont shoot
+                //must be held down to shoot multiple balls
                 if (shootButton.get())
                     {
                     shootState = ShootState.CHARGE;
                     }
                 break;
             case CHARGE:
-
-                if (prepareToShoot(isClose, false) && Hardware.storage.prepareToShoot())
+                //starts charging the launcher and prepares the balls in the conveyor
+                if (prepareToShoot(isClose, teleop))
                     {
+                    launcherReadyTemp = true;
+                    }
+                if (conveyorReadyTemp || Hardware.storage.prepareToShoot())
+                    {
+                    conveyorReadyTemp = true;
+                    }
+                //if both are prepared
+                if (conveyorReadyTemp && launcherReadyTemp)
+                    {
+                    conveyorReadyTemp = false;
+                    launcherReadyTemp = false;
                     shootState = ShootState.LAUNCH;
                     }
                 break;
             case LAUNCH:
+                //loads a ball and shoots it
                 if (Hardware.storage.loadToFire())
                     {
-                    System.out.println("loaded");
+                    //back to passive
                     shootState = ShootState.PASSIVE;
                     }
                 break;
@@ -77,6 +92,7 @@ public class Launcher
 
     }
 
+    //enum for shooting in autp
     private enum ShootStateAuto
         {
         CHARGE, LAUNCH, FINISH
@@ -84,15 +100,11 @@ public class Launcher
 
     public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
 
+    //the balls that are in the storage system
+    //initialized to 0
     private int startBallCount = 0;
-
+    //boolean to store whether thsi is the first run of the function
     private boolean firstRun = true;
-
-    private boolean launcherReadyTemp = false;
-
-    private boolean conveyorReadyTemp = false;
-
-    private boolean loadReadyTemp = false;
 
     /**
      *
@@ -108,10 +120,12 @@ public class Launcher
     public boolean shootBallsAuto(boolean isClose)
     {
         // System.out.println("Balls: " + Hardware.ballcounter.getBallCount());
-        SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
-        SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
-        SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
-        SmartDashboard.putBoolean("load ready", loadReadyTemp);
+        // SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
+        // SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
+        // SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
+        // SmartDashboard.putBoolean("load ready", loadReadyTemp);
+
+        //if more than 0 balls
         if (Hardware.ballcounter.getBallCount() >= 0)
             {
             // System.out.println("Shoot State Launcher: " + shootStateAuto);
@@ -120,12 +134,13 @@ public class Launcher
 
                 case CHARGE:
                     // sets the RPM and makes sure that the conveyor is correct
-                    if (launcherReadyTemp || prepareToShoot(isClose, true))
+                    if (prepareToShoot(isClose, auto))
                         {
                         // System.out.println("Setting Launcher");
 
                         launcherReadyTemp = true;
                         }
+                    //prepares the balls in the storage system
                     if (conveyorReadyTemp || Hardware.storage.prepareToShoot()
                             || Hardware.ballcounter.getBallCount() == 0)
 
@@ -133,6 +148,7 @@ public class Launcher
                         // System.out.println("prepared to shoot");
                         conveyorReadyTemp = true;
                         }
+                    // both a launcher and storage are ready
                     if (launcherReadyTemp && conveyorReadyTemp)
                         {
                         launcherReadyTemp = false;
@@ -142,6 +158,7 @@ public class Launcher
                         }
                     break;
                 case LAUNCH:
+                    //if first time initialize start balls count
                     if (firstRun)
                         {
                         startBallCount = Hardware.ballcounter.getBallCount();
@@ -150,56 +167,45 @@ public class Launcher
                     if (Hardware.ballcounter.getBallCount() > 1)
                         {
                         // System.out.println("loading to fire");
+                        //keeps launcher moving at speed
+                        Hardware.launcher.prepareToShoot(isClose, auto);
+                        //loads a ball into shooter
                         if (Hardware.storage.loadToFire())
                             {
                             loadReadyTemp = true;
                             }
-                        if (Hardware.launcher.prepareToShoot(isClose, true))
-                            {
-                            launcherReadyTemp = true;
-                            }
-                        if (loadReadyTemp && launcherReadyTemp)
+                        //if ball has shot charge next ball
+                        if (loadReadyTemp)
                             {
                             loadReadyTemp = false;
-                            launcherReadyTemp = false;
+                            shootStateAuto = ShootStateAuto.CHARGE;
                             }
+
                         }
                     else if (Hardware.ballcounter.getBallCount() == 1)
                         {
+                        Hardware.launcher.prepareToShoot(isClose, auto);
                         // System.out.println("loading to fire last ball");
+                        //load ball to shoot
                         if (Hardware.storage.loadToFire())
                             {
                             loadReadyTemp = true;
                             // System.out.println("load temp set");
                             }
-                        if (Hardware.launcher.prepareToShoot(isClose, true))
-                            {
-                            launcherReadyTemp = true;
-                            // System.out.println("Launcher ready set");
-                            }
-                        if (loadReadyTemp && launcherReadyTemp)
+                        //if shot reset stuff
+                        if (loadReadyTemp)
                             {
                             loadReadyTemp = false;
-                            launcherReadyTemp = false;
-                            // System.out.println("before state change");
-                            shootStateAuto = ShootStateAuto.CHARGE;
-
-                            // Isue here: You set it back to charge so it never checks to see if its at 0
-
-                            // If statement at the top stops as soon as it hits 0 so you cancel the switch
-                            // case
-
-                            // firstRun = true;
-                            // System.out.println("Returning true!!!!!!");
-                            // return true;
+                            firstRun = true;
+                            return true;
                             }
 
                         }
+                    //if 0 balls reset stuff
                     else
                         {
                         firstRun = true;
                         // System.out.println("Returning true!!!!!!");
-                        Hardware.intake.intake();
                         return true;
 
                         }
@@ -210,9 +216,9 @@ public class Launcher
                 }
             }
         return false;
-
     }
 
+    //stores if the launcher is at speed
     public boolean spedUp = false;
 
     public boolean aligned = false;
@@ -300,6 +306,14 @@ public class Launcher
         return false;
     }
 
+    private boolean launcherReadyTemp = false;
+
+    private boolean conveyorReadyTemp = false;
+
+    private boolean loadReadyTemp = false;
+
+    private boolean auto = true;
+    private boolean teleop = false;
     public boolean launching = false;
     private static final double RPM_FAR_2020 = 3500;
     private static final double RPM_CLOSE_2020 = 2800;

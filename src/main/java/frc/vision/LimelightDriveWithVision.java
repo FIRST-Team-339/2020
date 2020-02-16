@@ -205,7 +205,7 @@ public class LimelightDriveWithVision
     final double DRIVE_AFTER_ALIGN = .2;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2019 = .015;// 0.015
+    final double ADJUST_PORP_2019 = .015;// 0.03
 
     final double ADJUST_PORP_2019_ALIGN = .02;
     // an adjustment proportional value. Found with the tried and true method of
