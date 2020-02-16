@@ -111,6 +111,8 @@ public class Teleop
 
     public static boolean shootClose = false;
 
+    public static int timer = 2;
+
     public static void periodic()
     {
 
@@ -192,6 +194,37 @@ public class Teleop
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
             }
+
+
+            if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
+            {
+            Hardware.telopTimer.start(); //Start timer
+            Hardware.climbMotor.set(.5); //Start motor
+            }
+
+        if (Hardware.telopTimer.get() >= timer)
+            {
+            Hardware.climbMotor.set(0);
+            Hardware.telopTimer.stop(); //Stop timer
+            Hardware.telopTimer.reset(); //Reset timer
+            }
+        if (Hardware.rightOperator.getRawButton(7) == true)
+            {
+            Hardware.liftSolenoid.set(Value.kForward); //Bring pistons down
+            }
+        if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
+            {
+            Hardware.climbMotor.set(-.5);
+            }
+        if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
+                && Hardware.telopTimer.get() == 0)
+            {
+            Hardware.climbMotor.set(0);
+            }
+        if (Hardware.rightOperator.getRawButton(6) == true)
+            {
+            Hardware.liftSolenoid.set(Value.kReverse); //Brings pistons up
+            }
         // teleopDrive();
         individualTest();
         // printStatements();
@@ -232,7 +265,7 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-        // chrisTest();
+         chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();
@@ -363,43 +396,38 @@ public class Teleop
       * } else if (Hardware.rightOperator.getRawButton(7) == true) {
       * Hardware.rotateServo.setAngle(55); }
       */
-        double timer = 2;
-        /*if(Hardware.rightOperator.getRawButton(9) == true){
-        Hardware.telopTimer.stop();
-        Hardware.telopTimer.reset();
-        }*/
-        if (Hardware.rightOperator.getRawButton(6) == true && Hardware.telopTimer.get() < timer)
+       /* 
+       double timer = 2;
+        
+        if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
             {
-            Hardware.telopTimer.start();
-            Hardware.wheelSpinnerMotor.set(.5); //Start motor
+            Hardware.telopTimer.start(); //Start timer
+            Hardware.climbMotor.set(.5); //Start motor
             }
 
         if (Hardware.telopTimer.get() >= timer)
             {
-            Hardware.wheelSpinnerMotor.set(0.0); //Stop motor
-            //Hardware.liftSolenoid.set(Value.kForward); // Bring piston down
+            Hardware.climbMotor.set(0);
             Hardware.telopTimer.stop(); //Stop timer
             Hardware.telopTimer.reset(); //Reset timer
-            //Hardware.liftSolenoid.set(Value.kOff);
             }
         if (Hardware.rightOperator.getRawButton(7) == true)
             {
-            Hardware.liftSolenoid.set(Value.kForward);
-
+            Hardware.liftSolenoid.set(Value.kForward); //Bring pistons down
             }
         if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
             {
-            Hardware.wheelSpinnerMotor.set(-.5);
+            Hardware.climbMotor.set(-.5);
             }
         if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
                 && Hardware.telopTimer.get() == 0)
             {
-            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.climbMotor.set(0);
             }
-        if (Hardware.rightOperator.getRawButton(10) == true)
+        if (Hardware.rightOperator.getRawButton(6) == true)
             {
-            Hardware.liftSolenoid.set(Value.kReverse);
-            }
+            Hardware.liftSolenoid.set(Value.kReverse); //Brings pistons up
+            }*/
 
         //For Test && full resets motor and piston
         /*if(Hardware.leftOperator.getRawButton(10) == true){
