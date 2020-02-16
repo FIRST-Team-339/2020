@@ -56,12 +56,15 @@ public class Launcher
                 //must be held down to shoot multiple balls
                 if (shootButton.get())
                     {
-                    shootState = ShootState.CHARGE;
+                    if (this.moveRobotToPosition(this.getClosestPosition()))
+                        {
+                        this.shootState = ShootState.CHARGE;
+                        }
                     }
                 break;
             case CHARGE:
                 //starts charging the launcher and prepares the balls in the conveyor
-                if (prepareToShoot(isClose, teleop))
+                if (this.prepareToShoot(isClose, teleop))
                     {
                     launcherReadyTemp = true;
                     }
@@ -74,7 +77,7 @@ public class Launcher
                     {
                     conveyorReadyTemp = false;
                     launcherReadyTemp = false;
-                    shootState = ShootState.LAUNCH;
+                    this.shootState = ShootState.LAUNCH;
                     }
                 break;
             case LAUNCH:
@@ -82,11 +85,56 @@ public class Launcher
                 if (Hardware.storage.loadToFire())
                     {
                     //back to passive
-                    shootState = ShootState.PASSIVE;
+                    this.shootState = ShootState.PASSIVE;
                     }
                 break;
             default:
 
+                break;
+            }
+
+    }
+
+    private enum ShootStateBasic
+        {
+        PASSIVE, CHARGE, LAUNCH
+        }
+
+    public ShootStateBasic shootStateBasic = ShootStateBasic.PASSIVE;
+
+    /**
+     *TODO this is for testing the incomplet robot
+     */
+    public void shootBallsBasic(JoystickButton shootButton, JoystickButton overrideButton, boolean isClose)
+    {
+        // System.out.println("shootState: " + shootState);
+        switch (shootStateBasic)
+            {
+            case PASSIVE:
+                //until shoot button dont shoot
+                //must be held down to shoot multiple balls
+                if (shootButton.get())
+                    {
+                    shootStateBasic = ShootStateBasic.CHARGE;
+                    }
+                break;
+            case CHARGE:
+                //starts charging the launcher and prepares the balls in the conveyor
+                if (prepareToShoot(isClose, teleop))
+                    {
+                    shootStateBasic = ShootStateBasic.LAUNCH;
+                    }
+
+                break;
+            case LAUNCH:
+                //loads a ball and shoots it
+                if (Hardware.storage.loadToFire())
+                    {
+                    //back to passive
+                    shootStateBasic = ShootStateBasic.PASSIVE;
+                    }
+                break;
+            default:
                 break;
             }
 
