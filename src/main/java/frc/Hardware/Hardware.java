@@ -109,7 +109,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(9);
@@ -452,13 +452,14 @@ public class Hardware
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
-    public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
+
+    public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(leftOperator, 7, false);
+
+    public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
 
     public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
 
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
-
-    public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
 
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
 
@@ -491,8 +492,7 @@ public class Hardware
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
-    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton, cameraSwitchButton2, 340,
-            240, 20, 30);
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton1, cameraSwitchButton2);
 
     // ------------------------------------
     // Utility classes

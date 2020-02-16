@@ -179,10 +179,10 @@ public class Teleop
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
                 || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
-            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
+            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
             }
         // teleopDrive();
-        individualTest();
+        // individualTest();
         // printStatements();
     } // end Periodic()
 
@@ -441,16 +441,11 @@ public class Teleop
         // Hardware.hoodAdjustmentMotorEncoder.getRaw());
 
         // Switch Values
-        // Hardware.telemetry.printToConsole(("Start Balls:" +
-        // Hardware.ballStart.get()));
-        // Hardware.telemetry.printToConsole("Auto Switch: " +
-        // Hardware.autoSwitch.isOn());
-        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
-        // Hardware.autoSixPosSwitch.getPosition());
-        // Hardware.telemetry.printToConsole("shoot switch: " +
-        // Hardware.shootingPlan.getPosition());
-        // Hardware.telemetry.printToConsole("autoLo cation: " +
-        // Hardware.autoLocation.getPosition());
+        // Hardware.telemetry.printToConsole(("Start Balls:" + Hardware.ballStart.isOn()));
+        // Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
+        // Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
+        // Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
+        Hardware.telemetry.printToConsole("autoLo cation: " + Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
         // Hardware.telemetry.printToConsole("lowStoreRL: " +
@@ -553,8 +548,6 @@ public class Teleop
         // Hardware.compressor.getPressureSwitchValue());
 
     }
-
-    private static boolean boolthing = false;
 
     private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 
