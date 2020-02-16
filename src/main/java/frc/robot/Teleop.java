@@ -115,6 +115,17 @@ public class Teleop
     {
 
         // =============== AUTOMATED SUBSYSTEMS ===============
+
+        if (Hardware.rightOperator.getRawButton(3) == true)
+            {
+            Hardware.colorWheel.spinControlPanelToColor();
+            }
+
+        if (Hardware.rightOperator.getRawButton(4) == true)
+            {
+            Hardware.colorWheel.spinControlPanel(1);
+            }
+
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 

@@ -221,6 +221,8 @@ public class Hardware
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
+        colorSensor = new ColorSensorV3(i2cPort);
+
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
         // ==============DIO INIT=============
@@ -276,6 +278,8 @@ public class Hardware
 
         ballcounter = new BallCounter(ballButtonTimer);
 
+        colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
+
     } // end initizliePrevYear()
 
     public static void initializeTestBoard()
@@ -286,9 +290,6 @@ public class Hardware
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor2);
-
-        colorTestMotor = new WPI_TalonSRX(21);
-
     }
 
     /**********************************************
@@ -347,8 +348,6 @@ public class Hardware
     public static SpeedController rightRearMotor = null;
     public static SpeedController leftFrontMotor = null;
     public static SpeedController rightFrontMotor = null;
-
-    public static SpeedController colorTestMotor = null;
 
     public static SpeedControllerGroup leftDriveGroup = null;
     public static SpeedControllerGroup rightDriveGroup = null;
@@ -452,6 +451,7 @@ public class Hardware
     public static MomentarySwitch invertTempoMomentarySwitch = new MomentarySwitch();
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
+
     public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
     public static JoystickButton publishVisionButton = new JoystickButton(Hardware.leftOperator, 11);
@@ -526,7 +526,8 @@ public class Hardware
     public static HoodControl hoodControl = null;
 
     public static BallCounter ballcounter = null;
-    public static ColorWheel colorWheel = new ColorWheel();
+
+    public static ColorWheel colorWheel = null;
 
     // ------------------------------------------
     // Vision stuff
@@ -537,6 +538,8 @@ public class Hardware
 
     public final static double PREV_YEAR_DISTANCE_PER_TICK = 23 / 13.8;// .0346;
     public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;// .000746
+
+    public final static double PREV_YEAR_WHEEL_SPINNER_DISTANCE_PER_TICK = 0.0024305403;
 
     // -------------------
     // Subassemblies
