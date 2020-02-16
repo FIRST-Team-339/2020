@@ -25,6 +25,35 @@ public class KilroyUSBCamera
      * constructor
      *
      * @param twoFeeds - states whether we are using two camera feeds
+     *
+     * @Author Dion Marchant
+     * @Written Feb 15th, 2020
+     */
+    public KilroyUSBCamera(boolean twoFeeds)
+        {
+            // If there are two feeds, declare and set values for two cameras.
+            if (twoFeeds == true)
+                {
+                this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+                this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+                this.server = CameraServer.getInstance().getServer("serve_usb0");
+                this.server1 = CameraServer.getInstance().getServer("serve_usb1");
+                setCameraValues(2);
+                this.server1.getProperty("compression").set(30);
+                }
+            // If two feeds is false, only declare and set values for one camera
+            else
+                {
+                this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+                this.server = CameraServer.getInstance().getServer("serve_usb0");
+                setCameraValues(1);
+                }
+        }
+
+    /**
+     * constructor
+     *
+     * @param twoFeeds - states whether we are using two camera feeds
      * @param width - the width
      * @param height - the height
      * @param FPS - the fps of the cameras
@@ -42,11 +71,7 @@ public class KilroyUSBCamera
                 this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
                 this.server = CameraServer.getInstance().getServer("serve_usb0");
                 this.server1 = CameraServer.getInstance().getServer("serve_usb1");
-                this.cam0.setResolution(width, height);
-                this.cam1.setResolution(width, height);
-                this.cam0.setFPS(FPS);
-                this.cam1.setFPS(FPS);
-                this.server.getProperty("compression").set(compression);
+                setCameraValues(width, height, FPS, compression, 2);
                 this.server1.getProperty("compression").set(compression);
                 }
             // If two feeds is false, only declare and set values for one camera
@@ -54,10 +79,27 @@ public class KilroyUSBCamera
                 {
                 this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
                 this.server = CameraServer.getInstance().getServer("serve_usb0");
-                this.cam0.setResolution(width, height);
-                this.cam0.setFPS(FPS);
-                this.server.getProperty("compression").set(compression);
+                setCameraValues(width, height, FPS, compression, 1);
                 }
+        }
+
+    /**
+    * constructor
+    *
+    * @param button
+    *
+    * @Author Dion Marchant
+    * @Written Feb 15th, 2020
+    */
+    public KilroyUSBCamera(MomentarySwitch button)
+        {
+            // Declares and sets values for two cameras
+            this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            CameraServer.getInstance().removeServer("serve_usb1");
+            this.server = CameraServer.getInstance().getServer("serve_usb0");
+            setCameraValues(2);
+            this.button = button;
         }
 
     /**
@@ -79,12 +121,29 @@ public class KilroyUSBCamera
             this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
             CameraServer.getInstance().removeServer("serve_usb1");
             this.server = CameraServer.getInstance().getServer("serve_usb0");
-            this.cam0.setResolution(width, height);
-            this.cam1.setResolution(width, height);
-            this.cam0.setFPS(FPS);
-            this.cam1.setFPS(FPS);
-            this.server.getProperty("compression").set(compression);
+            setCameraValues(width, height, FPS, compression, 2);
             this.button = button;
+        }
+
+    /**
+     * constructor
+     *
+     * @param switch1 - button
+     * @param switch2 - button
+     *
+     * @Author Dion Marchant
+     * @Written Feb 15th, 2020
+     */
+    public KilroyUSBCamera(MomentarySwitch switch1, MomentarySwitch switch2)
+        {
+            // Declares and sets values for two cameras
+            this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            CameraServer.getInstance().removeServer("serve_usb1");
+            this.server = CameraServer.getInstance().getServer("serve_usb0");
+            setCameraValues(2);
+            this.switch1 = switch1;
+            this.switch2 = switch2;
         }
 
     /**
@@ -108,13 +167,30 @@ public class KilroyUSBCamera
             this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
             CameraServer.getInstance().removeServer("serve_usb1");
             this.server = CameraServer.getInstance().getServer("serve_usb0");
-            this.cam0.setResolution(width, height);
-            this.cam1.setResolution(width, height);
-            this.cam0.setFPS(FPS);
-            this.cam1.setFPS(FPS);
-            this.server.getProperty("compression").set(compression);
+            setCameraValues(width, height, FPS, compression, 2);
             this.switch1 = switch1;
             this.switch2 = switch2;
+        }
+
+    /**
+    * constructor
+    *
+    * @param button1
+    * @param button2
+    *
+    * @Author Dion Marchant
+    * @Written Feb 15th, 2020
+    */
+    public KilroyUSBCamera(JoystickButton button1, JoystickButton button2)
+        {
+            // Declares and sets values for two cameras
+            this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
+            this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+            CameraServer.getInstance().removeServer("serve_usb1");
+            this.server = CameraServer.getInstance().getServer("serve_usb0");
+            setCameraValues(2);
+            this.button1 = button1;
+            this.button2 = button2;
         }
 
     /**
@@ -138,11 +214,7 @@ public class KilroyUSBCamera
             this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
             CameraServer.getInstance().removeServer("serve_usb1");
             this.server = CameraServer.getInstance().getServer("serve_usb0");
-            this.cam0.setResolution(width, height);
-            this.cam1.setResolution(width, height);
-            this.cam0.setFPS(FPS);
-            this.cam1.setFPS(FPS);
-            this.server.getProperty("compression").set(compression);
+            setCameraValues(width, height, FPS, compression, 2);
             this.button1 = button1;
             this.button2 = button2;
         }
@@ -206,6 +278,62 @@ public class KilroyUSBCamera
         if (cameraNum == 1)
             {
             this.server.setSource(this.cam1);
+            }
+    }
+
+    /**
+     * Sets the values for fps, resolution, and compression on the camera(s)
+     *
+     * @param numCameras - the amount of cameras to set the values for
+     *
+     * @Author Dion Marchant
+     * @Written Feb 15th, 2020
+     */
+    public void setCameraValues(int numCameras)
+    {
+        if (numCameras == 1)
+            {
+            this.cam0.setResolution(340, 240);
+            this.cam0.setFPS(20);
+            this.server.getProperty("compression").set(30);
+            }
+        else if (numCameras == 2)
+            {
+            this.cam0.setResolution(340, 240);
+            this.cam1.setResolution(340, 240);
+            this.cam0.setFPS(20);
+            this.cam1.setFPS(20);
+            this.server.getProperty("compression").set(30);
+            }
+    }
+
+    /**
+     * Passes in the values for fps, resolution, and compression on the camera(s)
+     *
+     * @param width - the width of the resolution
+     * @param height - the height of the resolution
+     * @param FPS - the fps of the camera(s)
+     * @param compression - the compression rate of the server
+     * @param numCameras - the amount of cameras to set the values for
+     *
+     * @Author Dion Marchant
+     * @Written Feb 15th, 2020
+     */
+    public void setCameraValues(int width, int height, int FPS, int compression, int numCameras)
+    {
+        if (numCameras == 1)
+            {
+            this.cam0.setResolution(width, height);
+            this.cam0.setFPS(FPS);
+            this.server.getProperty("compression").set(compression);
+            }
+        else if (numCameras == 2)
+            {
+            this.cam0.setResolution(width, height);
+            this.cam1.setResolution(width, height);
+            this.cam0.setFPS(FPS);
+            this.cam1.setFPS(FPS);
+            this.server.getProperty("compression").set(compression);
             }
     }
 

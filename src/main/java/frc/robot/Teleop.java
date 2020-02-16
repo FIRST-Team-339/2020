@@ -111,11 +111,23 @@ public class Teleop
 
     private static boolean isShootClose = false;
 
+    public static int timer = 2;
+
     public static void periodic()
     {
 
         // =============== AUTOMATED SUBSYSTEMS ===============
-        //control loops======================
+
+        if (Hardware.rightOperator.getRawButton(3) == true)
+            {
+            Hardware.colorWheel.spinControlPanelToColor();
+            }
+
+        if (Hardware.rightOperator.getRawButton(4) == true)
+            {
+            Hardware.colorWheel.spinControlPanel(1);
+            }
+
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
@@ -192,7 +204,37 @@ public class Teleop
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
                 || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
-            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton, Hardware.cameraSwitchButton2);
+            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
+            }
+
+        if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
+            {
+            Hardware.telopTimer.start(); //Start timer
+            Hardware.climbMotor.set(.5); //Start motor
+            }
+
+        if (Hardware.telopTimer.get() >= timer)
+            {
+            Hardware.climbMotor.set(0);
+            Hardware.telopTimer.stop(); //Stop timer
+            Hardware.telopTimer.reset(); //Reset timer
+            }
+        if (Hardware.rightOperator.getRawButton(7) == true)
+            {
+            Hardware.liftSolenoid.set(Value.kForward); //Bring pistons down
+            }
+        if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
+            {
+            Hardware.climbMotor.set(-.5);
+            }
+        if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
+                && Hardware.telopTimer.get() == 0)
+            {
+            Hardware.climbMotor.set(0);
+            }
+        if (Hardware.rightOperator.getRawButton(6) == true)
+            {
+            Hardware.liftSolenoid.set(Value.kReverse); //Brings pistons up
             }
         // teleopDrive();
         // individualTest();
@@ -234,7 +276,7 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-        // chrisTest();
+        chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();
@@ -365,43 +407,38 @@ public class Teleop
       * } else if (Hardware.rightOperator.getRawButton(7) == true) {
       * Hardware.rotateServo.setAngle(55); }
       */
+        /*
         double timer = 2;
-        /*if(Hardware.rightOperator.getRawButton(9) == true){
-        Hardware.telopTimer.stop();
-        Hardware.telopTimer.reset();
-        }*/
-        if (Hardware.rightOperator.getRawButton(6) == true && Hardware.telopTimer.get() < timer)
+        
+        if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
             {
-            Hardware.telopTimer.start();
-            Hardware.wheelSpinnerMotor.set(.5); //Start motor
+            Hardware.telopTimer.start(); //Start timer
+            Hardware.climbMotor.set(.5); //Start motor
             }
-
+        
         if (Hardware.telopTimer.get() >= timer)
             {
-            Hardware.wheelSpinnerMotor.set(0.0); //Stop motor
-            //Hardware.liftSolenoid.set(Value.kForward); // Bring piston down
+            Hardware.climbMotor.set(0);
             Hardware.telopTimer.stop(); //Stop timer
             Hardware.telopTimer.reset(); //Reset timer
-            //Hardware.liftSolenoid.set(Value.kOff);
             }
         if (Hardware.rightOperator.getRawButton(7) == true)
             {
-            Hardware.liftSolenoid.set(Value.kForward);
-
+            Hardware.liftSolenoid.set(Value.kForward); //Bring pistons down
             }
         if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
             {
-            Hardware.wheelSpinnerMotor.set(-.5);
+            Hardware.climbMotor.set(-.5);
             }
         if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
                 && Hardware.telopTimer.get() == 0)
             {
-            Hardware.wheelSpinnerMotor.set(0);
+            Hardware.climbMotor.set(0);
             }
-        if (Hardware.rightOperator.getRawButton(10) == true)
+        if (Hardware.rightOperator.getRawButton(6) == true)
             {
-            Hardware.liftSolenoid.set(Value.kReverse);
-            }
+            Hardware.liftSolenoid.set(Value.kReverse); //Brings pistons up
+            }*/
 
         //For Test && full resets motor and piston
         /*if(Hardware.leftOperator.getRawButton(10) == true){
@@ -454,16 +491,11 @@ public class Teleop
         // Hardware.hoodAdjustmentMotorEncoder.getRaw());
 
         // Switch Values
-        // Hardware.telemetry.printToConsole(("Start Balls:" +
-        // Hardware.ballStart.get()));
-        // Hardware.telemetry.printToConsole("Auto Switch: " +
-        // Hardware.autoSwitch.isOn());
-        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
-        // Hardware.autoSixPosSwitch.getPosition());
-        // Hardware.telemetry.printToConsole("shoot switch: " +
-        // Hardware.shootingPlan.getPosition());
-        // Hardware.telemetry.printToConsole("autoLo cation: " +
-        // Hardware.autoLocation.getPosition());
+        // Hardware.telemetry.printToConsole(("Start Balls:" + Hardware.ballStart.isOn()));
+        // Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
+        // Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
+        // Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
+        Hardware.telemetry.printToConsole("autoLo cation: " + Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
         // Hardware.telemetry.printToConsole("lowStoreRL: " +
@@ -566,8 +598,6 @@ public class Teleop
         // Hardware.compressor.getPressureSwitchValue());
 
     }
-
-    private static boolean boolthing = false;
 
     private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 

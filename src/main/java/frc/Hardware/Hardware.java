@@ -37,11 +37,13 @@ import frc.Utils.drive.Drive;
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -109,11 +111,12 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(9);
 
+    //TalonSRX climbMotors = new TalonSRX(29);
     /**********************************************
      * initializePrevYear() function initializes all Hardware items that are
      * REQUIRED for this year
@@ -221,8 +224,11 @@ public class Hardware
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
+        colorSensor = new ColorSensorV3(i2cPort);
+
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
+        climbMotor = new WPI_TalonSRX(29);
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder(7, 6);
@@ -276,6 +282,8 @@ public class Hardware
 
         ballCounter = new BallCounter(ballButtonTimer);
 
+        colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
+
     } // end initizliePrevYear()
 
     public static void initializeTestBoard()
@@ -286,7 +294,6 @@ public class Hardware
         launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor2);
-
     }
 
     /**********************************************
@@ -379,6 +386,10 @@ public class Hardware
 
     public static SpeedController hoodAdjustmentMotor = null;
 
+    // -------------------------------------------------------------
+
+    public static SpeedController climbMotor = null;
+
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
@@ -445,11 +456,13 @@ public class Hardware
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
+    public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(leftOperator, 7, false);
+
+    public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
+
     public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
-
-    public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
 
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
 
@@ -479,11 +492,17 @@ public class Hardware
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
+    public static JoystickButton pistonsUpSolenoid = new JoystickButton(Hardware.rightOperator, 6);
+
+    public static JoystickButton pistonsDownSolenoid = new JoystickButton(Hardware.rightOperator, 7);
+
+    public static JoystickButton climbReverse = new JoystickButton(Hardware.rightOperator, 8 + 9);
+
+    public static JoystickButton climbMotorUp = new JoystickButton(Hardware.rightOperator, 10);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
-    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton, cameraSwitchButton2, 340,
-            240, 20, 30);
+    public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton1, cameraSwitchButton2);
 
     // ------------------------------------
     // Utility classes
@@ -517,7 +536,8 @@ public class Hardware
     public static HoodControl hoodControl = null;
 
     public static BallCounter ballCounter = null;
-    public static ColorWheel colorWheel = new ColorWheel();
+
+    public static ColorWheel colorWheel = null;
 
     // ------------------------------------------
     // Vision stuff
@@ -528,6 +548,8 @@ public class Hardware
 
     public final static double PREV_YEAR_DISTANCE_PER_TICK = 23 / 13.8;// .0346;
     public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;// .000746
+
+    public final static double PREV_YEAR_WHEEL_SPINNER_DISTANCE_PER_TICK = 0.0024305403;
 
     // -------------------
     // Subassemblies
