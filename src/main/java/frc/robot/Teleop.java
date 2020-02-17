@@ -87,8 +87,6 @@ public class Teleop
 
         Hardware.drive.setGear(0);
 
-        // Servo initial starting position
-        Hardware.rotateServo.setAngle(125);
         // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
         Hardware.telopTimer.stop(); //Stop teloptimer
@@ -116,6 +114,24 @@ public class Teleop
     public static void periodic()
     {
 
+        if (Hardware.leftDriver.getRawButton(7))
+            {
+
+            Hardware.visionInterface.setPipeline(2);
+            Hardware.cameraServo.setCameraAngleDown();
+            }
+        if (Hardware.leftDriver.getRawButton(8))
+            {
+            Hardware.visionInterface.setPipeline(0);
+            Hardware.cameraServo.setCameraAngleUp();
+            }
+
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        Hardware.storage.intakeStorageControl();
+        Hardware.storage.storageControlState();
+        //end control loops ==========================
+
         // =============== AUTOMATED SUBSYSTEMS ===============
 
         if (Hardware.rightOperator.getRawButton(3) == true)
@@ -128,14 +144,7 @@ public class Teleop
             Hardware.colorWheel.spinControlPanel(1);
             }
 
-        Hardware.visionInterface.updateValues();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        Hardware.storage.intakeStorageControl();
-        Hardware.storage.storageControlState();
-        //end control loops ==========================
-
-        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM());
-        Hardware.storage.intakeStorageControl();
+        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
 
         if (Hardware.rightDriver.getRawButton(3) == true)
             {
@@ -160,17 +169,6 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-        //change the wanted shoot distance
-        if (Hardware.shootCloseButton.get())
-            {//close
-            isShootClose = true;
-            }
-        if (Hardware.shootFarButton.get())
-            {
-            //far
-            isShootClose = false;
-
-            }
 
         //TODO remove this check
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
@@ -180,7 +178,7 @@ public class Teleop
             Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
             //shoot balls
-            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton, isShootClose);
+            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
             //intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
@@ -276,7 +274,7 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-        chrisTest();
+        //chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();
@@ -400,13 +398,7 @@ public class Teleop
     }
 
     public static void chrisTest()
-    {/*
-      * Servo if (Hardware.rightOperator.getRawButton(6) == true) {
-      * Hardware.rotateServo.setAngle(125);
-      *
-      * } else if (Hardware.rightOperator.getRawButton(7) == true) {
-      * Hardware.rotateServo.setAngle(55); }
-      */
+    {
         /*
         double timer = 2;
         

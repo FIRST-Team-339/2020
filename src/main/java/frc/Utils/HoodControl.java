@@ -25,7 +25,7 @@ public class HoodControl
      * sets the angle based off of input
      * @return at angle
      */
-    public boolean setAngle(int angle)
+    public boolean setAngle(double angle)
     {
         //make sure we dont go above or below the min/max angles
         if (angle > MAX_ANGLE)

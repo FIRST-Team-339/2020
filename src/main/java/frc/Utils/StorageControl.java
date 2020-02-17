@@ -55,6 +55,7 @@ public class StorageControl
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
         SmartDashboard.putString("conveyor state: ", state.toString());
 
+        System.out.println("storage state: " + state);
         //takes the current intake RL and previous intake RL states to add or subtract balls when triggered
         if (this.intakeRL.get() && prevRL == false)
             {
@@ -117,7 +118,7 @@ public class StorageControl
      */
     public void intakeStorageControl()
     {
-        if (Hardware.intake.intaking)
+        if (Hardware.intake.intaking == true)
             {
             // if the intake RL is not triggered
             if (!this.intakeRL.get())

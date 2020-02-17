@@ -19,6 +19,7 @@ import frc.HardwareInterfaces.DoubleThrowSwitch;
 import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
+import frc.HardwareInterfaces.KilroyServo;
 import frc.HardwareInterfaces.KilroyUSBCamera;
 
 import frc.HardwareInterfaces.LVMaxSonarEZ;
@@ -114,7 +115,7 @@ public class Hardware
     public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
 
     // ==============Servo==============
-    public static Servo rotateServo = new Servo(9);
+    public static Servo rotateServo = new Servo(0);
 
     //TalonSRX climbMotors = new TalonSRX(29);
     /**********************************************
