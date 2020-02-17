@@ -544,6 +544,7 @@ public class Autonomous
                         }
                     else
                         {
+                        Hardware.intake.undeployIntake();
                         return true;
                         }
 
@@ -555,6 +556,7 @@ public class Autonomous
                 // final attempt to turn and shoot more balls from trench
                 if (turnFire())
                     {
+
                     return true;
                     }
                 break;
@@ -572,7 +574,7 @@ public class Autonomous
         DRIVE_BACK, TURN1, ALIGN, SHOOT, FINISH
         }
 
-    public static TurnAndFireState turnAndFire = TurnAndFireState.DRIVE_BACK;
+    public static TurnAndFireState turnAndFire = TurnAndFireState.DRIVE_BACK;// DRIVE_BACK
 
     /**
      * Description: Method to handle the function of turn and fire auto states.
@@ -585,6 +587,7 @@ public class Autonomous
      */
     private static boolean turnFire()
     {
+        Hardware.cameraServo.setCameraAngleUp();
         switch (turnAndFire)
             {
 
@@ -611,7 +614,7 @@ public class Autonomous
 
                 System.out.println("Aligning");
                 System.out.println("Is there targets: " + Hardware.visionInterface.getHasTargets());
-                if (Hardware.visionDriving.driveToTarget(144, true, .3))
+                if (Hardware.visionDriving.driveToTarget(144, true, .4))// 144, true, .3
                     {
 
                     System.out.println("Aligned");
@@ -620,6 +623,7 @@ public class Autonomous
 
                 break;
             case SHOOT:
+                Hardware.visionDriving.alignToTarget();
                 System.out.println("Shooting");
                 if (Hardware.launcher.shootBallsAuto(false))
                     {
@@ -628,7 +632,7 @@ public class Autonomous
                 break;
 
             case FINISH:
-
+                Hardware.launcher.unchargeShooter();
                 return true;
 
             }
@@ -1029,7 +1033,7 @@ public class Autonomous
     // constant
     private final static int PICKUP_DISTANCE = 120;
 
-    private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 96;
+    private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 50;// 96
 
     private final static int TURN_AND_FIRE_DEGREES = 150;
 

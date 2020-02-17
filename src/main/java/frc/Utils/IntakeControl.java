@@ -32,6 +32,8 @@ public class IntakeControl
 
         }
 
+    private boolean released = false;
+
     /**
      * toggles the intake deployed state via a button
      *
@@ -39,8 +41,9 @@ public class IntakeControl
      */
     public void toggleDeployIntake(JoystickButton button)
     {
-        if (button.get())
+        if (button.get() && released == true)
             {
+            released = false;
             // if deployed
             if (this.solenoid.getForward())
                 {
@@ -53,6 +56,10 @@ public class IntakeControl
                 // deploy
                 this.solenoid.set(Value.kForward);
                 }
+            }
+        else
+            {
+            released = true;
             }
     }
 
@@ -107,9 +114,9 @@ public class IntakeControl
     {
         if (button.get())
             {
-            if (this.solenoid.getForward())
+            if (!this.solenoid.getForward())
                 {
-                this.solenoid.set(Value.kReverse);
+                this.solenoid.set(Value.kForward);
                 }
             if (!this.solenoid.getForward())
                 {
@@ -127,9 +134,9 @@ public class IntakeControl
      */
     public boolean deployIntake()
     {
-        if (this.solenoid.getForward())
+        if (!this.solenoid.getForward())
             {
-            this.solenoid.set(Value.kReverse);
+            this.solenoid.set(Value.kForward);
             }
         if (!this.solenoid.getForward())
             {
@@ -184,16 +191,17 @@ public class IntakeControl
      */
     public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
     {
-        intaking = true;
+
         // dont intake al there is already 5 balls stored unless override button pressed
         if (Hardware.ballCounter.getBallCount() < 5 || overrideButton.get())
             {
             // if intake deployed
-            if (this.getDeployed())
+            if (!this.getDeployed())
                 {
                 // if got button
                 if (intakeButton.get())
                     {
+                    this.intaking = true;
                     // sets intaking boolean to true
                     // System.out.println("intaking");
                     this.intakeMotor.set(INTAKE_SPEED);
@@ -202,6 +210,7 @@ public class IntakeControl
             else
                 {
                 // deploy if not deployed
+                this.intaking = false;
                 this.deployIntake();
                 }
             }
@@ -217,10 +226,10 @@ public class IntakeControl
      */
     public void intake()
     {
-
-        if (/* getDeployed() */ true)
+        this.intaking = true;
+        if (this.solenoid.getForward())
             {
-            this.intaking = true;
+
             this.intakeMotor.set(INTAKE_SPEED);
             }
         else
@@ -242,7 +251,7 @@ public class IntakeControl
         if (Hardware.ballCounter.getBallCount() > 0 || overrideButton.get())
             {
             // if intake deployed
-            if (this.getDeployed())
+            if (!this.getDeployed())
                 {
                 // if got button
                 if (outtakeButton.get())
@@ -323,7 +332,9 @@ public class IntakeControl
         if ((Hardware.ballCounter.getBallCount() >= startBallCount + BALLS_IN_TRENCH)
                 || (Hardware.ballCounter.getBallCount() == 5))
             {
+            this.intaking = false;
             Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
+            Hardware.cameraServo.setCameraAngleUp();
             pickUpBallsFirstTime = true;
             this.intakeMotor.set(0);
             return true;
