@@ -47,10 +47,10 @@ public class LimelightDriveWithVision
                 return true;
                 }
             }
-        if (!Hardware.visionInterface.getHasTargets())
-            {
-            return true;
-            }
+        // if (!Hardware.visionInterface.getHasTargets())
+        // {
+        // return true;
+        // }
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
@@ -58,8 +58,8 @@ public class LimelightDriveWithVision
                 {
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
-                adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
                 // drive raw so that we dont have to write addition gearing code in teleop
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
@@ -67,8 +67,8 @@ public class LimelightDriveWithVision
             else if (offness > 0)
                 {
 
-                adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
 
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
@@ -89,11 +89,10 @@ public class LimelightDriveWithVision
     }
 
     /**
-     *  For use if auto mostly.
-     * will run toward the target until the target no longer exist. Use at your own
-     * discretion. Kilroy Robotics and the author of this code holds no
-     * responsibility for any damage to property or the guy that was hit with the
-     * robot
+     * For use if auto mostly. will run toward the target until the target no longer
+     * exist. Use at your own discretion. Kilroy Robotics and the author of this
+     * code holds no responsibility for any damage to property or the guy that was
+     * hit with the robot
      *
      * thou speed shalt not be over a percentatage of 30. Put it to one if you want
      * to have fun
@@ -126,8 +125,8 @@ public class LimelightDriveWithVision
                 {
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
-                adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
                 // drive raw so that we dont have to write addition gearing code in teleop
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
@@ -135,8 +134,8 @@ public class LimelightDriveWithVision
             else if (offness > 0)
                 {
 
-                adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PORP_2019);
-                adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PORP_2019);
+                adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
 
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
@@ -173,9 +172,9 @@ public class LimelightDriveWithVision
             {
             // adjust the speed for the left and right motors based off their offness and a
             // preset proportional value
-            adjustmentValueLeft = -(Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+            adjustmentValueLeft = -(Math.abs(offness) * ADJUST_PROPORTION_2019_ALIGN);
 
-            adjustmentValueRight = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+            adjustmentValueRight = (Math.abs(offness) * ADJUST_PROPORTION_2019_ALIGN);
             // drive raw so that we dont have to write addition gearing code in teleop
             Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
@@ -183,9 +182,9 @@ public class LimelightDriveWithVision
         else if (offness > 2)
             {
 
-            adjustmentValueLeft = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+            adjustmentValueLeft = (Math.abs(offness) * ADJUST_PROPORTION_2019_ALIGN);
 
-            adjustmentValueRight = -(Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
+            adjustmentValueRight = -(Math.abs(offness) * ADJUST_PROPORTION_2019_ALIGN);
 
             Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
@@ -205,12 +204,12 @@ public class LimelightDriveWithVision
     final double DRIVE_AFTER_ALIGN = .2;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2019 = .015;// 0.03
+    final double ADJUST_PROPORTION_2019 = .015;// 0.03
 
-    final double ADJUST_PORP_2019_ALIGN = .015;
+    final double ADJUST_PROPORTION_2019_ALIGN = .010;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2020 = .02;// TODO
+    final double ADJUST_PROPORTION_2020 = .015;// TODO
     // after the robot is align the speed that the robot will continue at
     final double MIN_MOVE_2020 = .2;// TODO
 

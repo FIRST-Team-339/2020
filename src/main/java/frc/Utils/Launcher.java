@@ -14,10 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
- * code to control the 2020 launcher. includes the control loops and code for launching and preparing to launch
+ * code to control the 2020 launcher. includes the control loops and code for
+ * launching and preparing to launch
  *
  *
- *@author Conner McKevitt
+ * @author Conner McKevitt
  */
 
 public class Launcher
@@ -34,7 +35,7 @@ public class Launcher
             this.encoder = encoder;
         }
 
-    //enum to the main shooting state
+    // enum to the main shooting state
     private enum ShootState
         {
         PASSIVE, CHARGE, LAUNCH
@@ -56,18 +57,18 @@ public class Launcher
             switch (shootState)
                 {
                 case PASSIVE:
-                    //until shoot button dont shoot
-                    //must be held down to shoot multiple balls
+                    // until shoot button dont shoot
+                    // must be held down to shoot multiple balls
                     if (shootButton.get())
                         {
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
-                        //     {
+                        // {
                         this.shootState = ShootState.CHARGE;
                         // }
                         }
                     break;
                 case CHARGE:
-                    //starts charging the launcher and prepares the balls in the conveyor
+                    // starts charging the launcher and prepares the balls in the conveyor
                     if (this.getClosestPosition() == Position.CLOSE)
                         {
                         if (Hardware.hoodControl.setAngle(Hardware.hoodControl.CLOSE_ANGLE))
@@ -84,9 +85,9 @@ public class Launcher
                         }
 
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
-                    //     {
-                    //     launcherReadyTemp = true;
-                    //     }//TODO
+                    // {
+                    // launcherReadyTemp = true;
+                    // }//TODO
 
                     if (this.prepareToShoot())
                         {
@@ -97,7 +98,7 @@ public class Launcher
                         {
                         conveyorReadyTemp = true;
                         }
-                    //if both are prepared
+                    // if both are prepared
                     if (conveyorReadyTemp && launcherReadyTemp && hoodReadyTemp)
                         {
                         conveyorReadyTemp = false;
@@ -107,10 +108,10 @@ public class Launcher
                         }
                     break;
                 case LAUNCH:
-                    //loads a ball and shoots it
+                    // loads a ball and shoots it
                     if (Hardware.storage.loadToFire())
                         {
-                        //back to passive
+                        // back to passive
                         this.shootState = ShootState.PASSIVE;
                         }
                     break;
@@ -140,7 +141,7 @@ public class Launcher
     public ShootStateBasic shootStateBasic = ShootStateBasic.PASSIVE;
 
     /**
-     *TODO this is for testing the incomplet robot
+     * TODO this is for testing the incomplet robot
      */
     public void shootBallsBasic(JoystickButton shootButton, JoystickButton overrideButton, boolean isClose)
     {
@@ -148,15 +149,15 @@ public class Launcher
         switch (shootStateBasic)
             {
             case PASSIVE:
-                //until shoot button dont shoot
-                //must be held down to shoot multiple balls
+                // until shoot button dont shoot
+                // must be held down to shoot multiple balls
                 if (shootButton.get())
                     {
                     shootStateBasic = ShootStateBasic.CHARGE;
                     }
                 break;
             case CHARGE:
-                //starts charging the launcher and prepares the balls in the conveyor
+                // starts charging the launcher and prepares the balls in the conveyor
                 if (prepareToShoot(this.getClosestPosition(), teleop))
                     {
                     shootStateBasic = ShootStateBasic.LAUNCH;
@@ -164,10 +165,10 @@ public class Launcher
 
                 break;
             case LAUNCH:
-                //loads a ball and shoots it
+                // loads a ball and shoots it
                 if (Hardware.storage.loadToFire())
                     {
-                    //back to passive
+                    // back to passive
                     shootStateBasic = ShootStateBasic.PASSIVE;
                     }
                 break;
@@ -177,7 +178,7 @@ public class Launcher
 
     }
 
-    //enum for shooting in autp
+    // enum for shooting in autp
     private enum ShootStateAuto
         {
         CHARGE, LAUNCH, FINISH
@@ -204,20 +205,22 @@ public class Launcher
         // SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
         // SmartDashboard.putBoolean("load ready", loadReadyTemp);
 
-        //if more than 0 balls
-        if (Hardware.ballCounter.getBallCount() >= 0)
+        // if more than 0 balls
+        if (Hardware.ballCounter.getBallCount() > 0)
             {
             // System.out.println("Shoot State Launcher: " + shootStateAuto);
             switch (shootStateAuto)
                 {
                 case CHARGE:
                     // sets the RPM and makes sure that the conveyor is correct
+                    Hardware.visionDriving.alignToTarget();
+
                     if (prepareToShoot(isClose, auto))
                         {
                         // System.out.println("Setting Launcher");
                         launcherReadyTemp = true;
                         }
-                    //prepares the balls in the storage system
+                    // prepares the balls in the storage system
                     if (conveyorReadyTemp || Hardware.storage.prepareToShoot()
                             || Hardware.ballCounter.getBallCount() == 0)
                         {
@@ -229,50 +232,33 @@ public class Launcher
                         {
                         launcherReadyTemp = false;
                         conveyorReadyTemp = false;
+
                         shootStateAuto = ShootStateAuto.LAUNCH;
                         // System.out.println("State Launch");
                         }
                     break;
                 case LAUNCH:
-                    if (Hardware.ballCounter.getBallCount() > 1)
+                    if (Hardware.ballCounter.getBallCount() > 0)
                         {
                         // System.out.println("loading to fire");
-                        //keeps launcher moving at speed
+                        // keeps launcher moving at speed
                         this.prepareToShoot(isClose, auto);
-                        //loads a ball into shooter
+                        // loads a ball into shooter
                         if (Hardware.storage.loadToFire())
                             {
                             loadReadyTemp = true;
                             }
-                        //if ball has shot charge next ball
-                        if (loadReadyTemp)
+                        // if ball has shot charge next ball
+                        if (loadReadyTemp && Hardware.ballCounter.getBallCount() > 0)
                             {
                             loadReadyTemp = false;
                             shootStateAuto = ShootStateAuto.CHARGE;
                             }
-                        }
-                    else if (Hardware.ballCounter.getBallCount() == 1)
-                        {
-                        this.prepareToShoot(isClose, auto);
-                        // System.out.println("loading to fire last ball");
-                        //load ball to shoot
-                        if (Hardware.storage.loadToFire())
-                            {
-                            loadReadyTemp = true;
-                            // System.out.println("load temp set");
-                            }
-                        //if shot reset stuff
-                        if (loadReadyTemp)
+                        else if (loadReadyTemp && Hardware.ballCounter.getBallCount() == 0)
                             {
                             loadReadyTemp = false;
                             return true;
                             }
-                        }
-                    //if 0 balls reset stuff
-                    else
-                        {
-                        // System.out.println("Returning true!!!!!!");
-                        return true;
                         }
                     break;
                 default:
@@ -282,9 +268,9 @@ public class Launcher
         return false;
     }
 
-    //stores if the launcher is at speed
+    // stores if the launcher is at speed
     public boolean spedUp = false;
-    //stores is aligned by vision
+    // stores is aligned by vision
     public boolean aligned = false;
     // speed in inches per second
 
@@ -292,39 +278,41 @@ public class Launcher
      * prepares the launcher motor to shoot by settingthe RPM to either the close
      * value or the far value
      *
-     * @param position wanted position
-     * @param inAuto is in AUto
+     * @param position
+     *                     wanted position
+     * @param inAuto
+     *                     is in AUto
      */
     public boolean prepareToShoot(Position position, boolean inAuto)
     {
-        //checks the wanted position from the target
+        // checks the wanted position from the target
         if (position == Position.CLOSE)
             {
-            //align to target
+            // align to target
             if (inAuto || Hardware.visionDriving.driveToTarget(CLOSE_DISTANCE, VISION_OVERRIDE, VISION_SPEED))
                 {
-                //aligned to target
+                // aligned to target
                 aligned = true;
                 }
-            //checks the robot year and set appropriate launcher speed
+            // checks the robot year and set appropriate launcher speed
             if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
-                //if in auto ignore the drive station change
+                // if in auto ignore the drive station change
                 if (inAuto)
                     {
                     if (this.encoder.setRPM(RPM_CLOSE_2020, this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
                 else
                     {
-                    //allow drives to change speed
+                    // allow drives to change speed
                     if (this.encoder.setRPM(RPM_CLOSE_2020 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
                             this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
@@ -348,34 +336,34 @@ public class Launcher
                     }
                 }
             }
-        //if far away
+        // if far away
         else
             {
-            //align to target
+            // align to target
             if (inAuto || Hardware.visionDriving.driveToTarget(FAR_DISTANCE, VISION_OVERRIDE, VISION_SPEED))
                 {
-                //aligned to target
+                // aligned to target
                 aligned = true;
                 }
-            //checks the robot year and set appropriate launcher speed
+            // checks the robot year and set appropriate launcher speed
             if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
-                //if in auto ignore the drive station change
+                // if in auto ignore the drive station change
                 if (inAuto)
                     {
                     if (this.encoder.setRPM(RPM_FAR_2020, this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
                 else
                     {
-                    //allow drives to change speed
+                    // allow drives to change speed
                     if (this.encoder.setRPM(RPM_FAR_2020 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
                             this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
@@ -401,7 +389,7 @@ public class Launcher
             }
         if (aligned && spedUp)
             {
-            //if everything is done return true
+            // if everything is done return true
             aligned = false;
             spedUp = false;
             return true;
@@ -410,7 +398,8 @@ public class Launcher
     }
 
     /**
-     * prepares the launcher motor to shoot by scaling the RPM based off the distance away from the target
+     * prepares the launcher motor to shoot by scaling the RPM based off the
+     * distance away from the target
      *
      */
     public boolean prepareToShoot()
@@ -419,7 +408,7 @@ public class Launcher
         if (this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
                 this.firingMotors))
             {
-            //has sped up
+            // has sped up
             spedUp = true;
             }
         if (Hardware.visionDriving.alignToTarget())
@@ -429,7 +418,7 @@ public class Launcher
 
         if (aligned && spedUp)
             {
-            //if everything is done return true
+            // if everything is done return true
             aligned = false;
             spedUp = false;
             return true;
@@ -441,40 +430,42 @@ public class Launcher
      * prepares the launcher motor to shoot by settingthe RPM to either the close
      * value or the far value
      *
-     * @param isClose shoot close
-     * @param inAuto is in auto
+     * @param isClose
+     *                    shoot close
+     * @param inAuto
+     *                    is in auto
      * @return
      */
     public boolean prepareToShoot(boolean isClose, boolean inAuto)
     {
-        //checks the wanted position from the target
+        // checks the wanted position from the target
         if (isClose)
             {
-            //align to target
+            // align to target
             if (inAuto || Hardware.visionDriving.driveToTarget(CLOSE_DISTANCE, VISION_OVERRIDE, VISION_SPEED))
                 {
-                //aligned to target
+                // aligned to target
                 aligned = true;
                 }
-            //checks the robot year and set appropriate launcher speed
+            // checks the robot year and set appropriate launcher speed
             if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
-                //if in auto ignore the drive station change
+                // if in auto ignore the drive station change
                 if (inAuto)
                     {
                     if (this.encoder.setRPM(RPM_CLOSE_2020, this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
                 else
                     {
-                    //allow drives to change speed
+                    // allow drives to change speed
                     if (this.encoder.setRPM(RPM_CLOSE_2020 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
                             this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
@@ -498,34 +489,34 @@ public class Launcher
                     }
                 }
             }
-        //if far away
+        // if far away
         else
             {
-            //align to target
+            // align to target
             if (inAuto || Hardware.visionDriving.driveToTarget(FAR_DISTANCE, VISION_OVERRIDE, VISION_SPEED))
                 {
-                //aligned to target
+                // aligned to target
                 aligned = true;
                 }
-            //checks the robot year and set appropriate launcher speed
+            // checks the robot year and set appropriate launcher speed
             if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear)
                 {
-                //if in auto ignore the drive station change
+                // if in auto ignore the drive station change
                 if (inAuto)
                     {
                     if (this.encoder.setRPM(RPM_FAR_2020, this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
                 else
                     {
-                    //allow drives to change speed
+                    // allow drives to change speed
                     if (this.encoder.setRPM(RPM_FAR_2020 + (Hardware.rightOperator.getZ() * DRIVER_CHANGE_ALLOWANCE),
                             this.firingMotors))
                         {
-                        //has sped up
+                        // has sped up
                         spedUp = true;
                         }
                     }
@@ -551,7 +542,7 @@ public class Launcher
             }
         if (aligned && spedUp)
             {
-            //if everything is done return true
+            // if everything is done return true
             aligned = false;
             spedUp = false;
             return true;
@@ -561,6 +552,7 @@ public class Launcher
 
     /**
      * uncharges the shooter
+     *
      * @return if uncharged
      */
     public boolean unchargeShooter()
@@ -581,28 +573,31 @@ public class Launcher
     public static Position position = Position.NULL;
 
     /**
-     *get distance from the visino camera to determine the best position to shoot from based off of where we are located on the field
+     * get distance from the visino camera to determine the best position to shoot
+     * from based off of where we are located on the field
+     *
      * @return the closest shooting position
      */
     public Position getClosestPosition()
     {
-        //far if farther than far
+        // far if farther than far
         if (Hardware.visionInterface.getDistanceFromTarget() > FAR_DISTANCE)
             {
             return Position.FAR;
             }
-        //close if closer than close
+        // close if closer than close
         else if (Hardware.visionInterface.getDistanceFromTarget() < CLOSE_DISTANCE)
             {
             return Position.CLOSE;
             }
-        //far is farther than close but not too close to close
+        // far is farther than close but not too close to close
         else if (Hardware.visionInterface
                 .getDistanceFromTarget() > (CLOSE_DISTANCE + ((FAR_DISTANCE - CLOSE_DISTANCE) / 2)))
             {
             return Position.FAR;
             }
-        //close if not farther than far or closer than close pr farther than close but not too close to close
+        // close if not farther than far or closer than close pr farther than close but
+        // not too close to close
         else
             {
             return Position.CLOSE;
@@ -621,7 +616,7 @@ public class Launcher
     MoveState moveState = MoveState.INIT;
 
     /**
-     *Move the robot to the closest shootin position either close or far.
+     * Move the robot to the closest shootin position either close or far.
      *
      * @param position
      * @return at position
@@ -632,16 +627,16 @@ public class Launcher
         switch (moveState)
             {
             case INIT:
-                //find the off set from the positions
+                // find the off set from the positions
                 farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
                 closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
                 moveState = MoveState.DRIVE;
                 break;
             case DRIVE:
-                //drive straight the the proper distance
+                // drive straight the the proper distance
                 if (position == Position.FAR)
                     {
-                    //filter for negative distances
+                    // filter for negative distances
                     if (farOffset > 0)
                         {
                         if (Hardware.drive.driveStraightInches(Math.abs(farOffset), DRIVE_STRAIGHT_SPEED, 0, true))
@@ -676,11 +671,11 @@ public class Launcher
                     }
                 break;
             case ALIGN:
-                //realign to the target using vision
+                // realign to the target using vision
                 if (Hardware.visionDriving.alignToTarget())
                     {
                     moveState = MoveState.INIT;
-                    //done
+                    // done
                     return true;
                     }
                 break;
@@ -692,63 +687,63 @@ public class Launcher
     }
 
     /**
-     * return the RPM to set based off distance recieved from the camera
-     * TODO
+     * return the RPM to set based off distance recieved from the camera TODO
+     *
      * @param distance
      * @return
      */
     public double getRPMPerDistance(double distance)
     {
-        //quadratic equation from three point (40, 2800) (120, 3500) (180 3800)
+        // quadratic equation from three point (40, 2800) (120, 3500) (180 3800)
         return -0.02679 * (distance * distance) + 13.04 * (distance) + 2321;
     }
 
-    //temporary store if the launcher is ready
+    // temporary store if the launcher is ready
     private boolean launcherReadyTemp = false;
 
-    //temporary store if the conveyor is ready
+    // temporary store if the conveyor is ready
     private boolean conveyorReadyTemp = false;
 
-    //temporary store if the hood is redy
+    // temporary store if the hood is redy
     private boolean hoodReadyTemp = false;
 
-    //temporary store if the ball has been shot NOTE: this may be deprecated
+    // temporary store if the ball has been shot NOTE: this may be deprecated
     private boolean loadReadyTemp = false;
 
-    //if called in auto
+    // if called in auto
     private boolean auto = true;
 
-    //if called in teleop
+    // if called in teleop
     private boolean teleop = false;
 
-    //far RPM to 2020 shooter
+    // far RPM to 2020 shooter
     private static final double RPM_FAR_2020 = 3500;
 
-    //close RPM for the 2020 shooter
+    // close RPM for the 2020 shooter
     private static final double RPM_CLOSE_2020 = 2800;
 
-    //far RPM for the 2019 robot
+    // far RPM for the 2019 robot
     private static final double RPM_FAR_2019 = 900;
 
-    //close for the 2019 robot
+    // close for the 2019 robot
     private static final double RPM_CLOSE_2019 = 100;
 
-    //speed to drive straight
+    // speed to drive straight
     private static final double DRIVE_STRAIGHT_SPEED = .4;
 
-    //max RPM the drivers are allowed to change the RPM
+    // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
 
-    //wanted distance to shoot close
+    // wanted distance to shoot close
     private static int CLOSE_DISTANCE = 35;
 
-    //wanted distance to shoot far(the white start line)
+    // wanted distance to shoot far(the white start line)
     private static int FAR_DISTANCE = 120;
 
-    //is override vision with ultrasonic
+    // is override vision with ultrasonic
     private static boolean VISION_OVERRIDE = true;
 
-    //minimum speed to move with the camera
+    // minimum speed to move with the camera
     private static double VISION_SPEED = .3;
 
     }

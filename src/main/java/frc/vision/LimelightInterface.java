@@ -146,7 +146,7 @@ public class LimelightInterface
 
     /**
      * if the vision has targets
-     * 
+     *
      * @return boolean
      */
     public boolean getHasTargets()
@@ -393,7 +393,7 @@ public class LimelightInterface
 
             limelight.getEntry("pipeline").forceSetNumber(pipe);
             // limelight.getEntry("pipeline").setNumber(pipe);
-            System.out.println("pipeline " + limelight.getEntry(" pipeline ").getDouble(0));
+            System.out.println("pipeline " + limelight.getEntry("pipeline ").getDouble(0));
             }
     }
 
