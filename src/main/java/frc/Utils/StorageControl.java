@@ -102,6 +102,7 @@ public class StorageControl
                 break;
             // move down towards intake
             case DOWN:
+                System.out.println("down in Control State");
                 conveyorDown();
                 break;
             default:
@@ -130,6 +131,7 @@ public class StorageControl
                 if (!this.lowerRL.get())
                     {
                     // move down if lower RL is false
+                    System.out.println("down in intakeStorageControl");
                     state = ControlState.DOWN;
                     prevPassive = false;
                     }
