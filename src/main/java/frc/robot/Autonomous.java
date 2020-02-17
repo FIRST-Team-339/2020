@@ -105,12 +105,10 @@ public class Autonomous
         if (Hardware.shootingPlan.getPosition() == Relay.Value.kForward)
             {
             shootingPlan = ShootingPlan.FAR;
-
             }
         else if (Hardware.shootingPlan.getPosition() == Relay.Value.kReverse)
             {
             shootingPlan = ShootingPlan.CLOSE;
-
             }
         else if (Hardware.shootingPlan.getPosition() == Relay.Value.kOff)
             {
@@ -234,15 +232,6 @@ public class Autonomous
         Hardware.intake.makePassive();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        if (shootingPlan == ShootingPlan.CLOSE)
-            {
-            Hardware.launcher.prepareToShoot(true, true);
-            }
-        else if (shootingPlan == ShootingPlan.FAR)
-            {
-            Hardware.launcher.prepareToShoot(false, true);
-            }
-
         switch (autoState)
             {
 
@@ -309,11 +298,9 @@ public class Autonomous
             {
             case CLOSE:
                 path = Path.SHOOT_CLOSE;
-                Hardware.launcher.prepareToShoot(true, true);
                 break;
             case FAR:
                 path = Path.SHOOT_FAR;
-                Hardware.launcher.prepareToShoot(false, true);
                 break;
             case NOTHING:
                 path = Path.NOTHING;
@@ -372,7 +359,7 @@ public class Autonomous
         // System.out.println("Location: " + position);
         // System.out.println("6 Location: " + sixLocation);
 
-        // System.out.println(path);
+        System.out.println(path);
         switch (path)
             {
 
@@ -544,7 +531,6 @@ public class Autonomous
                         }
                     else
                         {
-                        Hardware.intake.undeployIntake();
                         return true;
                         }
 
@@ -556,7 +542,6 @@ public class Autonomous
                 // final attempt to turn and shoot more balls from trench
                 if (turnFire())
                     {
-
                     return true;
                     }
                 break;
@@ -574,7 +559,7 @@ public class Autonomous
         DRIVE_BACK, TURN1, ALIGN, SHOOT, FINISH
         }
 
-    public static TurnAndFireState turnAndFire = TurnAndFireState.DRIVE_BACK;// DRIVE_BACK
+    public static TurnAndFireState turnAndFire = TurnAndFireState.DRIVE_BACK;
 
     /**
      * Description: Method to handle the function of turn and fire auto states.
@@ -587,7 +572,6 @@ public class Autonomous
      */
     private static boolean turnFire()
     {
-        Hardware.cameraServo.setCameraAngleUp();
         switch (turnAndFire)
             {
 
@@ -614,7 +598,7 @@ public class Autonomous
 
                 System.out.println("Aligning");
                 System.out.println("Is there targets: " + Hardware.visionInterface.getHasTargets());
-                if (Hardware.visionDriving.driveToTarget(144, true, .4))// 144, true, .3
+                if (Hardware.visionDriving.driveToTarget(144, true, .3))
                     {
 
                     System.out.println("Aligned");
@@ -623,7 +607,6 @@ public class Autonomous
 
                 break;
             case SHOOT:
-                Hardware.visionDriving.alignToTarget();
                 System.out.println("Shooting");
                 if (Hardware.launcher.shootBallsAuto(false))
                     {
@@ -632,7 +615,7 @@ public class Autonomous
                 break;
 
             case FINISH:
-                Hardware.launcher.unchargeShooter();
+
                 return true;
 
             }
@@ -659,7 +642,6 @@ public class Autonomous
     private static boolean pickupTrench()
     {
         // drive forward along balls picking them up
-        System.out.println("pickup trench");
         switch (pickup)
             {
             case DRIVE_FORWARD:
@@ -699,7 +681,7 @@ public class Autonomous
      */
     private static boolean alignTrench()
     {
-        System.out.println("Trench State: " + trench);
+        // System.out.println("Trench State: " + trench);
         // System.out.println("shootingPlan: " + Hardware.shootingPlan.getPosition());
         // System.out.println("Position: " + position);
 
@@ -1025,7 +1007,7 @@ public class Autonomous
 
     // private final static int ALIGN_TRENCH_MOVE_BACK_DISTANCE = 96;
 
-    private final static int ALIGN_TRENCH_RIGHT_DEGREES = -150;
+    private final static int ALIGN_TRENCH_RIGHT_DEGREES = -120;
 
     private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 24;
 
@@ -1033,7 +1015,7 @@ public class Autonomous
     // constant
     private final static int PICKUP_DISTANCE = 120;
 
-    private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 50;// 96
+    private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 96;
 
     private final static int TURN_AND_FIRE_DEGREES = 150;
 
@@ -1043,7 +1025,7 @@ public class Autonomous
 
     private final static double DRIVE_SPEED = 0.4;
 
-    private final static double ACCELERATION = .50;
+    private final static double ACCELERATION = .5;
 
     private final static Boolean START_BALL_BOOLEAN = false;
 
