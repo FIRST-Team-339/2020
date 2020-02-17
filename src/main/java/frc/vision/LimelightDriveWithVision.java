@@ -169,7 +169,7 @@ public class LimelightDriveWithVision
         // right move speed
         double adjustmentValueLeft = 0;
 
-        if (offness < -3)
+        if (offness < -2)
             {
             // adjust the speed for the left and right motors based off their offness and a
             // preset proportional value
@@ -180,7 +180,7 @@ public class LimelightDriveWithVision
             Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
 
-        else if (offness > 3)
+        else if (offness > 2)
             {
 
             adjustmentValueLeft = (Math.abs(offness) * ADJUST_PORP_2019_ALIGN);
@@ -207,10 +207,10 @@ public class LimelightDriveWithVision
     // randomly plugging in number until it works
     final double ADJUST_PORP_2019 = .015;// 0.03
 
-    final double ADJUST_PORP_2019_ALIGN = .02;
+    final double ADJUST_PORP_2019_ALIGN = .015;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
-    final double ADJUST_PORP_2020 = .015;// TODO
+    final double ADJUST_PORP_2020 = .02;// TODO
     // after the robot is align the speed that the robot will continue at
     final double MIN_MOVE_2020 = .2;// TODO
 
