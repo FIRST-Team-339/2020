@@ -54,7 +54,9 @@ public class Robot extends TimedRobot
             Hardware.visionInterface.setTargetHeight(CURRENT_YEAR_TARGET_HEIGHT);
             Hardware.visionInterface.setMountingAngle(CURRENT_YEAR_MOUNTING_ANGLE);
             }
-
+        // Servo initial starting position
+        //Hardware.rotateServo.setAngle(90);
+        Hardware.cameraServo.setCameraAngleUp();
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
