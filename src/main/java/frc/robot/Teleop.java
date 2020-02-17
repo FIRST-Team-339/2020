@@ -41,7 +41,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
-import frc.Utils.StorageControl.ControlState;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -88,10 +87,6 @@ public class Teleop
 
         Hardware.drive.setGear(0);
 
-        Hardware.intake.intaking = false;
-        Hardware.intake.outtaking = false;
-        Hardware.storage.state = ControlState.INIT;
-
         // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid.set(Value.kReverse); // Piston goes up
         Hardware.telopTimer.stop(); // Stop teloptimer
@@ -119,37 +114,6 @@ public class Teleop
     public static void periodic()
     {
 
-        Hardware.visionInterface.updateValues();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        Hardware.storage.intakeStorageControl();
-        Hardware.storage.storageControlState();
-
-        SmartDashboard.putNumber("distance", Hardware.visionInterface.getDistanceFromTarget());
-        // end control loops ==========================
-
-        // =============== AUTOMATED SUBSYSTEMS ===============
-
-        if (Hardware.rightOperator.getRawButton(3) == true)
-
-            {
-            Hardware.colorWheel.spinControlPanelToColor();
-            }
-
-        if (Hardware.rightOperator.getRawButton(4) == true)
-            {
-            Hardware.colorWheel.spinControlPanel(1);
-            }
-
-        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
-
-        // SmartDashboard.putNumber("Proximity from target",
-        // Hardware.colorSensor.getProximity());
-        // SmartDashboard.putBoolean("In Range of Target",
-        // Hardware.colorWheel.inRange());
-
-        // ================= OPERATOR CONTROLS ================
-
-        // ================== DRIVER CONTROLS =================
         if (Hardware.leftDriver.getRawButton(7))
             {
 
@@ -161,6 +125,38 @@ public class Teleop
             Hardware.visionInterface.setPipeline(0);
             Hardware.cameraServo.setCameraAngleUp();
             }
+
+        Hardware.visionInterface.updateValues();
+        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        Hardware.storage.intakeStorageControl();
+        Hardware.storage.storageControlState();
+        // end control loops ==========================
+
+        // =============== AUTOMATED SUBSYSTEMS ===============
+
+        if (Hardware.rightOperator.getRawButton(3) == true)
+            {
+            Hardware.colorWheel.spinControlPanelToColor();
+            }
+
+        if (Hardware.rightOperator.getRawButton(4) == true)
+            {
+            Hardware.colorWheel.spinControlPanel(1);
+            }
+
+        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
+
+        teleopDrive();
+
+        // SmartDashboard.putNumber("Proximity from target",
+        // Hardware.colorSensor.getProximity());
+        // SmartDashboard.putBoolean("In Range of Target",
+        // Hardware.colorWheel.inRange());
+
+        // ================= OPERATOR CONTROLS ================
+
+        // ================== DRIVER CONTROLS =================
+
         // TODO remove this check
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
@@ -225,10 +221,7 @@ public class Teleop
             {
             Hardware.liftSolenoid.set(Value.kReverse); // Brings pistons up
             }
-
-        // TODO only teleop if not vision
-        teleopDrive();
-
+        // teleopDrive();
         // individualTest();
         // printStatements();
     } // end Periodic()

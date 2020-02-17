@@ -117,7 +117,7 @@ public class Hardware
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
 
-    // TalonSRX climbMotors = new TalonSRX(29);
+    //TalonSRX climbMotors = new TalonSRX(29);
     /**********************************************
      * initializePrevYear() function initializes all Hardware items that are
      * REQUIRED for this year

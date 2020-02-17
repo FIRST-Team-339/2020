@@ -35,7 +35,7 @@ public class StorageControl
         }
 
     // control state to update what the conveyor should b doing
-    public enum ControlState
+    private enum ControlState
         {
         INIT, PASSIVE, UP, DOWN
         }
@@ -53,7 +53,6 @@ public class StorageControl
         SmartDashboard.putNumber("", Hardware.ballCounter.getBallCount());
 
         SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
-        SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
         SmartDashboard.putString("conveyor state: ", state.toString());
 
         System.out.println("storage state: " + state);
@@ -103,7 +102,7 @@ public class StorageControl
                 break;
             // move down towards intake
             case DOWN:
-
+                System.out.println("down in Control State");
                 conveyorDown();
                 break;
             default:
