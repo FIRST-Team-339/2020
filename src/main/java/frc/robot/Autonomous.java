@@ -1043,7 +1043,7 @@ public class Autonomous
 
     private final static double DRIVE_SPEED = 0.4;
 
-    private final static double ACCELERATION = .5;
+    private final static double ACCELERATION = .50;
 
     private final static Boolean START_BALL_BOOLEAN = false;
 
