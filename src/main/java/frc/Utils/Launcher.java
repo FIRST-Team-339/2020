@@ -122,9 +122,11 @@ public class Launcher
         else
             {
             //override fire methods
-            this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
-                    this.firingMotors);
-            Hardware.storage.conveyorUp();
+            if (this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
+                    this.firingMotors))
+                {
+                Hardware.storage.conveyorUp();
+                }
 
             }
 
