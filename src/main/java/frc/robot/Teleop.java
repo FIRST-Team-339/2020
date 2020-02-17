@@ -88,10 +88,10 @@ public class Teleop
         Hardware.drive.setGear(0);
 
         // Solenoid Pistons start up and Timer start
-        Hardware.liftSolenoid.set(Value.kReverse); //Piston goes up
-        Hardware.telopTimer.stop(); //Stop teloptimer
-        Hardware.telopTimer.reset(); //Restart teloptimer
-        //Hardware.liftSolenoid.set(Value.kOff);
+        Hardware.liftSolenoid.set(Value.kReverse); // Piston goes up
+        Hardware.telopTimer.stop(); // Stop teloptimer
+        Hardware.telopTimer.reset(); // Restart teloptimer
+        // Hardware.liftSolenoid.set(Value.kOff);
 
     } // end Init
 
@@ -130,7 +130,7 @@ public class Teleop
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
-        //end control loops ==========================
+        // end control loops ==========================
 
         // =============== AUTOMATED SUBSYSTEMS ===============
 
@@ -146,21 +146,8 @@ public class Teleop
 
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
 
-        if (Hardware.rightDriver.getRawButton(3) == true)
-            {
-            testBoolean1 = true;
-            }
-        if (testBoolean1 == true)
-            {
-            if (Hardware.visionDriving.driveToTargetNoDistance(.1))
-                {
-                testBoolean1 = false;
-                }
-            }
-        else
-            {
-            teleopDrive();
-            }
+        teleopDrive();
+
         // SmartDashboard.putNumber("Proximity from target",
         // Hardware.colorSensor.getProximity());
         // SmartDashboard.putBoolean("In Range of Target",
@@ -170,32 +157,32 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-        //TODO remove this check
+        // TODO remove this check
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
 
-            //override convyor movement
+            // override convyor movement
             Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
 
-            //shoot balls
+            // shoot balls
             Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
-            //intake
+            // intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-            //outtake
+            // outtake
             Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
             // this is necessary becuase I organized the code wrong and its too late to
             // rewrite intake
-            //makes conveyor stop if not intakeing or outtaking
+            // makes conveyor stop if not intakeing or outtaking
             Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
 
-            //subtract ball
+            // subtract ball
             Hardware.ballCounter.subtractBall(Hardware.subtractBall);
-            //add ball
+            // add ball
             Hardware.ballCounter.addBall(Hardware.addBall);
-            //sets count to 0
+            // sets count to 0
             Hardware.ballCounter.clearCount(Hardware.subtractBall, Hardware.addBall);
             }
 
@@ -207,19 +194,19 @@ public class Teleop
 
         if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
             {
-            Hardware.telopTimer.start(); //Start timer
-            Hardware.climbMotor.set(.5); //Start motor
+            Hardware.telopTimer.start(); // Start timer
+            Hardware.climbMotor.set(.5); // Start motor
             }
 
         if (Hardware.telopTimer.get() >= timer)
             {
             Hardware.climbMotor.set(0);
-            Hardware.telopTimer.stop(); //Stop timer
-            Hardware.telopTimer.reset(); //Reset timer
+            Hardware.telopTimer.stop(); // Stop timer
+            Hardware.telopTimer.reset(); // Reset timer
             }
         if (Hardware.rightOperator.getRawButton(7) == true)
             {
-            Hardware.liftSolenoid.set(Value.kForward); //Bring pistons down
+            Hardware.liftSolenoid.set(Value.kForward); // Bring pistons down
             }
         if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
             {
@@ -232,7 +219,7 @@ public class Teleop
             }
         if (Hardware.rightOperator.getRawButton(6) == true)
             {
-            Hardware.liftSolenoid.set(Value.kReverse); //Brings pistons up
+            Hardware.liftSolenoid.set(Value.kReverse); // Brings pistons up
             }
         // teleopDrive();
         // individualTest();
@@ -274,7 +261,7 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-        //chrisTest();
+        // chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();
@@ -318,7 +305,7 @@ public class Teleop
 
     }
 
-    public static void colourTest()
+    public static void colouuurTest()
     {
         // Color detectedColor = Hardware.colorSensor.getColor();
 
@@ -400,47 +387,32 @@ public class Teleop
     public static void chrisTest()
     {
         /*
-        double timer = 2;
-        
-        if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
-            {
-            Hardware.telopTimer.start(); //Start timer
-            Hardware.climbMotor.set(.5); //Start motor
-            }
-        
-        if (Hardware.telopTimer.get() >= timer)
-            {
-            Hardware.climbMotor.set(0);
-            Hardware.telopTimer.stop(); //Stop timer
-            Hardware.telopTimer.reset(); //Reset timer
-            }
-        if (Hardware.rightOperator.getRawButton(7) == true)
-            {
-            Hardware.liftSolenoid.set(Value.kForward); //Bring pistons down
-            }
-        if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
-            {
-            Hardware.climbMotor.set(-.5);
-            }
-        if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
-                && Hardware.telopTimer.get() == 0)
-            {
-            Hardware.climbMotor.set(0);
-            }
-        if (Hardware.rightOperator.getRawButton(6) == true)
-            {
-            Hardware.liftSolenoid.set(Value.kReverse); //Brings pistons up
-            }*/
+         * double timer = 2;
+         *
+         * if (Hardware.rightOperator.getRawButton(10) == true &&
+         * Hardware.telopTimer.get() < timer) { Hardware.telopTimer.start(); //Start
+         * timer Hardware.climbMotor.set(.5); //Start motor }
+         *
+         * if (Hardware.telopTimer.get() >= timer) { Hardware.climbMotor.set(0);
+         * Hardware.telopTimer.stop(); //Stop timer Hardware.telopTimer.reset(); //Reset
+         * timer } if (Hardware.rightOperator.getRawButton(7) == true) {
+         * Hardware.liftSolenoid.set(Value.kForward); //Bring pistons down } if
+         * (Hardware.rightOperator.getRawButton(8) == true &&
+         * Hardware.rightOperator.getRawButton(9) == true) {
+         * Hardware.climbMotor.set(-.5); } if (Hardware.rightOperator.getRawButton(8) ==
+         * false && Hardware.rightOperator.getRawButton(9) == false &&
+         * Hardware.telopTimer.get() == 0) { Hardware.climbMotor.set(0); } if
+         * (Hardware.rightOperator.getRawButton(6) == true) {
+         * Hardware.liftSolenoid.set(Value.kReverse); //Brings pistons up }
+         */
 
-        //For Test && full resets motor and piston
-        /*if(Hardware.leftOperator.getRawButton(10) == true){
-            Hardware.wheelSpinnerMotor.set(0);
-            Hardware.telopTimer.stop();
-            Hardware.telopTimer.reset();
-            Hardware.liftSolenoid.set(Value.kReverse);
-            Hardware.liftSolenoid.set(Value.kOff);
-        }
-        */
+        // For Test && full resets motor and piston
+        /*
+         * if(Hardware.leftOperator.getRawButton(10) == true){
+         * Hardware.wheelSpinnerMotor.set(0); Hardware.telopTimer.stop();
+         * Hardware.telopTimer.reset(); Hardware.liftSolenoid.set(Value.kReverse);
+         * Hardware.liftSolenoid.set(Value.kOff); }
+         */
 
     }
 
@@ -483,10 +455,14 @@ public class Teleop
         // Hardware.hoodAdjustmentMotorEncoder.getRaw());
 
         // Switch Values
-        // Hardware.telemetry.printToConsole(("Start Balls:" + Hardware.ballStart.isOn()));
-        // Hardware.telemetry.printToConsole("Auto Switch: " + Hardware.autoSwitch.isOn());
-        // Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
-        // Hardware.telemetry.printToConsole("shoot switch: " + Hardware.shootingPlan.getPosition());
+        // Hardware.telemetry.printToConsole(("Start Balls:" +
+        // Hardware.ballStart.isOn()));
+        // Hardware.telemetry.printToConsole("Auto Switch: " +
+        // Hardware.autoSwitch.isOn());
+        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
+        // Hardware.autoSixPosSwitch.getPosition());
+        // Hardware.telemetry.printToConsole("shoot switch: " +
+        // Hardware.shootingPlan.getPosition());
         Hardware.telemetry.printToConsole("autoLo cation: " + Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
