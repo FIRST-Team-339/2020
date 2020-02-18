@@ -282,7 +282,8 @@ public class Autonomous
                 break;
 
             case FINISH:
-
+                Hardware.launcher.unchargeShooter();
+                Hardware.storage.state = ControlState.PASSIVE;
                 Hardware.drive.drive(0, 0);
                 break;
 
@@ -320,7 +321,6 @@ public class Autonomous
                 path = Path.NOTHING;
                 autoState = State.FINISH;
                 break;
-
             }
 
         /*
@@ -815,7 +815,7 @@ public class Autonomous
      */
     private static boolean getOut()
     {
-
+        Hardware.launcher.unchargeShooter();
         System.out.println("out state: " + out);
         switch (out)
             {
@@ -928,6 +928,8 @@ public class Autonomous
             {
             if (Hardware.launcher.shootBallsAuto(false))
                 {
+                Hardware.storage.state = ControlState.PASSIVE;
+                Hardware.launcher.unchargeShooter();
                 return true;
                 }
             }

@@ -461,7 +461,7 @@ public class Teleop
         // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
 
         // ---------- ANALOG -----------
-        Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
+        // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         // System.out.println("Delay Pot: " + Hardware.delayPot.get());
         // System.out.println("Hood Pot: " + Hardware.hoodPot.get());
         // Hardware.telemetry.printToConsole(
