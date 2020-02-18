@@ -179,11 +179,11 @@ public class Teleop
             Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
 
             // subtract ball
-            Hardware.ballCounter.subtractBall(Hardware.subtractBall);
+            Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
             // add ball
-            Hardware.ballCounter.addBall(Hardware.addBall);
+            Hardware.ballCounter.addBall(Hardware.addBallButton);
             // sets count to 0
-            Hardware.ballCounter.clearCount(Hardware.subtractBall, Hardware.addBall);
+            Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
             }
 
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
