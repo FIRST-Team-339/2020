@@ -25,13 +25,11 @@ public class LimelightDriveWithVision
 
     public boolean driveToTarget(int distance, boolean overrideUltrasonic, double speed)
     {
-        this.timer.start();
+        // this.timer.start();
         // System.out.println(this.timer.get() * 10000);
-        if (this.timer.get() * 100000 > 4)
-            {
-            Hardware.visionInterface.takePicture();
-            this.timer.reset();
-            }
+
+        Hardware.visionInterface.takePicture();
+
         // offness recieved from network tables
         double offness = Hardware.visionInterface.getXOffSet();
 
@@ -161,6 +159,7 @@ public class LimelightDriveWithVision
      */
     public boolean alignToTarget()
     {
+        Hardware.visionInterface.takePicture();
         double offness = Hardware.visionInterface.getXOffSet();
 
         // left move speed

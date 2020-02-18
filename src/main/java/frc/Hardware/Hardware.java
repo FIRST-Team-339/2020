@@ -431,7 +431,8 @@ public class Hardware
     // PNEUMATIC DEVICES
     // **********************************************************
     public static DoubleSolenoid intakeSolenoid = new DoubleSolenoid(4, 5);
-    public static DoubleSolenoid liftSolenoid = new DoubleSolenoid(2, 3);
+    public static DoubleSolenoid liftSolenoid1 = new DoubleSolenoid(2, 3);
+    public static DoubleSolenoid liftSolenoid2 = new DoubleSolenoid(0, 1);
     public static Compressor compressor = new Compressor();
 
     // **********************************************************

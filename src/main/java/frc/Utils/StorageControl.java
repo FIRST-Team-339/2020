@@ -35,7 +35,7 @@ public class StorageControl
         }
 
     // control state to update what the conveyor should b doing
-    private enum ControlState
+    public enum ControlState
         {
         INIT, PASSIVE, UP, DOWN
         }
@@ -52,10 +52,11 @@ public class StorageControl
         // drivers to see
         SmartDashboard.putNumber("", Hardware.ballCounter.getBallCount());
 
-        SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
+        SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 180);
+        SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
         SmartDashboard.putString("conveyor state: ", state.toString());
 
-        //  System.out.println("storage state: " + state);
+        // System.out.println("storage state: " + state);
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
         if (this.intakeRL.get() && prevRL == false)
@@ -400,9 +401,9 @@ public class StorageControl
     // dont move conveyor speed
     final double HOLDING_SPEED = 0;
     // move up speed
-    final double UP_SPEED = .2;
+    final double UP_SPEED = .3;
     // move down speed
-    final double DOWN_SPEED = -.2;
+    final double DOWN_SPEED = -.3;
     // amount needed to move JOYSTICK to override
     private final double JOYSTICK_DEADBAND_STORAGE = .3;
 

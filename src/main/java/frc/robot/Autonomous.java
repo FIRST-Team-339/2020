@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.Hardware.Hardware;
+import frc.Utils.StorageControl.ControlState;
 
 /**
  * An Autonomous class. This class <b>beautifully</b> uses state machines in
@@ -234,11 +235,11 @@ public class Autonomous
         Hardware.intake.makePassive();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        if (shootingPlan == ShootingPlan.CLOSE)
+        if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
             {
             Hardware.launcher.prepareToShoot(true, true);
             }
-        else if (shootingPlan == ShootingPlan.FAR)
+        else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
             {
             Hardware.launcher.prepareToShoot(false, true);
             }
@@ -609,12 +610,12 @@ public class Autonomous
                 break;
             case ALIGN:
 
-                System.out.println("Aligning");
-                System.out.println("Is there targets: " + Hardware.visionInterface.getHasTargets());
-                if (Hardware.visionDriving.driveToTarget(144, true, .3))
+                // System.out.println("Aligning");
+
+                if (Hardware.visionDriving.driveToTarget(216, true, .3))// 144, true, .3
                     {
 
-                    System.out.println("Aligned");
+                    // System.out.println("Aligned");
                     turnAndFire = TurnAndFireState.SHOOT;
                     }
 
@@ -625,10 +626,15 @@ public class Autonomous
                     {
                     turnAndFire = TurnAndFireState.FINISH;
                     }
+                if (Hardware.ballCounter.getBallCount() == 0)
+                    {
+                    turnAndFire = TurnAndFireState.FINISH;
+                    }
                 break;
 
             case FINISH:
-
+                Hardware.storage.state = ControlState.PASSIVE;
+                Hardware.launcher.unchargeShooter();
                 return true;
 
             }
@@ -788,7 +794,7 @@ public class Autonomous
 
     public static enum GetOutState
         {
-        TURN, FINAL_DRIVE, FINIHS
+        TURN, FINAL_DRIVE, FINISH
         }
 
     public static GetOutState out = GetOutState.TURN;
@@ -806,6 +812,7 @@ public class Autonomous
     private static boolean getOut()
     {
 
+        System.out.println("out state: " + out);
         switch (out)
             {
             case TURN:
@@ -815,10 +822,10 @@ public class Autonomous
                         if (Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
                             {
                             out = GetOutState.FINAL_DRIVE;
-
                             }
                         break;
                     case LEFT:
+
                         if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
                             {
                             out = GetOutState.FINAL_DRIVE;
@@ -830,22 +837,23 @@ public class Autonomous
                         break;
 
                     }
-
+                break;
             case FINAL_DRIVE:
-
+                System.out.println("position thing: " + position);
                 switch (position)
                     {
                     case RIGHT:
+
                         if (Hardware.drive.driveStraightInches(GET_OUT_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
                             {
-                            out = GetOutState.FINIHS;
+                            out = GetOutState.FINISH;
                             }
                         break;
 
                     case LEFT:
                         if (Hardware.drive.driveStraightInches(GET_OUT_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
                             {
-                            out = GetOutState.FINIHS;
+                            out = GetOutState.FINISH;
                             }
 
                         break;
@@ -853,17 +861,15 @@ public class Autonomous
                         if (Hardware.drive.driveStraightInches(GET_OUT_CENTER_DISTANCE, -GET_OUT_CENTER_SPEED,
                                 ACCELERATION, true))
                             {
-                            out = GetOutState.FINIHS;
+                            out = GetOutState.FINISH;
                             }
                         break;
 
                     }
                 break;
-            case FINIHS:
+            case FINISH:
                 return true;
-
             }
-
         return false;
     }
 
@@ -1004,7 +1010,7 @@ public class Autonomous
 
     private final static int GET_OUT_RIGHT_DEGREES = 120;
 
-    private final static int GET_OUT_RIGHT_DISTANCE = 36;
+    private final static int GET_OUT_RIGHT_DISTANCE = 48;
 
     // private final static int GET_OUT_CENTER_DEGREES = 0;
     private final static int GET_OUT_CENTER_DISTANCE = 120;
@@ -1039,7 +1045,7 @@ public class Autonomous
 
     private final static double DRIVE_SPEED = 0.4;
 
-    private final static double ACCELERATION = .5;
+    private final static double ACCELERATION = .1;
 
     private final static Boolean START_BALL_BOOLEAN = false;
 

@@ -41,6 +41,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
+import frc.Utils.StorageControl.ControlState;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -87,8 +88,13 @@ public class Teleop
 
         Hardware.drive.setGear(0);
 
+        Hardware.intake.intaking = false;
+        Hardware.intake.outtaking = false;
+        Hardware.storage.state = ControlState.PASSIVE;
+
         // Solenoid Pistons start up and Timer start
-        Hardware.liftSolenoid.set(Value.kReverse); // Piston goes up
+        Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
+        Hardware.liftSolenoid2.set(Value.kReverse); // Piston goes up
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
         // Hardware.liftSolenoid.set(Value.kOff);
@@ -130,19 +136,11 @@ public class Teleop
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
+
+        System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // =============== AUTOMATED SUBSYSTEMS ===============
-
-        if (Hardware.rightOperator.getRawButton(3) == true)
-            {
-            Hardware.colorWheel.spinControlPanelToColor();
-            }
-
-        if (Hardware.rightOperator.getRawButton(4) == true)
-            {
-            Hardware.colorWheel.spinControlPanel(1);
-            }
 
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
 
@@ -206,7 +204,8 @@ public class Teleop
             }
         if (Hardware.rightOperator.getRawButton(7) == true)
             {
-            Hardware.liftSolenoid.set(Value.kForward); // Bring pistons down
+            Hardware.liftSolenoid1.set(Value.kForward); // Bring pistons down
+            Hardware.liftSolenoid2.set(Value.kForward); // Bring pistons down
             }
         if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
             {
@@ -219,11 +218,12 @@ public class Teleop
             }
         if (Hardware.rightOperator.getRawButton(6) == true)
             {
-            Hardware.liftSolenoid.set(Value.kReverse); // Brings pistons up
+            Hardware.liftSolenoid1.set(Value.kReverse); // Brings pistons up
+            Hardware.liftSolenoid2.set(Value.kReverse); // Brings pistons up
             }
         // teleopDrive();
         // individualTest();
-        // printStatements();
+        printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
@@ -463,7 +463,8 @@ public class Teleop
         // Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("shoot switch: " +
         // Hardware.shootingPlan.getPosition());
-        Hardware.telemetry.printToConsole("autoLo cation: " + Hardware.autoLocation.getPosition());
+        // Hardware.telemetry.printToConsole("autoLo cation: " +
+        // Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
         // Hardware.telemetry.printToConsole("lowStoreRL: " +
@@ -472,7 +473,7 @@ public class Teleop
         // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
 
         // ---------- ANALOG -----------
-        // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
+        Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         // System.out.println("Delay Pot: " + Hardware.delayPot.get());
         // System.out.println("Hood Pot: " + Hardware.hoodPot.get());
         // Hardware.telemetry.printToConsole(

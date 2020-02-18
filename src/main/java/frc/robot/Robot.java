@@ -53,6 +53,8 @@ public class Robot extends TimedRobot
             Hardware.visionInterface.setCameraHeight(_CURRENT_YEAR_CAMERA_HEIGHT);
             Hardware.visionInterface.setTargetHeight(CURRENT_YEAR_TARGET_HEIGHT);
             Hardware.visionInterface.setMountingAngle(CURRENT_YEAR_MOUNTING_ANGLE);
+            Hardware.conveyorMotor1.setInverted(false);
+            Hardware.conveyorMotor2.setInverted(true);
             }
         // Servo initial starting position
         //Hardware.rotateServo.setAngle(90);
