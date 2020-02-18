@@ -120,6 +120,18 @@ public class Teleop
     public static void periodic()
     {
 
+        if (Hardware.leftDriver.getRawButton(7))
+            {
+
+            Hardware.visionInterface.setPipeline(2);
+            Hardware.cameraServo.setCameraAngleDown();
+            }
+        if (Hardware.leftDriver.getRawButton(8))
+            {
+            Hardware.visionInterface.setPipeline(0);
+            Hardware.cameraServo.setCameraAngleUp();
+            }
+
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
@@ -131,6 +143,8 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
 
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
+
+        teleopDrive();
 
         // SmartDashboard.putNumber("Proximity from target",
         // Hardware.colorSensor.getProximity());
@@ -163,11 +177,11 @@ public class Teleop
             Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
 
             // subtract ball
-            Hardware.ballCounter.subtractBall(Hardware.subtractBall);
+            Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
             // add ball
-            Hardware.ballCounter.addBall(Hardware.addBall);
+            Hardware.ballCounter.addBall(Hardware.addBallButton);
             // sets count to 0
-            Hardware.ballCounter.clearCount(Hardware.subtractBall, Hardware.addBall);
+            Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
             }
 
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
@@ -207,10 +221,7 @@ public class Teleop
             Hardware.liftSolenoid1.set(Value.kReverse); // Brings pistons up
             Hardware.liftSolenoid2.set(Value.kReverse); // Brings pistons up
             }
-
-        // TODO only teleop if not vision
-        teleopDrive();
-
+        // teleopDrive();
         // individualTest();
         printStatements();
     } // end Periodic()
@@ -452,7 +463,8 @@ public class Teleop
         // Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("shoot switch: " +
         // Hardware.shootingPlan.getPosition());
-        // Hardware.telemetry.printToConsole("autoLo cation: " + Hardware.autoLocation.getPosition());
+        // Hardware.telemetry.printToConsole("autoLo cation: " +
+        // Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
         // Hardware.telemetry.printToConsole("lowStoreRL: " +

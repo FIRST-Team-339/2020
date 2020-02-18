@@ -9,7 +9,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.Hardware.Hardware;
 
 /**
@@ -42,7 +41,7 @@ public class Robot extends TimedRobot
 
         Hardware.initialize();
 
-        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
+        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
             {
             Hardware.visionInterface.setCameraHeight(PREV_YEAR_CAMERA_HEIGHT);
             Hardware.visionInterface.setTargetHeight(PREV_YEAR_TARGET_HEIGHT);
@@ -51,16 +50,15 @@ public class Robot extends TimedRobot
             }
         else if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
             {
-            Hardware.visionInterface.setCameraHeight(CURRENT_YEAR_CAMERA_HEIGHT);
+            Hardware.visionInterface.setCameraHeight(_CURRENT_YEAR_CAMERA_HEIGHT);
             Hardware.visionInterface.setTargetHeight(CURRENT_YEAR_TARGET_HEIGHT);
             Hardware.visionInterface.setMountingAngle(CURRENT_YEAR_MOUNTING_ANGLE);
             Hardware.conveyorMotor1.setInverted(false);
             Hardware.conveyorMotor2.setInverted(true);
             }
         // Servo initial starting position
-        // Hardware.rotateServo.setAngle(90);
+        //Hardware.rotateServo.setAngle(90);
         Hardware.cameraServo.setCameraAngleUp();
-        Hardware.intakeSolenoid.set(Value.kReverse);
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
@@ -268,7 +266,7 @@ public class Robot extends TimedRobot
     private final double PREV_YEAR_TARGET_HEIGHT = 83.7;
     private final double PREV_YEAR_MOUNTING_ANGLE = 35;
 
-    private final double CURRENT_YEAR_CAMERA_HEIGHT = 34.25;
+    private final double _CURRENT_YEAR_CAMERA_HEIGHT = 34.25;
     private final double CURRENT_YEAR_TARGET_HEIGHT = 83.7;
     private final double CURRENT_YEAR_MOUNTING_ANGLE = 35;
     }

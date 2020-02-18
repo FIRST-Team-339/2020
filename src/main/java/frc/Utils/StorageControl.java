@@ -56,7 +56,7 @@ public class StorageControl
         SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
         SmartDashboard.putString("conveyor state: ", state.toString());
 
-        //  System.out.println("storage state: " + state);
+        // System.out.println("storage state: " + state);
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
         if (this.intakeRL.get() && prevRL == false)
@@ -103,7 +103,7 @@ public class StorageControl
                 break;
             // move down towards intake
             case DOWN:
-
+                System.out.println("down in Control State");
                 conveyorDown();
                 break;
             default:
