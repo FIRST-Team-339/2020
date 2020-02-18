@@ -90,10 +90,11 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
-        Hardware.storage.state = ControlState.INIT;
+        Hardware.storage.state = ControlState.PASSIVE;
 
         // Solenoid Pistons start up and Timer start
-        Hardware.liftSolenoid.set(Value.kReverse); // Piston goes up
+        Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
+        Hardware.liftSolenoid2.set(Value.kReverse); // Piston goes up
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
         // Hardware.liftSolenoid.set(Value.kOff);
@@ -124,21 +125,10 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
-        SmartDashboard.putNumber("distance", Hardware.visionInterface.getDistanceFromTarget());
+        System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // =============== AUTOMATED SUBSYSTEMS ===============
-
-        if (Hardware.rightOperator.getRawButton(3) == true)
-
-            {
-            Hardware.colorWheel.spinControlPanelToColor();
-            }
-
-        if (Hardware.rightOperator.getRawButton(4) == true)
-            {
-            Hardware.colorWheel.spinControlPanel(1);
-            }
 
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
 
@@ -150,17 +140,7 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================== DRIVER CONTROLS =================
-        if (Hardware.leftDriver.getRawButton(7))
-            {
 
-            Hardware.visionInterface.setPipeline(2);
-            Hardware.cameraServo.setCameraAngleDown();
-            }
-        if (Hardware.leftDriver.getRawButton(8))
-            {
-            Hardware.visionInterface.setPipeline(0);
-            Hardware.cameraServo.setCameraAngleUp();
-            }
         // TODO remove this check
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
@@ -210,7 +190,8 @@ public class Teleop
             }
         if (Hardware.rightOperator.getRawButton(7) == true)
             {
-            Hardware.liftSolenoid.set(Value.kForward); // Bring pistons down
+            Hardware.liftSolenoid1.set(Value.kForward); // Bring pistons down
+            Hardware.liftSolenoid2.set(Value.kForward); // Bring pistons down
             }
         if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
             {
@@ -223,14 +204,15 @@ public class Teleop
             }
         if (Hardware.rightOperator.getRawButton(6) == true)
             {
-            Hardware.liftSolenoid.set(Value.kReverse); // Brings pistons up
+            Hardware.liftSolenoid1.set(Value.kReverse); // Brings pistons up
+            Hardware.liftSolenoid2.set(Value.kReverse); // Brings pistons up
             }
 
         // TODO only teleop if not vision
         teleopDrive();
 
         // individualTest();
-        // printStatements();
+        printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
@@ -470,7 +452,7 @@ public class Teleop
         // Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("shoot switch: " +
         // Hardware.shootingPlan.getPosition());
-        Hardware.telemetry.printToConsole("autoLo cation: " + Hardware.autoLocation.getPosition());
+        // Hardware.telemetry.printToConsole("autoLo cation: " + Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
         // Hardware.telemetry.printToConsole("lowStoreRL: " +
@@ -479,7 +461,7 @@ public class Teleop
         // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
 
         // ---------- ANALOG -----------
-        // Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
+        Hardware.telemetry.printToConsole("Gyro: " + Hardware.gyro.getAngle());
         // System.out.println("Delay Pot: " + Hardware.delayPot.get());
         // System.out.println("Hood Pot: " + Hardware.hoodPot.get());
         // Hardware.telemetry.printToConsole(

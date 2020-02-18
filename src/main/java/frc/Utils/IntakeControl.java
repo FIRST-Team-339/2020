@@ -355,7 +355,7 @@ public class IntakeControl
     private final int TARGET_VISION_PIPE = 0;
 
     // speed to drive towards balls at
-    private final double VISION_SPEED_BALLS = .2;
+    private final double VISION_SPEED_BALLS = .25;
 
     // number of balls in the trench
     private final int BALLS_IN_TRENCH = 3;
