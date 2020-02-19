@@ -235,14 +235,6 @@ public class Autonomous
         Hardware.intake.makePassive();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
-            {
-            Hardware.launcher.prepareToShoot(true, true);
-            }
-        else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
-            {
-            Hardware.launcher.prepareToShoot(false, true);
-            }
 
         switch (autoState)
             {
@@ -269,6 +261,14 @@ public class Autonomous
 
             case CHOOSE_PATH:
 
+        if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
+            {
+          Hardware.launcher.prepareToShoot(true, true);
+            }
+        else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
+            {
+          Hardware.launcher.prepareToShoot(false, true);
+            }
                 choosePath();
                 autoState = State.RUN;
 
