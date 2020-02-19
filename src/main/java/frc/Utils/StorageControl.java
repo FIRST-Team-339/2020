@@ -35,7 +35,7 @@ public class StorageControl
         }
 
     // control state to update what the conveyor should b doing
-    private enum ControlState
+    public enum ControlState
         {
         INIT, PASSIVE, UP, DOWN
         }
@@ -52,10 +52,13 @@ public class StorageControl
         // drivers to see
         SmartDashboard.putNumber("", Hardware.ballCounter.getBallCount());
 
-        SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 120);
+        SmartDashboard.putBoolean("Green", Hardware.visionInterface.getDistanceFromTarget() <= 180);
+        SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
         SmartDashboard.putString("conveyor state: ", state.toString());
 
-        //takes the current intake RL and previous intake RL states to add or subtract balls when triggered
+        // System.out.println("storage state: " + state);
+        // takes the current intake RL and previous intake RL states to add or subtract
+        // balls when triggered
         if (this.intakeRL.get() && prevRL == false)
             {
             prevRL = true;
@@ -75,7 +78,7 @@ public class StorageControl
             prevRL = false;
             }
 
-        //main state machine to control the movement of the conveyor
+        // main state machine to control the movement of the conveyor
         switch (state)
             {
             // just in case need later
@@ -100,6 +103,7 @@ public class StorageControl
                 break;
             // move down towards intake
             case DOWN:
+                System.out.println("down in Control State");
                 conveyorDown();
                 break;
             default:
@@ -108,7 +112,7 @@ public class StorageControl
             }
     }
 
-    //boolean that stores when the previous conveyor state was PASSIVE
+    // boolean that stores when the previous conveyor state was PASSIVE
     boolean prevPassive = false;
 
     /**
@@ -117,14 +121,18 @@ public class StorageControl
      */
     public void intakeStorageControl()
     {
-        if (Hardware.intake.intaking)
+        // System.out.println("intaking: " + Hardware.intake.intaking);
+
+        if (Hardware.intake.intaking == true)
             {
+
             // if the intake RL is not triggered
             if (!this.intakeRL.get())
                 {
                 if (!this.lowerRL.get())
                     {
                     // move down if lower RL is false
+                    System.out.println("down in intakeStorageControl");
                     state = ControlState.DOWN;
                     prevPassive = false;
                     }
@@ -135,7 +143,10 @@ public class StorageControl
                     prevPassive = true;
                     }
                 }
-
+            else if (this.intakeRL.get() && this.upperRL.get())
+                {
+                state = ControlState.UP;
+                }
             else
                 {
                 // if the intake Rl is true
@@ -173,7 +184,7 @@ public class StorageControl
         // whats UP_SPEED?
         // SPEED: not much, how about you?
         this.conveyorMotors.set(UP_SPEED);
-        //Hardware.conveyorMotorGroup.set(UP_SPEED);
+        // Hardware.conveyorMotorGroup.set(UP_SPEED);
     }
 
     /**
@@ -182,7 +193,7 @@ public class StorageControl
     public void conveyorDown()
     {
         this.conveyorMotors.set(DOWN_SPEED);
-        //Hardware.conveyorMotorGroup.set(DOWN_SPEED);
+        // Hardware.conveyorMotorGroup.set(DOWN_SPEED);
     }
 
     // override boolean
@@ -212,13 +223,13 @@ public class StorageControl
                 }
             else
                 {
-                //sets override boolean to false
+                // sets override boolean to false
                 override = false;
                 }
             }
     }
 
-    //ENUM for the prepare to shoot switch
+    // ENUM for the prepare to shoot switch
     private enum ShootState
         {
         INITIAL_UP, WAIT_FOR_POWER, INIT
@@ -239,7 +250,7 @@ public class StorageControl
             switch (shootState)
                 {
                 case INIT:
-                    //init stuff if needed
+                    // init stuff if needed
                     shootState = ShootState.INITIAL_UP;
                     break;
                 case INITIAL_UP:
@@ -251,25 +262,25 @@ public class StorageControl
                     if (this.shootRL.get() && !preparedToFire)
                         {
                         // System.out.println("got shoot rl");
-                        //balls is ready to shoot
+                        // balls is ready to shoot
                         preparedToFire = true;
-                        //stop conveyor
+                        // stop conveyor
                         state = ControlState.PASSIVE;
-                        //start waiting for the shooter to speed up
+                        // start waiting for the shooter to speed up
                         shootState = ShootState.INIT;
                         return true;
                         }
                     else
                         {
-                        //ball not ready
+                        // ball not ready
                         preparedToFire = false;
-                        //move ball until ready
+                        // move ball until ready
                         state = ControlState.UP;
                         }
                     break;
                 case WAIT_FOR_POWER:
-                    //not currently in use
-                    //deprecate based on current launch code
+                    // not currently in use
+                    // deprecate based on current launch code
                     preparedToFire = true;
                     shootState = ShootState.INIT;
                     return true;
@@ -285,6 +296,7 @@ public class StorageControl
 
     /**
      * this moves the ball into the launcher essentially shooting to the ball
+     *
      * @return
      */
     public boolean loadToFire()
@@ -292,31 +304,30 @@ public class StorageControl
 
         if (stillShooting)
             {
-            //if the ball is not longer in the conveyor system
+            // if the ball is not longer in the conveyor system
             if (this.shootRL.get() == false)
                 {
-                //we have shot a ball and are no longer shooting
+                // we have shot a ball and are no longer shooting
                 shotBall = true;
                 stillShooting = false;
                 }
             }
         if (Hardware.ballCounter.getBallCount() > 0)
             {
-            //if prepared to fire as notified true
+            // if prepared to fire as notified true
             if (preparedToFire)
                 {
                 // System.out.println("loading");
-                //if ball is proprer shoot position this is a second check
+                // if ball is proprer shoot position this is a second check
                 if (this.shootRL.get())
                     {
 
                     // System.out.println("shooting ball");
-                    //move ball up into the launcher
+                    // move ball up into the launcher
                     state = ControlState.UP;
                     if (!stillShooting)
                         {
                         Hardware.ballCounter.subtractBall();
-
                         // extra check to see if there are balls left to continue the further states
                         if (Hardware.ballCounter.getBallCount() == 0)
                             {
@@ -327,17 +338,17 @@ public class StorageControl
                     }
                 else if (shotBall)
                     {
-                    //if we shot a ball we are not shoot
-                    //reset shotBall info
+                    // if we shot a ball we are not shoot
+                    // reset shotBall info
                     stillShooting = false;
                     shotBall = false;
-                    //stop moving conveyor
+                    // stop moving conveyor
                     state = ControlState.PASSIVE;
-                    //if we still have balls
+                    // if we still have balls
                     if (Hardware.ballCounter.getBallCount() > 0)
                         {
                         // System.out.println(" preparing again");
-                        //prepared the next ball
+                        // prepared the next ball
                         prepareToShoot();
                         return true;
                         }
@@ -346,7 +357,7 @@ public class StorageControl
             }
         else
             {
-            //if 0 balls stop moving conveyor
+            // if 0 balls stop moving conveyor
             state = ControlState.PASSIVE;
             return true;
             }
@@ -355,6 +366,7 @@ public class StorageControl
 
     /**
      * empties the storage through the intake
+     *
      * @param button1
      * @param button2
      * @return
@@ -364,13 +376,13 @@ public class StorageControl
 
         if (Hardware.ballCounter.getBallCount() == 0)
             {
-            //if no balls return true, stop conveyor
+            // if no balls return true, stop conveyor
             state = ControlState.PASSIVE;
             return true;
             }
         else
             {
-            //conveyor down and intake motors move out
+            // conveyor down and intake motors move out
             state = ControlState.DOWN;
             Hardware.intake.outtake(0);
             }
@@ -378,21 +390,21 @@ public class StorageControl
         return false;
     }
 
-    //if a balls has been shot
+    // if a balls has been shot
     private static boolean shotBall = false;
-    //store info on the previous state of an RL
+    // store info on the previous state of an RL
     private static boolean prevRL = false;
 
-    //boolean used to store whether a ball is in the proper position to shoot
+    // boolean used to store whether a ball is in the proper position to shoot
     private static boolean preparedToFire = false;
 
-    //dont move conveyor speed
+    // dont move conveyor speed
     final double HOLDING_SPEED = 0;
-    //move up speed
-    final double UP_SPEED = .2;
-    //move down speed
-    final double DOWN_SPEED = -.2;
-    //amount needed to move JOYSTICK to override
+    // move up speed
+    final double UP_SPEED = .3;
+    // move down speed
+    final double DOWN_SPEED = -.3;
+    // amount needed to move JOYSTICK to override
     private final double JOYSTICK_DEADBAND_STORAGE = .3;
 
     }
