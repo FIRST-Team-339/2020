@@ -235,7 +235,10 @@ public class Autonomous
         Hardware.intake.makePassive();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 341101a32d9ce13ab06ac1145a9c13afca1eea55
         switch (autoState)
             {
 
@@ -260,6 +263,14 @@ public class Autonomous
                 break;
 
             case CHOOSE_PATH:
+                // if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
+                //     {
+                //     Hardware.launcher.prepareToShoot(true, true);
+                //     }
+                // else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
+                //     {
+                //     Hardware.launcher.prepareToShoot(false, true);
+                //     }
 
         if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
             {
@@ -306,18 +317,21 @@ public class Autonomous
     private static void choosePath()
     {
         // Statements to determine sates:
-
+        System.out.println("choos path");
         switch (shootingPlan)
             {
             case CLOSE:
+                System.out.println("close");
                 path = Path.SHOOT_CLOSE;
                 Hardware.launcher.prepareToShoot(true, true);
                 break;
             case FAR:
+                System.out.println("far");
                 path = Path.SHOOT_FAR;
                 Hardware.launcher.prepareToShoot(false, true);
                 break;
             case NOTHING:
+                System.out.println("nothing");
                 path = Path.NOTHING;
                 autoState = State.FINISH;
                 break;
@@ -435,6 +449,7 @@ public class Autonomous
                     {
                     if (shootClose())
                         {
+                        System.out.println("finished shoot close");
                         hasShot = true;
                         }
                     }
