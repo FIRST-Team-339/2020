@@ -404,7 +404,7 @@ public class Launcher
      */
     public boolean prepareToShoot()
     {
-
+        System.out.println("preparing to shoot");
         if (this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
                 this.firingMotors))
             {

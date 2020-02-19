@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.Hardware.Hardware;
+import frc.Utils.StorageControl.ControlState;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,7 +42,7 @@ public class Robot extends TimedRobot
 
         Hardware.initialize();
 
-        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
+        if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
             Hardware.visionInterface.setCameraHeight(PREV_YEAR_CAMERA_HEIGHT);
             Hardware.visionInterface.setTargetHeight(PREV_YEAR_TARGET_HEIGHT);
@@ -166,6 +167,8 @@ public class Robot extends TimedRobot
         Hardware.leftDriveGroup.set(0);
         Hardware.rightDriveGroup.set(0);
         Hardware.visionInterface.setPipeline(0);
+        Hardware.intake.makePassive();
+        Hardware.storage.state = ControlState.PASSIVE;
 
         // ---------------------------------------
         // done setup - tell the user we are complete

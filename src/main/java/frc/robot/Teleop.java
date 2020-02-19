@@ -90,7 +90,7 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
-        Hardware.storage.state = ControlState.PASSIVE;
+        Hardware.storage.state = ControlState.INIT;
 
         // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
@@ -134,10 +134,10 @@ public class Teleop
 
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        Hardware.storage.intakeStorageControl();
+
         Hardware.storage.storageControlState();
 
-        System.out.println("gyro: " + Hardware.gyro.getAngle());
+        //System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // =============== AUTOMATED SUBSYSTEMS ===============
@@ -223,7 +223,7 @@ public class Teleop
             }
         // teleopDrive();
         // individualTest();
-        printStatements();
+        //printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
