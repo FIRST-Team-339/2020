@@ -237,6 +237,9 @@ public class Hardware
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
+        wheelSpinnerEncoder.setDistancePerPulse(WHEEL_ENCODER_DISTANCE_PER_TICK);
+        wheelSpinnerEncoder.setTicksPerRevolution(4096);
+
         // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
         // hoodAdjustmentMotor);//TODO fix
 
@@ -453,6 +456,9 @@ public class Hardware
     // **********************************************************
     // Buttons
     // **********************************************************
+    public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
+
+    public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
@@ -463,8 +469,6 @@ public class Hardware
     public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
-
-    public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
 
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
@@ -490,13 +494,17 @@ public class Hardware
 
     public static JoystickButton toggleIntake = new JoystickButton(Hardware.leftOperator, 3);
 
+    public static JoystickButton spinWheelButton = new JoystickButton(Hardware.leftOperator, 6);
+
+    public static JoystickButton spinWheelColorButton = new JoystickButton(Hardware.leftOperator, 7);
+
+    public static JoystickButton wheelOverrideButton = new JoystickButton(Hardware.leftOperator, 10);
+
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
     public static JoystickButton pistonsUpSolenoid = new JoystickButton(Hardware.rightOperator, 6);
 
     public static JoystickButton pistonsDownSolenoid = new JoystickButton(Hardware.rightOperator, 7);
-
-    public static JoystickButton climbReverse = new JoystickButton(Hardware.rightOperator, 8 + 9);
 
     public static JoystickButton climbMotorUp = new JoystickButton(Hardware.rightOperator, 10);
     // **********************************************************
@@ -548,6 +556,8 @@ public class Hardware
 
     public final static double PREV_YEAR_DISTANCE_PER_TICK = 23 / 13.8;// .0346;
     public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;// .000746
+
+    public final static double WHEEL_ENCODER_DISTANCE_PER_TICK = 0.0024305403;
 
     public final static double PREV_YEAR_WHEEL_SPINNER_DISTANCE_PER_TICK = 0.0024305403;
 

@@ -40,14 +40,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import frc.Hardware.Hardware;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 // import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
-
-import javax.management.timer.Timer;
 
 import com.ctre.phoenix.CANifier.LEDChannel;
 import com.revrobotics.ColorMatch;
@@ -118,16 +117,6 @@ public class Teleop
 
         // =============== AUTOMATED SUBSYSTEMS ===============
 
-        if (Hardware.rightOperator.getRawButton(3) == true)
-            {
-            Hardware.colorWheel.spinControlPanelToColor();
-            }
-
-        if (Hardware.rightOperator.getRawButton(4) == true)
-            {
-            Hardware.colorWheel.spinControlPanel(1);
-            }
-
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
@@ -158,6 +147,12 @@ public class Teleop
         // Hardware.colorWheel.inRange());
 
         // ================= OPERATOR CONTROLS ================
+
+        if (Hardware.spinWheelButton.get() == true)
+            {
+            // To change the number of spins. Hardware.colorWheel.setNumberOfSpins(*Amount of Spins*);
+            Hardware.colorWheel.spinControlPanel();
+            }
 
         // ================== DRIVER CONTROLS =================
         //change the wanted shoot distance
@@ -598,6 +593,8 @@ public class Teleop
         // Hardware.compressor.getPressureSwitchValue());
 
     }
+
+    private static Timer PreventButtonActivationTimer = new Timer();
 
     private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 
