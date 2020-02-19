@@ -90,7 +90,7 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
-        Hardware.storage.state = ControlState.INIT;
+        Hardware.storage.state = ControlState.PASSIVE;
 
         // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
@@ -124,10 +124,10 @@ public class Teleop
 
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-
+        Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
-        //System.out.println("gyro: " + Hardware.gyro.getAngle());
+        System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // =============== AUTOMATED SUBSYSTEMS ===============
@@ -144,8 +144,8 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================= COLORWHEEL CONTROLS ==============
-
         //If you hold Left Operator button 6 + 7 at the same time the wheel will spin manually at 20% speed
+
         if (Hardware.spinWheelButton.get() == true && Hardware.spinWheelColorButton.get() == true)
             {
             PreventButtonActivationTimer.start();
@@ -157,19 +157,19 @@ public class Teleop
                 }
             }
         //Currently will spin the control panel 4 times
-        if (Hardware.leftOperator.getRawButton(6) == true)
+        if (Hardware.spinWheelButton.get() == true)
             {
             // To change the number of spins. Hardware.colorWheel.setNumberOfSpins(*Amount of Spins*);
             Hardware.colorWheel.spinControlPanel();
             }
 
         //Will align the given color with the field sensor. Gets the color automatically
-        if (Hardware.leftOperator.getRawButton(7) == true)
+        if (Hardware.spinWheelColorButton.get() == true)
             {
             Hardware.colorWheel.spinControlPanelToColor();
             }
         //Will set the motor speed to 0 and reset the encoder
-        if (Hardware.leftOperator.getRawButton(10) == true)
+        if (Hardware.wheelOverrideButton.get() == true)
             {
             Hardware.colorWheel.override();
             }
@@ -244,7 +244,7 @@ public class Teleop
             }
         // teleopDrive();
         // individualTest();
-        //printStatements();
+        printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
