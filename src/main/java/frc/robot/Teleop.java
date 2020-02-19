@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import frc.Hardware.Hardware;
 import frc.Utils.StorageControl.ControlState;
+import frc.robot.Autonomous.pickupTrenchState;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -142,10 +143,35 @@ public class Teleop
 
         // ================= OPERATOR CONTROLS ================
 
-        if (Hardware.spinWheelButton.get() == true)
+        // ================= COLORWHEEL CONTROLS ==============
+
+        //If you hold Left Operator button 6 + 7 at the same time the wheel will spin manually at 20% speed
+        if (Hardware.spinWheelButton.get() == true && Hardware.spinWheelColorButton.get() == true)
+            {
+            PreventButtonActivationTimer.start();
+            if (PreventButtonActivationTimer.get() == 100)
+                {
+                Hardware.colorWheel.manualSpin();
+                PreventButtonActivationTimer.stop();
+                PreventButtonActivationTimer.reset();
+                }
+            }
+        //Currently will spin the control panel 4 times
+        if (Hardware.leftOperator.getRawButton(6) == true)
             {
             // To change the number of spins. Hardware.colorWheel.setNumberOfSpins(*Amount of Spins*);
             Hardware.colorWheel.spinControlPanel();
+            }
+
+        //Will align the given color with the field sensor. Gets the color automatically
+        if (Hardware.leftOperator.getRawButton(7) == true)
+            {
+            Hardware.colorWheel.spinControlPanelToColor();
+            }
+        //Will set the motor speed to 0 and reset the encoder
+        if (Hardware.leftOperator.getRawButton(10) == true)
+            {
+            Hardware.colorWheel.override();
             }
 
         // ================== DRIVER CONTROLS =================

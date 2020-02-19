@@ -463,10 +463,6 @@ public class Hardware
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
-    public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(leftOperator, 7, false);
-
-    public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
-
     //----------------------------------------------------------
     // buttons - for left driver
     //----------------------------------------------------------
@@ -524,6 +520,8 @@ public class Hardware
     public static JoystickButton subtractBallButton = new JoystickButton(Hardware.rightOperator, 8);
 
     public static JoystickButton addBallButton = new JoystickButton(Hardware.rightOperator, 9);
+
+    public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(rightOperator, 10, false);
 
     public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);
 
