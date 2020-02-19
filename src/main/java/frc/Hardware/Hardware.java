@@ -238,6 +238,9 @@ public class Hardware
 
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
+        wheelSpinnerEncoder.setDistancePerPulse(WHEEL_ENCODER_DISTANCE_PER_TICK);
+        wheelSpinnerEncoder.setTicksPerRevolution(4096);
+
         // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
         // hoodAdjustmentMotor);//TODO fix
 
@@ -456,11 +459,9 @@ public class Hardware
     // Buttons
     // **********************************************************
 
+    public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
+
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
-
-    public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(leftOperator, 7, false);
-
-    public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
     //----------------------------------------------------------
     // buttons - for left driver
@@ -472,7 +473,7 @@ public class Hardware
     public static JoystickButton climbReverseButton2 = new JoystickButton(Hardware.leftDriver, 8);
 
     //----------------------------------------------------------
-    // buttons - for riht driver
+    // buttons - for right driver
     //----------------------------------------------------------
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
 
@@ -494,6 +495,8 @@ public class Hardware
     public static JoystickButton takePictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
 
     public static JoystickButton takePictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+
+    public static JoystickButton wheelOverrideButton = new JoystickButton(Hardware.leftOperator, 10);
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
@@ -517,6 +520,8 @@ public class Hardware
     public static JoystickButton subtractBallButton = new JoystickButton(Hardware.rightOperator, 8);
 
     public static JoystickButton addBallButton = new JoystickButton(Hardware.rightOperator, 9);
+
+    public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(rightOperator, 10, false);
 
     public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);
 
@@ -569,6 +574,8 @@ public class Hardware
 
     public final static double PREV_YEAR_DISTANCE_PER_TICK = 23 / 13.8;// .0346;
     public final static double CURRENT_YEAR_DISTANCE_PER_TICK = .000746;// .000746
+
+    public final static double WHEEL_ENCODER_DISTANCE_PER_TICK = 0.0024305403;
 
     public final static double PREV_YEAR_WHEEL_SPINNER_DISTANCE_PER_TICK = 0.0024305403;
 

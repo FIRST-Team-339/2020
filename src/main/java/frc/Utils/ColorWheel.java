@@ -69,6 +69,7 @@ public class ColorWheel
     {
         this.circumference = n;
     }
+
     public double getCircumference()
     {
         return this.circumference;
@@ -128,16 +129,15 @@ public class ColorWheel
         return "";
     }
 
-    //Resets the hasSpun so that the encoder in spinControlPanel resets
-    public void spinControlPanelReset()
-    {
-        hasSpun = false;
-    }
-
     public void override()
     {
         this.motor.set(0);
         this.motorEncoder.reset();
+    }
+
+    public void manualSpin()
+    {
+        this.motor.set(.2);
     }
 
     /**
@@ -154,23 +154,19 @@ public class ColorWheel
      * @written January 30, 2020
      *          -------------------------------------------------------
      */
-    public boolean spinControlPanel(double distance)
+    public boolean spinControlPanel()
     {
-        // Runs once when the method runs the first time, and does not run again
-        // until after the method returns true.
-
-        if (spinInitialize == true && hasSpun == false)
+        if (encoderReset == true)
             {
             this.motorEncoder.reset();
-            this.spinInitialize = false;
+            encoderReset = false;
             }
 
-        // Check all encoders to see if they've reached the distance. Multiply number of spins * circumference(106.5309) +/- correctional value
+        // Check all encoders to see if they've reached the distance. Multiply number of spins * circumference(106.5309)
         if (this.motorEncoder.getDistance() > this.numberOfSpins * this.circumference)
             {
             this.motor.set(0);
-            this.hasSpun = true;
-            this.spinInitialize = true;
+            encoderReset = true;
             return true;
             }
         else
@@ -253,15 +249,13 @@ public class ColorWheel
 
     private ColorMatchResult match = null;
 
-    private boolean spinInitialize = true;
-
-    public boolean hasSpun = false;
+    private boolean encoderReset = true;
 
     private String spinColor = null;
 
     private double speed = .4;
 
-    private double numberOfSpins = 3; //Distance is the amount of rotations
+    private double numberOfSpins = 4; //Distance is the amount of rotations
 
     private double circumference = 100.5309; //Circumference of the color wheel
 
