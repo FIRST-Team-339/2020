@@ -541,6 +541,8 @@ public class Autonomous
 
                 if (pickupTrench())
                     {
+                    Hardware.cameraServo.setCameraAngleUp();
+                    Hardware.intake.undeployIntake();
                     // Continue to shoot again after pickup
                     if (exit == Exit.TURN_AND_FIRE)
                         {

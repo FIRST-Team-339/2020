@@ -134,7 +134,7 @@ public class Teleop
 
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-
+        Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
         //System.out.println("gyro: " + Hardware.gyro.getAngle());
