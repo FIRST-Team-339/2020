@@ -113,7 +113,7 @@ public class StorageControl
     }
 
     // boolean that stores when the previous conveyor state was PASSIVE
-    boolean prevPassive = false;
+    boolean prevIntakeRL = false;
 
     /**
      * controls the conveyor belt if the robot is intaking balls. Note: Must be
@@ -127,43 +127,42 @@ public class StorageControl
             {
 
             // if the intake RL is not triggered
-            if (!this.intakeRL.get())
+            if (!this.intakeRL.get() && !prevIntakeRL)
                 {
+                prevIntakeRL = false;
                 if (!this.lowerRL.get())
                     {
                     // move down if lower RL is false
                     System.out.println("down in intakeStorageControl");
                     state = ControlState.DOWN;
-                    prevPassive = false;
+
                     }
                 else
                     {
                     // if lower RL is on dont move
                     state = ControlState.PASSIVE;
-                    prevPassive = true;
                     }
                 }
             else if (this.intakeRL.get() && this.upperRL.get())
                 {
+                prevIntakeRL = false;
                 state = ControlState.UP;
                 }
-            else
+            else if (this.intakeRL.get() || prevIntakeRL)
                 {
                 // if the intake Rl is true
-                if (prevPassive)
-                    {
-                    // TODO check if we need this. While commenting i dont think we do the other
-                    // controll state should be good enough to add balls
-                    // Hardware.ballcounter.addBall();
-                    prevPassive = false;
-                    }
-                if (!this.upperRL.get())
+                prevIntakeRL = true;
+                if (!this.lowerRL.get())
                     {
                     // if the upper RL is not on move up until on
                     state = ControlState.UP;
-                    prevPassive = false;
+                    prevIntakeRL = false;
                     }
                 }
+            }
+        else
+            {
+            state = ControlState.PASSIVE;
             }
     }
 

@@ -32,6 +32,8 @@ public class IntakeControl
 
         }
 
+    private boolean released = true;
+
     /**
      * toggles the intake deployed state via a button
      *
@@ -39,8 +41,9 @@ public class IntakeControl
      */
     public void toggleDeployIntake(JoystickButton button)
     {
-        if (button.get())
+        if (button.get() && released)
             {
+            released = false;
             // if deployed
             if (this.solenoid.getForward())
                 {
@@ -54,6 +57,10 @@ public class IntakeControl
                 this.solenoid.set(Value.kForward);
                 }
             }
+        else if (!button.get())
+            {
+            released = true;
+            }
     }
 
     /**
@@ -62,20 +69,13 @@ public class IntakeControl
      * @param button
      * @return
      */
-    public boolean undeployIntake(JoystickButton button)
+    public void undeployIntake(JoystickButton button)
     {
         if (button.get())
             {
-            if (this.solenoid.getForward())
-                {
-                this.solenoid.set(Value.kReverse);
-                }
-            if (!this.solenoid.getForward())
-                {
-                return true;
-                }
+
+            this.solenoid.set(Value.kReverse);
             }
-        return false;
     }
 
     /**
@@ -84,17 +84,11 @@ public class IntakeControl
      * @param button
      * @return
      */
-    public boolean undeployIntake()
+    public void undeployIntake()
     {
-        if (this.solenoid.getForward())
-            {
-            this.solenoid.set(Value.kReverse);
-            }
-        if (!this.solenoid.getForward())
-            {
-            return true;
-            }
-        return false;
+
+        this.solenoid.set(Value.kReverse);
+
     }
 
     /**
@@ -103,20 +97,15 @@ public class IntakeControl
      * @param button
      * @return
      */
-    public boolean deployIntake(JoystickButton button)
+    public void deployIntake(JoystickButton button)
     {
         if (button.get())
             {
-            if (this.solenoid.getForward())
-                {
-                this.solenoid.set(Value.kReverse);
-                }
-            if (!this.solenoid.getForward())
-                {
-                return true;
-                }
+
+            this.solenoid.set(Value.kForward);
+
             }
-        return false;
+
     }
 
     /**
@@ -125,17 +114,11 @@ public class IntakeControl
      * @param button
      * @return
      */
-    public boolean deployIntake()
+    public void deployIntake()
     {
-        if (this.solenoid.getForward())
-            {
-            this.solenoid.set(Value.kReverse);
-            }
-        if (!this.solenoid.getForward())
-            {
-            return true;
-            }
-        return false;
+
+        this.solenoid.setForward(true);
+
     }
 
     /**
@@ -184,42 +167,32 @@ public class IntakeControl
      */
     public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
     {
-        intaking = true;
+
         // dont intake al there is already 5 balls stored unless override button pressed
         if (Hardware.ballCounter.getBallCount() < 5 || overrideButton.get())
             {
+            intaking = true;
             // if intake deployed
 
             // if got button
             if (intakeButton.get())
                 {
-                if (this.getDeployed() || this.solenoid.getForward())
-                    {
-                    // if got button
-                    if (intakeButton.get())
-                        {
-                        // sets intaking boolean to true
-                        // System.out.println("intaking");
-                        this.intakeMotor.set(INTAKE_SPEED);
-                        }
-                    }
-                else
-                    {
-                    // deploy if not deployed
-                    this.deployIntake();
-                    }
+
+                this.deployIntake();
+
+                this.intakeMotor.set(INTAKE_SPEED);
+
                 }
             else
                 {
-                this.undeployIntake();
+                intaking = false;
                 }
-
             }
         else
             {
-            // un deploy intake if button not pressed
-            this.undeployIntake();
+            intaking = false;
             }
+
     }
 
     /**
@@ -228,15 +201,10 @@ public class IntakeControl
     public void intake()
     {
         Hardware.storage.intakeStorageControl();
-        if (/* getDeployed() */ true)
-            {
-            this.intaking = true;
-            this.intakeMotor.set(INTAKE_SPEED);
-            }
-        else
-            {
-            this.deployIntake();
-            }
+        this.deployIntake();
+        this.intaking = true;
+        this.intakeMotor.set(INTAKE_SPEED);
+
     }
 
     /**
@@ -247,31 +215,29 @@ public class IntakeControl
      */
     public void outtake(JoystickButton outtakeButton, JoystickButton overrideButton)
     {
-        outtaking = true;
+
         // dont outtake al there are no balls stored unless override button pressed
         if (Hardware.ballCounter.getBallCount() > 0 || overrideButton.get())
             {
+            outtaking = true;
             // if intake deployed
-            if (this.getDeployed())
+
+            if (outtakeButton.get())
                 {
-                // if got button
-                if (outtakeButton.get())
-                    {
-                    // sets intaking boolean to true
-                    // System.out.println("intaking");
-                    this.intakeMotor.set(OUTTAKE_SPEED);
-                    }
+                // sets intaking boolean to true
+                // System.out.println("intaking");
+                this.deployIntake();
+                this.intakeMotor.set(OUTTAKE_SPEED);
+
                 }
             else
                 {
-                // deploy if not deployed
-                this.deployIntake();
+                outtaking = false;
                 }
             }
         else
             {
-            // un deploy intake if button not pressed
-            this.undeployIntake();
+            outtaking = false;
             }
     }
 
@@ -291,14 +257,9 @@ public class IntakeControl
         else
             {
             outtaking = true;
-            if (this.getDeployed())
-                {
-                this.intakeMotor.set(OUTTAKE_SPEED);
-                }
-            else
-                {
-                this.deployIntake();
-                }
+            this.deployIntake();
+            this.intakeMotor.set(OUTTAKE_SPEED);
+
             }
         return false;
     }
