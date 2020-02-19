@@ -460,51 +460,66 @@ public class Hardware
 
     public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(leftOperator, 7, false);
 
-    public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
-
     public static MomentarySwitch cameraSwitchButton = new MomentarySwitch(leftOperator, 7, false);
 
-    public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
-
+    //----------------------------------------------------------
+    // buttons - for left driver
+    //----------------------------------------------------------
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
 
-    public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+    public static JoystickButton climbReverseButton1 = new JoystickButton(Hardware.leftDriver, 7);
 
-    public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
+    public static JoystickButton climbReverseButton2 = new JoystickButton(Hardware.leftDriver, 8);
 
-    public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);
+    //----------------------------------------------------------
+    // buttons - for riht driver
+    //----------------------------------------------------------
+    public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
 
+    public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
+
+    //----------------------------------------------------------
+    // buttons - for left operator
+    //----------------------------------------------------------
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 4);
 
     public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
 
-    public static JoystickButton pictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
+    public static JoystickButton spinWheelButton = new JoystickButton(Hardware.leftOperator, 6);
 
-    public static JoystickButton pictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+    public static JoystickButton spinWheelColorButton = new JoystickButton(Hardware.leftOperator, 7);
+
+    public static JoystickButton takePictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
+
+    public static JoystickButton takePictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+
+    public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
+
+    //----------------------------------------------------------
+    // buttons - for right operator
+    //----------------------------------------------------------
+    public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+
+    public static JoystickButton liftDownSolenoidButton = new JoystickButton(Hardware.rightOperator, 2);
+
+    public static JoystickButton liftUpSolenoidButton = new JoystickButton(Hardware.rightOperator, 3);
+
+    public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 4);
+
+    public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
+
+    public static JoystickButton launcherSpeedOneButton = new JoystickButton(Hardware.rightOperator, 6);
+
+    public static JoystickButton launcherSpeedTwoButton = new JoystickButton(Hardware.rightOperator, 7);
 
     public static JoystickButton subtractBallButton = new JoystickButton(Hardware.rightOperator, 8);
 
     public static JoystickButton addBallButton = new JoystickButton(Hardware.rightOperator, 9);
 
-    public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
+    public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);
 
-    public static JoystickButton pistonsUpSolenoidButton = new JoystickButton(Hardware.rightOperator, 3);
-
-    public static JoystickButton pistonsDownSolenoidButton = new JoystickButton(Hardware.rightOperator, 2);
-
-    public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 8 + 7);
-
-    public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 4);
-
-    public static JoystickButton spinWheelButton = new JoystickButton(Hardware.leftOperator, 6);
-
-    public static JoystickButton spinWheelColorButton = new JoystickButton(Hardware.leftOperator, 7);
-
-    public static JoystickButton launcherSpeedOneButton = new JoystickButton(Hardware.rightOperator, 6);
-
-    public static JoystickButton launcherSpeedTwoButton = new JoystickButton(Hardware.rightOperator, 7);
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
