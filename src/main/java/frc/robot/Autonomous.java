@@ -235,15 +235,6 @@ public class Autonomous
         Hardware.intake.makePassive();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-        if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
-            {
-            Hardware.launcher.prepareToShoot(true, true);
-            }
-        else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
-            {
-            Hardware.launcher.prepareToShoot(false, true);
-            }
-
         switch (autoState)
             {
 
@@ -268,6 +259,14 @@ public class Autonomous
                 break;
 
             case CHOOSE_PATH:
+                // if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
+                //     {
+                //     Hardware.launcher.prepareToShoot(true, true);
+                //     }
+                // else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
+                //     {
+                //     Hardware.launcher.prepareToShoot(false, true);
+                //     }
 
                 choosePath();
                 autoState = State.RUN;
@@ -306,18 +305,21 @@ public class Autonomous
     private static void choosePath()
     {
         // Statements to determine sates:
-
+        System.out.println("choos path");
         switch (shootingPlan)
             {
             case CLOSE:
+                System.out.println("close");
                 path = Path.SHOOT_CLOSE;
                 Hardware.launcher.prepareToShoot(true, true);
                 break;
             case FAR:
+                System.out.println("far");
                 path = Path.SHOOT_FAR;
                 Hardware.launcher.prepareToShoot(false, true);
                 break;
             case NOTHING:
+                System.out.println("nothing");
                 path = Path.NOTHING;
                 autoState = State.FINISH;
                 break;
@@ -435,6 +437,7 @@ public class Autonomous
                     {
                     if (shootClose())
                         {
+                        System.out.println("finished shoot close");
                         hasShot = true;
                         }
                     }

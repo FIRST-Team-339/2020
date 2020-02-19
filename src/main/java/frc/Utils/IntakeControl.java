@@ -189,21 +189,31 @@ public class IntakeControl
         if (Hardware.ballCounter.getBallCount() < 5 || overrideButton.get())
             {
             // if intake deployed
-            if (this.getDeployed())
+
+            // if got button
+            if (intakeButton.get())
                 {
-                // if got button
-                if (intakeButton.get())
+                if (this.getDeployed() || this.solenoid.getForward())
                     {
-                    // sets intaking boolean to true
-                    // System.out.println("intaking");
-                    this.intakeMotor.set(INTAKE_SPEED);
+                    // if got button
+                    if (intakeButton.get())
+                        {
+                        // sets intaking boolean to true
+                        // System.out.println("intaking");
+                        this.intakeMotor.set(INTAKE_SPEED);
+                        }
+                    }
+                else
+                    {
+                    // deploy if not deployed
+                    this.deployIntake();
                     }
                 }
             else
                 {
-                // deploy if not deployed
-                this.deployIntake();
+                this.undeployIntake();
                 }
+
             }
         else
             {
@@ -217,7 +227,7 @@ public class IntakeControl
      */
     public void intake()
     {
-
+        Hardware.storage.intakeStorageControl();
         if (/* getDeployed() */ true)
             {
             this.intaking = true;
