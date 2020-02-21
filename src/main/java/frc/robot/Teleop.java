@@ -94,8 +94,6 @@ public class Teleop
         StorageControl.setStorageControlState(ControlState.PASSIVE);
 
         // Solenoid Pistons start up and Timer start
-        Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
-        Hardware.liftSolenoid2.set(Value.kReverse); // Piston goes up
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
         // Hardware.liftSolenoid.set(Value.kOff);
@@ -116,7 +114,11 @@ public class Teleop
 
     private static boolean isShootClose = false;
 
-    public static int timer = 2;
+    public static double timer = 2.0;
+
+    public static double timeDown = .5;
+
+    public static boolean wheelManualSpinBoolean = false;
 
     public static void periodic()
     {
@@ -128,6 +130,7 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
+        // System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // =============== AUTOMATED SUBSYSTEMS ===============
@@ -144,24 +147,28 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================= COLORWHEEL CONTROLS ==============
-        // If you hold Left Operator button 6 + 7 at the same time the wheel will spin
-        // manually at 20% speed
-
-        if (Hardware.spinWheelButton.get() == true && Hardware.spinWheelColorButton.get() == true)
+        // Press Right Operator button 4 to start manual spin. Press again to stop
+        // manual spin
+        System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
+        System.out.println("Spin" + Hardware.spinWheelButton.get());
+        if (Hardware.wheelManualSpinButton.get())
             {
-            PreventButtonActivationTimer.start();
-            if (PreventButtonActivationTimer.get() == 100)
-                {
-                Hardware.colorWheel.manualSpin();
-                PreventButtonActivationTimer.stop();
-                PreventButtonActivationTimer.reset();
-                }
+            wheelManualSpinBoolean = true;
+            Hardware.colorWheel.manualSpin();
             }
-        // Currently will spin the control panel 4 times
+        if (Hardware.wheelManualSpinButton.get() == false && wheelManualSpinBoolean)
+            {
+            wheelManualSpinBoolean = !wheelManualSpinBoolean;
+            Hardware.wheelSpinnerMotor.set(0);
+            }
+
+        // will spin the control panel setNumberofSpins() amount of times.
         if (Hardware.spinWheelButton.get() == true)
             {
-            // To change the number of spins. Hardware.colorWheel.setNumberOfSpins(*Amount
-            // of Spins*);
+            // To change the number of spins.
+            Hardware.colorWheel.setNumberOfSpins(2);
+            // To change the speed
+            Hardware.colorWheel.setSpeed(.65);
             Hardware.colorWheel.spinControlPanel();
             }
 
@@ -169,6 +176,8 @@ public class Teleop
         // automatically
         if (Hardware.spinWheelColorButton.get() == true)
             {
+            // To change the speed
+            Hardware.colorWheel.setSpeed(.4);
             Hardware.colorWheel.spinControlPanelToColor();
             }
         // Will set the motor speed to 0 and reset the encoder
@@ -214,40 +223,31 @@ public class Teleop
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
             }
 
-        if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
+        if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
             {
             Hardware.telopTimer.start(); // Start timer
-            Hardware.climbMotor.set(.5); // Start motor
+            Hardware.liftMotor1.set(.5); // Start motor
             }
 
         if (Hardware.telopTimer.get() >= timer)
             {
-            Hardware.climbMotor.set(0);
-            Hardware.telopTimer.stop(); // Stop timer
-            Hardware.telopTimer.reset(); // Reset timer
+            Hardware.liftMotor1.set(-.5);
             }
-        if (Hardware.rightOperator.getRawButton(7) == true)
+        if (Hardware.telopTimer.get() >= timer + timeDown)
             {
-            Hardware.liftSolenoid1.set(Value.kForward); // Bring pistons down
-            Hardware.liftSolenoid2.set(Value.kForward); // Bring pistons down
+            Hardware.liftMotor1.set(0.0);
             }
-        if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
+        if (Hardware.liftMotorDownButton.get() == true)
             {
-            Hardware.climbMotor.set(-.5);
+            Hardware.liftMotor1.set(-.5);
             }
-        if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
-                && Hardware.telopTimer.get() == 0)
+        if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
             {
-            Hardware.climbMotor.set(0);
+            Hardware.liftMotor1.set(0);
             }
-        if (Hardware.rightOperator.getRawButton(6) == true)
-            {
-            Hardware.liftSolenoid1.set(Value.kReverse); // Brings pistons up
-            Hardware.liftSolenoid2.set(Value.kReverse); // Brings pistons up
-            }
-        // teleopDrive();
+        teleopDrive();
         // individualTest();
-        printStatements();
+        // printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
@@ -591,8 +591,6 @@ public class Teleop
         // Hardware.compressor.getPressureSwitchValue());
 
     }
-
-    private static Timer PreventButtonActivationTimer = new Timer();
 
     private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 

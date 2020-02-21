@@ -229,7 +229,12 @@ public class Hardware
 
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
-        climbMotor = new WPI_TalonSRX(29);
+        liftMotor1 = new WPI_TalonSRX(29); // TODO get can id
+
+        liftMotor2 = new WPI_TalonSRX(5); // TODO get can id
+
+        liftMotorGroup = new SpeedControllerGroup(liftMotor1, liftMotor2);
+
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder(7, 6);
@@ -392,7 +397,11 @@ public class Hardware
 
     // -------------------------------------------------------------
 
-    public static SpeedController climbMotor = null;
+    public static SpeedController liftMotor1 = null;
+
+    public static SpeedController liftMotor2 = null;
+
+    public static SpeedControllerGroup liftMotorGroup = null;
 
     // **********************************************************
     // DIGITAL I/O
@@ -434,8 +443,6 @@ public class Hardware
     // PNEUMATIC DEVICES
     // **********************************************************
     public static DoubleSolenoid intakeSolenoid = new DoubleSolenoid(4, 5);
-    public static DoubleSolenoid liftSolenoid1 = new DoubleSolenoid(2, 3);
-    public static DoubleSolenoid liftSolenoid2 = new DoubleSolenoid(0, 1);
     public static Compressor compressor = new Compressor();
 
     // **********************************************************
@@ -505,11 +512,11 @@ public class Hardware
     //----------------------------------------------------------
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
-    public static JoystickButton liftDownSolenoidButton = new JoystickButton(Hardware.rightOperator, 2);
+    public static JoystickButton liftMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
 
-    public static JoystickButton liftUpSolenoidButton = new JoystickButton(Hardware.rightOperator, 3);
+    public static JoystickButton liftMotorUpButton = new JoystickButton(Hardware.rightOperator, 3);
 
-    public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 4);
+    public static JoystickButton wheelManualSpinButton = new JoystickButton(Hardware.rightOperator, 4);
 
     public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
 
