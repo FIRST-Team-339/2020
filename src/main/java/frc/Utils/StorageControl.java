@@ -40,7 +40,7 @@ public class StorageControl
         INIT, PASSIVE, UP, DOWN
         }
 
-    public ControlState state = ControlState.INIT;
+    private static ControlState state = ControlState.INIT;
 
     /**
      * state updated for the conveyor belt. This should always be running in teleop
@@ -122,7 +122,7 @@ public class StorageControl
     public void intakeStorageControl()
     {
         // System.out.println("intaking: " + Hardware.intake.intaking);
-
+        System.out.println(this.state);
         if (Hardware.intake.intaking == true)
             {
 
@@ -134,29 +134,29 @@ public class StorageControl
                     {
                     // move down if lower RL is false
                     System.out.println("down in intakeStorageControl");
-                    state = ControlState.DOWN;
+                    this.state = ControlState.DOWN;
 
                     }
                 else
                     {
                     // if lower RL is on dont move
-                    state = ControlState.PASSIVE;
+                    this.state = ControlState.PASSIVE;
                     }
                 }
             else if (this.intakeRL.get() && this.upperRL.get())
                 {
-                prevIntakeRL = false;
-                state = ControlState.UP;
+                this.prevIntakeRL = false;
+                this.state = ControlState.UP;
                 }
             else if (this.intakeRL.get() || prevIntakeRL)
                 {
                 // if the intake Rl is true
-                prevIntakeRL = true;
+                this.prevIntakeRL = true;
                 if (!this.lowerRL.get())
                     {
                     // if the upper RL is not on move up until on
-                    state = ControlState.UP;
-                    prevIntakeRL = false;
+                    this.state = ControlState.UP;
+                    this.prevIntakeRL = false;
                     }
                 }
             }
@@ -387,6 +387,28 @@ public class StorageControl
             }
 
         return false;
+    }
+
+    /**
+     * resets the State of the Storage Control controller
+     *
+     * @param ControlState
+     *                         state - newState
+     * @return - newly set value
+     */
+    public static ControlState setStorageControlState(ControlState newState)
+    {
+        return (state = newState);
+    }
+
+    /**
+     * gets the State of the Storage COntrol controller
+     *
+     * @return - the present State value
+     */
+    public static ControlState getStorageControlState()
+    {
+        return (state);
     }
 
     // if a balls has been shot
