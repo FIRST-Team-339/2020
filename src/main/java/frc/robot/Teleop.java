@@ -42,6 +42,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import frc.Hardware.Hardware;
+import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
 import frc.robot.Autonomous.pickupTrenchState;
 import edu.wpi.first.wpilibj.util.Color;
@@ -90,7 +91,7 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
-        Hardware.storage.state = ControlState.PASSIVE;
+        StorageControl.setStorageControlState(ControlState.PASSIVE);
 
         // Solenoid Pistons start up and Timer start
         Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
@@ -144,7 +145,8 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================= COLORWHEEL CONTROLS ==============
-        //If you hold Left Operator button 6 + 7 at the same time the wheel will spin manually at 20% speed
+        // If you hold Left Operator button 6 + 7 at the same time the wheel will spin
+        // manually at 20% speed
 
         if (Hardware.spinWheelButton.get() == true && Hardware.spinWheelColorButton.get() == true)
             {
@@ -156,19 +158,21 @@ public class Teleop
                 PreventButtonActivationTimer.reset();
                 }
             }
-        //Currently will spin the control panel 4 times
+        // Currently will spin the control panel 4 times
         if (Hardware.spinWheelButton.get() == true)
             {
-            // To change the number of spins. Hardware.colorWheel.setNumberOfSpins(*Amount of Spins*);
+            // To change the number of spins. Hardware.colorWheel.setNumberOfSpins(*Amount
+            // of Spins*);
             Hardware.colorWheel.spinControlPanel();
             }
 
-        //Will align the given color with the field sensor. Gets the color automatically
+        // Will align the given color with the field sensor. Gets the color
+        // automatically
         if (Hardware.spinWheelColorButton.get() == true)
             {
             Hardware.colorWheel.spinControlPanelToColor();
             }
-        //Will set the motor speed to 0 and reset the encoder
+        // Will set the motor speed to 0 and reset the encoder
         if (Hardware.wheelOverrideButton.get() == true)
             {
             Hardware.colorWheel.override();

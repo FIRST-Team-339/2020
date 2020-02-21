@@ -299,7 +299,7 @@ public class LimelightInterface
     /**
      * enum to control the LedMode of the limelight
      */
-    private enum LedMode
+    public enum LedMode
         {
         PIPELINE, OFF, BLINK, ON
         }
@@ -320,6 +320,7 @@ public class LimelightInterface
      */
     public void setLedMode(LedMode ledMode)
     {
+        this.ledmode = ledMode;
         switch (this.ledmode)
             {
             case PIPELINE:

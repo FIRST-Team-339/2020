@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.Hardware.Hardware;
+import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
 
 /**
@@ -235,10 +236,6 @@ public class Autonomous
         Hardware.intake.makePassive();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 341101a32d9ce13ab06ac1145a9c13afca1eea55
         switch (autoState)
             {
 
@@ -264,22 +261,22 @@ public class Autonomous
 
             case CHOOSE_PATH:
                 // if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
-                //     {
-                //     Hardware.launcher.prepareToShoot(true, true);
-                //     }
+                // {
+                // Hardware.launcher.prepareToShoot(true, true);
+                // }
                 // else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
-                //     {
-                //     Hardware.launcher.prepareToShoot(false, true);
-                //     }
+                // {
+                // Hardware.launcher.prepareToShoot(false, true);
+                // }
 
-        if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
-            {
-          Hardware.launcher.prepareToShoot(true, true);
-            }
-        else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
-            {
-          Hardware.launcher.prepareToShoot(false, true);
-            }
+                if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
+                    {
+                    Hardware.launcher.prepareToShoot(true, true);
+                    }
+                else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
+                    {
+                    Hardware.launcher.prepareToShoot(false, true);
+                    }
                 choosePath();
                 autoState = State.RUN;
 
@@ -294,7 +291,8 @@ public class Autonomous
 
             case FINISH:
                 Hardware.launcher.unchargeShooter();
-                Hardware.storage.state = ControlState.PASSIVE;
+
+                StorageControl.setStorageControlState(ControlState.PASSIVE);
                 Hardware.drive.drive(0, 0);
                 break;
 
@@ -650,7 +648,8 @@ public class Autonomous
                 break;
 
             case FINISH:
-                Hardware.storage.state = ControlState.PASSIVE;
+
+                StorageControl.setStorageControlState(ControlState.PASSIVE);
                 Hardware.launcher.unchargeShooter();
                 return true;
 
@@ -941,7 +940,7 @@ public class Autonomous
             {
             if (Hardware.launcher.shootBallsAuto(false))
                 {
-                Hardware.storage.state = ControlState.PASSIVE;
+                StorageControl.setStorageControlState(ControlState.PASSIVE);
                 Hardware.launcher.unchargeShooter();
                 return true;
                 }
