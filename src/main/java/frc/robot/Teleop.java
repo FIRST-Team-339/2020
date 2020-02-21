@@ -42,6 +42,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import frc.Hardware.Hardware;
+import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
 import frc.robot.Autonomous.pickupTrenchState;
 import edu.wpi.first.wpilibj.util.Color;
@@ -90,11 +91,9 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
-        Hardware.storage.state = ControlState.PASSIVE;
+        StorageControl.setStorageControlState(ControlState.PASSIVE);
 
         // Solenoid Pistons start up and Timer start
-        Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
-        Hardware.liftSolenoid2.set(Value.kReverse); // Piston goes up
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
         // Hardware.liftSolenoid.set(Value.kOff);
@@ -115,7 +114,9 @@ public class Teleop
 
     private static boolean isShootClose = false;
 
-    public static int timer = 2;
+    public static double timer = 2.0;
+
+    public static double timeDown = .5;
 
     public static boolean wheelManualSpinBoolean = false;
 
@@ -170,14 +171,15 @@ public class Teleop
             Hardware.colorWheel.spinControlPanel();
             }
 
-        //Will align the given color with the field sensor. Gets the color automatically
+        // Will align the given color with the field sensor. Gets the color
+        // automatically
         if (Hardware.spinWheelColorButton.get() == true)
             {
             //To change the speed
             Hardware.colorWheel.setSpeed(.4);
             Hardware.colorWheel.spinControlPanelToColor();
             }
-        //Will set the motor speed to 0 and reset the encoder
+        // Will set the motor speed to 0 and reset the encoder
         if (Hardware.wheelOverrideButton.get() == true)
             {
             Hardware.colorWheel.override();
@@ -220,40 +222,31 @@ public class Teleop
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
             }
 
-        if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
+        if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
             {
             Hardware.telopTimer.start(); // Start timer
-            Hardware.climbMotor.set(.5); // Start motor
+            Hardware.liftMotor1.set(.5); // Start motor
             }
 
         if (Hardware.telopTimer.get() >= timer)
             {
-            Hardware.climbMotor.set(0);
-            Hardware.telopTimer.stop(); // Stop timer
-            Hardware.telopTimer.reset(); // Reset timer
+            Hardware.liftMotor1.set(-.5);
             }
-        if (Hardware.rightOperator.getRawButton(7) == true)
+        if (Hardware.telopTimer.get() >= timer + timeDown)
             {
-            Hardware.liftSolenoid1.set(Value.kForward); // Bring pistons down
-            Hardware.liftSolenoid2.set(Value.kForward); // Bring pistons down
+            Hardware.liftMotor1.set(0.0);
             }
-        if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
+        if (Hardware.liftMotorDownButton.get() == true)
             {
-            Hardware.climbMotor.set(-.5);
+            Hardware.liftMotor1.set(-.5);
             }
-        if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
-                && Hardware.telopTimer.get() == 0)
+        if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
             {
-            Hardware.climbMotor.set(0);
+            Hardware.liftMotor1.set(0);
             }
-        if (Hardware.rightOperator.getRawButton(6) == true)
-            {
-            Hardware.liftSolenoid1.set(Value.kReverse); // Brings pistons up
-            Hardware.liftSolenoid2.set(Value.kReverse); // Brings pistons up
-            }
-        // teleopDrive();
+        teleopDrive();
         // individualTest();
-        printStatements();
+        // printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
