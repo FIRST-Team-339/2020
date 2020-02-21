@@ -117,6 +117,8 @@ public class Teleop
 
     public static int timer = 2;
 
+    public static boolean wheelManualSpinBoolean = false;
+
     public static void periodic()
     {
 
@@ -127,7 +129,7 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
-        System.out.println("gyro: " + Hardware.gyro.getAngle());
+        //System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // =============== AUTOMATED SUBSYSTEMS ===============
@@ -144,28 +146,35 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================= COLORWHEEL CONTROLS ==============
-        //If you hold Left Operator button 6 + 7 at the same time the wheel will spin manually at 20% speed
-
-        if (Hardware.spinWheelButton.get() == true && Hardware.spinWheelColorButton.get() == true)
+        //Press Right Operator button 4 to start manual spin. Press again to stop manual spin
+        System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
+        System.out.println("Spin" + Hardware.spinWheelButton.get());
+        if (Hardware.wheelManualSpinButton.get())
             {
-            PreventButtonActivationTimer.start();
-            if (PreventButtonActivationTimer.get() == 100)
-                {
-                Hardware.colorWheel.manualSpin();
-                PreventButtonActivationTimer.stop();
-                PreventButtonActivationTimer.reset();
-                }
+            wheelManualSpinBoolean = true;
+            Hardware.colorWheel.manualSpin();
             }
-        //Currently will spin the control panel 4 times
+        if (Hardware.wheelManualSpinButton.get() == false && wheelManualSpinBoolean)
+            {
+            wheelManualSpinBoolean = !wheelManualSpinBoolean;
+            Hardware.wheelSpinnerMotor.set(0);
+            }
+
+        //will spin the control panel setNumberofSpins() amount of times.
         if (Hardware.spinWheelButton.get() == true)
             {
-            // To change the number of spins. Hardware.colorWheel.setNumberOfSpins(*Amount of Spins*);
+            // To change the number of spins.
+            Hardware.colorWheel.setNumberOfSpins(2);
+            //To change the speed
+            Hardware.colorWheel.setSpeed(.65);
             Hardware.colorWheel.spinControlPanel();
             }
 
         //Will align the given color with the field sensor. Gets the color automatically
         if (Hardware.spinWheelColorButton.get() == true)
             {
+            //To change the speed
+            Hardware.colorWheel.setSpeed(.4);
             Hardware.colorWheel.spinControlPanelToColor();
             }
         //Will set the motor speed to 0 and reset the encoder
@@ -588,8 +597,6 @@ public class Teleop
         // Hardware.compressor.getPressureSwitchValue());
 
     }
-
-    private static Timer PreventButtonActivationTimer = new Timer();
 
     private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 

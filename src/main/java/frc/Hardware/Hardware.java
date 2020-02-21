@@ -505,11 +505,11 @@ public class Hardware
     //----------------------------------------------------------
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
-    public static JoystickButton liftDownSolenoidButton = new JoystickButton(Hardware.rightOperator, 2);
+    public static JoystickButton liftMotorDown = new JoystickButton(Hardware.rightOperator, 2);
 
-    public static JoystickButton liftUpSolenoidButton = new JoystickButton(Hardware.rightOperator, 3);
+    public static JoystickButton liftMotorUp = new JoystickButton(Hardware.rightOperator, 3);
 
-    public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 4);
+    public static JoystickButton wheelManualSpinButton = new JoystickButton(Hardware.rightOperator, 4);
 
     public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
 
