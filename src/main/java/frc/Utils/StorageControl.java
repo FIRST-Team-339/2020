@@ -83,7 +83,7 @@ public class StorageControl
             {
             // just in case need later
             case INIT:
-                state = ControlState.PASSIVE;
+                setStorageControlState(ControlState.PASSIVE);
                 break;
             case PASSIVE:
                 // if moving the conveyor is not being called set the motor to the holding speed
@@ -107,7 +107,7 @@ public class StorageControl
                 conveyorDown();
                 break;
             default:
-                state = ControlState.PASSIVE;
+                setStorageControlState(ControlState.PASSIVE);
                 break;
             }
     }
@@ -122,47 +122,54 @@ public class StorageControl
     public void intakeStorageControl()
     {
         // System.out.println("intaking: " + Hardware.intake.intaking);
-        System.out.println(this.state);
+        System.out.println(getStorageControlState());
         if (Hardware.intake.intaking == true)
             {
 
-            // if the intake RL is not triggered
-            if (!this.intakeRL.get() && !prevIntakeRL)
+            /*
+             * else if (this.intakeRL.get() && this.upperRL.get()) { this.prevIntakeRL =
+             * false; setStorageControlState(ControlState.UP); }
+             */
+            if (this.intakeRL.get() == true || this.prevIntakeRL == true)
                 {
-                prevIntakeRL = false;
-                if (!this.lowerRL.get())
+                // if the intake Rl is true
+                this.prevIntakeRL = true;
+                // if (!this.lowerRL.get())
+                    {
+                    // if the upper RL is not on move up until on
+                    setStorageControlState(ControlState.UP);
+                    // this.prevIntakeRL = false;
+                    }
+                }
+            // if the intake RL is not triggered
+            // if (this.intakeRL.get() == false)// && prevIntakeRL == false)
+                {
+                // this.prevIntakeRL = false;
+                if (this.lowerRL.get() == true && this.prevIntakeRL == true)
+                    {
+
+                    setStorageControlState(ControlState.PASSIVE);
+                    this.prevIntakeRL = false;
+                    }
+                if (this.lowerRL.get() == false && this.prevIntakeRL == false)
                     {
                     // move down if lower RL is false
+                    this.prevIntakeRL = false;
                     System.out.println("down in intakeStorageControl");
-                    this.state = ControlState.DOWN;
+                    setStorageControlState(ControlState.DOWN);
 
                     }
                 else
                     {
                     // if lower RL is on dont move
-                    this.state = ControlState.PASSIVE;
-                    }
-                }
-            else if (this.intakeRL.get() && this.upperRL.get())
-                {
-                this.prevIntakeRL = false;
-                this.state = ControlState.UP;
-                }
-            else if (this.intakeRL.get() || prevIntakeRL)
-                {
-                // if the intake Rl is true
-                this.prevIntakeRL = true;
-                if (!this.lowerRL.get())
-                    {
-                    // if the upper RL is not on move up until on
-                    this.state = ControlState.UP;
+                    setStorageControlState(ControlState.PASSIVE);
                     this.prevIntakeRL = false;
                     }
                 }
             }
         else
             {
-            state = ControlState.PASSIVE;
+            setStorageControlState(ControlState.PASSIVE);
             }
     }
 
@@ -171,7 +178,7 @@ public class StorageControl
      */
     public void outtakeStorageControl()
     {
-        state = ControlState.DOWN;
+        setStorageControlState(ControlState.DOWN);
     }
 
     /**
@@ -264,7 +271,7 @@ public class StorageControl
                         // balls is ready to shoot
                         preparedToFire = true;
                         // stop conveyor
-                        state = ControlState.PASSIVE;
+                        setStorageControlState(ControlState.PASSIVE);
                         // start waiting for the shooter to speed up
                         shootState = ShootState.INIT;
                         return true;
@@ -274,7 +281,7 @@ public class StorageControl
                         // ball not ready
                         preparedToFire = false;
                         // move ball until ready
-                        state = ControlState.UP;
+                        setStorageControlState(ControlState.UP);
                         }
                     break;
                 case WAIT_FOR_POWER:
@@ -323,7 +330,7 @@ public class StorageControl
 
                     // System.out.println("shooting ball");
                     // move ball up into the launcher
-                    state = ControlState.UP;
+                    setStorageControlState(ControlState.UP);
                     if (!stillShooting)
                         {
                         Hardware.ballCounter.subtractBall();
@@ -342,7 +349,7 @@ public class StorageControl
                     stillShooting = false;
                     shotBall = false;
                     // stop moving conveyor
-                    state = ControlState.PASSIVE;
+                    setStorageControlState(ControlState.PASSIVE);
                     // if we still have balls
                     if (Hardware.ballCounter.getBallCount() > 0)
                         {
@@ -376,13 +383,13 @@ public class StorageControl
         if (Hardware.ballCounter.getBallCount() == 0)
             {
             // if no balls return true, stop conveyor
-            state = ControlState.PASSIVE;
+            setStorageControlState(ControlState.PASSIVE);
             return true;
             }
         else
             {
             // conveyor down and intake motors move out
-            state = ControlState.DOWN;
+            setStorageControlState(ControlState.DOWN);
             Hardware.intake.outtake(0);
             }
 
