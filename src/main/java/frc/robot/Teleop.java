@@ -92,13 +92,10 @@ public class Teleop
         Hardware.intake.outtaking = false;
         Hardware.storage.state = ControlState.PASSIVE;
 
-        // Solenoid Pistons start up and Timer start
-        Hardware.liftSolenoid1.set(Value.kReverse); // Piston goes up
-        Hardware.liftSolenoid2.set(Value.kReverse); // Piston goes up
+        //Timer reset and servo  
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
-        // Hardware.liftSolenoid.set(Value.kOff);
-
+        Hardware.spinServo.set(1.0);
     } // end Init
 
     /**
@@ -214,36 +211,28 @@ public class Teleop
         if (Hardware.rightOperator.getRawButton(10) == true && Hardware.telopTimer.get() < timer)
             {
             Hardware.telopTimer.start(); // Start timer
-            Hardware.climbMotor.set(.5); // Start motor
+            //Hardware.climbMotor.set(.5); // Start motor
             }
 
         if (Hardware.telopTimer.get() >= timer)
             {
-            Hardware.climbMotor.set(0);
+            //Hardware.climbMotor.set(0);
             Hardware.telopTimer.stop(); // Stop timer
             Hardware.telopTimer.reset(); // Reset timer
             }
-        if (Hardware.rightOperator.getRawButton(7) == true)
-            {
-            Hardware.liftSolenoid1.set(Value.kForward); // Bring pistons down
-            Hardware.liftSolenoid2.set(Value.kForward); // Bring pistons down
-            }
+       
         if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
             {
-            Hardware.climbMotor.set(-.5);
+           // Hardware.climbMotor.set(-.5);
             }
         if (Hardware.rightOperator.getRawButton(8) == false && Hardware.rightOperator.getRawButton(9) == false
                 && Hardware.telopTimer.get() == 0)
             {
-            Hardware.climbMotor.set(0);
+            //Hardware.climbMotor.set(0);
             }
-        if (Hardware.rightOperator.getRawButton(6) == true)
-            {
-            Hardware.liftSolenoid1.set(Value.kReverse); // Brings pistons up
-            Hardware.liftSolenoid2.set(Value.kReverse); // Brings pistons up
-            }
+        
         // teleopDrive();
-        // individualTest();
+         individualTest();
         printStatements();
     } // end Periodic()
 
@@ -280,7 +269,7 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-        // chrisTest();
+         chrisTest();
         // dionTest();
         // chrisTest();
         // dionTest();
@@ -435,6 +424,15 @@ public class Teleop
          * Hardware.liftSolenoid.set(Value.kOff); }
          */
 
+         if(Hardware.rightOperator.getRawButton(11) == true){
+             Hardware.spinServo.set(.2);
+          }
+             else
+            Hardware.spinServo.set(1.0);
+       
+            if(Hardware.rightOperator.getRawButton(10) == true){
+            Hardware.spinServo.setAngle(0.0);
+        }
     }
 
     public static void patrickTest()

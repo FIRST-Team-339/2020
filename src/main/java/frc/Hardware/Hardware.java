@@ -117,7 +117,7 @@ public class Hardware
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
 
-    // TalonSRX climbMotors = new TalonSRX(29);
+    public static Servo spinServo = new Servo(1);
     /**********************************************
      * initializePrevYear() function initializes all Hardware items that are
      * REQUIRED for this year
@@ -229,7 +229,6 @@ public class Hardware
 
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
-        climbMotor = new WPI_TalonSRX(29);
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder(7, 6);
@@ -390,10 +389,6 @@ public class Hardware
 
     public static SpeedController hoodAdjustmentMotor = null;
 
-    // -------------------------------------------------------------
-
-    public static SpeedController climbMotor = null;
-
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
@@ -459,7 +454,7 @@ public class Hardware
     // Buttons
     // **********************************************************
 
-    public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
+    //public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
@@ -504,10 +499,6 @@ public class Hardware
     // buttons - for right operator
     //----------------------------------------------------------
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
-
-    public static JoystickButton liftDownSolenoidButton = new JoystickButton(Hardware.rightOperator, 2);
-
-    public static JoystickButton liftUpSolenoidButton = new JoystickButton(Hardware.rightOperator, 3);
 
     public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 4);
 
