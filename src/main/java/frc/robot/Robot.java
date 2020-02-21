@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.Hardware.Hardware;
+import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
 
 /**
@@ -58,7 +59,7 @@ public class Robot extends TimedRobot
             Hardware.conveyorMotor2.setInverted(true);
             }
         // Servo initial starting position
-        //Hardware.rotateServo.setAngle(90);
+        // Hardware.rotateServo.setAngle(90);
         Hardware.cameraServo.setCameraAngleUp();
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
@@ -168,7 +169,7 @@ public class Robot extends TimedRobot
         Hardware.rightDriveGroup.set(0);
         Hardware.visionInterface.setPipeline(0);
         Hardware.intake.makePassive();
-        Hardware.storage.state = ControlState.PASSIVE;
+        StorageControl.setStorageControlState(ControlState.PASSIVE);
 
         // ---------------------------------------
         // done setup - tell the user we are complete
