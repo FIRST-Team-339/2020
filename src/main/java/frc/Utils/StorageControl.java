@@ -134,37 +134,23 @@ public class StorageControl
                 {
                 // if the intake Rl is true
                 this.prevIntakeRL = true;
-                // if (!this.lowerRL.get())
-                    {
-                    // if the upper RL is not on move up until on
-                    setStorageControlState(ControlState.UP);
-                    // this.prevIntakeRL = false;
-                    }
+                // if the upper RL is not on move up until on
+                System.out.println("going up in intakeStorageControl");
+                setStorageControlState(ControlState.UP);
                 }
-            // if the intake RL is not triggered
-            // if (this.intakeRL.get() == false)// && prevIntakeRL == false)
+            if (this.intakeRL.get() == false && this.prevIntakeRL == false && this.lowerRL.get() == false)
                 {
-                // this.prevIntakeRL = false;
-                if (this.lowerRL.get() == true && this.prevIntakeRL == true)
-                    {
+                // move down if lower RL is false
+                this.prevIntakeRL = false;
+                System.out.println("down in intakeStorageControl");
+                setStorageControlState(ControlState.DOWN);
 
-                    setStorageControlState(ControlState.PASSIVE);
-                    this.prevIntakeRL = false;
-                    }
-                if (this.lowerRL.get() == false && this.prevIntakeRL == false)
-                    {
-                    // move down if lower RL is false
-                    this.prevIntakeRL = false;
-                    System.out.println("down in intakeStorageControl");
-                    setStorageControlState(ControlState.DOWN);
-
-                    }
-                else
-                    {
-                    // if lower RL is on dont move
-                    setStorageControlState(ControlState.PASSIVE);
-                    this.prevIntakeRL = false;
-                    }
+                }
+            if (this.intakeRL.get() == false && this.prevIntakeRL == false && this.lowerRL.get() == true)
+                {
+                // if lower RL is on dont move
+                setStorageControlState(ControlState.PASSIVE);
+                this.prevIntakeRL = false;
                 }
             }
         else
