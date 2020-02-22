@@ -287,7 +287,7 @@ public class Hardware
 
         storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
 
-        hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
+        hoodControl = new HoodControl(null, hoodPot);
 
         ballCounter = new BallCounter(ballButtonTimer);
 

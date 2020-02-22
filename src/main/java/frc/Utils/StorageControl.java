@@ -103,7 +103,7 @@ public class StorageControl
                 break;
             // move down towards intake
             case DOWN:
-                System.out.println("down in Control State");
+                //System.out.println("down in Control State");
                 conveyorDown();
                 break;
             default:
@@ -142,7 +142,7 @@ public class StorageControl
     public void intakeStorageControl()
     {
         // System.out.println("intaking: " + Hardware.intake.intaking);
-        System.out.println(getStorageControlState());
+        // System.out.println(getStorageControlState());
         if (Hardware.intake.intaking == true && this.shootRL.get() == false)
             {
 

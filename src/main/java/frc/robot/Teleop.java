@@ -247,7 +247,7 @@ public class Teleop
             }
         teleopDrive();
         // individualTest();
-        // printStatements();
+        printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
@@ -491,8 +491,7 @@ public class Teleop
         // Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
-        // Hardware.telemetry.printToConsole("lowStoreRL: " +
-        // Hardware.lowStoreRL.isOn());
+        Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
         // Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
         // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
 

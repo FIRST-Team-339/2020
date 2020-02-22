@@ -2,6 +2,7 @@ package frc.Utils;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.HardwareInterfaces.KilroyServo;
 import frc.HardwareInterfaces.Potentiometer;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -12,12 +13,12 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class HoodControl
     {
-    SpeedController motor = null;
+    KilroyServo servo = null;
     Potentiometer pot = null;
 
-    public HoodControl(SpeedController motor, Potentiometer hoodPot)
+    public HoodControl(KilroyServo servo, Potentiometer hoodPot)
         {
-            this.motor = motor;
+            this.servo = servo;
             this.pot = hoodPot;
         }
 
@@ -43,20 +44,9 @@ public class HoodControl
 
         adjusting = true;
         //if to big
-        if (targetAngle > this.getAngle() + ANGLE_DEADBAND)
-            {//move down
-            this.motor.set(-ADJUST_SPEED);
-            }
-        //if to little
-        if (targetAngle < this.getAngle() - ANGLE_DEADBAND)
+        servo.set(targetAngle);
+        if (servo.getAngle() == targetAngle)
             {
-            //move up
-            this.motor.set(ADJUST_SPEED);
-            }
-        else
-            {
-            //stop movement
-            this.motor.set(0);
             return true;
             }
 
@@ -71,16 +61,16 @@ public class HoodControl
             {
             if (adjusting == false)
                 {
-                this.motor.set(0);
+                if (joystick.getY() > JOYSTICK_DEADZONE)
+                    {
+                    this.servo.set(this.servo.getAngle() + 1);
+                    }
+                if (joystick.getY() < -JOYSTICK_DEADZONE)
+                    {
+                    this.servo.set(this.servo.getAngle() - 1);
+                    }
                 }
-            else if (joystick.getY() > JOYSTICK_DEADZONE)
-                {
-                this.motor.set(ADJUST_SPEED);
-                }
-            else if (joystick.getY() < -JOYSTICK_DEADZONE)
-                {
-                this.motor.set(-ADJUST_SPEED);
-                }
+
             }
     }
 
@@ -90,7 +80,7 @@ public class HoodControl
      */
     public double getAngle()
     {
-        return this.pot.get(0, 270);//TODO
+        return this.servo.getAngle();
     }
 
     private double targetAngle = 0;
