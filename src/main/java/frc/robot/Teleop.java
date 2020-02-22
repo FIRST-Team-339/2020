@@ -149,8 +149,8 @@ public class Teleop
         // ================= COLORWHEEL CONTROLS ==============
         // Press Right Operator button 4 to start manual spin. Press again to stop
         // manual spin
-        System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
-        System.out.println("Spin" + Hardware.spinWheelButton.get());
+        // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
+        // System.out.println("Spin" + Hardware.spinWheelButton.get());
         if (Hardware.wheelManualSpinButton.get())
             {
             wheelManualSpinBoolean = true;

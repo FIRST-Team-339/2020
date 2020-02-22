@@ -112,8 +112,28 @@ public class StorageControl
             }
     }
 
+    /**
+     * sets the prevIntake used in intakeStorageControl
+     * @param state
+     * @return
+     */
+    public boolean setPrevIntakeRL(boolean state)
+    {
+        prevIntakeRL = state;
+        return prevIntakeRL;
+    }
+
+    /**
+     * return the state of prevIntakeRL
+     * @return boolean
+     */
+    public boolean getPrevIntakeRL()
+    {
+        return prevIntakeRL;
+    }
+
     // boolean that stores when the previous conveyor state was PASSIVE
-    boolean prevIntakeRL = false;
+    private boolean prevIntakeRL = false;
 
     /**
      * controls the conveyor belt if the robot is intaking balls. Note: Must be
@@ -123,7 +143,7 @@ public class StorageControl
     {
         // System.out.println("intaking: " + Hardware.intake.intaking);
         System.out.println(getStorageControlState());
-        if (Hardware.intake.intaking == true)
+        if (Hardware.intake.intaking == true && this.shootRL.get() == false)
             {
 
             /*
@@ -132,15 +152,15 @@ public class StorageControl
              */
             if (this.intakeRL.get() == true || this.prevIntakeRL == true)
                 {
-                // if the intake Rl is true
+                // if the intake Rl is true or the previous intake was true
                 this.prevIntakeRL = true;
-                // if the upper RL is not on move up until on
+                //
                 System.out.println("going up in intakeStorageControl");
                 setStorageControlState(ControlState.UP);
                 }
             if (this.intakeRL.get() == false && this.prevIntakeRL == false && this.lowerRL.get() == false)
                 {
-                // move down if lower RL is false
+                //is all false go down
                 this.prevIntakeRL = false;
                 System.out.println("down in intakeStorageControl");
                 setStorageControlState(ControlState.DOWN);
@@ -148,7 +168,15 @@ public class StorageControl
                 }
             if (this.intakeRL.get() == false && this.prevIntakeRL == false && this.lowerRL.get() == true)
                 {
-                // if lower RL is on dont move
+                // if only the lower is true go passive
+                System.out.println("ball hit lower setting passive");
+                setStorageControlState(ControlState.PASSIVE);
+                this.prevIntakeRL = false;
+                }
+            if (this.intakeRL.get() == false && this.lowerRL.get() == true)
+                {
+                // if intake is is false and ball has hit lower stop moving
+                System.out.println("ball hit lower setting passive, not prev if");
                 setStorageControlState(ControlState.PASSIVE);
                 this.prevIntakeRL = false;
                 }
