@@ -238,7 +238,7 @@ public class Teleop
             }
         if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
             {
-            Hardware.liftMotor1.set(0);
+            // Hardware.liftMotor1.set(0);
             }
         // TODO uncomment this line
         // if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() <
