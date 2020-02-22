@@ -112,7 +112,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
@@ -154,26 +154,31 @@ public class Hardware
         rightDriveEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK);
         rightDriveEncoder.setReverseDirection(true);
 
-        // launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
-        // launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
+        launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
+        launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
 
-        // launcherMotorGroup = new SpeedControllerGroup(launcherMotor1,
-        // launcherMotor2);
+        launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
-        // conveyorMotor1 = new WPI_TalonSRX(21);
-        // conveyorMotor2 = new WPI_TalonSRX(22);
+        conveyorMotor1 = new WPI_TalonSRX(21);
+        conveyorMotor2 = new WPI_TalonSRX(22);
 
-        // conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1,
-        // conveyorMotor2);
+        conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
 
-        // intakeMotor = new WPI_TalonSRX(23);
+        // liftMotor1 = new WPI_TalonSRX(29); // TODO get can id
 
-        // wheelSpinnerMotor = new WPI_TalonSRX(25);
+        // liftMotor2 = new WPI_TalonSRX(5); // TODO get can id
+
+        // liftMotorGroup = new SpeedControllerGroup(liftMotor1, liftMotor2);
+
+        intakeMotor = new WPI_TalonSRX(23);
+        intakeMotor.setInverted(true);
+
+        wheelSpinnerMotor = new WPI_TalonSRX(25);
         // hoodAdjustmentMotor = new WPI_TalonSRX(24);
         // ==============DIO INIT=============
 
-        // launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
-        // wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+        wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
         // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
         // hoodAdjustmentMotor);//TODO
@@ -188,7 +193,19 @@ public class Hardware
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
         // pneumatics
 
-        // Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
+
+        intake = new IntakeControl(launchTimer, intakeSolenoid, intakeMotor);
+
+        launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
+
+        storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
+
+        hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
+
+        ballCounter = new BallCounter(ballButtonTimer);
+
+        colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
 
     } // end initiaizeCurrentYear()
 
@@ -226,6 +243,7 @@ public class Hardware
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
 
         intakeMotor = new WPI_TalonSRX(23);
+        intakeMotor.setInverted(true);
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
@@ -474,25 +492,25 @@ public class Hardware
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for left driver
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
 
     public static JoystickButton climbReverseButton1 = new JoystickButton(Hardware.leftDriver, 7);
 
     public static JoystickButton climbReverseButton2 = new JoystickButton(Hardware.leftDriver, 8);
 
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for right driver
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
 
     public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
 
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for left operator
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 4);
@@ -511,9 +529,9 @@ public class Hardware
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for right operator
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
     public static JoystickButton liftMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
