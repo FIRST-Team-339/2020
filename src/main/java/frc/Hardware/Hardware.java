@@ -117,6 +117,10 @@ public class Hardware
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
 
+    // public static KilroyServo liftServo = new KilroyServo(0, 180); // TODO
+
+    public static KilroyServo hoodServo = new KilroyServo(1, 180);
+
     // TalonSRX climbMotors = new TalonSRX(29);
     /**********************************************
      * initializePrevYear() function initializes all Hardware items that are
