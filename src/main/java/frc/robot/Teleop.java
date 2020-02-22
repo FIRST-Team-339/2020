@@ -93,7 +93,7 @@ public class Teleop
         Hardware.intake.outtaking = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
-        // Solenoid Pistons start up and Timer start
+        //Timer start
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
         Hardware.spinServo.set(1.0);
@@ -464,6 +464,8 @@ public class Teleop
             if(Hardware.rightOperator.getRawButton(10) == true){
             Hardware.spinServo.setAngle(0.0);
         }
+
+        
     }
 
     public static void patrickTest()

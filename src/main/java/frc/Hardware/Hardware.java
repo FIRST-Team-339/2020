@@ -117,14 +117,11 @@ public class Hardware
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
 
-<<<<<<< HEAD
     public static Servo spinServo = new Servo(1);
-=======
     public static KilroyServo hoodServo = new KilroyServo(1, 180);
 
     public static KilroyServo climbServo = new KilroyServo(2, 180);
 
->>>>>>> 679550024246fe4ce1b554babd640df0f314be5e
     /**********************************************
     * initializePrevYear() function initializes all Hardware items that are
     * REQUIRED for this year
@@ -490,12 +487,9 @@ public class Hardware
     // **********************************************************
     // Buttons
     // **********************************************************
-<<<<<<< HEAD
 
     //public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
 
-=======
->>>>>>> 679550024246fe4ce1b554babd640df0f314be5e
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
     // ----------------------------------------------------------
