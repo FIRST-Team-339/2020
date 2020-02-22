@@ -3,6 +3,7 @@ package frc.Utils;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
+import frc.robot.Teleop;
 
 import java.nio.charset.CharacterCodingException;
 import java.util.Timer;
@@ -60,6 +61,7 @@ public class Launcher
             launcherReadyTemp = false;
             positionReadyTemp = false;
             this.shootState = ShootState.PASSIVE;
+            this.moveState = MoveState.INIT;
             // }
             }
         // System.out.println("shootState: " + shootState);
@@ -68,6 +70,7 @@ public class Launcher
             switch (shootState)
                 {
                 case PASSIVE:
+                    Teleop.setDisableTeleOpDrive(false);
                     // until shoot button dont shoot
                     // must be held down to shoot multiple balls
                     if (shootButton.get())
@@ -87,6 +90,7 @@ public class Launcher
                         }
                     break;
                 case CHARGE:
+                    Teleop.setDisableTeleOpDrive(true);
                     SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
                     SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
                     SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
@@ -658,7 +662,7 @@ public class Launcher
                 // find the off set from the positions
                 farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
                 closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
-                moveState = MoveState.DRIVE;
+                this.moveState = MoveState.ALIGN;
                 break;
             case DRIVE:
                 SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
@@ -695,6 +699,7 @@ public class Launcher
                         }
                     else
                         {
+                        this.moveState = MoveState.INIT;
                         return true;
                         }
                     }
@@ -703,16 +708,26 @@ public class Launcher
                 // realign to the target using vision
                 if (Hardware.visionDriving.alignToTarget())
                     {
-                    moveState = MoveState.INIT;
+                    this.moveState = MoveState.DRIVE;
                     // done
 
                     }
                 break;
             default:
-                moveState = MoveState.INIT;
+                this.moveState = MoveState.INIT;
             }
 
         return false;
+    }
+
+    public void setMovePositionState(MoveState state)
+    {
+        this.moveState = state;
+    }
+
+    public MoveState getMovePosition()
+    {
+        return this.moveState;
     }
 
     /**
