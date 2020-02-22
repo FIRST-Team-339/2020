@@ -112,7 +112,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
@@ -131,6 +131,9 @@ public class Hardware
      *********************************************/
     public static void initializeCurrentYear() // 2020
     {
+
+        // NOTE current open can betwenn 20 and 29: 24
+
         // ==============CAN INIT=============
         // Motor Controllers
         leftFrontMotor = new WPI_TalonFX(13);

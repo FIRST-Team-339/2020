@@ -55,7 +55,7 @@ public class Launcher
         if (!shootButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
-            // {  conveyorReadyTemp = false;
+            // { conveyorReadyTemp = false;
             hoodReadyTemp = false;
             launcherReadyTemp = false;
             positionReadyTemp = false;
@@ -148,7 +148,7 @@ public class Launcher
             }
         else
             {
-            //override fire methods
+            // override fire methods
             if (this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
                     this.firingMotors))
                 {
@@ -437,13 +437,13 @@ public class Launcher
             // has sped up
             spedUp = true;
             }
-        //TODO
+        // TODO
         // if (Hardware.visionDriving.alignToTarget())
-        //     {
-        //     aligned = true;
-        //     }
+        // {
+        // aligned = true;
+        // }
 
-        if (/* aligned &&  */spedUp || true)//TODO
+        if (/* aligned && */spedUp || true)// TODO
             {
             // if everything is done return true
             aligned = false;
@@ -761,7 +761,7 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .4;
+    private static final double DRIVE_STRAIGHT_SPEED = .35;
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
