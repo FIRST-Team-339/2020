@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.Hardware.*;
 import frc.HardwareInterfaces.DoubleSolenoid;
+import frc.robot.Teleop;
 
 /**
  * Code to control the 2020 seasons intake machanism. Includes code control the
@@ -188,7 +189,7 @@ public class IntakeControl
                 intaking = false;
                 }
             }
-        else
+        else if (outtaking == false)
             {
             intaking = false;
             }
@@ -201,8 +202,9 @@ public class IntakeControl
     public void intake()
     {
         Hardware.storage.intakeStorageControl();
-        this.deployIntake();
         this.intaking = true;
+        this.deployIntake();
+
         this.intakeMotor.set(INTAKE_SPEED);
 
     }
@@ -277,6 +279,7 @@ public class IntakeControl
      */
     public boolean pickUpBallsVision()
     {
+
         if (pickUpBallsFirstTime)
             {
             startBallCount = Hardware.ballCounter.getBallCount();
@@ -297,9 +300,51 @@ public class IntakeControl
             Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
             pickUpBallsFirstTime = true;
             this.intakeMotor.set(0);
+
             return true;
             }
         return false;
+    }
+
+    /**
+    * chases and picks up balls in auto.Runs until the storage is full or picked up
+    * all 3 balls in the trench
+    *
+    * @return picked up all ballsd
+    */
+    public void pickUpBallsVisionTeleop(JoystickButton button)
+    {
+
+        if (button.get())
+            {
+            usingVisionIntake = true;
+            Teleop.setDisableTeleOpDrive(true);
+            // set pipe
+            Hardware.visionInterface.setPipeline(BALL_VISION_PIPE);
+            Hardware.cameraServo.setCameraAngleDown();
+            // intake
+
+            this.intake();
+            // drive to balls
+            Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS);
+            // if pickup all the balls in trench
+            if ((Hardware.ballCounter.getBallCount() == 5))
+                {
+                Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
+                Hardware.cameraServo.setCameraAngleUp();
+                }
+            }
+        else
+            {
+            usingVisionIntake = false;
+            Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
+            Hardware.cameraServo.setCameraAngleUp();
+            if (Hardware.launcher.shootingBalls == false)
+                {
+                Teleop.setDisableTeleOpDrive(false);
+                }
+            }
+
     }
 
     // store if we are current intaking
@@ -307,6 +352,9 @@ public class IntakeControl
 
     // store if we are outtaking
     public boolean outtaking = false;
+
+    //if if we are using vision to intake
+    public boolean usingVisionIntake = false;
 
     // the pipe line to chase balls
     private final int BALL_VISION_PIPE = 2;

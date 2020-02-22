@@ -91,6 +91,7 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
+        Hardware.intake.usingVisionIntake = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
         // Solenoid Pistons start up and Timer start
@@ -132,15 +133,6 @@ public class Teleop
 
         // System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
-
-        // =============== AUTOMATED SUBSYSTEMS ===============
-
-        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
-
-        // SmartDashboard.putNumber("Proximity from target",
-        // Hardware.colorSensor.getProximity());
-        // SmartDashboard.putBoolean("In Range of Target",
-        // Hardware.colorWheel.inRange());
 
         // ================= OPERATOR CONTROLS ================
 
@@ -192,29 +184,33 @@ public class Teleop
         // shoot balls
         Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
-        // intake
-        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        //pick up balls with vision
+        Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
 
-        // outtake
-        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        //intake controls
+        if (Hardware.intake.usingVisionIntake == false)
+            {
+            // intake
+            Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-        // this is necessary becuase I organized the code wrong and its too late to
-        // rewrite intake
-        // makes conveyor stop if not intakeing or outtaking
-        Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
+            // this is necessary becuase I organized the code wrong and its too late to
+            // rewrite intake
+            // makes conveyor stop if not intakeing or outtaking
+            Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
+            }
 
+        //ball counter code==============================
         // subtract ball
         Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
         // add ball
         Hardware.ballCounter.addBall(Hardware.addBallButton);
         // sets count to 0
         Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
+        //end ball counter code===================
 
-        if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
-                || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
-            {
-            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
-            }
+        //switch usb cameras
+        Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
+
         // TODO uncomment this line
         // if (Hardware.climbMotorUpButton.get() == true && Hardware.climbEncoder.getDistance() <= LIFT_TRAVEL_DISTANCE)
         //     {
@@ -239,7 +235,7 @@ public class Teleop
             }
 
         // individualTest();
-        printStatements();
+        //printStatements();
     } // end Periodic()
 
     /**
@@ -247,7 +243,8 @@ public class Teleop
      */
     public static boolean setDisableTeleOpDrive(boolean value)
     {
-        return (disableTeleOpDrive = value);
+        disableTeleOpDrive = value;
+        return disableTeleOpDrive;
     }
 
     /**
@@ -260,6 +257,7 @@ public class Teleop
 
     public static void teleopDrive()
     {
+        // System.out.println("teleop drive");
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());

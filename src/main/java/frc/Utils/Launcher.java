@@ -46,6 +46,8 @@ public class Launcher
 
     private Position targetPosition = Position.NULL;
 
+    public boolean shootingBalls = false;
+
     /**
      * in case you could not guess this function will shoot balls at whatever you
      * desire. whether it be the target or pesky those builders who have yet to
@@ -60,8 +62,10 @@ public class Launcher
             hoodReadyTemp = false;
             launcherReadyTemp = false;
             positionReadyTemp = false;
+            shootingBalls = false;
             this.shootState = ShootState.PASSIVE;
             this.moveState = MoveState.INIT;
+            this.unchargeShooter();
             // }
             }
         // System.out.println("shootState: " + shootState);
@@ -70,11 +74,16 @@ public class Launcher
             switch (shootState)
                 {
                 case PASSIVE:
-                    Teleop.setDisableTeleOpDrive(false);
-                    // until shoot button dont shoot
+                    if (Hardware.intake.usingVisionIntake == false)
+                        {
+                        Teleop.setDisableTeleOpDrive(false);
+                        }
+                    // until shoot button dont shoo t
                     // must be held down to shoot multiple balls
                     if (shootButton.get())
                         {
+                        shootingBalls = true;
+                        Teleop.setDisableTeleOpDrive(true);
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         // {
                         targetPosition = this.getClosestPosition();
@@ -169,44 +178,6 @@ public class Launcher
         }
 
     public ShootStateBasic shootStateBasic = ShootStateBasic.PASSIVE;
-
-    /**
-     * TODO this is for testing the incomplet robot
-     */
-    public void shootBallsBasic(JoystickButton shootButton, JoystickButton overrideButton, boolean isClose)
-    {
-        // System.out.println("shootState: " + shootState);
-        switch (shootStateBasic)
-            {
-            case PASSIVE:
-                // until shoot button dont shoot
-                // must be held down to shoot multiple balls
-                if (shootButton.get())
-                    {
-                    shootStateBasic = ShootStateBasic.CHARGE;
-                    }
-                break;
-            case CHARGE:
-                // starts charging the launcher and prepares the balls in the conveyor
-                if (prepareToShoot(this.getClosestPosition(), teleop))
-                    {
-                    shootStateBasic = ShootStateBasic.LAUNCH;
-                    }
-
-                break;
-            case LAUNCH:
-                // loads a ball and shoots it
-                if (Hardware.storage.loadToFire())
-                    {
-                    // back to passive
-                    shootStateBasic = ShootStateBasic.PASSIVE;
-                    }
-                break;
-            default:
-                break;
-            }
-
-    }
 
     // enum for shooting in autp
     private enum ShootStateAuto
@@ -660,11 +631,20 @@ public class Launcher
             {
             case INIT:
                 // find the off set from the positions
-                farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
-                closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
+                // farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
+                // closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
                 this.moveState = MoveState.ALIGN;
                 break;
             case DRIVE:
+                Hardware.visionInterface.updateValues();
+                farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
+                closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
+                if (Math.abs(farOffset) < 10 || Math.abs(closeOffset) < 10)
+                    {
+                    this.moveState = MoveState.INIT;
+                    Hardware.drive.drive(0, 0);
+                    return true;
+                    }
                 SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
 
                 SmartDashboard.putNumber("distance to target distance",
@@ -684,6 +664,8 @@ public class Launcher
                         }
                     else
                         {
+                        this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
                         return true;
                         }
                     }
@@ -700,6 +682,7 @@ public class Launcher
                     else
                         {
                         this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
                         return true;
                         }
                     }
@@ -776,13 +759,13 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .35;
+    private static final double DRIVE_STRAIGHT_SPEED = .35;//TODO
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
 
     // wanted distance to shoot close
-    private static int CLOSE_DISTANCE = 45;
+    private static int CLOSE_DISTANCE = 50;
 
     // wanted distance to shoot far(the white start line)
     private static int FAR_DISTANCE = 145;
