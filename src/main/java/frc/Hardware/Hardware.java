@@ -112,14 +112,14 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
 
     public static KilroyServo hoodServo = new KilroyServo(1, 180);
 
-    // public static KilroyServo liftServo = new KilroyServo(2, 180);
+    public static KilroyServo climbServo = new KilroyServo(2, 200);
 
     // TalonSRX climbMotors = new TalonSRX(29);
     /**********************************************
@@ -164,12 +164,13 @@ public class Hardware
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
 
-        // liftMotor1 = new WPI_TalonSRX(29); // TODO get can id
+        climbMotorR = new WPI_TalonSRX(29);
 
-        // liftMotor2 = new WPI_TalonSRX(5); // TODO get can id
+        climbMotorL = new WPI_TalonSRX(28);
 
-        // liftMotorGroup = new SpeedControllerGroup(liftMotor1, liftMotor2);
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR, climbMotorL);
 
+        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
         intakeMotor = new WPI_TalonSRX(23);
         intakeMotor.setInverted(true);
 
@@ -246,11 +247,11 @@ public class Hardware
 
         colorSensor = new ColorSensorV3(i2cPort);
 
-        liftMotor1 = new WPI_TalonSRX(29); // TODO get can id
+        climbMotorR = new WPI_TalonSRX(29); // TODO get can id
 
-        liftMotor2 = new WPI_TalonSRX(5); // TODO get can id
+        climbMotorL = new WPI_TalonSRX(5); // TODO get can id
 
-        liftMotorGroup = new SpeedControllerGroup(liftMotor1, liftMotor2);
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR, climbMotorL);
 
         // ==============DIO INIT=============
 
@@ -409,11 +410,13 @@ public class Hardware
 
     // -------------------------------------------------------------
 
-    public static SpeedController liftMotor1 = null;
+    public static SpeedController climbMotorR = null;
 
-    public static SpeedController liftMotor2 = null;
+    public static SpeedController climbMotorL = null;
 
-    public static SpeedControllerGroup liftMotorGroup = null;
+    public static SpeedControllerGroup climbMotorGroup = null;
+
+    public static KilroyEncoder climbEncoder = null;
 
     // **********************************************************
     // DIGITAL I/O
@@ -525,9 +528,9 @@ public class Hardware
     // ----------------------------------------------------------
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
-    public static JoystickButton liftMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
+    public static JoystickButton climbMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
 
-    public static JoystickButton liftMotorUpButton = new JoystickButton(Hardware.rightOperator, 3);
+    public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 3);
 
     public static JoystickButton wheelManualSpinButton = new JoystickButton(Hardware.rightOperator, 4);
 

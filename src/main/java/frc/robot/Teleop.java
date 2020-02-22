@@ -221,30 +221,27 @@ public class Teleop
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
             }
         // TODO uncomment this line
-        // if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
+        // if (Hardware.climbMotorUpButton.get() == true && Hardware.climbEncoder.getDistance() <= liftTravelDistance)
         //     {
-        //     Hardware.telopTimer.start(); // Start timer
-        //     Hardware.liftMotorGroup.set(.5); // Start motor
+        //     Hardware.climbMotorGroup.set(.5);
         //     }
-        // if (Hardware.telopTimer.get() >= timer)
+        // if (Hardware.climbEncoder.getDistance() >= liftTravelDistance)
         //     {
-        //     Hardware.telopTimer.stop();
-        //     Hardware.telopTimer.reset();
-        //     Hardware.liftMotorGroup.set(0.0);
+        //     Hardware.climbMotorGroup.set(0.0);
         //     }
-        // if (Hardware.liftMotorDownButton.get() == true)
+        // if (Hardware.climbMotorDownButton.get() == true)
         //     {
-        //     Hardware.liftMotorGroup.set(-.5);
-        //     Hardware.liftServo.set(115);
+        //     Hardware.climbMotorGroup.set(-.5);
+        //     Hardware.climbServo.set(115);
         //     }
-        // if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
+        // if (Hardware.climbMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
         //     {
-        //     Hardware.liftMotorGroup.set(0);
-        //    }
+        //     Hardware.climbMotorGroup.set(0);
+        //     }
 
         teleopDrive();
         // individualTest();
-        // printStatements();
+        printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
@@ -600,5 +597,9 @@ public class Teleop
     private final static double CURRENT_YEAR_FIRST_GEAR = .3;
 
     private final static double CURRENT_YEAR_SECOND_GEAR = .5;
+
+    private static double liftTravelDistance = 0.0;
+
+    private static boolean encoderResetFlag = true;
 
     } // end class
