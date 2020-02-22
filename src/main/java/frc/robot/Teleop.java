@@ -159,8 +159,9 @@ public class Teleop
             Hardware.colorWheel.setNumberOfSpins(2);
             // To change the speed
             Hardware.colorWheel.setSpeed(.65);
-            Hardware.colorWheel.spinControlPanel();
+            Hardware.colorWheel.start();
             }
+        Hardware.colorWheel.spinControlPanel();
 
         // Will align the given color with the field sensor. Gets the color
         // automatically
@@ -169,11 +170,6 @@ public class Teleop
             // To change the speed
             Hardware.colorWheel.setSpeed(.4);
             Hardware.colorWheel.spinControlPanelToColor();
-            }
-        // Will set the motor speed to 0 and reset the encoder
-        if (Hardware.wheelOverrideButton.get() == true)
-            {
-            Hardware.colorWheel.override();
             }
 
         // ================== DRIVER CONTROLS =================
@@ -235,7 +231,7 @@ public class Teleop
             }
 
         // individualTest();
-        //printStatements();
+        // printStatements();
     } // end Periodic()
 
     /**
@@ -477,12 +473,16 @@ public class Teleop
         // Hardware.telemetry.printToConsole("launch encoder raw: " +
         // Hardware.launcherMotorEncoder.getRaw());
         // Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
+        // Hardware.telemetry
+        //         .printToConsole("Wheel spin distance per pulse: " + Hardware.wheelSpinnerEncoder.getDistancePerPulse());
+        // Hardware.telemetry.printToConsole("wheel spin distance: " + Hardware.wheelSpinnerEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("Circumference: " + Hardware.colorWheel.getCircumference());
         // Hardware.telemetry.printToConsole("hood adjust encoder raw: " +
         // Hardware.hoodAdjustmentMotorEncoder.getRaw());
-        System.out.println("Launch motor rpm: " + Hardware.launcherMotorEncoder.getRPM());
+        // System.out.println("Launch motor rpm: " + Hardware.launcherMotorEncoder.getRPM());
 
-        System.out.println("launch motor 1: " + Hardware.launcherMotor1.get());
-        System.out.println("launch motor 2: " + Hardware.launcherMotor2.get());
+        // System.out.println("launch motor 1: " + Hardware.launcherMotor1.get());
+        // System.out.println("launch motor 2: " + Hardware.launcherMotor2.get());
 
         // Switch Values
         // Hardware.telemetry.printToConsole(("Start Balls:" +

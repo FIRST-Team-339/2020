@@ -264,6 +264,19 @@ public class KilroyEncoder implements PIDSource
             }
     }
 
+    /**
+     * returns the distancePerPulse that was passed in via
+     * setDistancePerPulse().
+     *
+     * @return
+     *                  how far 1 tick is, translated to linear movement (usually
+     *                  inches).
+     */
+    public double getDistancePerPulse()
+    {
+        return this.distancePerTick;
+    } // end getDistancePerPulse
+
     private boolean firstRun = true;
 
     private double lastRevs = 0;

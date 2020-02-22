@@ -67,7 +67,7 @@ public class ColorWheel
     // Sets speed of wheelSpinnerMotor
     public void setNumberOfSpins(double n)
     {
-        this.circumference = n;
+        this.numberOfSpins = n;
     }
 
     public double getCircumference()
@@ -129,12 +129,6 @@ public class ColorWheel
         return "";
     }
 
-    public void override()
-    {
-        this.motor.set(0);
-        this.motorEncoder.reset();
-    }
-
     public void manualSpin()
     {
         this.motor.set(.2);
@@ -154,27 +148,29 @@ public class ColorWheel
      * @written January 30, 2020
      *          -------------------------------------------------------
      */
-    public boolean spinControlPanel()
+    public void spinControlPanel()
     {
-        if (encoderReset == true)
+        // Check all encoders to see if they've reached the distance. Multiply number of spins * circumference(106.5309)
+        if (firstIteration == true)
             {
-            this.motorEncoder.reset();
-            encoderReset = false;
+            if (this.motorEncoder.getDistance() > this.numberOfSpins * this.circumference)
+                {
+                this.motor.set(0);
+                encoderReset = true;
+                }
+            else
+                {
+                // Keep Spinning if we have not reached the distance
+                this.motor.set(this.speed);
+                }
             }
 
-        // Check all encoders to see if they've reached the distance. Multiply number of spins * circumference(106.5309)
-        if (this.motorEncoder.getDistance() > this.numberOfSpins * this.circumference)
-            {
-            this.motor.set(0);
-            encoderReset = true;
-            return true;
-            }
-        else
-            {
-            // Keep Spinning if we have not reached the distance
-            this.motor.set(this.speed);
-            }
-        return false;
+    }
+
+    public void start()
+    {
+        this.motorEncoder.reset();
+        firstIteration = true;
     }
 
     /**
@@ -250,6 +246,8 @@ public class ColorWheel
     private ColorMatchResult match = null;
 
     private boolean encoderReset = true;
+
+    private boolean firstIteration = false;
 
     private String spinColor = null;
 
