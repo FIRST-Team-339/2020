@@ -20,6 +20,7 @@ import com.ctre.phoenix.sensors.MagnetFieldStrength;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -319,7 +320,7 @@ public class KilroyEncoder implements PIDSource
      *                  the Speedcontroller object of the motor to set RPM too.
      * @return at RPM
      */
-    public boolean setRPM(double RPM, SpeedController motor)
+    public boolean setRPM(double RPM, SpeedControllerGroup motor)
     {
 
         // get offness
@@ -365,7 +366,7 @@ public class KilroyEncoder implements PIDSource
      * @param motor
      * @return powered down
      */
-    public boolean powerDownRPM(SpeedController motor)
+    public boolean powerDownRPM(SpeedControllerGroup motor)
     {
         double currentRPM = this.getRPM();
         targetRPM = .5 * currentRPM;

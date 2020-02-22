@@ -112,7 +112,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
@@ -182,9 +182,9 @@ public class Hardware
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
-        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
+        // climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
 
-        climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
+        // climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
 
         // ============ANALOG INIT============
 
