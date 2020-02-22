@@ -505,7 +505,9 @@ public class Hardware
     // ----------------------------------------------------------
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
-    public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 4);
+    public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
+
+    public static JoystickButton pickupBallVisionButton = new JoystickButton(Hardware.leftOperator, 4);
 
     public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
 

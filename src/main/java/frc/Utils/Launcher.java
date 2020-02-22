@@ -62,6 +62,7 @@ public class Launcher
             positionReadyTemp = false;
             this.shootState = ShootState.PASSIVE;
             this.moveState = MoveState.INIT;
+            this.unchargeShooter();
             // }
             }
         // System.out.println("shootState: " + shootState);
@@ -660,11 +661,20 @@ public class Launcher
             {
             case INIT:
                 // find the off set from the positions
-                farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
-                closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
+                // farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
+                // closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
                 this.moveState = MoveState.ALIGN;
                 break;
             case DRIVE:
+                Hardware.visionInterface.updateValues();
+                farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
+                closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
+                if (Math.abs(farOffset) < 10 || Math.abs(closeOffset) < 10)
+                    {
+                    this.moveState = MoveState.INIT;
+                    Hardware.drive.drive(0, 0);
+                    return true;
+                    }
                 SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
 
                 SmartDashboard.putNumber("distance to target distance",
@@ -684,6 +694,8 @@ public class Launcher
                         }
                     else
                         {
+                        this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
                         return true;
                         }
                     }
@@ -700,6 +712,7 @@ public class Launcher
                     else
                         {
                         this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
                         return true;
                         }
                     }
@@ -776,13 +789,13 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .35;
+    private static final double DRIVE_STRAIGHT_SPEED = .35;//TODO
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
 
     // wanted distance to shoot close
-    private static int CLOSE_DISTANCE = 45;
+    private static int CLOSE_DISTANCE = 50;
 
     // wanted distance to shoot far(the white start line)
     private static int FAR_DISTANCE = 145;

@@ -160,6 +160,7 @@ public class Autonomous
         // TODO add in switch to determine ball count: Hardware change first
 
         Hardware.ballCounter.setBallCount(3);
+        Hardware.cameraServo.setCameraAngleUp();
 
     } // end Init
 

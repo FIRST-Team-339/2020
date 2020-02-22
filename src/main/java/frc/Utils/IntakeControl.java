@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.Hardware.*;
 import frc.HardwareInterfaces.DoubleSolenoid;
+import frc.robot.Teleop;
 
 /**
  * Code to control the 2020 seasons intake machanism. Includes code control the
@@ -277,6 +278,7 @@ public class IntakeControl
      */
     public boolean pickUpBallsVision()
     {
+
         if (pickUpBallsFirstTime)
             {
             startBallCount = Hardware.ballCounter.getBallCount();
@@ -300,6 +302,40 @@ public class IntakeControl
             return true;
             }
         return false;
+    }
+
+    /**
+    * chases and picks up balls in auto.Runs until the storage is full or picked up
+    * all 3 balls in the trench
+    *
+    * @return picked up all ballsd
+    */
+    public void pickUpBallsVisionTeleop(JoystickButton button)
+    {
+
+        if (button.get())
+            {
+            // set pipe
+            Hardware.visionInterface.setPipeline(BALL_VISION_PIPE);
+            Hardware.cameraServo.setCameraAngleDown();
+            // intake
+
+            this.intake();
+            // drive to balls
+            Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS);
+            // if pickup all the balls in trench
+            if ((Hardware.ballCounter.getBallCount() == 5))
+                {
+                Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
+                Hardware.cameraServo.setCameraAngleUp();
+                }
+            }
+        else
+            {
+            Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
+            Hardware.cameraServo.setCameraAngleUp();
+            }
+
     }
 
     // store if we are current intaking

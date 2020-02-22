@@ -198,6 +198,8 @@ public class Teleop
             // shoot balls
             Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
+            Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
+
             // intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
