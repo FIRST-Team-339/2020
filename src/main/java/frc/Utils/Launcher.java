@@ -3,6 +3,7 @@ package frc.Utils;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
+import frc.robot.Teleop;
 
 import java.nio.charset.CharacterCodingException;
 import java.util.Timer;
@@ -55,11 +56,12 @@ public class Launcher
         if (!shootButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
-            // {  conveyorReadyTemp = false;
+            // { conveyorReadyTemp = false;
             hoodReadyTemp = false;
             launcherReadyTemp = false;
             positionReadyTemp = false;
             this.shootState = ShootState.PASSIVE;
+            this.moveState = MoveState.INIT;
             // }
             }
         // System.out.println("shootState: " + shootState);
@@ -68,6 +70,7 @@ public class Launcher
             switch (shootState)
                 {
                 case PASSIVE:
+                    Teleop.setDisableTeleOpDrive(false);
                     // until shoot button dont shoot
                     // must be held down to shoot multiple balls
                     if (shootButton.get())
@@ -87,6 +90,7 @@ public class Launcher
                         }
                     break;
                 case CHARGE:
+                    Teleop.setDisableTeleOpDrive(true);
                     SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
                     SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
                     SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
@@ -148,7 +152,7 @@ public class Launcher
             }
         else
             {
-            //override fire methods
+            // override fire methods
             if (this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
                     this.firingMotors))
                 {
@@ -437,13 +441,13 @@ public class Launcher
             // has sped up
             spedUp = true;
             }
-        //TODO
+        // TODO
         // if (Hardware.visionDriving.alignToTarget())
-        //     {
-        //     aligned = true;
-        //     }
+        // {
+        // aligned = true;
+        // }
 
-        if (/* aligned &&  */spedUp || true)//TODO
+        if (/* aligned && */spedUp || true)// TODO
             {
             // if everything is done return true
             aligned = false;
@@ -658,7 +662,7 @@ public class Launcher
                 // find the off set from the positions
                 farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
                 closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
-                moveState = MoveState.DRIVE;
+                this.moveState = MoveState.ALIGN;
                 break;
             case DRIVE:
                 SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
@@ -695,6 +699,7 @@ public class Launcher
                         }
                     else
                         {
+                        this.moveState = MoveState.INIT;
                         return true;
                         }
                     }
@@ -703,16 +708,26 @@ public class Launcher
                 // realign to the target using vision
                 if (Hardware.visionDriving.alignToTarget())
                     {
-                    moveState = MoveState.INIT;
+                    this.moveState = MoveState.DRIVE;
                     // done
 
                     }
                 break;
             default:
-                moveState = MoveState.INIT;
+                this.moveState = MoveState.INIT;
             }
 
         return false;
+    }
+
+    public void setMovePositionState(MoveState state)
+    {
+        this.moveState = state;
+    }
+
+    public MoveState getMovePosition()
+    {
+        return this.moveState;
     }
 
     /**
@@ -761,7 +776,7 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .4;
+    private static final double DRIVE_STRAIGHT_SPEED = .35;
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;

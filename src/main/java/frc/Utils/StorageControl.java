@@ -103,7 +103,7 @@ public class StorageControl
                 break;
             // move down towards intake
             case DOWN:
-                //System.out.println("down in Control State");
+                // System.out.println("down in Control State");
                 conveyorDown();
                 break;
             default:
@@ -114,6 +114,7 @@ public class StorageControl
 
     /**
      * sets the prevIntake used in intakeStorageControl
+     * 
      * @param state
      * @return
      */
@@ -124,6 +125,7 @@ public class StorageControl
 
     /**
      * return the state of prevIntakeRL
+     * 
      * @return boolean
      */
     public boolean getPrevIntakeRL()
@@ -155,7 +157,7 @@ public class StorageControl
                 }
             if (this.intakeRL.get() == false && this.getPrevIntakeRL() == false && this.lowerRL.get() == false)
                 {
-                //is all false go down
+                // is all false go down
                 this.setPrevIntakeRL(false);
                 System.out.println("down in intakeStorageControl");
                 setStorageControlState(ControlState.DOWN);
