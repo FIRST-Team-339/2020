@@ -119,16 +119,15 @@ public class Hardware
 
     public static KilroyServo hoodServo = new KilroyServo(1, 180);
 
-    public static KilroyServo climbServo = new KilroyServo(2, 200);
+    public static KilroyServo climbServo = new KilroyServo(2, 180);
 
-    // TalonSRX climbMotors = new TalonSRX(29);
     /**********************************************
-     * initializePrevYear() function initializes all Hardware items that are
-     * REQUIRED for this year
-     *
-     * @author R. Brown
-     * @date 1/25/2020
-     *********************************************/
+    * initializePrevYear() function initializes all Hardware items that are
+    * REQUIRED for this year
+    *
+    * @author R. Brown
+    * @date 1/25/2020
+    *********************************************/
     public static void initializeCurrentYear() // 2020
     {
         // ==============CAN INIT=============
@@ -164,22 +163,25 @@ public class Hardware
 
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
 
-        climbMotorR = new WPI_TalonSRX(29);
-
-        climbMotorL = new WPI_TalonSRX(28);
-
-        climbMotorGroup = new SpeedControllerGroup(climbMotorR, climbMotorL);
-
-        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
         intakeMotor = new WPI_TalonSRX(23);
         intakeMotor.setInverted(true);
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
+        climbMotorR = new WPI_TalonSRX(29);
+
+        //climbMotorL = new WPI_TalonSRX(28);
+
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR/*, climbMotorL*/);
+
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+
+        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
+
+        climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
 
         // ============ANALOG INIT============
 
@@ -247,11 +249,11 @@ public class Hardware
 
         colorSensor = new ColorSensorV3(i2cPort);
 
-        climbMotorR = new WPI_TalonSRX(29); // TODO get can id
+        climbMotorR = new WPI_TalonSRX(29);
 
-        climbMotorL = new WPI_TalonSRX(5); // TODO get can id
+        //climbMotorL = new WPI_TalonSRX(28);
 
-        climbMotorGroup = new SpeedControllerGroup(climbMotorR, climbMotorL);
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR/*, climbMotorL*/);
 
         // ==============DIO INIT=============
 
@@ -481,19 +483,12 @@ public class Hardware
     // **********************************************************
     // Buttons
     // **********************************************************
-
-    public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
-
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
     // ----------------------------------------------------------
     // buttons - for left driver
     // ----------------------------------------------------------
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
-
-    public static JoystickButton climbReverseButton1 = new JoystickButton(Hardware.leftDriver, 7);
-
-    public static JoystickButton climbReverseButton2 = new JoystickButton(Hardware.leftDriver, 8);
 
     // ----------------------------------------------------------
     // buttons - for right driver
@@ -601,6 +596,8 @@ public class Hardware
     public final static double WHEEL_ENCODER_DISTANCE_PER_TICK = 0.0024305403;
 
     public final static double PREV_YEAR_WHEEL_SPINNER_DISTANCE_PER_TICK = 0.0024305403;
+
+    public final static double CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR = 0.0;
 
     // -------------------
     // Subassemblies
