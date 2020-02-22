@@ -92,7 +92,7 @@ public class Teleop
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
-
+        Hardware.cameraServo.setCameraAngleUp();
         // Solenoid Pistons start up and Timer start
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
@@ -136,8 +136,6 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
 
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
-
-        teleopDrive();
 
         // SmartDashboard.putNumber("Proximity from target",
         // Hardware.colorSensor.getProximity());
@@ -220,31 +218,27 @@ public class Teleop
         if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
                 || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
-
-            // override convyor movement
-            Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
-
-            // shoot balls
-            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
-
-            // intake
-            Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
-
-            // outtake
-            Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
-
-            // this is necessary becuase I organized the code wrong and its too late to
-            // rewrite intake
-            // makes conveyor stop if not intakeing or outtaking
-            Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
-
-            // subtract ball
-            Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
-            // add ball
-            Hardware.ballCounter.addBall(Hardware.addBallButton);
-            // sets count to 0
-            Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
+            }
+        if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
+            {
+            Hardware.telopTimer.start(); // Start timer
+            Hardware.liftMotor1.set(.5); // Start motor
+            }
+        if (Hardware.telopTimer.get() >= timer)
+            {
+            Hardware.telopTimer.stop();
+            Hardware.telopTimer.reset();
+            Hardware.liftMotor1.set(0.0);
+            }
+        if (Hardware.liftMotorDownButton.get() == true)
+            {
+            Hardware.liftMotor1.set(-.5);
+            // Hardware.liftServo.set(115);
+            }
+        if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
+            {
+            Hardware.liftMotor1.set(0);
             }
         // TODO uncomment this line
         // if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() <

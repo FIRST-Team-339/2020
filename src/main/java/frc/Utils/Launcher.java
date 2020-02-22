@@ -43,6 +43,8 @@ public class Launcher
 
     public ShootState shootState = ShootState.PASSIVE;
 
+    private Position targetPosition = Position.NULL;
+
     /**
      * in case you could not guess this function will shoot balls at whatever you
      * desire. whether it be the target or pesky those builders who have yet to
@@ -50,7 +52,16 @@ public class Launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
-
+        if (!shootButton.get())
+            {
+            // if (this.moveRobotToPosition(this.getClosestPosition()))
+            // {  conveyorReadyTemp = false;
+            hoodReadyTemp = false;
+            launcherReadyTemp = false;
+            positionReadyTemp = false;
+            this.shootState = ShootState.PASSIVE;
+            // }
+            }
         // System.out.println("shootState: " + shootState);
         if (!overrideButton.get())
             {
@@ -63,25 +74,39 @@ public class Launcher
                         {
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         // {
+                        targetPosition = this.getClosestPosition();
                         this.shootState = ShootState.CHARGE;
                         // }
                         }
+                    else
+                        {
+                        conveyorReadyTemp = false;
+                        hoodReadyTemp = false;
+                        launcherReadyTemp = false;
+                        positionReadyTemp = false;
+                        }
                     break;
                 case CHARGE:
+                    SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
+                    SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
+                    SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
+                    SmartDashboard.putBoolean("position: ", positionReadyTemp);
+                    SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (this.getClosestPosition() == Position.CLOSE)
+                    if (positionReadyTemp || moveRobotToPosition(targetPosition))
                         {
-                        if (Hardware.hoodControl.setAngle(Hardware.hoodControl.CLOSE_ANGLE))
-                            {
-                            hoodReadyTemp = true;
-                            }
+                        Hardware.visionDriving.alignToTarget();
+                        positionReadyTemp = true;
+                        }
+                    if (targetPosition == Position.CLOSE)
+                        {
+                        Hardware.hoodControl.setAngle(Hardware.hoodControl.CLOSE_ANGLE);
+
                         }
                     else
                         {
-                        if (Hardware.hoodControl.setAngle(Hardware.hoodControl.FAR_ANGLE))
-                            {
-                            hoodReadyTemp = true;
-                            }
+                        Hardware.hoodControl.setAngle(Hardware.hoodControl.FAR_ANGLE);
+
                         }
 
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
@@ -99,11 +124,12 @@ public class Launcher
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
-                    if (conveyorReadyTemp && launcherReadyTemp && hoodReadyTemp)
+                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
                         launcherReadyTemp = false;
+                        positionReadyTemp = false;
                         this.shootState = ShootState.LAUNCH;
                         }
                     break;
@@ -411,12 +437,13 @@ public class Launcher
             // has sped up
             spedUp = true;
             }
-        if (Hardware.visionDriving.alignToTarget())
-            {
-            aligned = true;
-            }
+        //TODO
+        // if (Hardware.visionDriving.alignToTarget())
+        //     {
+        //     aligned = true;
+        //     }
 
-        if (aligned && spedUp)
+        if (/* aligned &&  */spedUp || true)//TODO
             {
             // if everything is done return true
             aligned = false;
@@ -613,7 +640,7 @@ public class Launcher
         INIT, DRIVE, ALIGN
         }
 
-    MoveState moveState = MoveState.INIT;
+    MoveState moveState = MoveState.ALIGN;
 
     /**
      * Move the robot to the closest shootin position either close or far.
@@ -624,6 +651,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
 
+        System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:
@@ -633,40 +661,41 @@ public class Launcher
                 moveState = MoveState.DRIVE;
                 break;
             case DRIVE:
+                SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
+
+                SmartDashboard.putNumber("distance to target distance",
+                        Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE);
                 // drive straight the the proper distance
                 if (position == Position.FAR)
                     {
+
                     // filter for negative distances
-                    if (farOffset > 0)
+                    if (Hardware.visionInterface.getDistanceFromTarget() > FAR_DISTANCE + MOVE_DISTANCE_DEADBAND)
                         {
-                        if (Hardware.drive.driveStraightInches(Math.abs(farOffset), DRIVE_STRAIGHT_SPEED, 0, true))
-                            {
-                            moveState = MoveState.ALIGN;
-                            }
+                        Hardware.drive.driveStraight(DRIVE_STRAIGHT_SPEED, .1, true);
+                        }
+                    else if (Hardware.visionInterface.getDistanceFromTarget() < FAR_DISTANCE - MOVE_DISTANCE_DEADBAND)
+                        {
+                        Hardware.drive.driveStraight(-DRIVE_STRAIGHT_SPEED, .1, true);
                         }
                     else
                         {
-                        if (Hardware.drive.driveStraightInches(Math.abs(farOffset), -DRIVE_STRAIGHT_SPEED, 0, true))
-                            {
-                            moveState = MoveState.ALIGN;
-                            }
+                        return true;
                         }
                     }
                 else if (position == Position.CLOSE)
                     {
-                    if (closeOffset > 0)
+                    if (Hardware.visionInterface.getDistanceFromTarget() > CLOSE_DISTANCE + MOVE_DISTANCE_DEADBAND)
                         {
-                        if (Hardware.drive.driveStraightInches(Math.abs(closeOffset), DRIVE_STRAIGHT_SPEED, 0, true))
-                            {
-                            moveState = MoveState.ALIGN;
-                            }
+                        Hardware.drive.driveStraight(DRIVE_STRAIGHT_SPEED, .1, true);
+                        }
+                    else if (Hardware.visionInterface.getDistanceFromTarget() < CLOSE_DISTANCE - MOVE_DISTANCE_DEADBAND)
+                        {
+                        Hardware.drive.driveStraight(-DRIVE_STRAIGHT_SPEED, .1, true);
                         }
                     else
                         {
-                        if (Hardware.drive.driveStraightInches(Math.abs(closeOffset), -DRIVE_STRAIGHT_SPEED, 0, true))
-                            {
-                            moveState = MoveState.ALIGN;
-                            }
+                        return true;
                         }
                     }
                 break;
@@ -676,7 +705,7 @@ public class Launcher
                     {
                     moveState = MoveState.INIT;
                     // done
-                    return true;
+
                     }
                 break;
             default:
@@ -707,6 +736,8 @@ public class Launcher
     // temporary store if the hood is redy
     private boolean hoodReadyTemp = false;
 
+    // temporary store if the position is redy
+    private boolean positionReadyTemp = false;
     // temporary store if the ball has been shot NOTE: this may be deprecated
     private boolean loadReadyTemp = false;
 
@@ -716,6 +747,7 @@ public class Launcher
     // if called in teleop
     private boolean teleop = false;
 
+    private static final double MOVE_DISTANCE_DEADBAND = 10;
     // far RPM to 2020 shooter
     private static final double RPM_FAR_2020 = 3500;
 
@@ -735,10 +767,10 @@ public class Launcher
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
 
     // wanted distance to shoot close
-    private static int CLOSE_DISTANCE = 35;
+    private static int CLOSE_DISTANCE = 45;
 
     // wanted distance to shoot far(the white start line)
-    private static int FAR_DISTANCE = 120;
+    private static int FAR_DISTANCE = 145;
 
     // is override vision with ultrasonic
     private static boolean VISION_OVERRIDE = true;
