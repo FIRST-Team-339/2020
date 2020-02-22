@@ -174,14 +174,11 @@ public class Hardware
         intakeMotor.setInverted(true);
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
-        // hoodAdjustmentMotor = new WPI_TalonSRX(24);
+
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
-
-        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
-        // hoodAdjustmentMotor);//TODO
 
         // ============ANALOG INIT============
 
@@ -249,8 +246,6 @@ public class Hardware
 
         colorSensor = new ColorSensorV3(i2cPort);
 
-        hoodAdjustmentMotor = new WPI_TalonSRX(24);
-
         liftMotor1 = new WPI_TalonSRX(29); // TODO get can id
 
         liftMotor2 = new WPI_TalonSRX(5); // TODO get can id
@@ -267,9 +262,6 @@ public class Hardware
 
         wheelSpinnerEncoder.setDistancePerPulse(WHEEL_ENCODER_DISTANCE_PER_TICK);
         wheelSpinnerEncoder.setTicksPerRevolution(4096);
-
-        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
-        // hoodAdjustmentMotor);//TODO fix
 
         // ==============RIO INIT==============
 
@@ -414,8 +406,6 @@ public class Hardware
     public static KilroyEncoder wheelSpinnerEncoder = null;
 
     // -------------------------------------------------------------
-
-    public static SpeedController hoodAdjustmentMotor = null;
 
     // -------------------------------------------------------------
 
