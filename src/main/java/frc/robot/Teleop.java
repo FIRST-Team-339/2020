@@ -223,28 +223,26 @@ public class Teleop
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
             }
         // TODO uncomment this line
-        // if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() <
-        // timer)
-        // {
-        // Hardware.telopTimer.start(); // Start timer
-        // Hardware.liftMotorGroup.set(.5); // Start motor
-        // }
-        // if (Hardware.telopTimer.get() >= timer)
-        // {
-        // Hardware.telopTimer.stop();
-        // Hardware.telopTimer.reset();
-        // Hardware.liftMotorGroup.set(0.0);
-        // }
-        // if (Hardware.liftMotorDownButton.get() == true)
-        // {
-        // Hardware.liftMotorGroup.set(-.5);
-        // Hardware.liftServo.set(115);
-        // }
-        // if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get()
-        // == 0)
-        // {
-        // Hardware.liftMotorGroup.set(0);
-        // }
+        if (Hardware.climbMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
+            {
+            Hardware.telopTimer.start(); // Start timer
+            Hardware.climbMotorGroup.set(.5); // Start motor
+            }
+        if (Hardware.telopTimer.get() >= timer)
+            {
+            Hardware.telopTimer.stop();
+            Hardware.telopTimer.reset();
+            Hardware.climbMotorGroup.set(0.0);
+            }
+        if (Hardware.climbMotorDownButton.get() == true)
+            {
+            Hardware.climbMotorGroup.set(-.5);
+            Hardware.climbServo.set(115);
+            }
+        if (Hardware.climbMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
+            {
+            Hardware.climbMotorGroup.set(0);
+            }
         if (!disableTeleOpDrive)
             {
             teleopDrive();
