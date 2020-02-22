@@ -229,15 +229,12 @@ public class Hardware
 
         hoodAdjustmentMotor = new WPI_TalonSRX(24);
 
-<<<<<<< HEAD
-=======
         liftMotor1 = new WPI_TalonSRX(29); // TODO get can id
 
         liftMotor2 = new WPI_TalonSRX(5); // TODO get can id
 
         liftMotorGroup = new SpeedControllerGroup(liftMotor1, liftMotor2);
 
->>>>>>> b1ce0bb315efb3c5bd857be7481daecbf541ee4b
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder(7, 6);
@@ -398,8 +395,6 @@ public class Hardware
 
     public static SpeedController hoodAdjustmentMotor = null;
 
-<<<<<<< HEAD
-=======
     // -------------------------------------------------------------
 
     public static SpeedController liftMotor1 = null;
@@ -408,7 +403,6 @@ public class Hardware
 
     public static SpeedControllerGroup liftMotorGroup = null;
 
->>>>>>> b1ce0bb315efb3c5bd857be7481daecbf541ee4b
     // **********************************************************
     // DIGITAL I/O
     // **********************************************************
@@ -518,15 +512,11 @@ public class Hardware
     //----------------------------------------------------------
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
-<<<<<<< HEAD
-    public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 4);
-=======
     public static JoystickButton liftMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
 
     public static JoystickButton liftMotorUpButton = new JoystickButton(Hardware.rightOperator, 3);
 
     public static JoystickButton wheelManualSpinButton = new JoystickButton(Hardware.rightOperator, 4);
->>>>>>> b1ce0bb315efb3c5bd857be7481daecbf541ee4b
 
     public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
 

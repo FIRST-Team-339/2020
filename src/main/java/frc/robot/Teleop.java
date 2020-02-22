@@ -93,11 +93,7 @@ public class Teleop
         Hardware.intake.outtaking = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
 
-<<<<<<< HEAD
-        //Timer reset and servo  
-=======
         // Solenoid Pistons start up and Timer start
->>>>>>> b1ce0bb315efb3c5bd857be7481daecbf541ee4b
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
         Hardware.spinServo.set(1.0);
@@ -229,42 +225,19 @@ public class Teleop
         if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
             {
             Hardware.telopTimer.start(); // Start timer
-<<<<<<< HEAD
-            //Hardware.climbMotor.set(.5); // Start motor
-=======
             Hardware.liftMotor1.set(.5); // Start motor
->>>>>>> b1ce0bb315efb3c5bd857be7481daecbf541ee4b
             }
 
         if (Hardware.telopTimer.get() >= timer)
             {
-<<<<<<< HEAD
-            //Hardware.climbMotor.set(0);
-            Hardware.telopTimer.stop(); // Stop timer
-            Hardware.telopTimer.reset(); // Reset timer
-            }
-       
-        if (Hardware.rightOperator.getRawButton(8) == true && Hardware.rightOperator.getRawButton(9) == true)
-            {
-           // Hardware.climbMotor.set(-.5);
-=======
             Hardware.liftMotor1.set(-.5);
             }
         if (Hardware.telopTimer.get() >= timer + timeDown)
             {
             Hardware.liftMotor1.set(0.0);
->>>>>>> b1ce0bb315efb3c5bd857be7481daecbf541ee4b
             }
         if (Hardware.liftMotorDownButton.get() == true)
             {
-<<<<<<< HEAD
-            //Hardware.climbMotor.set(0);
-            }
-        
-        // teleopDrive();
-         individualTest();
-        printStatements();
-=======
             Hardware.liftMotor1.set(-.5);
             }
         if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
@@ -274,7 +247,6 @@ public class Teleop
         teleopDrive();
         // individualTest();
         // printStatements();
->>>>>>> b1ce0bb315efb3c5bd857be7481daecbf541ee4b
     } // end Periodic()
 
     public static void teleopDrive()
