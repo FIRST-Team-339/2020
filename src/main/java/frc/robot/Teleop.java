@@ -220,30 +220,27 @@ public class Teleop
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
             }
-
         if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
             {
             Hardware.telopTimer.start(); // Start timer
             Hardware.liftMotor1.set(.5); // Start motor
             }
-
         if (Hardware.telopTimer.get() >= timer)
             {
-            Hardware.liftMotor1.set(-.5);
-            }
-        if (Hardware.telopTimer.get() >= timer + timeDown)
-            {
+            Hardware.telopTimer.stop();
+            Hardware.telopTimer.reset();
             Hardware.liftMotor1.set(0.0);
             }
         if (Hardware.liftMotorDownButton.get() == true)
             {
             Hardware.liftMotor1.set(-.5);
+            Hardware.liftServo.set(115);
             }
         if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
             {
             Hardware.liftMotor1.set(0);
             }
-        // teleopDrive();
+        teleopDrive();
         // individualTest();
         // printStatements();
     } // end Periodic()
