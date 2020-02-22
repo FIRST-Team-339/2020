@@ -291,7 +291,7 @@ public class Hardware
 
         storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
 
-        hoodControl = new HoodControl(null, hoodPot);
+        hoodControl = new HoodControl(hoodServo, hoodPot);
 
         ballCounter = new BallCounter(ballButtonTimer);
 
@@ -415,6 +415,7 @@ public class Hardware
 
     public static LightSensor intakeRL = new LightSensor(21); // bottom
     public static LightSensor lowStoreRL = new LightSensor(22); // lower middle
+
     public static LightSensor upStoreRL = new LightSensor(23); // upper middle
     public static LightSensor firingRL = new LightSensor(24); // top
 

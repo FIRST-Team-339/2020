@@ -92,7 +92,7 @@ public class Teleop
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
-
+        Hardware.cameraServo.setCameraAngleUp();
         // Solenoid Pistons start up and Timer start
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
@@ -136,8 +136,6 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
 
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
-
-        teleopDrive();
 
         // SmartDashboard.putNumber("Proximity from target",
         // Hardware.colorSensor.getProximity());
@@ -245,9 +243,9 @@ public class Teleop
             {
             Hardware.liftMotor1.set(0);
             }
-        teleopDrive();
+        // teleopDrive();
         // individualTest();
-        printStatements();
+        // printStatements();
     } // end Periodic()
 
     public static void teleopDrive()
@@ -491,7 +489,7 @@ public class Teleop
         // Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
-        Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
+        // Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
         // Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
         // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
 
