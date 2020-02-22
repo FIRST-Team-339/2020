@@ -91,6 +91,7 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
+        Hardware.intake.usingVisionIntake = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
         // Solenoid Pistons start up and Timer start
@@ -134,15 +135,6 @@ public class Teleop
 
         // System.out.println("gyro: " + Hardware.gyro.getAngle());
         // end control loops ==========================
-
-        // =============== AUTOMATED SUBSYSTEMS ===============
-
-        // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
-
-        // SmartDashboard.putNumber("Proximity from target",
-        // Hardware.colorSensor.getProximity());
-        // SmartDashboard.putBoolean("In Range of Target",
-        // Hardware.colorWheel.inRange());
 
         // ================= OPERATOR CONTROLS ================
 
@@ -188,18 +180,18 @@ public class Teleop
 
         // ================== DRIVER CONTROLS =================
 
-        // TODO remove this check
-        if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
+        // override convyor movement
+        Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
+
+        // shoot balls
+        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
+
+        //pick up balls with vision
+        Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
+
+        //intake controls
+        if (Hardware.intake.usingVisionIntake == false)
             {
-
-            // override convyor movement
-            Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
-
-            // shoot balls
-            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
-
-            Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
-
             // intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
@@ -210,20 +202,20 @@ public class Teleop
             // rewrite intake
             // makes conveyor stop if not intakeing or outtaking
             Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
-
-            // subtract ball
-            Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
-            // add ball
-            Hardware.ballCounter.addBall(Hardware.addBallButton);
-            // sets count to 0
-            Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
             }
 
-        if (Hardware.robotIdentity == Hardware.yearIdentifier.CurrentYear
-                || Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
-            {
-            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
-            }
+        //ball counter code==============================
+        // subtract ball
+        Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
+        // add ball
+        Hardware.ballCounter.addBall(Hardware.addBallButton);
+        // sets count to 0
+        Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
+        //end ball counter code===================
+
+        //switch usb cameras
+        Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
+
         // TODO uncomment this line
         if (Hardware.climbMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
             {
@@ -245,13 +237,14 @@ public class Teleop
             {
             Hardware.climbMotorGroup.set(0);
             }
+
         if (!disableTeleOpDrive)
             {
             teleopDrive();
             }
 
         // individualTest();
-        printStatements();
+        //printStatements();
     } // end Periodic()
 
     /**
@@ -259,7 +252,8 @@ public class Teleop
      */
     public static boolean setDisableTeleOpDrive(boolean value)
     {
-        return (disableTeleOpDrive = value);
+        disableTeleOpDrive = value;
+        return disableTeleOpDrive;
     }
 
     /**
@@ -272,6 +266,7 @@ public class Teleop
 
     public static void teleopDrive()
     {
+        // System.out.println("teleop drive");
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());

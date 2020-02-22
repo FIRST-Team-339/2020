@@ -189,7 +189,7 @@ public class IntakeControl
                 intaking = false;
                 }
             }
-        else
+        else if (outtaking == false)
             {
             intaking = false;
             }
@@ -202,8 +202,9 @@ public class IntakeControl
     public void intake()
     {
         Hardware.storage.intakeStorageControl();
-        this.deployIntake();
         this.intaking = true;
+        this.deployIntake();
+
         this.intakeMotor.set(INTAKE_SPEED);
 
     }
@@ -299,6 +300,7 @@ public class IntakeControl
             Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
             pickUpBallsFirstTime = true;
             this.intakeMotor.set(0);
+
             return true;
             }
         return false;
@@ -315,6 +317,8 @@ public class IntakeControl
 
         if (button.get())
             {
+            usingVisionIntake = true;
+            Teleop.setDisableTeleOpDrive(true);
             // set pipe
             Hardware.visionInterface.setPipeline(BALL_VISION_PIPE);
             Hardware.cameraServo.setCameraAngleDown();
@@ -332,8 +336,13 @@ public class IntakeControl
             }
         else
             {
+            usingVisionIntake = false;
             Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
             Hardware.cameraServo.setCameraAngleUp();
+            if (Hardware.launcher.shootingBalls == false)
+                {
+                Teleop.setDisableTeleOpDrive(false);
+                }
             }
 
     }
@@ -343,6 +352,9 @@ public class IntakeControl
 
     // store if we are outtaking
     public boolean outtaking = false;
+
+    //if if we are using vision to intake
+    public boolean usingVisionIntake = false;
 
     // the pipe line to chase balls
     private final int BALL_VISION_PIPE = 2;

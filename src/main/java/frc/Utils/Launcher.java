@@ -46,6 +46,8 @@ public class Launcher
 
     private Position targetPosition = Position.NULL;
 
+    public boolean shootingBalls = false;
+
     /**
      * in case you could not guess this function will shoot balls at whatever you
      * desire. whether it be the target or pesky those builders who have yet to
@@ -60,6 +62,7 @@ public class Launcher
             hoodReadyTemp = false;
             launcherReadyTemp = false;
             positionReadyTemp = false;
+            shootingBalls = false;
             this.shootState = ShootState.PASSIVE;
             this.moveState = MoveState.INIT;
             this.unchargeShooter();
@@ -71,11 +74,16 @@ public class Launcher
             switch (shootState)
                 {
                 case PASSIVE:
-                    Teleop.setDisableTeleOpDrive(false);
-                    // until shoot button dont shoot
+                    if (Hardware.intake.usingVisionIntake == false)
+                        {
+                        Teleop.setDisableTeleOpDrive(false);
+                        }
+                    // until shoot button dont shoo t
                     // must be held down to shoot multiple balls
                     if (shootButton.get())
                         {
+                        shootingBalls = true;
+                        Teleop.setDisableTeleOpDrive(true);
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         // {
                         targetPosition = this.getClosestPosition();
@@ -170,44 +178,6 @@ public class Launcher
         }
 
     public ShootStateBasic shootStateBasic = ShootStateBasic.PASSIVE;
-
-    /**
-     * TODO this is for testing the incomplet robot
-     */
-    public void shootBallsBasic(JoystickButton shootButton, JoystickButton overrideButton, boolean isClose)
-    {
-        // System.out.println("shootState: " + shootState);
-        switch (shootStateBasic)
-            {
-            case PASSIVE:
-                // until shoot button dont shoot
-                // must be held down to shoot multiple balls
-                if (shootButton.get())
-                    {
-                    shootStateBasic = ShootStateBasic.CHARGE;
-                    }
-                break;
-            case CHARGE:
-                // starts charging the launcher and prepares the balls in the conveyor
-                if (prepareToShoot(this.getClosestPosition(), teleop))
-                    {
-                    shootStateBasic = ShootStateBasic.LAUNCH;
-                    }
-
-                break;
-            case LAUNCH:
-                // loads a ball and shoots it
-                if (Hardware.storage.loadToFire())
-                    {
-                    // back to passive
-                    shootStateBasic = ShootStateBasic.PASSIVE;
-                    }
-                break;
-            default:
-                break;
-            }
-
-    }
 
     // enum for shooting in autp
     private enum ShootStateAuto
