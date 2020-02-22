@@ -112,7 +112,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
@@ -183,9 +183,9 @@ public class Hardware
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
-        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
+        // climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
 
-        climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
+        // climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
 
         // ============ANALOG INIT============
 
@@ -208,6 +208,9 @@ public class Hardware
         hoodControl = new HoodControl(hoodServo, hoodPot);
 
         ballCounter = new BallCounter(ballButtonTimer);
+
+        wheelSpinnerEncoder.setDistancePerPulse(WHEEL_ENCODER_DISTANCE_PER_TICK);
+        wheelSpinnerEncoder.setTicksPerRevolution(4096);
 
         colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
 
@@ -522,8 +525,6 @@ public class Hardware
     public static JoystickButton takePictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
 
     public static JoystickButton takePictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
-
-    public static JoystickButton wheelOverrideButton = new JoystickButton(Hardware.leftOperator, 10);
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 

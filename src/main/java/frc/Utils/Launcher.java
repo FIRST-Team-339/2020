@@ -27,7 +27,7 @@ public class Launcher
 
     // private motortype shootingMotor = null;
     // private motortype intakeMotor = null;
-    SpeedController firingMotors = null;
+    SpeedControllerGroup firingMotors = null;
     KilroyEncoder encoder = null;
 
     public Launcher(SpeedControllerGroup firingMotors, KilroyEncoder encoder)

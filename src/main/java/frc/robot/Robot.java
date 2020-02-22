@@ -58,12 +58,14 @@ public class Robot extends TimedRobot
             Hardware.conveyorMotor1.setInverted(false);
             Hardware.conveyorMotor2.setInverted(true);
             Hardware.drive.setJoystickDeadband(0.2);
-            Hardware.climbEncoder.reset();
+            // TODO uncomment
+            // Hardware.climbEncoder.reset();
             }
         // Servo initial starting position
         // Hardware.rotateServo.setAngle(90);
         Hardware.cameraServo.setCameraAngleUp();
-        Hardware.hoodServo.setAngle(25);
+        Hardware.hoodServo.setAngle(SERVO_START_VALUE);
+        Hardware.climbServo.setAngle(SERVO_START_VALUE);
 
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
@@ -78,7 +80,7 @@ public class Robot extends TimedRobot
 
         // Hardware.frontUltraSonic.setOffsetDistanceFromNearestBumper(3);
 
-        // Hardware.launcherMotorEncoder.setTicksPerRevolution(5175);
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(44.1); //5175
 
         // ---------------------------------------
         // done setup - tell the user we are complete
@@ -267,6 +269,7 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
+
         Teleop.periodic();
     } // end testPeriodic()
 
@@ -277,4 +280,6 @@ public class Robot extends TimedRobot
     private final double _CURRENT_YEAR_CAMERA_HEIGHT = 34.25;
     private final double CURRENT_YEAR_TARGET_HEIGHT = 83.7;
     private final double CURRENT_YEAR_MOUNTING_ANGLE = 35;
+
+    public static final int SERVO_START_VALUE = 25;
     }

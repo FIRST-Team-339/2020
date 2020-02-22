@@ -94,10 +94,7 @@ public class Teleop
         Hardware.intake.usingVisionIntake = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
-        //Timer start
-        Hardware.telopTimer.stop(); // Stop teloptimer
-        Hardware.telopTimer.reset(); // Restart teloptimer
-        Hardware.spinServo.set(1.0);
+
     } // end Init
 
     /**
@@ -160,8 +157,9 @@ public class Teleop
             Hardware.colorWheel.setNumberOfSpins(2);
             // To change the speed
             Hardware.colorWheel.setSpeed(.65);
-            Hardware.colorWheel.spinControlPanel();
+            Hardware.colorWheel.start();
             }
+        Hardware.colorWheel.spinControlPanel();
 
         // Will align the given color with the field sensor. Gets the color
         // automatically
@@ -170,11 +168,6 @@ public class Teleop
             // To change the speed
             Hardware.colorWheel.setSpeed(.4);
             Hardware.colorWheel.spinControlPanelToColor();
-            }
-        // Will set the motor speed to 0 and reset the encoder
-        if (Hardware.wheelOverrideButton.get() == true)
-            {
-            Hardware.colorWheel.override();
             }
 
         // ================== DRIVER CONTROLS =================
@@ -193,9 +186,6 @@ public class Teleop
             {
             // intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
-
-            // outtake
-            Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
             // this is necessary becuase I organized the code wrong and its too late to
             // rewrite intake
@@ -216,34 +206,30 @@ public class Teleop
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
 
         // TODO uncomment this line
-        if (Hardware.climbMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
-            {
-            Hardware.telopTimer.start(); // Start timer
-            Hardware.climbMotorGroup.set(.5); // Start motor
-            }
-        if (Hardware.telopTimer.get() >= timer)
-            {
-            Hardware.telopTimer.stop();
-            Hardware.telopTimer.reset();
-            Hardware.climbMotorGroup.set(0.0);
-            }
-        if (Hardware.climbMotorDownButton.get() == true)
-            {
-            Hardware.climbMotorGroup.set(-.5);
-            Hardware.climbServo.set(115);
-            }
-        if (Hardware.climbMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
-            {
-            Hardware.climbMotorGroup.set(0);
-            }
-
+        // if (Hardware.climbMotorUpButton.get() == true && Hardware.climbEncoder.getDistance() <= LIFT_TRAVEL_DISTANCE)
+        //     {
+        //     Hardware.climbMotorGroup.set(.5); // Start motor
+        //     }
+        // if (Hardware.climbEncoder.getDistance() >= LIFT_TRAVEL_DISTANCE)
+        //     {
+        //     Hardware.climbMotorGroup.set(0.0);
+        //     }
+        // if (Hardware.climbMotorDownButton.get() == true)
+        //     {
+        //     Hardware.climbMotorGroup.set(-.5);
+        //     Hardware.climbServo.set(Robot.SERVO_START_VALUE + SERVO_TURN_VALUE);
+        //     }
+        // if (Hardware.climbMotorDownButton.get() == false)
+        //     {
+        //     Hardware.climbMotorGroup.set(0);
+        //     }
         if (!disableTeleOpDrive)
             {
             teleopDrive();
             }
 
         // individualTest();
-        //printStatements();
+        // printStatements();
     } // end Periodic()
 
     /**
@@ -297,7 +283,7 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-         chrisTest();
+         //chrisTest();
         // dionTest();
         // chrisTest();
         // dionTest();
@@ -477,31 +463,35 @@ public class Teleop
         // ---------- DIGITAL ----------
         // encoders:
         // Encoder Distances
-        // Hardware.telemetry.printToConsole("L. Encoder Ticks: " +
-        // Hardware.leftDriveEncoder.get());
+        // Hardware.telemetry.printToShuffleboard("L encoder ticks", "" + Hardware.leftDriveEncoder.get());
         // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
         // Hardware.leftDriveEncoder.getDistance());
         // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
         // Hardware.leftDriveEncoder.getRaw());
-        // Hardware.telemetry.printToConsole("R. Encoder Ticks: " +
-        // Hardware.rightDriveEncoder.get());
+        // Hardware.telemetry.printToShuffleboard("R encoder ticks", "" + Hardware.rightDriveEncoder.get());
         // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
         // Hardware.rightDriveEncoder.getDistance());
         // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
         // Hardware.rightDriveEncoder.getRaw());
         // Hardware.telemetry.printToConsole("launch encoder: " +
         // Hardware.launcherMotorEncoder.get());
-        // Hardware.telemetry.printToConsole("wheel spin encoder: " +
-        // Hardware.wheelSpinnerEncoder.get());
+        // Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.get());
         // Hardware.telemetry.printToConsole("hood adjust encoder: " +
         // Hardware.hoodAdjustmentMotorEncoder.get());
         // Encoder Raw Values
         // Hardware.telemetry.printToConsole("launch encoder raw: " +
         // Hardware.launcherMotorEncoder.getRaw());
-        // Hardware.telemetry.printToConsole("wheel spin encoder raw: " +
-        // Hardware.wheelSpinnerEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
+        // Hardware.telemetry
+        //         .printToConsole("Wheel spin distance per pulse: " + Hardware.wheelSpinnerEncoder.getDistancePerPulse());
+        // Hardware.telemetry.printToConsole("wheel spin distance: " + Hardware.wheelSpinnerEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("Circumference: " + Hardware.colorWheel.getCircumference());
         // Hardware.telemetry.printToConsole("hood adjust encoder raw: " +
         // Hardware.hoodAdjustmentMotorEncoder.getRaw());
+        // System.out.println("Launch motor rpm: " + Hardware.launcherMotorEncoder.getRPM());
+
+        // System.out.println("launch motor 1: " + Hardware.launcherMotor1.get());
+        // System.out.println("launch motor 2: " + Hardware.launcherMotor2.get());
 
         // Switch Values
         // Hardware.telemetry.printToConsole(("Start Balls:" +
@@ -629,8 +619,10 @@ public class Teleop
 
     private final static double CURRENT_YEAR_SECOND_GEAR = .5;
 
-    private static double liftTravelDistance = 0.0;
+    private final static double LIFT_TRAVEL_DISTANCE = 0.0;
 
     private static boolean encoderResetFlag = true;
+
+    private final static int SERVO_TURN_VALUE = 90;
 
     } // end class
