@@ -160,6 +160,7 @@ public class LimelightDriveWithVision
      */
     public boolean alignToTarget()
     {
+        System.out.println("aligning");
         Hardware.visionInterface.takePicture();
         double offness = Hardware.visionInterface.getXOffSet();
 
@@ -168,7 +169,7 @@ public class LimelightDriveWithVision
         // right move speed
         double adjustmentValueLeft = 0;
 
-        if (offness < -2)
+        if (offness < -3)
             {
             // adjust the speed for the left and right motors based off their offness and a
             // preset proportional value
@@ -179,7 +180,7 @@ public class LimelightDriveWithVision
             Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
 
-        else if (offness > 2)
+        else if (offness > 3)
             {
 
             adjustmentValueLeft = (Math.abs(offness) * ADJUST_PROPORTION_2019_ALIGN);
@@ -206,7 +207,7 @@ public class LimelightDriveWithVision
     // randomly plugging in number until it works
     final double ADJUST_PROPORTION_2019 = .015;// 0.03
 
-    final double ADJUST_PROPORTION_2019_ALIGN = .010;
+    final double ADJUST_PROPORTION_2019_ALIGN = .02;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PROPORTION_2020 = .015;// TODO

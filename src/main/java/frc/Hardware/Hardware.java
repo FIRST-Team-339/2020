@@ -117,16 +117,26 @@ public class Hardware
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
 
+<<<<<<< HEAD
     public static Servo spinServo = new Servo(1);
+=======
+    public static KilroyServo hoodServo = new KilroyServo(1, 180);
+
+    public static KilroyServo climbServo = new KilroyServo(2, 180);
+
+>>>>>>> 679550024246fe4ce1b554babd640df0f314be5e
     /**********************************************
-     * initializePrevYear() function initializes all Hardware items that are
-     * REQUIRED for this year
-     *
-     * @author R. Brown
-     * @date 1/25/2020
-     *********************************************/
+    * initializePrevYear() function initializes all Hardware items that are
+    * REQUIRED for this year
+    *
+    * @author R. Brown
+    * @date 1/25/2020
+    *********************************************/
     public static void initializeCurrentYear() // 2020
     {
+
+        // NOTE current open can betwenn 20 and 29: 24
+
         // ==============CAN INIT=============
         // Motor Controllers
         leftFrontMotor = new WPI_TalonFX(13);
@@ -150,29 +160,35 @@ public class Hardware
         rightDriveEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK);
         rightDriveEncoder.setReverseDirection(true);
 
-        // launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
-        // launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
+        launcherMotor1 = new CANSparkMax(26, MotorType.kBrushless);
+        launcherMotor2 = new CANSparkMax(27, MotorType.kBrushless);
 
-        // launcherMotorGroup = new SpeedControllerGroup(launcherMotor1,
-        // launcherMotor2);
+        launcherMotorGroup = new SpeedControllerGroup(launcherMotor1, launcherMotor2);
 
-        // conveyorMotor1 = new WPI_TalonSRX(21);
-        // conveyorMotor2 = new WPI_TalonSRX(22);
+        conveyorMotor1 = new WPI_TalonSRX(21);
+        conveyorMotor2 = new WPI_TalonSRX(22);
 
-        // conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1,
-        // conveyorMotor2);
+        conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1, conveyorMotor2);
 
-        // intakeMotor = new WPI_TalonSRX(23);
+        intakeMotor = new WPI_TalonSRX(23);
+        intakeMotor.setInverted(true);
 
-        // wheelSpinnerMotor = new WPI_TalonSRX(25);
-        // hoodAdjustmentMotor = new WPI_TalonSRX(24);
+        wheelSpinnerMotor = new WPI_TalonSRX(25);
+
+        climbMotorR = new WPI_TalonSRX(29);
+
+        //climbMotorL = new WPI_TalonSRX(28);
+
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR/*, climbMotorL*/);
+
         // ==============DIO INIT=============
 
-        // launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
-        // wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+        wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
-        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
-        // hoodAdjustmentMotor);//TODO
+        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
+
+        climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
 
         // ============ANALOG INIT============
 
@@ -184,7 +200,19 @@ public class Hardware
         drive = new Drive(transmission, leftDriveEncoder, rightDriveEncoder, gyro);
         // pneumatics
 
-        // Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(42);
+
+        intake = new IntakeControl(launchTimer, intakeSolenoid, intakeMotor);
+
+        launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
+
+        storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
+
+        hoodControl = new HoodControl(hoodServo, hoodPot);
+
+        ballCounter = new BallCounter(ballButtonTimer);
+
+        colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
 
     } // end initiaizeCurrentYear()
 
@@ -222,18 +250,17 @@ public class Hardware
         conveyorMotorGroup = new SpeedControllerGroup(conveyorMotor1);
 
         intakeMotor = new WPI_TalonSRX(23);
+        intakeMotor.setInverted(true);
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
         colorSensor = new ColorSensorV3(i2cPort);
 
-        hoodAdjustmentMotor = new WPI_TalonSRX(24);
+        climbMotorR = new WPI_TalonSRX(29);
 
-        liftMotor1 = new WPI_TalonSRX(29); // TODO get can id
+        //climbMotorL = new WPI_TalonSRX(28);
 
-        liftMotor2 = new WPI_TalonSRX(5); // TODO get can id
-
-        liftMotorGroup = new SpeedControllerGroup(liftMotor1, liftMotor2);
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR/*, climbMotorL*/);
 
         // ==============DIO INIT=============
 
@@ -245,9 +272,6 @@ public class Hardware
 
         wheelSpinnerEncoder.setDistancePerPulse(WHEEL_ENCODER_DISTANCE_PER_TICK);
         wheelSpinnerEncoder.setTicksPerRevolution(4096);
-
-        // hoodAdjustmentMotorEncoder = new KilroyEncoder((WPI_TalonSRX)
-        // hoodAdjustmentMotor);//TODO fix
 
         // ==============RIO INIT==============
 
@@ -287,7 +311,7 @@ public class Hardware
 
         storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
 
-        hoodControl = new HoodControl(hoodAdjustmentMotor, hoodPot);
+        hoodControl = new HoodControl(hoodServo, hoodPot);
 
         ballCounter = new BallCounter(ballButtonTimer);
 
@@ -393,15 +417,15 @@ public class Hardware
 
     // -------------------------------------------------------------
 
-    public static SpeedController hoodAdjustmentMotor = null;
-
     // -------------------------------------------------------------
 
-    public static SpeedController liftMotor1 = null;
+    public static SpeedController climbMotorR = null;
 
-    public static SpeedController liftMotor2 = null;
+    public static SpeedController climbMotorL = null;
 
-    public static SpeedControllerGroup liftMotorGroup = null;
+    public static SpeedControllerGroup climbMotorGroup = null;
+
+    public static KilroyEncoder climbEncoder = null;
 
     // **********************************************************
     // DIGITAL I/O
@@ -411,6 +435,7 @@ public class Hardware
 
     public static LightSensor intakeRL = new LightSensor(21); // bottom
     public static LightSensor lowStoreRL = new LightSensor(22); // lower middle
+
     public static LightSensor upStoreRL = new LightSensor(23); // upper middle
     public static LightSensor firingRL = new LightSensor(24); // top
 
@@ -465,30 +490,29 @@ public class Hardware
     // **********************************************************
     // Buttons
     // **********************************************************
+<<<<<<< HEAD
 
     //public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
 
+=======
+>>>>>>> 679550024246fe4ce1b554babd640df0f314be5e
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for left driver
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton gearDown = new JoystickButton(Hardware.leftDriver, 1);
 
-    public static JoystickButton climbReverseButton1 = new JoystickButton(Hardware.leftDriver, 7);
-
-    public static JoystickButton climbReverseButton2 = new JoystickButton(Hardware.leftDriver, 8);
-
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for right driver
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton gearUp = new JoystickButton(Hardware.rightDriver, 1);
 
     public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
 
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for left operator
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
 
     public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 4);
@@ -507,14 +531,14 @@ public class Hardware
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     // buttons - for right operator
-    //----------------------------------------------------------
+    // ----------------------------------------------------------
     public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
 
-    public static JoystickButton liftMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
+    public static JoystickButton climbMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
 
-    public static JoystickButton liftMotorUpButton = new JoystickButton(Hardware.rightOperator, 3);
+    public static JoystickButton climbMotorUpButton = new JoystickButton(Hardware.rightOperator, 3);
 
     public static JoystickButton wheelManualSpinButton = new JoystickButton(Hardware.rightOperator, 4);
 
@@ -585,6 +609,8 @@ public class Hardware
     public final static double WHEEL_ENCODER_DISTANCE_PER_TICK = 0.0024305403;
 
     public final static double PREV_YEAR_WHEEL_SPINNER_DISTANCE_PER_TICK = 0.0024305403;
+
+    public final static double CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR = 0.0;
 
     // -------------------
     // Subassemblies

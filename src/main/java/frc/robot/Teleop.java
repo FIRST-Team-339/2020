@@ -92,7 +92,7 @@ public class Teleop
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
-
+        Hardware.cameraServo.setCameraAngleUp();
         // Solenoid Pistons start up and Timer start
         Hardware.telopTimer.stop(); // Stop teloptimer
         Hardware.telopTimer.reset(); // Restart teloptimer
@@ -119,6 +119,8 @@ public class Teleop
 
     public static boolean wheelManualSpinBoolean = false;
 
+    private static boolean disableTeleOpDrive = false;
+
     public static void periodic()
     {
 
@@ -136,8 +138,6 @@ public class Teleop
 
         // SmartDashboard.putNumber("RPM", Hardware.launcherMotorEncoder.getRPM())
 
-        teleopDrive();
-
         // SmartDashboard.putNumber("Proximity from target",
         // Hardware.colorSensor.getProximity());
         // SmartDashboard.putBoolean("In Range of Target",
@@ -148,8 +148,8 @@ public class Teleop
         // ================= COLORWHEEL CONTROLS ==============
         // Press Right Operator button 4 to start manual spin. Press again to stop
         // manual spin
-        System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
-        System.out.println("Spin" + Hardware.spinWheelButton.get());
+        // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
+        // System.out.println("Spin" + Hardware.spinWheelButton.get());
         if (Hardware.wheelManualSpinButton.get())
             {
             wheelManualSpinBoolean = true;
@@ -221,33 +221,51 @@ public class Teleop
             {
             Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
             }
-
-        if (Hardware.liftMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
+        // TODO uncomment this line
+        if (Hardware.climbMotorUpButton.get() == true && Hardware.telopTimer.get() < timer)
             {
             Hardware.telopTimer.start(); // Start timer
-            Hardware.liftMotor1.set(.5); // Start motor
+            Hardware.climbMotorGroup.set(.5); // Start motor
             }
-
         if (Hardware.telopTimer.get() >= timer)
             {
-            Hardware.liftMotor1.set(-.5);
+            Hardware.telopTimer.stop();
+            Hardware.telopTimer.reset();
+            Hardware.climbMotorGroup.set(0.0);
             }
-        if (Hardware.telopTimer.get() >= timer + timeDown)
+        if (Hardware.climbMotorDownButton.get() == true)
             {
-            Hardware.liftMotor1.set(0.0);
+            Hardware.climbMotorGroup.set(-.5);
+            Hardware.climbServo.set(115);
             }
-        if (Hardware.liftMotorDownButton.get() == true)
+        if (Hardware.climbMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
             {
-            Hardware.liftMotor1.set(-.5);
+            Hardware.climbMotorGroup.set(0);
             }
-        if (Hardware.liftMotorDownButton.get() == false && Hardware.telopTimer.get() == 0)
+        if (!disableTeleOpDrive)
             {
-            Hardware.liftMotor1.set(0);
+            teleopDrive();
             }
-        teleopDrive();
+
         // individualTest();
-        // printStatements();
+        printStatements();
     } // end Periodic()
+
+    /**
+     * turns offor on teleopdrive
+     */
+    public static boolean setDisableTeleOpDrive(boolean value)
+    {
+        return (disableTeleOpDrive = value);
+    }
+
+    /**
+     * returns the disableTeleOpDrive boolean
+     */
+    public static boolean getDisableTeleOpDrive()
+    {
+        return disableTeleOpDrive;
+    }
 
     public static void teleopDrive()
     {
@@ -611,5 +629,9 @@ public class Teleop
     private final static double CURRENT_YEAR_FIRST_GEAR = .3;
 
     private final static double CURRENT_YEAR_SECOND_GEAR = .5;
+
+    private static double liftTravelDistance = 0.0;
+
+    private static boolean encoderResetFlag = true;
 
     } // end class

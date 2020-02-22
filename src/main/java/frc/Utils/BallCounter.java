@@ -1,11 +1,12 @@
 package frc.Utils;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.Hardware.Hardware;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Code to count the balls stored inside the conveyor system for the 2020 season
- * 
+ *
  * @author Conner McKevitt
  */
 public class BallCounter
@@ -47,7 +48,7 @@ public class BallCounter
 
     /**
      * adds a ball based if button is pushed
-     * 
+     *
      * @param button
      *                   button to push
      */
@@ -81,7 +82,7 @@ public class BallCounter
 
     /**
      * subtracts from ballCount once the button is pushed
-     * 
+     *
      * @param button
      */
     public void subtractBall(JoystickButton button)
@@ -111,7 +112,7 @@ public class BallCounter
 
     /**
      * set the count to zero if both buttons are true
-     * 
+     *
      * @param button1
      * @param button2
      */
@@ -119,6 +120,7 @@ public class BallCounter
     {
         if (button1.get() && button2.get())
             {
+            Hardware.storage.setPrevIntakeRL(false);
             ballCount = 0;
             }
     }

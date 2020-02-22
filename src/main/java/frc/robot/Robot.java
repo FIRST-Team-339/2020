@@ -57,10 +57,14 @@ public class Robot extends TimedRobot
             Hardware.visionInterface.setMountingAngle(CURRENT_YEAR_MOUNTING_ANGLE);
             Hardware.conveyorMotor1.setInverted(false);
             Hardware.conveyorMotor2.setInverted(true);
+            Hardware.drive.setJoystickDeadband(0.2);
+            Hardware.climbEncoder.reset();
             }
         // Servo initial starting position
         // Hardware.rotateServo.setAngle(90);
         Hardware.cameraServo.setCameraAngleUp();
+        Hardware.hoodServo.setAngle(25);
+
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
