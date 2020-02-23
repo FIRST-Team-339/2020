@@ -178,7 +178,7 @@ public class Teleop
         //Hardware.launcherMotorGroup.set(.4);
         if (Hardware.launchButton.get())
             {
-            testRPM = 2800;
+            testRPM = 3800;
             // if (testRPM == 5000)
             //     {
             //     testRPM = 500;
