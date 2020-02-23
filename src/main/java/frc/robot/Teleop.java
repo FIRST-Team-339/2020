@@ -94,7 +94,6 @@ public class Teleop
         Hardware.intake.usingVisionIntake = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
-
     } // end Init
 
     /**
@@ -110,6 +109,8 @@ public class Teleop
     public static boolean testBoolean2 = false;
 
     private static boolean isShootClose = false;
+
+    private static double testRPM = 0;
 
     public static double timer = 2.0;
 
@@ -174,23 +175,39 @@ public class Teleop
 
         // override convyor movement
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
+        //Hardware.launcherMotorGroup.set(.4);
+        if (Hardware.launchButton.get())
+            {
+            testRPM = 2800;
+            // if (testRPM == 5000)
+            //     {
+            //     testRPM = 500;
+            //     }
+            }
+        Hardware.launcherMotorEncoder.setRPM(testRPM, Hardware.launcherMotorGroup);
+        System.out.println("RPM: " + Hardware.launcherMotorEncoder.getRPM());
+        System.out.println("wanted RPM: " + testRPM);
+        System.out.println("motor 1: " + Hardware.launcherMotor1.get());
+        System.out.println("motor 2: " + Hardware.launcherMotor2.get());
+        // System.out.println("motor ticks " + Hardware.launcherMotorEncoder.getRPM());
 
         // shoot balls
-        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
+        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
         //pick up balls with vision
         Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
 
         //intake controls
-        if (Hardware.intake.usingVisionIntake == false)
+        if (Hardware.intake.usingVisionIntake == false || !Hardware.pickupBallVisionButton.get())
             {
+            // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
             // intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
             // this is necessary becuase I organized the code wrong and its too late to
             // rewrite intake
             // makes conveyor stop if not intakeing or outtaking
-            Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton);
+            Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton, Hardware.launchButton);
             }
 
         //ball counter code==============================
@@ -283,7 +300,7 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-         //chrisTest();
+        //chrisTest();
         // dionTest();
         // chrisTest();
         // dionTest();
@@ -438,17 +455,17 @@ public class Teleop
          * Hardware.liftSolenoid.set(Value.kOff); }
          */
 
-         if(Hardware.rightOperator.getRawButton(11) == true){
-             Hardware.spinServo.set(.2);
-          }
-             else
-            Hardware.spinServo.set(1.0);
-       
-            if(Hardware.rightOperator.getRawButton(10) == true){
-            Hardware.spinServo.setAngle(0.0);
-        }
+        // if (Hardware.rightOperator.getRawButton(11) == true)
+        //     {
+        //     Hardware.spinServo.set(.2);
+        //     }
+        // else Hardware.spinServo.set(1.0);
 
-        
+        // if (Hardware.rightOperator.getRawButton(10) == true)
+        //     {
+        //     Hardware.spinServo.setAngle(0.0);
+        //     }
+
     }
 
     public static void patrickTest()

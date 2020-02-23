@@ -117,7 +117,6 @@ public class Hardware
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
 
-    public static Servo spinServo = new Servo(1);
     public static KilroyServo hoodServo = new KilroyServo(1, 180);
 
     public static KilroyServo climbServo = new KilroyServo(2, 180);
@@ -180,7 +179,7 @@ public class Hardware
 
         // ==============DIO INIT=============
 
-        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor1);
+        launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor2);
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
         // climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
@@ -436,7 +435,7 @@ public class Hardware
     public static LightSensor intakeRL = new LightSensor(21); // bottom
     public static LightSensor lowStoreRL = new LightSensor(22); // lower middle
 
-    public static LightSensor upStoreRL = new LightSensor(23); // upper middle
+    public static LightSensor upStoreRL = new LightSensor(23);// upper middle
     public static LightSensor firingRL = new LightSensor(24); // top
 
     public static SixPositionSwitch autoSixPosSwitch = new SixPositionSwitch(13, 14, 15, 16, 17, 18);

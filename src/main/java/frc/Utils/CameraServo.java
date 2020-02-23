@@ -41,21 +41,14 @@ public class CameraServo
     /**
     * sets the camera servo to the up position. Note: for use in auto otherwise use a button constructor
     *
-    * @param button button to push
+    *
     * @return is at up angle
     */
-    public boolean setCameraAngleUp()
+    public void setCameraAngleUp()
     {
-        if (Hardware.rotateServo.getAngle() >= UP_POSITION - ACCEPTABLE_OFFSET)
-            {
-            return true;
-            }
-        else
-            {
-            Hardware.rotateServo.setAngle(UP_POSITION);
-            }
-        //if servo is not at up position move up
-        return false;
+
+        Hardware.rotateServo.setAngle(UP_POSITION);
+
     }
 
     /**
@@ -87,18 +80,10 @@ public class CameraServo
     * @param button button to push
     * @return is at down angle
     */
-    public boolean setCameraAngleDown()
+    public void setCameraAngleDown()
     {
-        if (Hardware.rotateServo.getAngle() <= DOWN_POSITION + ACCEPTABLE_OFFSET)
-            {
-            return true;
-            }
-        else
-            {
-            Hardware.rotateServo.setAngle(DOWN_POSITION);
-            }
-        //if servo is not at down position move down
-        return false;
+        Hardware.rotateServo.setAngle(DOWN_POSITION);
+
     }
 
     //up angle

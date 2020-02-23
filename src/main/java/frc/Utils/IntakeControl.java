@@ -138,9 +138,9 @@ public class IntakeControl
      * @param intakeButton
      * @param outtakeButton
      */
-    public void makePassive(JoystickButton intakeButton, JoystickButton outtakeButton)
+    public void makePassive(JoystickButton intakeButton, JoystickButton outtakeButton, JoystickButton launchButton)
     {
-        if (!intakeButton.get() && !outtakeButton.get() && !intaking && !outtaking)
+        if (!intakeButton.get() && !outtakeButton.get() && !intaking && !outtaking && !launchButton.get())
             {
             this.undeployIntake();
             this.intakeMotor.set(PASSIVE_SPEED);

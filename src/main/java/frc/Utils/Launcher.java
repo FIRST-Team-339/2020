@@ -68,7 +68,7 @@ public class Launcher
             this.unchargeShooter();
             // }
             }
-        // System.out.println("shootState: " + shootState);
+        System.out.println("shootState: " + shootState);
         if (!overrideButton.get())
             {
             switch (shootState)
@@ -84,6 +84,7 @@ public class Launcher
                         {
                         shootingBalls = true;
                         Teleop.setDisableTeleOpDrive(true);
+                        Hardware.cameraServo.setCameraAngleUp();
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         // {
                         targetPosition = this.getClosestPosition();
@@ -132,7 +133,7 @@ public class Launcher
                         launcherReadyTemp = true;
                         }
 
-                    if (conveyorReadyTemp || Hardware.storage.prepareToShoot())
+                    if (Hardware.storage.prepareToShoot())
                         {
                         conveyorReadyTemp = true;
                         }
