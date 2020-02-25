@@ -183,12 +183,12 @@ public class Teleop
         //Hardware.launcherMotorGroup.set(.4);
         // if (Hardware.launchButton.get())
         //     {
-        //     testRPM = 3800;
-        //     // if (testRPM == 5000)
-        //     //     {
-        //     //     testRPM = 500;
-        //     //     }
+        //     testRPM = 3001;
+        // if (testRPM == 5000)
+        //     {
+        //     testRPM = 500;
         //     }
+        // }
         // Hardware.launcherMotorEncoder.setRPM(testRPM, Hardware.launcherMotorGroup);
         // System.out.println("RPM: " + Hardware.launcherMotorEncoder.getRPM());
         // System.out.println("wanted RPM: " + testRPM);
