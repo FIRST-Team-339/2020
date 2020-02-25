@@ -78,6 +78,7 @@ public class Teleop
             {
             Hardware.drive.setGearPercentage(0, PREV_YEAR_FIRST_GEAR);
             Hardware.drive.setGearPercentage(1, PREV_YEAR_SECOND_GEAR);
+            Hardware.drive.setGearPercentage(2, FORBIDDEN_GEAR_OUTSIDE_OF_TIME_AND_SPACE);
             Hardware.launcherMotorEncoder.reset();
             }
         else
@@ -94,6 +95,8 @@ public class Teleop
         Hardware.intake.usingVisionIntake = false;
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
+        System.out.println("end Auto Ball count: " + Robot.endAutoBallCount);
+        Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
     } // end Init
 
     /**
@@ -123,6 +126,7 @@ public class Teleop
     public static void periodic()
     {
 
+        //System.out.println("ball switch: " + Hardware.ballStart.isOn());
         // =============== AUTOMATED SUBSYSTEMS ===============
 
         Hardware.visionInterface.updateValues();
@@ -176,23 +180,23 @@ public class Teleop
         // override convyor movement
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
         //Hardware.launcherMotorGroup.set(.4);
-        if (Hardware.launchButton.get())
-            {
-            testRPM = 3800;
-            // if (testRPM == 5000)
-            //     {
-            //     testRPM = 500;
-            //     }
-            }
-        Hardware.launcherMotorEncoder.setRPM(testRPM, Hardware.launcherMotorGroup);
-        System.out.println("RPM: " + Hardware.launcherMotorEncoder.getRPM());
-        System.out.println("wanted RPM: " + testRPM);
-        System.out.println("motor 1: " + Hardware.launcherMotor1.get());
-        System.out.println("motor 2: " + Hardware.launcherMotor2.get());
-        // System.out.println("motor ticks " + Hardware.launcherMotorEncoder.getRPM());
+        // if (Hardware.launchButton.get())
+        //     {
+        //     testRPM = 3800;
+        //     // if (testRPM == 5000)
+        //     //     {
+        //     //     testRPM = 500;
+        //     //     }
+        //     }
+        // Hardware.launcherMotorEncoder.setRPM(testRPM, Hardware.launcherMotorGroup);
+        // System.out.println("RPM: " + Hardware.launcherMotorEncoder.getRPM());
+        // System.out.println("wanted RPM: " + testRPM);
+        // System.out.println("motor 1: " + Hardware.launcherMotor1.get());
+        // System.out.println("motor 2: " + Hardware.launcherMotor2.get());
+        // // System.out.println("motor ticks " + Hardware.launcherMotorEncoder.getRPM());
 
         // shoot balls
-        // Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
+        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
         //pick up balls with vision
         Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
@@ -203,6 +207,8 @@ public class Teleop
             // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
             // intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+
+            Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
             // this is necessary becuase I organized the code wrong and its too late to
             // rewrite intake
@@ -624,7 +630,7 @@ public class Teleop
 
     }
 
-    private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
+    private final static int PREV_YEAR_MAX_GEAR_NUMBER = 3;
 
     private final static int CURRENT_YEAR_MAX_GEAR_NUMBER = 2;
 
@@ -635,6 +641,8 @@ public class Teleop
     private final static double CURRENT_YEAR_FIRST_GEAR = .3;
 
     private final static double CURRENT_YEAR_SECOND_GEAR = .5;
+
+    private final static double FORBIDDEN_GEAR_OUTSIDE_OF_TIME_AND_SPACE = .9;
 
     private final static double LIFT_TRAVEL_DISTANCE = 0.0;
 

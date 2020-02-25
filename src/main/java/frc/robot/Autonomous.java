@@ -457,18 +457,9 @@ public static boolean runAuto ()
                         path = Path.ALIGN_TRENCH;
                         }
                     else
-                        if (exit == Exit.TURN_AND_FIRE)
-                            {
-                            // Continuation of Alinging trench, adding the
-                            // process of picking up those balls
-                            // and attepting to shoot, or alligning to shoot
-                            // again.
-                            path = Path.ALIGN_TRENCH;
-                            }
-                        else
-                            {
-                            path = Path.MOVE_BACKWARDS;
-                            }
+                        {
+                        path = Path.NOTHING;
+                        }
 
                 }
 
