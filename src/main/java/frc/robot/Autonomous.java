@@ -161,6 +161,7 @@ public class Autonomous
 
         Hardware.ballCounter.setBallCount(3);
         Hardware.cameraServo.setCameraAngleUp();
+        Hardware.launcher.resetShootTemps();
 
     } // end Init
 
@@ -272,11 +273,11 @@ public class Autonomous
 
                 if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
                     {
-                    Hardware.launcher.prepareToShoot(true, true);
+                    Hardware.launcher.prepareToShoot();
                     }
                 else if (shootingPlan == ShootingPlan.FAR && path != Path.NOTHING)
                     {
-                    Hardware.launcher.prepareToShoot(false, true);
+                    Hardware.launcher.prepareToShoot();
                     }
                 choosePath();
                 autoState = State.RUN;
@@ -316,18 +317,18 @@ public class Autonomous
     private static void choosePath()
     {
         // Statements to determine sates:
-        System.out.println("choos path");
+        System.out.println("choose path");
         switch (shootingPlan)
             {
             case CLOSE:
                 System.out.println("close");
                 path = Path.SHOOT_CLOSE;
-                Hardware.launcher.prepareToShoot(true, true);
+                Hardware.launcher.prepareToShoot();
                 break;
             case FAR:
                 System.out.println("far");
                 path = Path.SHOOT_FAR;
-                Hardware.launcher.prepareToShoot(false, true);
+                Hardware.launcher.prepareToShoot();
                 break;
             case NOTHING:
                 System.out.println("nothing");
@@ -399,7 +400,8 @@ public class Autonomous
                 break;
 
             case SHOOT_FAR:
-                Hardware.launcher.prepareToShoot(false, true);
+                // Hardware.launcher.prepareToShoot(false, true);
+                Hardware.launcher.prepareToShoot();
 
                 if (!hasShot)
                     {
@@ -441,7 +443,8 @@ public class Autonomous
 
             case SHOOT_CLOSE:
 
-                Hardware.launcher.prepareToShoot(true, true);
+                // Hardware.launcher.prepareToShoot(true, true);
+                Hardware.launcher.prepareToShoot();
                 // the action of moving closer before attempting to shoot in the
                 // goal
                 if (!hasShot)

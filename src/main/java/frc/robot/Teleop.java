@@ -93,6 +93,7 @@ public class Teleop
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
         Hardware.intake.usingVisionIntake = false;
+        Hardware.launcher.resetShootTemps();
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
         System.out.println("end Auto Ball count: " + Robot.endAutoBallCount);
@@ -134,7 +135,7 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
-        // System.out.println("gyro: " + Hardware.gyro.getAngle());
+        // System.out.println("distance: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // ================= OPERATOR CONTROLS ================
