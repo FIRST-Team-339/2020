@@ -70,7 +70,8 @@ public class Autonomous
         Hardware.drive.setGear(4);
 
         /*
-         * 2 pos switch Auto Swtich determines wether we will or will not run auto: if
+         * 2 pos switch Auto Swtich determines wether we will or will not run auto:
+         * if
          * position is off: dont run auto if position is on: auto will run
          */
         if (Hardware.autoSwitch.isOn() == false)
@@ -82,6 +83,17 @@ public class Autonomous
             {
 
             autoState = State.INIT;
+            }
+
+        if (Hardware.ballStart.isOn())
+            {
+            ball = ballStart.THREE;
+            Hardware.ballCounter.setBallCount(3);
+            }
+        else
+            {
+            ball = ballStart.ZERO;
+            Hardware.ballCounter.setBallCount(0);
             }
 
         /*
@@ -202,6 +214,13 @@ public class Autonomous
         ZERO, ONE, TWO, THREE, FOUR, FIVE, OFF
         }
 
+    private static enum ballStart
+        {
+        THREE, ZERO, EMPTY
+        }
+
+    public static ballStart ball = ballStart.EMPTY;
+
     private static ShootingPlan shootingPlan = ShootingPlan.NOTHING;
 
     public static Exit exit = Exit.NOTHING;
@@ -209,6 +228,7 @@ public class Autonomous
     public static Path path = Path.NOTHING;
 
     public static SixLocation sixLocation = SixLocation.OFF;
+
     public static Position position = Position.CENTER;
 
     public static enum State
@@ -218,48 +238,46 @@ public class Autonomous
 
     public static State autoState = State.INIT;
 
-    /**
-     * Description: constant looping function utilied to control the operations of
-     * the autonomous system. states handle function of initilizing, delay,
-     * starting, and finishing
-     *
-     *
-     * @return void
-     *
-     * @author Craig Kimball
-     * @written 2/17/2020
-     */
-    public static void periodic()
-    {
+/**
+ * Description: constant looping function utilied to control the operations of
+ * the autonomous system. states handle function of initilizing, delay,
+ * starting, and finishing
+ *
+ *
+ * @return void
+ *
+ * @author Craig Kimball
+ * @written 2/17/2020
+ */
+public static void periodic ()
+{
 
-        Hardware.visionInterface.updateValues();
-        Hardware.storage.storageControlState();
-        Hardware.storage.intakeStorageControl();
-        Hardware.intake.makePassive();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+    Hardware.visionInterface.updateValues();
+    Hardware.storage.storageControlState();
+    Hardware.storage.intakeStorageControl();
+    Hardware.intake.makePassive();
+    Hardware.visionInterface
+            .publishValues(Hardware.publishVisionSwitch);
 
-        switch (autoState)
-            {
+    switch (autoState)
+        {
 
-            case INIT:
+        case INIT:
 
-                Hardware.autoTimer.start();
+            Hardware.autoTimer.start();
 
-                autoState = State.DELAY;
-                break;
+            autoState = State.DELAY;
+            break;
 
-            case DELAY:
-                // System.out.println("AutoTimer: " + Hardware.autoTimer.get());
-                // System.out.println("Target: " + Hardware.delayPot.get(0, 5.0));
-                if (Hardware.autoTimer.get() > Hardware.delayPot.get(0, 5.0))
-                    {
+        case DELAY:
+            // System.out.println("AutoTimer: " + Hardware.autoTimer.get());
+            // System.out.println("Target: " + Hardware.delayPot.get(0, 5.0));
+            if (Hardware.autoTimer.get() > Hardware.delayPot.get(0,
+                    5.0))
+                {
 
-                    autoState = State.CHOOSE_PATH;
-                    Hardware.autoTimer.stop();
-
-                    }
-
-                break;
+                autoState = State.CHOOSE_PATH;
+                Hardware.autoTimer.stop();
 
             case CHOOSE_PATH:
                 // if (shootingPlan == ShootingPlan.CLOSE && path != Path.NOTHING)
@@ -279,32 +297,30 @@ public class Autonomous
                     {
                     Hardware.launcher.prepareToShoot();
                     }
-                choosePath();
-                autoState = State.RUN;
+            choosePath();
+            autoState = State.RUN;
 
-                break;
-            case RUN:
-                // System.out.println("In Run State");
-                if (runAuto())
-                    {
-                    autoState = State.FINISH;
-                    }
-                break;
-
-            case FINISH:
-                Hardware.launcher.unchargeShooter();
-
-                StorageControl.setStorageControlState(ControlState.PASSIVE);
-                Hardware.drive.drive(0, 0);
-                break;
-
-            default:
+            break;
+        case RUN:
+            // System.out.println("In Run State");
+            if (runAuto())
+                {
                 autoState = State.FINISH;
-                break;
+                }
+            break;
 
-            }
+        case FINISH:
+            Hardware.launcher.unchargeShooter();
 
-    }
+            StorageControl.setStorageControlState(ControlState.PASSIVE);
+            Hardware.drive.drive(0, 0);
+            break;
+
+        default:
+            autoState = State.FINISH;
+            break;
+
+        }
 
     /**
      * Description: sets the enum states and decides what paths to folllow
@@ -329,6 +345,37 @@ public class Autonomous
                 System.out.println("far");
                 path = Path.SHOOT_FAR;
                 Hardware.launcher.prepareToShoot();
+                break;
+            case NOTHING:
+                System.out.println("nothing");
+                path = Path.NOTHING;
+                autoState = State.FINISH;
+                break;
+            }
+
+    /**
+     * Description: sets the enum states and decides what paths to folllow
+     *
+     * @return void
+     *
+     * @author Craig Kimball
+     * @written 2/17/2020
+     */
+    private static void choosePath()
+    {
+        // Statements to determine sates:
+        System.out.println("choos path");
+        switch (shootingPlan)
+            {
+            case CLOSE:
+                System.out.println("close");
+                path = Path.SHOOT_CLOSE;
+                Hardware.launcher.prepareToShoot(true, true);
+                break;
+            case FAR:
+                System.out.println("far");
+                path = Path.SHOOT_FAR;
+                Hardware.launcher.prepareToShoot(false, true);
                 break;
             case NOTHING:
                 System.out.println("nothing");
@@ -372,64 +419,57 @@ public class Autonomous
             }
     }
 
-    /**
-     * Description: Execution of each auto function
-     *
-     * @return true when the auto path finishes
-     *
-     * @author Craig Kimball
-     * @written 2/17/2020
-     */
-    public static boolean runAuto()
-    {
-        // System.out.println("Exit: " + exit);
-        // System.out.println("Path: " + path);
-        // System.out.println("Location: " + position);
-        // System.out.println("6 Location: " + sixLocation);
+/**
+ * Description: Execution of each auto function
+ *
+ * @return true when the auto path finishes
+ *
+ * @author Craig Kimball
+ * @written 2/17/2020
+ */
+public static boolean runAuto ()
+{
+    // System.out.println("Exit: " + exit);
+    // System.out.println("Path: " + path);
+    // System.out.println("Location: " + position);
+    // System.out.println("6 Location: " + sixLocation);
 
-        // System.out.println(path);
-        switch (path)
-            {
+    // System.out.println(path);
+    switch (path)
+        {
 
-            case NOTHING:
+        case NOTHING:
 
-                // This will be for the insatnce where the robot is not a in a
-                // functioning state
-                // and auto paths are broken
-                autoState = State.FINISH;
-                break;
+            // This will be for the insatnce where the robot is not a in a
+            // functioning state
+            // and auto paths are broken
+            autoState = State.FINISH;
+            break;
 
             case SHOOT_FAR:
                 // Hardware.launcher.prepareToShoot(false, true);
                 Hardware.launcher.prepareToShoot();
 
-                if (!hasShot)
+            if (!hasShot)
+                {
+                if (shootFar())
                     {
-                    if (shootFar())
-                        {
-                        hasShot = true;
-                        }
+                    hasShot = true;
                     }
-                if (hasShot)
+                }
+            if (hasShot)
+                {
+                if (exit == Exit.ALIGN_SQUARE)
                     {
-                    if (exit == Exit.ALIGN_SQUARE)
-                        {
-                        // This is a function that works if the robot is aligned on
-                        // the left side
-                        path = Path.ALIGN_SQUARE;
-                        }
-                    else if (exit == Exit.ALIGN_TRENCH)
+                    // This is a function that works if the robot is aligned on
+                    // the left side
+                    path = Path.ALIGN_SQUARE;
+                    }
+                else
+                    if (exit == Exit.ALIGN_TRENCH)
                         {
                         // this is a function that works if the robot is aligned
                         // on the right side
-                        path = Path.ALIGN_TRENCH;
-                        }
-                    else if (exit == Exit.TURN_AND_FIRE)
-                        {
-                        // Continuation of Alinging trench, adding the
-                        // process of picking up those balls
-                        // and attepting to shoot, or alligning to shoot
-                        // again.
                         path = Path.ALIGN_TRENCH;
                         }
                     else
@@ -437,11 +477,11 @@ public class Autonomous
                         path = Path.NOTHING;
                         }
 
-                    }
+                }
 
-                break;
+            break;
 
-            case SHOOT_CLOSE:
+        case SHOOT_CLOSE:
 
                 // Hardware.launcher.prepareToShoot(true, true);
                 Hardware.launcher.prepareToShoot();
@@ -449,148 +489,149 @@ public class Autonomous
                 // goal
                 if (!hasShot)
                     {
-                    if (shootClose())
-                        {
-                        System.out.println("finished shoot close");
-                        hasShot = true;
-                        }
+                    System.out.println("finished shoot close");
+                    hasShot = true;
                     }
-                if (hasShot)
-                    {
+                }
+            if (hasShot)
+                {
 
-                    if (exit == Exit.ALIGN_SQUARE)
-                        {
-                        // This is a function that works if the robot is aligned on
-                        // the left side
-                        path = Path.ALIGN_SQUARE;
-                        }
-                    else if (exit == Exit.ALIGN_TRENCH)
+                if (exit == Exit.ALIGN_SQUARE)
+                    {
+                    // This is a function that works if the robot is aligned on
+                    // the left side
+                    path = Path.ALIGN_SQUARE;
+                    }
+                else
+                    if (exit == Exit.ALIGN_TRENCH)
                         {
                         // this is a function that works if the robot is aligned
                         // on the right side
                         path = Path.ALIGN_TRENCH;
                         }
-                    else if (exit == Exit.TURN_AND_FIRE)
-                        {
-                        // Continuation of Alinging trench, adding the
-                        // process of picking up those balls
-                        // and attepting to shoot, or alligning to shoot
-                        // again.
-                        path = Path.ALIGN_TRENCH;
-                        }
-                    else if (exit.equals(Exit.GET_OUT) || exit == Exit.GET_OUT)
-                        {
-
-                        // Move out of the way, staying close to goal to
-                        // retreive missed balls
-                        path = Path.GET_OUT;
-
-                        }
-                    }
-
-                break;
-
-            case MOVE_FORWARD:
-                // move in a straight line forwards
-                if (moveForward())
-                    {
-                    return true;
-                    }
-
-                break;
-
-            case MOVE_BACKWARDS:
-
-                if (moveBackward())
-                    {
-                    return true;
-                    }
-
-                break;
-
-            case DONT_MOVE:
-
-                break;
-
-            case GET_OUT:
-
-                if (getOut())
-                    {
-                    return true;
-                    }
-                break;
-
-            case ALIGN_SQUARE:
-                // aligning for center square to allign for balls
-                // robot is on left side or center
-
-                if (alignSquare())
-                    {
-                    return true;
-                    }
-                break;
-
-            case ALIGN_TRENCH:
-                // aligning for trench to allign for balls
-                // robot is on the right side or center
-
-                if (alignTrench())
-                    {
-
-                    // this statement determines wether we are picking up balls in the trenchs
-                    if (exit == Exit.TURN_AND_FIRE)
-                        {
-                        path = Path.PICKUP_TRENCH;
-                        }
                     else
-                        {
-                        return true;
-                        }
-                    }
-                break;
+                        if (exit == Exit.TURN_AND_FIRE)
+                            {
+                            // Continuation of Alinging trench, adding the
+                            // process of picking up those balls
+                            // and attepting to shoot, or alligning to shoot
+                            // again.
+                            path = Path.ALIGN_TRENCH;
+                            }
+                        else
+                            if (exit.equals(Exit.GET_OUT)
+                                    || exit == Exit.GET_OUT)
+                                {
 
-            case PICKUP_TRENCH:
-                Hardware.intake.deployIntake();
-                Hardware.cameraServo.setCameraAngleDown();
+                                // Move out of the way, staying close to goal to
+                                // retreive missed balls
+                                path = Path.GET_OUT;
 
-                if (pickupTrench())
+                                }
+                }
+
+            break;
+
+        case MOVE_FORWARD:
+            // move in a straight line forwards
+            if (moveForward())
+                {
+                return true;
+                }
+
+            break;
+
+        case MOVE_BACKWARDS:
+
+            if (moveBackward())
+                {
+                return true;
+                }
+
+            break;
+
+        case DONT_MOVE:
+
+            break;
+
+        case GET_OUT:
+
+            if (getOut())
+                {
+                return true;
+                }
+            break;
+
+        case ALIGN_SQUARE:
+            // aligning for center square to allign for balls
+            // robot is on left side or center
+
+            if (alignSquare())
+                {
+                return true;
+                }
+            break;
+
+        case ALIGN_TRENCH:
+            // aligning for trench to allign for balls
+            // robot is on the right side or center
+
+            if (alignTrench())
+                {
+
+                // this statement determines wether we are picking up balls in
+                // the trenchs
+                if (exit == Exit.TURN_AND_FIRE)
                     {
-                    Hardware.cameraServo.setCameraAngleUp();
-                    Hardware.intake.undeployIntake();
-                    // Continue to shoot again after pickup
-                    if (exit == Exit.TURN_AND_FIRE)
-                        {
-                        path = Path.TURN_AND_FIRE;
-                        }
-                    else
-                        {
-                        return true;
-                        }
-
+                    path = Path.PICKUP_TRENCH;
                     }
-                break;
-
-            case TURN_AND_FIRE:
-                System.out.println("IN TURN AND FIRE");
-                // final attempt to turn and shoot more balls from trench
-                if (turnFire())
+                else
                     {
                     return true;
                     }
-                break;
+                }
+            break;
 
-            default:
-                path = Path.NOTHING;
-                break;
+        case PICKUP_TRENCH:
+            Hardware.intake.deployIntake();
+            Hardware.cameraServo.setCameraAngleDown();
 
-            }
-        return false;
+            if (pickupTrench())
+                {
+                Hardware.cameraServo.setCameraAngleUp();
+                Hardware.intake.undeployIntake();
+                // Continue to shoot again after pickup
+                if (exit == Exit.TURN_AND_FIRE)
+                    {
+                    path = Path.TURN_AND_FIRE;
+                    }
+                else
+                    {
+                    return true;
+                    }
+
+                }
+            break;
+
+        case TURN_AND_FIRE:
+            System.out.println("IN TURN AND FIRE");
+            // final attempt to turn and shoot more balls from trench
+            if (turnFire())
+                {
+                return true;
+                }
+            break;
+
+        default:
+            path = Path.NOTHING;
+            break;
+
+        }return false;
     }
 
-    public static enum TurnAndFireState
-        {
-        DRIVE_BACK, TURN1, ALIGN, SHOOT, FINISH
-        }
+public static enum TurnAndFireState
+    {
+    DRIVE_BACK, TURN1, ALIGN, SHOOT, FINISH}
 
     public static TurnAndFireState turnAndFire = TurnAndFireState.DRIVE_BACK;
 
@@ -631,7 +672,8 @@ public class Autonomous
 
                 // System.out.println("Aligning");
 
-                if (Hardware.visionDriving.driveToTarget(216, true, .3))// 144, true, .3
+                if (Hardware.visionDriving.driveToTarget(216, true, .3))// 144,
+                                                                        // true, .3
                     {
 
                     // System.out.println("Aligned");
@@ -640,7 +682,7 @@ public class Autonomous
 
                 break;
             case SHOOT:
-                System.out.println("Shooting");
+
                 if (Hardware.launcher.shootBallsAuto(false))
                     {
                     turnAndFire = TurnAndFireState.FINISH;
@@ -722,7 +764,8 @@ public class Autonomous
     private static boolean alignTrench()
     {
         System.out.println("Trench State: " + trench);
-        // System.out.println("shootingPlan: " + Hardware.shootingPlan.getPosition());
+        // System.out.println("shootingPlan: " +
+        // Hardware.shootingPlan.getPosition());
         // System.out.println("Position: " + position);
 
         if (position == Position.RIGHT)
@@ -981,6 +1024,7 @@ public class Autonomous
                     }
 
                 break;
+
             case ALIGN:
 
                 if (Hardware.visionInterface.getHasTargets())
