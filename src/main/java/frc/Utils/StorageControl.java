@@ -87,7 +87,7 @@ public class StorageControl
                 break;
             case PASSIVE:
                 // if moving the conveyor is not being called set the motor to the holding speed
-                System.out.println("passive");
+                //System.out.println("passive");
                 if (!override)
                     {
                     this.conveyorMotors.set(HOLDING_SPEED);
@@ -179,6 +179,10 @@ public class StorageControl
                 setStorageControlState(ControlState.PASSIVE);
                 this.setPrevIntakeRL(false);
                 }
+            }
+        else if (Hardware.intake.outtaking == true)
+            {
+            setStorageControlState(ControlState.DOWN);
             }
         else if (Hardware.launchButton.get() == false)
             {

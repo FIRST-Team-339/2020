@@ -1,6 +1,7 @@
 package frc.Utils;
 
 import frc.Hardware.Hardware;
+import frc.Hardware.Hardware.yearIdentifier;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
 import frc.robot.Teleop;
@@ -68,7 +69,7 @@ public class Launcher
             this.unchargeShooter();
             // }
             }
-        System.out.println("shootState: " + shootState);
+        //  System.out.println("shootState: " + shootState);
         if (!overrideButton.get())
             {
             switch (shootState)
@@ -163,12 +164,9 @@ public class Launcher
         else
             {
             // override fire methods
-            if (this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
-                    this.firingMotors))
-                {
-                Hardware.storage.conveyorUp();
-                }
-
+            Hardware.storage.conveyorUp();
+            this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
+                    this.firingMotors);
             }
 
     }
@@ -215,11 +213,20 @@ public class Launcher
                 {
                 case CHARGE:
                     // sets the RPM and makes sure that the conveyor is correct
-                    Hardware.visionDriving.alignToTarget();
+                    // Hardware.visionDriving.alignToTarget();
 
-                    if (prepareToShoot(isClose, auto))
+                    this.moveRobotToPosition(this.getClosestPosition());
+                    if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
                         {
-                        // System.out.println("Setting Launcher");
+                        if (this.encoder.setRPM(
+                                this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()), firingMotors))
+                            {
+                            // System.out.println("Setting Launcher");
+                            launcherReadyTemp = true;
+                            }
+                        }
+                    else
+                        {
                         launcherReadyTemp = true;
                         }
                     // prepares the balls in the storage system
@@ -418,10 +425,18 @@ public class Launcher
         // {
         // aligned = true;
         // }
-
-        if (/* aligned && */spedUp || true)// TODO
+        if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
             {
-            // if everything is done return true
+            if (/* aligned && */spedUp)// TODO
+                {
+                // if everything is done return true
+                aligned = false;
+                spedUp = false;
+                return true;
+                }
+            }
+        else
+            {
             aligned = false;
             spedUp = false;
             return true;
@@ -627,7 +642,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
 
-        System.out.println("move state: " + moveState);
+        //  System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:
@@ -640,16 +655,16 @@ public class Launcher
                 Hardware.visionInterface.updateValues();
                 farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
                 closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
-                if (Math.abs(farOffset) < 10 || Math.abs(closeOffset) < 10)
+                if (Math.abs(farOffset) < MOVE_DISTANCE_DEADBAND || Math.abs(closeOffset) < MOVE_DISTANCE_DEADBAND)
                     {
                     this.moveState = MoveState.INIT;
                     Hardware.drive.drive(0, 0);
                     return true;
                     }
-                SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
+                // SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
 
-                SmartDashboard.putNumber("distance to target distance",
-                        Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE);
+                // SmartDashboard.putNumber("distance to target distance",
+                //         Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE);
                 // drive straight the the proper distance
                 if (position == Position.FAR)
                     {
@@ -746,7 +761,7 @@ public class Launcher
     // if called in teleop
     private boolean teleop = false;
 
-    private static final double MOVE_DISTANCE_DEADBAND = 10;
+    private static final double MOVE_DISTANCE_DEADBAND = 12;
     // far RPM to 2020 shooter
     private static final double RPM_FAR_2020 = 3500;
 
@@ -760,7 +775,7 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .35;//TODO
+    private static final double DRIVE_STRAIGHT_SPEED = .3;//TODO
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;

@@ -177,6 +177,7 @@ public class Robot extends TimedRobot
         Hardware.intake.makePassive();
         StorageControl.setStorageControlState(ControlState.PASSIVE);
 
+        endAutoBallCount = Hardware.ballCounter.getBallCount();
         // ---------------------------------------
         // done setup - tell the user we are complete
         // setup
@@ -273,6 +274,7 @@ public class Robot extends TimedRobot
         Teleop.periodic();
     } // end testPeriodic()
 
+    public static int endAutoBallCount = 0;
     private final double PREV_YEAR_CAMERA_HEIGHT = 34.25;
     private final double PREV_YEAR_TARGET_HEIGHT = 83.7;
     private final double PREV_YEAR_MOUNTING_ANGLE = 35;

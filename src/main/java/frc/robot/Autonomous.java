@@ -432,7 +432,7 @@ public class Autonomous
                         }
                     else
                         {
-                        path = Path.MOVE_BACKWARDS;
+                        path = Path.NOTHING;
                         }
 
                     }
