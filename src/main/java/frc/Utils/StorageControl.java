@@ -78,6 +78,11 @@ public class StorageControl
             prevRL = false;
             }
 
+        // System.out.println("conveyor state: " + state);
+        // System.out.println("intake: " + this.intakeRL.get());
+        // System.out.println("shoot: " + this.shootRL.get());
+        // System.out.println("lower: " + this.lowerRL.get());
+        // System.out.println("upper: " + this.upperRL.get());
         // main state machine to control the movement of the conveyor
         switch (state)
             {

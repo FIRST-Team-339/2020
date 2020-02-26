@@ -92,12 +92,16 @@ public class Teleop
 
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
+
         Hardware.intake.usingVisionIntake = false;
+
         Hardware.launcher.resetShootTemps();
+
         StorageControl.setStorageControlState(ControlState.PASSIVE);
+
         Hardware.cameraServo.setCameraAngleUp();
-        System.out.println("end Auto Ball count: " + Robot.endAutoBallCount);
-        Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
+        // System.out.println("end Auto Ball count: " + Robot.endAutoBallCount);
+
     } // end Init
 
     /**
@@ -124,10 +128,22 @@ public class Teleop
 
     private static boolean disableTeleOpDrive = false;
 
+    private static boolean firstRun = true;
+    private static boolean secondRun = false;
+
     public static void periodic()
     {
 
-        //System.out.println("ball switch: " + Hardware.ballStart.isOn());
+        if (secondRun == true)
+            {
+            Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
+            }
+        if (firstRun == true)
+            {
+
+            secondRun = true;
+            firstRun = false;
+            }
         // =============== AUTOMATED SUBSYSTEMS ===============
 
         Hardware.visionInterface.updateValues();
@@ -135,7 +151,12 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
-        // System.out.println("distance: " + Hardware.gyro.getAngle());
+        SmartDashboard.putBoolean("auto switch: ", Hardware.autoSwitch.isOn());
+        SmartDashboard.putString("auto location: ", Hardware.autoLocation.getPosition().toString());
+
+        SmartDashboard.putNumber("six position: ", Hardware.autoSixPosSwitch.getPosition());
+        SmartDashboard.putBoolean("ball switch ", Hardware.ballStart.isOn());
+        SmartDashboard.putString("farclo", Hardware.shootingPlan.getPosition().toString());
         // end control loops ==========================
 
         // ================= OPERATOR CONTROLS ================
@@ -180,7 +201,7 @@ public class Teleop
 
         // override convyor movement
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
-        //Hardware.launcherMotorGroup.set(.4);
+        // Hardware.launcherMotorGroup.set(.4);
         // if (Hardware.launchButton.get())
         //     {
         //     testRPM = 3001;
