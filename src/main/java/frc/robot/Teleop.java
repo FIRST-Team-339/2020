@@ -164,6 +164,7 @@ public class Teleop
         // ================= COLORWHEEL CONTROLS ==============
         // Press Right Operator button 4 to start manual spin. Press again to stop
         // manual spin
+        System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
         // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
         if (Hardware.wheelManualSpinButton.get())
@@ -184,6 +185,7 @@ public class Teleop
             Hardware.colorWheel.setNumberOfSpins(2);
             // To change the speed
             Hardware.colorWheel.setSpeed(.65);
+            // To enable spinControlPanel to
             Hardware.colorWheel.start();
             }
         Hardware.colorWheel.spinControlPanel();
@@ -194,8 +196,9 @@ public class Teleop
             {
             // To change the speed
             Hardware.colorWheel.setSpeed(.4);
-            Hardware.colorWheel.spinControlPanelToColor();
+            Hardware.colorWheel.colorStart();
             }
+        Hardware.colorWheel.spinControlPanelToColor();
 
         // ================== DRIVER CONTROLS =================
 
