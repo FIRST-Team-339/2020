@@ -252,7 +252,7 @@ public class Teleop
             teleopDrive();
             }
 
-        // individualTest();
+         individualTest();
         // printStatements();
     } // end Periodic()
 
@@ -309,7 +309,7 @@ public class Teleop
         // craigTest();
         //chrisTest();
         // dionTest();
-        // chrisTest();
+         chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();
@@ -435,12 +435,7 @@ public class Teleop
     public static void chrisTest()
     {
 
-        if(Hardware.leftDriver.getRawButton(10) == true){
-            Hardware.testServo.set(1.0);
-        }
-        if(Hardware.leftDriver.getRawButton(10) == true){
-            Hardware.testServo.set(.5);
-        }
+        
         /*
          * double timer = 2;
          *
