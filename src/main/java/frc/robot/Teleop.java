@@ -93,6 +93,7 @@ public class Teleop
         Hardware.intake.intaking = false;
         Hardware.intake.outtaking = false;
         Hardware.intake.usingVisionIntake = false;
+        Hardware.launcher.resetShootTemps();
         StorageControl.setStorageControlState(ControlState.PASSIVE);
         Hardware.cameraServo.setCameraAngleUp();
         System.out.println("end Auto Ball count: " + Robot.endAutoBallCount);
@@ -134,7 +135,7 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
-        // System.out.println("gyro: " + Hardware.gyro.getAngle());
+        // System.out.println("distance: " + Hardware.gyro.getAngle());
         // end control loops ==========================
 
         // ================= OPERATOR CONTROLS ================
@@ -185,12 +186,12 @@ public class Teleop
         //Hardware.launcherMotorGroup.set(.4);
         // if (Hardware.launchButton.get())
         //     {
-        //     testRPM = 3800;
-        //     // if (testRPM == 5000)
-        //     //     {
-        //     //     testRPM = 500;
-        //     //     }
+        //     testRPM = 3001;
+        // if (testRPM == 5000)
+        //     {
+        //     testRPM = 500;
         //     }
+        // }
         // Hardware.launcherMotorEncoder.setRPM(testRPM, Hardware.launcherMotorGroup);
         // System.out.println("RPM: " + Hardware.launcherMotorEncoder.getRPM());
         // System.out.println("wanted RPM: " + testRPM);

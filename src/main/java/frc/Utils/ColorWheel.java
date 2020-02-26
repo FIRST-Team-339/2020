@@ -175,6 +175,12 @@ public class ColorWheel
 
     }
 
+    /**
+     * This method will reset the motor encoder and set a boolean to true that will allow the wheel to start spinning
+     *
+     * @Author Dion Marchant
+     * @Written February 25, 2020
+     */
     public void start()
     {
         this.motorEncoder.reset();
