@@ -427,6 +427,13 @@ public class Teleop
 
     public static void chrisTest()
     {
+
+        if(Hardware.leftDriver.getRawButton(10) == true){
+            Hardware.testServo.set(1.0);
+        }
+        if(Hardware.leftDriver.getRawButton(10) == true){
+            Hardware.testServo.set(.5);
+        }
         /*
          * double timer = 2;
          *
@@ -454,18 +461,6 @@ public class Teleop
          * Hardware.telopTimer.reset(); Hardware.liftSolenoid.set(Value.kReverse);
          * Hardware.liftSolenoid.set(Value.kOff); }
          */
-
-        // if (Hardware.rightOperator.getRawButton(11) == true)
-        //     {
-        //     Hardware.spinServo.set(.2);
-        //     }
-        // else Hardware.spinServo.set(1.0);
-
-        // if (Hardware.rightOperator.getRawButton(10) == true)
-        //     {
-        //     Hardware.spinServo.setAngle(0.0);
-        //     }
-
     }
 
     public static void patrickTest()

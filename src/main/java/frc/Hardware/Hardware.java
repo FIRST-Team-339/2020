@@ -112,7 +112,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
@@ -121,6 +121,7 @@ public class Hardware
 
     public static KilroyServo climbServo = new KilroyServo(2, 180);
 
+    public static Servo testServo = new Servo(3);
     /**********************************************
     * initializePrevYear() function initializes all Hardware items that are
     * REQUIRED for this year
