@@ -178,7 +178,16 @@ public class Launcher
 
     public ShootStateBasic shootStateBasic = ShootStateBasic.PASSIVE;
 
-    // enum for shooting in autp
+    // enum for shooting in auto
+
+    enum ShootPosition
+
+        {
+        FAR, FARTHER
+        }
+
+    ShootPosition shootPosition = ShootPosition.FAR;
+
     private enum ShootStateAuto
         {
         CHARGE, LAUNCH, FINISH
@@ -213,9 +222,9 @@ public class Launcher
                 {
                 case CHARGE:
                     // sets the RPM and makes sure that the conveyor is correct
-                    // Hardware.visionDriving.alignToTarget();
+                    Hardware.visionDriving.alignToTarget();
 
-                    this.moveRobotToPosition(this.getClosestPosition());
+                    //TODO
                     if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
                         {
                         if (this.encoder.setRPM(
@@ -277,6 +286,14 @@ public class Launcher
         return false;
     }
 
+    public void resetShootTemps()
+    {
+        positionReadyTemp = false;
+        launcherReadyTemp = false;
+        conveyorReadyTemp = false;
+        hoodReadyTemp = false;
+    }
+
     // stores if the launcher is at speed
     public boolean spedUp = false;
     // stores is aligned by vision
@@ -290,6 +307,7 @@ public class Launcher
      * @param position
      *                     wanted position
      * @param inAuto
+     * @deprecated
      *                     is in AUto
      */
     public boolean prepareToShoot(Position position, boolean inAuto)
@@ -453,6 +471,7 @@ public class Launcher
      * @param inAuto
      *                    is in auto
      * @return
+     * @deprecated
      */
     public boolean prepareToShoot(boolean isClose, boolean inAuto)
     {
@@ -633,6 +652,8 @@ public class Launcher
 
     MoveState moveState = MoveState.ALIGN;
 
+    double distanceFromTarget;
+
     /**
      * Move the robot to the closest shootin position either close or far.
      *
@@ -653,8 +674,10 @@ public class Launcher
                 break;
             case DRIVE:
                 Hardware.visionInterface.updateValues();
-                farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
-                closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
+                distanceFromTarget = Hardware.visionInterface.getDistanceFromTarget();
+                farOffset = distanceFromTarget - FAR_DISTANCE;
+                closeOffset = distanceFromTarget - CLOSE_DISTANCE;
+
                 if (Math.abs(farOffset) < MOVE_DISTANCE_DEADBAND || Math.abs(closeOffset) < MOVE_DISTANCE_DEADBAND)
                     {
                     this.moveState = MoveState.INIT;
@@ -761,7 +784,7 @@ public class Launcher
     // if called in teleop
     private boolean teleop = false;
 
-    private static final double MOVE_DISTANCE_DEADBAND = 12;
+    private static final double MOVE_DISTANCE_DEADBAND = 10;
     // far RPM to 2020 shooter
     private static final double RPM_FAR_2020 = 3500;
 
