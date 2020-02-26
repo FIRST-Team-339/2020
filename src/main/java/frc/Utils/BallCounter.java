@@ -19,7 +19,7 @@ public class BallCounter
             this.timer = timer;
         }
 
-    private int ballCount = 0;
+    private static int ballCount = 0;
 
     /**
      *
@@ -74,6 +74,7 @@ public class BallCounter
      */
     public void subtractBall()
     {
+        System.out.println("subtracting ball");
         if (ballCount > MIN_BALLS)
             {
             ballCount--;

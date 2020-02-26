@@ -18,7 +18,6 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.util.Color;
-import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.KilroyEncoder;
 
 // -------------------------------------------------------
@@ -59,23 +58,25 @@ public class ColorWheel
         this.speed = s;
     }
 
+    // Gets Number of times the color wheel will spin
     public double getNumberOfSpins()
     {
         return this.numberOfSpins;
     }
 
-    // Sets speed of wheelSpinnerMotor
+    // Sets Number of times the color wheel will spin
     public void setNumberOfSpins(double n)
     {
         this.numberOfSpins = n;
     }
 
+    // Gets the circumference of the color wheel
     public double getCircumference()
     {
         return this.circumference;
     }
 
-    // Sets speed of wheelSpinnerMotor
+    // Sets the circumference of the color wheel
     public void setCircumference(double c)
     {
         this.circumference = c;
@@ -129,6 +130,13 @@ public class ColorWheel
         return "";
     }
 
+    /**
+    *This method is used with a button to allow the motor to be spun manual
+    * @method manualSpin
+    * @author Guido Visioni
+    * @written February 25, 2020
+    *          -------------------------------------------------------
+    */
     public void manualSpin()
     {
         this.motor.set(.2);
@@ -155,8 +163,8 @@ public class ColorWheel
             {
             if (this.motorEncoder.getDistance() > this.numberOfSpins * this.circumference)
                 {
+                firstIteration = false;
                 this.motor.set(0);
-                encoderReset = true;
                 }
             else
                 {
@@ -167,10 +175,21 @@ public class ColorWheel
 
     }
 
+    /**
+     * This method will reset the motor encoder and set a boolean to true that will allow the wheel to start spinning
+     *
+     * @Author Dion Marchant
+     * @Written February 25, 2020
+     */
     public void start()
     {
         this.motorEncoder.reset();
         firstIteration = true;
+    }
+
+    public void colorStart()
+    {
+        timeToStopColorAlign = false;
     }
 
     /**
@@ -193,9 +212,7 @@ public class ColorWheel
         colorMatcher.addColorMatch(kYellowTarget);
 
         this.match = colorMatcher.matchClosestColor(detectedColor);
-        // When the sensor detects a color it returns a string that represents the
-        // color under the control panel sensor. Sets colorString equal to 1 of the
-        // 4 colors.
+        // When the sensor detects a color it returns a string that represents the color under the control panel sensor. Sets colorString equal to 1 of the 4 colors.
         if (match.color == kBlueTarget)
             {
             colorString = "Y";
@@ -217,19 +234,21 @@ public class ColorWheel
             colorString = "Unknown";
             }
 
-        // Check to see if the color under the field sensor is the same as the FMS
-        // color data
-        if (colorString == spinColor)
+        if (timeToStopColorAlign == false)
             {
-            this.motor.set(0);
-            return true;
+            // Check to see if the color under the field sensor is the same as the FMS color data
+            if (colorString == spinColor)
+                {
+                this.motor.set(0);
+                timeToStopColorAlign = true;
+                return true;
+                }
+            else
+                {
+                // Spin motor until specified distance has been reached
+                this.motor.set(this.speed);
+                }
             }
-        else
-            {
-            // Spin motor until specified distance has been reached
-            this.motor.set(this.speed);
-            }
-
         return false;
     }
 
@@ -245,7 +264,7 @@ public class ColorWheel
 
     private ColorMatchResult match = null;
 
-    private boolean encoderReset = true;
+    private boolean timeToStopColorAlign = true;
 
     private boolean firstIteration = false;
 
