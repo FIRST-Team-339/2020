@@ -1,6 +1,7 @@
 package frc.Utils;
 
 import frc.Hardware.Hardware;
+import frc.Hardware.Hardware.yearIdentifier;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.LightSensor;
 import frc.robot.Teleop;
@@ -68,7 +69,7 @@ public class Launcher
             this.unchargeShooter();
             // }
             }
-        System.out.println("shootState: " + shootState);
+        //  System.out.println("shootState: " + shootState);
         if (!overrideButton.get())
             {
             switch (shootState)
@@ -163,12 +164,9 @@ public class Launcher
         else
             {
             // override fire methods
-            if (this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
-                    this.firingMotors))
-                {
-                Hardware.storage.conveyorUp();
-                }
-
+            Hardware.storage.conveyorUp();
+            this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
+                    this.firingMotors);
             }
 
     }
@@ -180,7 +178,16 @@ public class Launcher
 
     public ShootStateBasic shootStateBasic = ShootStateBasic.PASSIVE;
 
-    // enum for shooting in autp
+    // enum for shooting in auto
+
+    enum ShootPosition
+
+        {
+        FAR, FARTHER
+        }
+
+    ShootPosition shootPosition = ShootPosition.FAR;
+
     private enum ShootStateAuto
         {
         CHARGE, LAUNCH, FINISH
@@ -217,9 +224,18 @@ public class Launcher
                     // sets the RPM and makes sure that the conveyor is correct
                     Hardware.visionDriving.alignToTarget();
 
-                    if (prepareToShoot(isClose, auto))
+                    //TODO
+                    if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
                         {
-                        // System.out.println("Setting Launcher");
+                        if (this.encoder.setRPM(
+                                this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()), firingMotors))
+                            {
+                            // System.out.println("Setting Launcher");
+                            launcherReadyTemp = true;
+                            }
+                        }
+                    else
+                        {
                         launcherReadyTemp = true;
                         }
                     // prepares the balls in the storage system
@@ -270,6 +286,14 @@ public class Launcher
         return false;
     }
 
+    public void resetShootTemps()
+    {
+        positionReadyTemp = false;
+        launcherReadyTemp = false;
+        conveyorReadyTemp = false;
+        hoodReadyTemp = false;
+    }
+
     // stores if the launcher is at speed
     public boolean spedUp = false;
     // stores is aligned by vision
@@ -283,6 +307,7 @@ public class Launcher
      * @param position
      *                     wanted position
      * @param inAuto
+     * @deprecated
      *                     is in AUto
      */
     public boolean prepareToShoot(Position position, boolean inAuto)
@@ -418,10 +443,18 @@ public class Launcher
         // {
         // aligned = true;
         // }
-
-        if (/* aligned && */spedUp || true)// TODO
+        if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
             {
-            // if everything is done return true
+            if (/* aligned && */spedUp)// TODO
+                {
+                // if everything is done return true
+                aligned = false;
+                spedUp = false;
+                return true;
+                }
+            }
+        else
+            {
             aligned = false;
             spedUp = false;
             return true;
@@ -438,6 +471,7 @@ public class Launcher
      * @param inAuto
      *                    is in auto
      * @return
+     * @deprecated
      */
     public boolean prepareToShoot(boolean isClose, boolean inAuto)
     {
@@ -618,6 +652,8 @@ public class Launcher
 
     MoveState moveState = MoveState.ALIGN;
 
+    double distanceFromTarget;
+
     /**
      * Move the robot to the closest shootin position either close or far.
      *
@@ -627,7 +663,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
 
-        System.out.println("move state: " + moveState);
+        //  System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:
@@ -638,18 +674,20 @@ public class Launcher
                 break;
             case DRIVE:
                 Hardware.visionInterface.updateValues();
-                farOffset = Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE;
-                closeOffset = Hardware.visionInterface.getDistanceFromTarget() - CLOSE_DISTANCE;
-                if (Math.abs(farOffset) < 10 || Math.abs(closeOffset) < 10)
+                distanceFromTarget = Hardware.visionInterface.getDistanceFromTarget();
+                farOffset = distanceFromTarget - FAR_DISTANCE;
+                closeOffset = distanceFromTarget - CLOSE_DISTANCE;
+
+                if (Math.abs(farOffset) < MOVE_DISTANCE_DEADBAND || Math.abs(closeOffset) < MOVE_DISTANCE_DEADBAND)
                     {
                     this.moveState = MoveState.INIT;
                     Hardware.drive.drive(0, 0);
                     return true;
                     }
-                SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
+                // SmartDashboard.putNumber("distance from target", Hardware.visionInterface.getDistanceFromTarget());
 
-                SmartDashboard.putNumber("distance to target distance",
-                        Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE);
+                // SmartDashboard.putNumber("distance to target distance",
+                //         Hardware.visionInterface.getDistanceFromTarget() - FAR_DISTANCE);
                 // drive straight the the proper distance
                 if (position == Position.FAR)
                     {
@@ -760,7 +798,7 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .35;//TODO
+    private static final double DRIVE_STRAIGHT_SPEED = .3;//TODO
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
