@@ -155,8 +155,9 @@ public class LimelightDriveWithVision
     }
 
     /**
-     * TODO function. Will align to the target but not drive towards it
+     * aligns to the target with out driving
      *
+     * @return boolean if within deadband
      */
     public boolean alignToTarget()
     {

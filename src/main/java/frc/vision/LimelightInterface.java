@@ -312,8 +312,7 @@ public class LimelightInterface
     // 3 on
 
     /**
-     * sets the led mode of the limelight. This is TODO as it has yet to be tested
-     * TODO return number with an enum and forgo the switch
+     * sets the led mode of the limelight.
      *
      * @param ledMode
      *                    0 =pipleline control 1 = off 2 = blink 3 = on
@@ -355,8 +354,7 @@ public class LimelightInterface
     // 1 driver camera
 
     /**
-     * sets the camera mode for the limelight. TODO, this has been written but has
-     * yet to be tested
+     * sets the camera mode for the limelight.
      *
      * TODO return number with an enum and forgo the switch
      *
@@ -581,7 +579,6 @@ public class LimelightInterface
 
     private double mountingAngle = 0;
 
-    // TODO make patrick comment
     private boolean buttonHasBeenPressed = false;
     private boolean hasButtonBeenPressed = false;
     }

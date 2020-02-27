@@ -121,7 +121,7 @@ public class Launcher
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
                     // launcherReadyTemp = true;
-                    // }//TODO
+                    // }
 
                     if (this.prepareToShoot())
                         {
@@ -218,7 +218,6 @@ public class Launcher
                     // sets the RPM and makes sure that the conveyor is correct
                     Hardware.visionDriving.alignToTarget();
 
-                    //TODO
                     if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
                         {
                         if (this.encoder.setRPM(
@@ -747,7 +746,7 @@ public class Launcher
     }
 
     /**
-     * return the RPM to set based off distance recieved from the camera TODO
+     * return the RPM to set based off distance recieved from the camera
      *
      * @param distance
      * @return
@@ -774,9 +773,6 @@ public class Launcher
 
     // if called in auto
     private boolean auto = true;
-
-    // if called in teleop
-    private boolean teleop = false;
 
     private static final double MOVE_DISTANCE_DEADBAND = 10;
     // far RPM to 2020 shooter
