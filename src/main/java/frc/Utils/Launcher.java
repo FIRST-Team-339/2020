@@ -61,6 +61,7 @@ public class Launcher
             this.shootState = ShootState.PASSIVE;
             this.moveState = MoveState.INIT;
             this.unchargeShooter();
+            Hardware.storage.resetLoadValues();
             // }
             }
         //  System.out.println("shootState: " + shootState);

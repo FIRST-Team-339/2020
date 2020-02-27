@@ -82,7 +82,6 @@ public class Teleop
         StorageControl.setStorageControlState(ControlState.PASSIVE);
 
         Hardware.cameraServo.setCameraAngleUp();
-        // System.out.println("end Auto Ball count: " + Robot.endAutoBallCount);
 
     } // end Init
 
@@ -111,8 +110,6 @@ public class Teleop
 
     public static void periodic()
     {
-
-        Hardware.cameraServo.setCameraAngleDown();
 
         SmartDashboard.putNumber("six position", Hardware.autoSixPosSwitch.getPosition());
         SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.isOn());

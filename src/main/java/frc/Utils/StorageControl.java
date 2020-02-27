@@ -323,6 +323,16 @@ public class StorageControl
     boolean stillShooting = false;
     boolean prevShootRL = false;
 
+    // if a balls has been shot
+    private static boolean shotBall = false;
+
+    public void resetLoadValues()
+    {
+        stillShooting = false;
+        prevShootRL = false;
+        shotBall = false;
+    }
+
     /**
      * this moves the ball into the launcher essentially shooting to the ball
      *
@@ -451,8 +461,6 @@ public class StorageControl
         return (state);
     }
 
-    // if a balls has been shot
-    private static boolean shotBall = false;
     // store info on the previous state of an RL
     private static boolean prevRL = false;
 
