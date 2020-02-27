@@ -3,13 +3,7 @@ package frc.Utils;
 import frc.Hardware.Hardware;
 import frc.Hardware.Hardware.yearIdentifier;
 import frc.HardwareInterfaces.KilroyEncoder;
-import frc.HardwareInterfaces.LightSensor;
 import frc.robot.Teleop;
-
-import java.nio.charset.CharacterCodingException;
-import java.util.Timer;
-
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

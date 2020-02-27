@@ -105,12 +105,12 @@ public class StorageControl
                 break;
             case UP:
                 // move up towards launcher
-                System.out.println("conveyor up");
+                // System.out.println("conveyor up");
                 conveyorUp();
                 break;
             // move down towards intake
             case DOWN:
-                System.out.println("down in Control State");
+                // System.out.println("down in Control State");
                 conveyorDown();
                 break;
             default:
@@ -270,7 +270,7 @@ public class StorageControl
      */
     public boolean prepareToShoot()
     {
-        SmartDashboard.putString("prepare conveoyr", shootState.toString());
+        // SmartDashboard.putString("prepare conveoyr", shootState.toString());
 
         if (Hardware.ballCounter.getBallCount() > 0)
             {
@@ -285,10 +285,10 @@ public class StorageControl
                     // System.out.println("shoot RL" + this.shootRL.get());
                     // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
                     // moved into the rotating shooter
-                    System.out.println("shoot RL: " + this.shootRL.get());
+                    // System.out.println("shoot RL: " + this.shootRL.get());
                     if (this.shootRL.get() && !preparedToFire)
                         {
-                        System.out.println("got shoot rl");
+                        // System.out.println("got shoot rl");
                         // balls is ready to shoot
                         preparedToFire = true;
                         // stop conveyor
@@ -349,17 +349,17 @@ public class StorageControl
             // if prepared to fire as notified true
             if (preparedToFire)
                 {
-                System.out.println("loading");
+                // System.out.println("loading");
                 // if ball is proprer shoot position this is a second check
                 if (this.shootRL.get() || prevShootRL == true)
                     {
                     prevShootRL = true;
-                    System.out.println("shooting ball");
+                    // System.out.println("shooting ball");
                     // move ball up into the launcher
                     setStorageControlState(ControlState.UP);
                     if (!stillShooting)
                         {
-                        System.out.println("subtract in load to fire");
+                        // System.out.println("subtract in load to fire");
                         Hardware.ballCounter.subtractBall();
                         // extra check to see if there are balls left to continue the further states
                         if (Hardware.ballCounter.getBallCount() == 0)

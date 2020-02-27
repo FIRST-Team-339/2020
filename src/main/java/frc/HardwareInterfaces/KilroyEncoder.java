@@ -2,24 +2,13 @@ package frc.HardwareInterfaces;
 
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 // import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PIDSource;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.CANCoderFaults;
-import com.ctre.phoenix.sensors.CANCoderStickyFaults;
-import com.ctre.phoenix.sensors.MagnetFieldStrength;
-
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -278,10 +267,6 @@ public class KilroyEncoder implements PIDSource
     } // end getDistancePerPulse
 
     private boolean firstRun = true;
-
-    private double lastRevs = 0;
-
-    private double lastTicks = .01;
 
     private static Timer encoderTimer = new Timer();
 

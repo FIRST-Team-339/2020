@@ -30,29 +30,11 @@
 package frc.robot;
 
 //import frc.HardwareInterfaces.KilroyColorSensor;
-import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
-
-import edu.wpi.cscore.MjpegServer;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Timer;
 import frc.Hardware.Hardware;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
-import frc.robot.Autonomous.pickupTrenchState;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.I2C;
 // import com.revrobotics.ColorSensorV3;
-import com.revrobotics.ColorMatchResult;
-
-import com.ctre.phoenix.CANifier.LEDChannel;
-import com.revrobotics.ColorMatch;
 
 /**
  * This class contains all of the user code for the Autonomous part of the
@@ -116,10 +98,6 @@ public class Teleop
 
     public static boolean testBoolean2 = false;
 
-    private static boolean isShootClose = false;
-
-    private static double testRPM = 0;
-
     public static double timer = 2.0;
 
     public static double timeDown = .5;
@@ -134,13 +112,20 @@ public class Teleop
     public static void periodic()
     {
 
+        Hardware.cameraServo.setCameraAngleDown();
+
+        SmartDashboard.putNumber("six position", Hardware.autoSixPosSwitch.getPosition());
+        SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.isOn());
+        SmartDashboard.putBoolean("lower RL", Hardware.lowStoreRL.isOn());
+        SmartDashboard.putBoolean("upper RL", Hardware.upStoreRL.isOn());
+        SmartDashboard.putBoolean("intake RL", Hardware.firingRL.isOn());
+
         if (secondRun == true)
             {
             Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
             }
         if (firstRun == true)
             {
-
             secondRun = true;
             firstRun = false;
             }
@@ -164,7 +149,7 @@ public class Teleop
         // ================= COLORWHEEL CONTROLS ==============
         // Press Right Operator button 4 to start manual spin. Press again to stop
         // manual spin
-        System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
+        // System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
         // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
         if (Hardware.wheelManualSpinButton.get())
@@ -668,11 +653,5 @@ public class Teleop
     private final static double CURRENT_YEAR_SECOND_GEAR = .5;
 
     private final static double FORBIDDEN_GEAR_OUTSIDE_OF_TIME_AND_SPACE = .9;
-
-    private final static double LIFT_TRAVEL_DISTANCE = 0.0;
-
-    private static boolean encoderResetFlag = true;
-
-    private final static int SERVO_TURN_VALUE = 90;
 
     } // end class
