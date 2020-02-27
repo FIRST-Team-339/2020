@@ -118,11 +118,12 @@ public class Teleop
         SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.isOn());
         SmartDashboard.putBoolean("lower RL", Hardware.lowStoreRL.isOn());
         SmartDashboard.putBoolean("upper RL", Hardware.upStoreRL.isOn());
-        SmartDashboard.putBoolean("intake RL", Hardware.firingRL.isOn());
+        SmartDashboard.putBoolean("firing RL", Hardware.firingRL.isOn());
 
         if (secondRun == true)
             {
             Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
+            secondRun = false;
             }
         if (firstRun == true)
             {
@@ -136,12 +137,6 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
 
-        SmartDashboard.putBoolean("auto switch: ", Hardware.autoSwitch.isOn());
-        SmartDashboard.putString("auto location: ", Hardware.autoLocation.getPosition().toString());
-
-        SmartDashboard.putNumber("six position: ", Hardware.autoSixPosSwitch.getPosition());
-        SmartDashboard.putBoolean("ball switch ", Hardware.ballStart.isOn());
-        SmartDashboard.putString("farclo", Hardware.shootingPlan.getPosition().toString());
         // end control loops ==========================
 
         // ================= OPERATOR CONTROLS ================
