@@ -340,7 +340,11 @@ public class StorageControl
      */
     public boolean loadToFire()
     {
+        System.out.println("loading balls aokfasklsDFSKNLknadsds");
 
+        SmartDashboard.putBoolean("stillshooting", stillShooting);
+        SmartDashboard.putBoolean("prevShootRL", prevShootRL);
+        SmartDashboard.putBoolean("shotball", shotBall);
         if (stillShooting)
             {
             // if the ball is not longer in the conveyor system
@@ -373,6 +377,7 @@ public class StorageControl
                         // extra check to see if there are balls left to continue the further states
                         if (Hardware.ballCounter.getBallCount() == 0)
                             {
+                            prevShootRL = false;
                             setStorageControlState(ControlState.PASSIVE);
                             return true;
                             }
@@ -385,6 +390,7 @@ public class StorageControl
                     // reset shotBall info
                     stillShooting = false;
                     shotBall = false;
+                    prevShootRL = false;
                     // stop moving conveyor
                     setStorageControlState(ControlState.PASSIVE);
                     // if we still have balls

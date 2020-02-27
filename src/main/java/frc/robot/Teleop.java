@@ -116,6 +116,7 @@ public class Teleop
         SmartDashboard.putBoolean("lower RL", Hardware.lowStoreRL.isOn());
         SmartDashboard.putBoolean("upper RL", Hardware.upStoreRL.isOn());
         SmartDashboard.putBoolean("firing RL", Hardware.firingRL.isOn());
+        SmartDashboard.putNumber("Ball Count: ", Hardware.ballCounter.getBallCount());
 
         if (secondRun == true)
             {
@@ -632,7 +633,7 @@ public class Teleop
 
     }
 
-    private final static int PREV_YEAR_MAX_GEAR_NUMBER = 3;
+    private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 
     private final static int CURRENT_YEAR_MAX_GEAR_NUMBER = 2;
 
