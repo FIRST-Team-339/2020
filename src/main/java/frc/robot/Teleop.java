@@ -114,11 +114,11 @@ public class Teleop
 
         Hardware.cameraServo.setCameraAngleDown();
 
-        SmartDashboard.putNumber("six position", Hardware.autoSixPosSwitch.getPosition());
-        SmartDashboard.putBoolean("intake RL", Hardware.intakeRL.isOn());
-        SmartDashboard.putBoolean("lower RL", Hardware.lowStoreRL.isOn());
-        SmartDashboard.putBoolean("upper RL", Hardware.upStoreRL.isOn());
-        SmartDashboard.putBoolean("firing RL", Hardware.firingRL.isOn());
+        // SmartDashboard.putNumber("six position", Hardware.autoSixPosSwitch.getPosition());
+        System.out.println("intake RL " + Hardware.intakeRL.isOn());
+        System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
+        System.out.println("upper RL " + Hardware.upStoreRL.isOn());
+        System.out.println("firing RL " + Hardware.firingRL.isOn());
 
         if (secondRun == true)
             {

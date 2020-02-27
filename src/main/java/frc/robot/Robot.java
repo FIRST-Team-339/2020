@@ -57,6 +57,7 @@ public class Robot extends TimedRobot
             Hardware.conveyorMotor1.setInverted(false);
             Hardware.conveyorMotor2.setInverted(true);
             Hardware.drive.setJoystickDeadband(0.2);
+            Hardware.lowStoreRL.setReversed(true);
             // TODO uncomment
             // Hardware.climbEncoder.reset();
             }
