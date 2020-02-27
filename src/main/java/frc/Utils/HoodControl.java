@@ -1,7 +1,5 @@
 package frc.Utils;
 
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.HardwareInterfaces.KilroyServo;
 import frc.HardwareInterfaces.Potentiometer;
 import edu.wpi.first.wpilibj.Joystick;
@@ -87,16 +85,12 @@ public class HoodControl
 
     private boolean adjusting = false;
 
-    private final double ANGLE_DEADBAND = 1;
-
     private final double JOYSTICK_DEADZONE = .2;
 
-    private final double ADJUST_SPEED = .3;
-
     //MINIMUM angle
-    private final double MIN_ANGLE = 30;//TODO
+    private final double MIN_ANGLE = 30;
     //MAXIMUM angle
-    private final double MAX_ANGLE = 70;//TODO
+    private final double MAX_ANGLE = 70;
 
     //angle for shooting close
     public final double CLOSE_ANGLE = 37;

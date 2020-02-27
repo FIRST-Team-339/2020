@@ -3,13 +3,7 @@ package frc.Utils;
 import frc.Hardware.Hardware;
 import frc.Hardware.Hardware.yearIdentifier;
 import frc.HardwareInterfaces.KilroyEncoder;
-import frc.HardwareInterfaces.LightSensor;
 import frc.robot.Teleop;
-
-import java.nio.charset.CharacterCodingException;
-import java.util.Timer;
-
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -67,6 +61,7 @@ public class Launcher
             this.shootState = ShootState.PASSIVE;
             this.moveState = MoveState.INIT;
             this.unchargeShooter();
+            Hardware.storage.resetLoadValues();
             // }
             }
         //  System.out.println("shootState: " + shootState);
@@ -116,19 +111,15 @@ public class Launcher
                     if (targetPosition == Position.CLOSE)
                         {
                         Hardware.hoodControl.setAngle(Hardware.hoodControl.CLOSE_ANGLE);
-
                         }
                     else
                         {
                         Hardware.hoodControl.setAngle(Hardware.hoodControl.FAR_ANGLE);
-
                         }
-
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
                     // launcherReadyTemp = true;
-                    // }//TODO
-
+                    // }
                     if (this.prepareToShoot())
                         {
                         launcherReadyTemp = true;
@@ -224,7 +215,6 @@ public class Launcher
                     // sets the RPM and makes sure that the conveyor is correct
                     Hardware.visionDriving.alignToTarget();
 
-                    //TODO
                     if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
                         {
                         if (this.encoder.setRPM(
@@ -753,7 +743,7 @@ public class Launcher
     }
 
     /**
-     * return the RPM to set based off distance recieved from the camera TODO
+     * return the RPM to set based off distance recieved from the camera
      *
      * @param distance
      * @return
@@ -781,9 +771,6 @@ public class Launcher
     // if called in auto
     private boolean auto = true;
 
-    // if called in teleop
-    private boolean teleop = false;
-
     private static final double MOVE_DISTANCE_DEADBAND = 10;
     // far RPM to 2020 shooter
     private static final double RPM_FAR_2020 = 3500;
@@ -798,7 +785,7 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .3;//TODO
+    private static final double DRIVE_STRAIGHT_SPEED = .35;//TODO
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;
