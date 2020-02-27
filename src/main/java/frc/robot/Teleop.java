@@ -536,8 +536,8 @@ public class Teleop
         // Hardware.ballStart.isOn()));
         // Hardware.telemetry.printToConsole("Auto Switch: " +
         // Hardware.autoSwitch.isOn());
-        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
-        // Hardware.autoSixPosSwitch.getPosition());
+        Hardware.telemetry.printToConsole("Six Pos Sw: " +
+         Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("shoot switch: " +
         // Hardware.shootingPlan.getPosition());
         // Hardware.telemetry.printToConsole("autoLo cation: " +
