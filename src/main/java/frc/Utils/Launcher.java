@@ -61,6 +61,7 @@ public class Launcher
             this.shootState = ShootState.PASSIVE;
             this.moveState = MoveState.INIT;
             this.unchargeShooter();
+            Hardware.storage.resetLoadValues();
             // }
             }
         //  System.out.println("shootState: " + shootState);
@@ -110,19 +111,15 @@ public class Launcher
                     if (targetPosition == Position.CLOSE)
                         {
                         Hardware.hoodControl.setAngle(Hardware.hoodControl.CLOSE_ANGLE);
-
                         }
                     else
                         {
                         Hardware.hoodControl.setAngle(Hardware.hoodControl.FAR_ANGLE);
-
                         }
-
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
                     // launcherReadyTemp = true;
                     // }
-
                     if (this.prepareToShoot())
                         {
                         launcherReadyTemp = true;
@@ -788,7 +785,7 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .3;//TODO
+    private static final double DRIVE_STRAIGHT_SPEED = .35;//TODO
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;

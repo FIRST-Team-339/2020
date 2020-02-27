@@ -64,7 +64,7 @@ public class Robot extends TimedRobot
         // Servo initial starting position
         // Hardware.rotateServo.setAngle(90);
         Hardware.cameraServo.setCameraAngleUp();
-        Hardware.hoodServo.setAngle(SERVO_START_VALUE);
+        //Hardware.hoodServo.setAngle(SERVO_START_VALUE);
         Hardware.climbServo.setAngle(SERVO_START_VALUE);
 
         // Clearing TalonFX motor ticks

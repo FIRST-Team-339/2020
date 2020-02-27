@@ -103,6 +103,7 @@ public class Hardware
 
     public static KilroyServo climbServo = new KilroyServo(2, 180);
 
+    
     /**********************************************
     * initializePrevYear() function initializes all Hardware items that are
     * REQUIRED for this year

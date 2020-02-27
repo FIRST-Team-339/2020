@@ -82,7 +82,6 @@ public class Teleop
         StorageControl.setStorageControlState(ControlState.PASSIVE);
 
         Hardware.cameraServo.setCameraAngleUp();
-        // System.out.println("end Auto Ball count: " + Robot.endAutoBallCount);
 
     } // end Init
 
@@ -256,7 +255,7 @@ public class Teleop
             teleopDrive();
             }
 
-        // individualTest();
+        individualTest();
         // printStatements();
     } // end Periodic()
 
@@ -313,7 +312,7 @@ public class Teleop
         // craigTest();
         //chrisTest();
         // dionTest();
-        // chrisTest();
+        chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();
@@ -438,6 +437,7 @@ public class Teleop
 
     public static void chrisTest()
     {
+
         /*
          * double timer = 2;
          *
@@ -465,18 +465,6 @@ public class Teleop
          * Hardware.telopTimer.reset(); Hardware.liftSolenoid.set(Value.kReverse);
          * Hardware.liftSolenoid.set(Value.kOff); }
          */
-
-        // if (Hardware.rightOperator.getRawButton(11) == true)
-        //     {
-        //     Hardware.spinServo.set(.2);
-        //     }
-        // else Hardware.spinServo.set(1.0);
-
-        // if (Hardware.rightOperator.getRawButton(10) == true)
-        //     {
-        //     Hardware.spinServo.setAngle(0.0);
-        //     }
-
     }
 
     public static void patrickTest()
@@ -526,8 +514,7 @@ public class Teleop
         // Hardware.ballStart.isOn()));
         // Hardware.telemetry.printToConsole("Auto Switch: " +
         // Hardware.autoSwitch.isOn());
-        // Hardware.telemetry.printToConsole("Six Pos Sw: " +
-        // Hardware.autoSixPosSwitch.getPosition());
+        Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("shoot switch: " +
         // Hardware.shootingPlan.getPosition());
         // Hardware.telemetry.printToConsole("autoLo cation: " +
@@ -635,7 +622,7 @@ public class Teleop
 
     }
 
-    private final static int PREV_YEAR_MAX_GEAR_NUMBER = 3;
+    private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 
     private final static int CURRENT_YEAR_MAX_GEAR_NUMBER = 2;
 
