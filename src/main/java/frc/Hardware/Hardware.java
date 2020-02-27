@@ -16,7 +16,6 @@ package frc.Hardware;
 
 import frc.HardwareInterfaces.DoubleSolenoid;
 import frc.HardwareInterfaces.DoubleThrowSwitch;
-import frc.HardwareInterfaces.IRSensor;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.HardwareInterfaces.KilroySPIGyro;
 import frc.HardwareInterfaces.KilroyServo;
@@ -26,46 +25,29 @@ import frc.HardwareInterfaces.LVMaxSonarEZ;
 import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.MomentarySwitch;
 import frc.HardwareInterfaces.Potentiometer;
-import frc.HardwareInterfaces.LightSensor;
 import frc.HardwareInterfaces.SingleThrowSwitch;
 import frc.HardwareInterfaces.SixPositionSwitch;
-import frc.HardwareInterfaces.UltraSonic;
 import frc.vision.*;
 import frc.Utils.*;
 import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
-
 import frc.Utils.Telemetry;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
-
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSink;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.Servo;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 /**
  * ------------------------------------------------------- puts all of the

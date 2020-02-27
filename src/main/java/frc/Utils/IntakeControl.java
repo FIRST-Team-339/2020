@@ -1,7 +1,5 @@
 package frc.Utils;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -128,7 +126,7 @@ public class IntakeControl
      */
     public boolean getDeployed()
     {
-        return this.solenoid.getForward();// TODO
+        return this.solenoid.getForward();
     }
 
     /**

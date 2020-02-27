@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.Hardware.Hardware;
 import frc.Utils.StorageControl;
@@ -169,7 +168,7 @@ public class Robot extends TimedRobot
         // setup
         // ---------------------------------------
         Hardware.launcherMotorGroup.set(0);
-        Hardware.launcherMotorEncoder.speed = 0;//TODO
+        Hardware.launcherMotorEncoder.speed = 0;
 
         Hardware.leftDriveGroup.set(0);
         Hardware.rightDriveGroup.set(0);

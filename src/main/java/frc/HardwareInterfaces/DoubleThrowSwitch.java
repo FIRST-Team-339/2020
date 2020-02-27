@@ -35,7 +35,8 @@ import edu.wpi.first.wpilibj.Relay;
  * @author Bob Brown
  * @written Sep 19, 2009 -------------------------------------------------------
  */
-public class DoubleThrowSwitch {
+public class DoubleThrowSwitch
+    {
     /**
      * -------------------------------------------------------
      *
@@ -68,10 +69,11 @@ public class DoubleThrowSwitch {
      * @author Bob Brown
      * @written Sep 19, 2009 -------------------------------------------------------
      */
-    public DoubleThrowSwitch(final SingleThrowSwitch switch1In, final SingleThrowSwitch switch2In) {
-        this.switch1 = switch1In;
-        this.switch2 = switch2In;
-    } // end DoubleThrowSwitch
+    public DoubleThrowSwitch(final SingleThrowSwitch switch1In, final SingleThrowSwitch switch2In)
+        {
+            this.switch1 = switch1In;
+            this.switch2 = switch2In;
+        } // end DoubleThrowSwitch
 
     /**
      * Constructor which takes in the two ports the double throw switch is connected
@@ -89,11 +91,11 @@ public class DoubleThrowSwitch {
      * @author Alex Kneipp
      * @written Jan 18, 2016
      */
-    // TODO make it worky
-    public DoubleThrowSwitch(int Channel1, int Channel2) {
-        this.switch1 = new SingleThrowSwitch(Channel1);
-        this.switch2 = new SingleThrowSwitch(Channel2);
-    }
+    public DoubleThrowSwitch(int Channel1, int Channel2)
+        {
+            this.switch1 = new SingleThrowSwitch(Channel1);
+            this.switch2 = new SingleThrowSwitch(Channel2);
+        }
 
     /**
      * This method no matter what state the switch is in, and uses the values found
@@ -108,13 +110,13 @@ public class DoubleThrowSwitch {
      * @author Alex Kneipp
      * @written Jan 18, 2016
      */
-    public Relay.Value getPosition() {
+    public Relay.Value getPosition()
+    {
         if (switch1.isOn())
             return Relay.Value.kForward;
         else if (switch2.isOn())
             return Relay.Value.kReverse;
-        else
-            return Relay.Value.kOff;
+        else return Relay.Value.kOff;
     }
 
     // -------------------------------------------------------
@@ -126,10 +128,11 @@ public class DoubleThrowSwitch {
      * @author Bob Brown
      * @written Sep 19, 2009 -------------------------------------------------------
      */
-    public boolean isOn() {
+    public boolean isOn()
+    {
         if ((this.switch1 == null) || (this.switch1.isOn() == true) || (this.switch2 == null)
                 || (this.switch2.isOn() == true))
             return (false);
         return (true);
     } // end isOn
-} // end class
+    } // end class
