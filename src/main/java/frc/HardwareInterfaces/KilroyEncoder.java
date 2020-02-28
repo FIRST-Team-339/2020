@@ -345,9 +345,9 @@ public class KilroyEncoder implements PIDSource
             {
             speed = .95;
             }
-        else if (speed < -.95)
+        else if (speed < 0)
             {
-            speed = -.95;
+            speed = 0;
             }
 
         motor.set(speed);

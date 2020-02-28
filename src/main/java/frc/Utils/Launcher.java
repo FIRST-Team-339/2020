@@ -50,7 +50,7 @@ public class Launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
-        if (!shootButton.get())
+        if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
             // { conveyorReadyTemp = false;
@@ -155,7 +155,7 @@ public class Launcher
         else
             {
             // override fire methods
-            Hardware.storage.conveyorUp();
+            Hardware.storage.conveyorUpShoot();
             this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
                     this.firingMotors);
             }

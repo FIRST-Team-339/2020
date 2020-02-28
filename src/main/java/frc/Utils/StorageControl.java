@@ -58,7 +58,7 @@ public class StorageControl
         // System.out.println("storage state: " + state);
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
-        if (this.intakeRL.get() && prevRL == false)
+        if (this.intakeRL.isOn() && prevRL == false)
             {
             prevRL = true;
             if (Hardware.intake.intaking)
@@ -72,16 +72,13 @@ public class StorageControl
                 Hardware.ballCounter.subtractBall();
                 }
             }
-        if (!this.intakeRL.get())
+        if (!this.intakeRL.isOn())
             {
             prevRL = false;
             }
 
         // System.out.println("conveyor state: " + state);
-        // System.out.println("intake: " + this.intakeRL.get());
-        // System.out.println("shoot: " + this.shootRL.get());
-        // System.out.println("lower: " + this.lowerRL.get());
-        // System.out.println("upper: " + this.upperRL.get());
+
         // main state machine to control the movement of the conveyor
         switch (state)
             {
@@ -105,7 +102,14 @@ public class StorageControl
             case UP:
                 // move up towards launcher
                 // System.out.println("conveyor up");
-                conveyorUp();
+                if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
+                    {
+                    conveyorUpShoot();
+                    }
+                else
+                    {
+                    conveyorUp();
+                    }
                 break;
             // move down towards intake
             case DOWN:
@@ -142,44 +146,57 @@ public class StorageControl
     // boolean that stores when the previous conveyor state was PASSIVE
     private boolean prevIntakeRL = false;
 
+    private boolean prevLowerRL = false;
+
+    private boolean prevUpperRL = false;
+
     /**
      * controls the conveyor belt if the robot is intaking balls. Note: Must be
      * called continuously in Teleop and auto
      */
     public void intakeStorageControl()
     {
-        // System.out.println("intaking: " + Hardware.intake.intaking);
+        //System.out.println("intaking: " + Hardware.intake.intaking);
         // System.out.println(getStorageControlState());
-        if (Hardware.intake.intaking == true && this.shootRL.get() == false)
+        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */)
             {
 
-            if (this.intakeRL.get() == true || this.getPrevIntakeRL() == true)
+            if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true))
                 {
-                // if the intake Rl is true or the previous intake was true
+                // if the intake Rl
+                // is true or the previous intake was true
                 this.setPrevIntakeRL(true);
                 //
-                // System.out.println("going up in intakeStorageControl");
+                //System.out.println("going up in intakeStorageControl");
                 setStorageControlState(ControlState.UP);
                 }
-            if (this.intakeRL.get() == false && this.getPrevIntakeRL() == false && this.lowerRL.get() == false)
+
+            if (this.intakeRL.isOn() == false && this.getPrevIntakeRL() == false
+                    && this.lowerRL.isOn() == false /* && prevLowerRL == false && prevUpperRL == false */)
                 {
                 // is all false go down
+                prevLowerRL = false;
                 this.setPrevIntakeRL(false);
                 // System.out.println("down in intakeStorageControl");
                 setStorageControlState(ControlState.DOWN);
 
                 }
-            if (this.intakeRL.get() == false && this.getPrevIntakeRL() == false && this.lowerRL.get() == true)
+            if (this.intakeRL.isOn() == false && this.getPrevIntakeRL() == false && this.lowerRL.isOn() == true)
                 {
+                prevLowerRL = true;
                 // if only the lower is true go passive
                 // System.out.println("ball hit lower setting passive");
                 setStorageControlState(ControlState.PASSIVE);
                 this.setPrevIntakeRL(false);
                 }
-            if (this.intakeRL.get() == false && this.lowerRL.get() == true)
+            if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == true)
                 {
                 // if intake is is false and ball has hit lower stop moving
                 // System.out.println("ball hit lower setting passive, not prev if");
+<<<<<<< HEAD
+=======
+                prevLowerRL = true;
+>>>>>>> f97723922eaa04a3bf5aece3cc8d838368e3b7db
                 setStorageControlState(ControlState.PASSIVE);
                 this.setPrevIntakeRL(false);
                 }
@@ -188,8 +205,10 @@ public class StorageControl
             {
             setStorageControlState(ControlState.DOWN);
             }
-        else if (Hardware.launchButton.get() == false)
+        else if (Hardware.launchButton.get() == false && !Hardware.launchOverrideButton.get()
+                && !Hardware.launchButton.get())
             {
+            this.setPrevIntakeRL(false);
             setStorageControlState(ControlState.PASSIVE);
             }
     }
@@ -212,6 +231,11 @@ public class StorageControl
         // SPEED: not much, how about you?
         this.conveyorMotors.set(UP_SPEED);
 
+    }
+
+    public void conveyorUpShoot()
+    {
+        this.conveyorMotors.set(UP_SPEED_SHOOT);
     }
 
     /**
@@ -285,7 +309,7 @@ public class StorageControl
                     // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
                     // moved into the rotating shooter
                     // System.out.println("shoot RL: " + this.shootRL.get());
-                    if (this.shootRL.get() && !preparedToFire)
+                    if (this.shootRL.isOn() && !preparedToFire)
                         {
                         // System.out.println("got shoot rl");
                         // balls is ready to shoot
@@ -348,7 +372,7 @@ public class StorageControl
         if (stillShooting)
             {
             // if the ball is not longer in the conveyor system
-            if (this.shootRL.get() == false && prevShootRL == true)
+            if (this.shootRL.isOn() == false && prevShootRL == true)
                 {
                 // we have shot a ball and are no longer shooting
 
@@ -364,7 +388,7 @@ public class StorageControl
                 {
                 // System.out.println("loading");
                 // if ball is proprer shoot position this is a second check
-                if (this.shootRL.get() || prevShootRL == true)
+                if (this.shootRL.isOn() || prevShootRL == true)
                     {
                     prevShootRL = true;
                     // System.out.println("shooting ball");
@@ -402,7 +426,7 @@ public class StorageControl
                         return true;
                         }
                     }
-                else if (Hardware.ballCounter.getBallCount() > 0 && this.shootRL.get() == false
+                else if (Hardware.ballCounter.getBallCount() > 0 && this.shootRL.isOn() == false
                         && stillShooting == false)
                     ;
                     {
@@ -476,9 +500,10 @@ public class StorageControl
     // dont move conveyor speed
     final double HOLDING_SPEED = 0;
     // move up speed
-    final double UP_SPEED = .3;
+    final double UP_SPEED = .12;
+    final double UP_SPEED_SHOOT = .25;
     // move down speed
-    final double DOWN_SPEED = -.3;
+    final double DOWN_SPEED = -.2;
     // amount needed to move JOYSTICK to override
     private final double JOYSTICK_DEADBAND_STORAGE = .3;
 
