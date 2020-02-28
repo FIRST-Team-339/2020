@@ -160,10 +160,10 @@ public class Teleop
         if (Hardware.spinWheelButton.get() == true)
             {
             // To change the number of spins.
-            Hardware.colorWheel.setNumberOfSpins(2);
+            Hardware.colorWheel.setNumberOfSpins(4);
             // To change the speed
             Hardware.colorWheel.setSpeed(.65);
-            // To enable spinControlPanel to
+            // To enable spinControlPanel to start
             Hardware.colorWheel.start();
             }
         Hardware.colorWheel.spinControlPanel();
@@ -174,6 +174,8 @@ public class Teleop
             {
             // To change the speed
             Hardware.colorWheel.setSpeed(.4);
+
+            // To enable spinControlPanelToColor to start
             Hardware.colorWheel.colorStart();
             }
         Hardware.colorWheel.spinControlPanelToColor();
