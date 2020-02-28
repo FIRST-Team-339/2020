@@ -96,6 +96,7 @@ public class Launcher
                         }
                     break;
                 case CHARGE:
+                    Hardware.storage.shooting = true;
                     Teleop.setDisableTeleOpDrive(true);
                     SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
                     SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
@@ -144,6 +145,7 @@ public class Launcher
                     if (Hardware.storage.loadToFire())
                         {
                         // back to passive
+                        Hardware.storage.shooting = false;
                         this.shootState = ShootState.PASSIVE;
                         }
                     break;
@@ -197,13 +199,13 @@ public class Launcher
      *                    inches)
      * @return shot all of the balls
      */
-    public boolean shootBallsAuto(boolean isClose)
+    public boolean shootBallsAuto()
     {
         // System.out.println("Balls: " + Hardware.ballcounter.getBallCount());
-        // SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
-        // SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
-        // SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
-        // SmartDashboard.putBoolean("load ready", loadReadyTemp);
+        SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
+        SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
+        SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
+        SmartDashboard.putBoolean("load ready", loadReadyTemp);
 
         // if more than 0 balls
         if (Hardware.ballCounter.getBallCount() > 0)
@@ -213,6 +215,7 @@ public class Launcher
                 {
                 case CHARGE:
                     // sets the RPM and makes sure that the conveyor is correct
+                    Hardware.storage.shooting = true;
                     Hardware.visionDriving.alignToTarget();
 
                     if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
@@ -250,7 +253,7 @@ public class Launcher
                         {
                         // System.out.println("loading to fire");
                         // keeps launcher moving at speed
-                        this.prepareToShoot(isClose, auto);
+                        this.prepareToShoot();
                         // loads a ball into shooter
                         if (Hardware.storage.loadToFire())
                             {
@@ -264,6 +267,7 @@ public class Launcher
                             }
                         else if (loadReadyTemp && Hardware.ballCounter.getBallCount() == 0)
                             {
+                            Hardware.storage.shooting = false;
                             loadReadyTemp = false;
                             return true;
                             }

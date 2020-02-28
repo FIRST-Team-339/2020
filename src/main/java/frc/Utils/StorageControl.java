@@ -39,6 +39,8 @@ public class StorageControl
         INIT, PASSIVE, UP, DOWN
         }
 
+    public boolean shooting = false;
+
     private static ControlState state = ControlState.INIT;
 
     /**
@@ -102,7 +104,7 @@ public class StorageControl
             case UP:
                 // move up towards launcher
                 // System.out.println("conveyor up");
-                if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
+                if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get() || shooting)
                     {
                     conveyorUpShoot();
                     }

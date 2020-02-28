@@ -82,6 +82,7 @@ public class Teleop
         StorageControl.setStorageControlState(ControlState.PASSIVE);
 
         Hardware.cameraServo.setCameraAngleUp();
+        Hardware.storage.shooting = false;
 
     } // end Init
 

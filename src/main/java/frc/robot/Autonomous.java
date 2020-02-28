@@ -652,7 +652,7 @@ public class Autonomous
                 break;
             case SHOOT:
                 System.out.println("Shooting");
-                if (Hardware.launcher.shootBallsAuto(false))
+                if (Hardware.launcher.shootBallsAuto())
                     {
                     turnAndFire = TurnAndFireState.FINISH;
                     }
@@ -954,7 +954,7 @@ public class Autonomous
 
         if (Hardware.visionDriving.driveToTarget(45, true, .3))
             {
-            if (Hardware.launcher.shootBallsAuto(false))
+            if (Hardware.launcher.shootBallsAuto())
                 {
                 StorageControl.setStorageControlState(ControlState.PASSIVE);
                 Hardware.launcher.unchargeShooter();
@@ -1011,7 +1011,7 @@ public class Autonomous
                     }
                 break;
             case SHOOT:
-                if (Hardware.launcher.shootBallsAuto(false))
+                if (Hardware.launcher.shootBallsAuto())
                     {
 
                     far = farState.FINISH;
