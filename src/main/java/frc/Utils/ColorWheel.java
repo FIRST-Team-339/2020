@@ -231,12 +231,16 @@ public class ColorWheel
             }
         else
             {
-            colorString = "Unknown";
+            colorString = "U";
             }
 
         if (timeToStopColorAlign == false)
             {
             // Check to see if the color under the field sensor is the same as the FMS color data
+            if (colorString == "U")
+                {
+                this.motor.set(0);
+                }
             if (colorString == spinColor)
                 {
                 this.motor.set(0);

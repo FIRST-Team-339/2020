@@ -517,6 +517,8 @@ public class Hardware
 
     public static JoystickButton takePictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
 
+    public static JoystickButton wheelOverrideButton = new JoystickButton(Hardware.leftOperator, 10);
+
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
     // ----------------------------------------------------------
