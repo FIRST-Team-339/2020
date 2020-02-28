@@ -103,7 +103,6 @@ public class Hardware
 
     public static KilroyServo climbServo = new KilroyServo(2, 180);
 
-    
     /**********************************************
     * initializePrevYear() function initializes all Hardware items that are
     * REQUIRED for this year
@@ -507,6 +506,8 @@ public class Hardware
     public static JoystickButton takePictureButton1 = new JoystickButton(Hardware.leftOperator, 8);
 
     public static JoystickButton takePictureButton2 = new JoystickButton(Hardware.leftOperator, 9);
+
+    public static JoystickButton wheelOverrideButton = new JoystickButton(Hardware.leftOperator, 10);
 
     public static JoystickButton conveyorOverrideButton = new JoystickButton(Hardware.leftOperator, 11);
 
