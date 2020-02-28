@@ -74,7 +74,7 @@ public class BallCounter
      */
     public void subtractBall()
     {
-        System.out.println("subtracting ball");
+        // System.out.println("subtracting ball");
         if (ballCount > MIN_BALLS)
             {
             ballCount--;

@@ -90,7 +90,7 @@ public class StorageControl
                 break;
             case PASSIVE:
                 // if moving the conveyor is not being called set the motor to the holding speed
-                //System.out.println("passive");
+                // System.out.println("passive");
                 if (!override)
                     {
                     this.conveyorMotors.set(HOLDING_SPEED);
@@ -195,7 +195,10 @@ public class StorageControl
                 {
                 // if intake is is false and ball has hit lower stop moving
                 // System.out.println("ball hit lower setting passive, not prev if");
+<<<<<<< HEAD
+=======
                 prevLowerRL = true;
+>>>>>>> f97723922eaa04a3bf5aece3cc8d838368e3b7db
                 setStorageControlState(ControlState.PASSIVE);
                 this.setPrevIntakeRL(false);
                 }
@@ -321,11 +324,11 @@ public class StorageControl
                         }
                     else
                         {
-                        //System.out.println("moving conveyor up");
+                        // System.out.println("moving conveyor up");
                         // ball not ready
                         preparedToFire = false;
                         // move ball until ready
-                        System.out.println("up in prepared to fired");
+                        // System.out.println("up in prepared to fired");
                         setStorageControlState(ControlState.UP);
                         }
                     break;
@@ -363,7 +366,7 @@ public class StorageControl
      */
     public boolean loadToFire()
     {
-        System.out.println("loading balls aokfasklsDFSKNLknadsds");
+        // System.out.println("loading balls aokfasklsDFSKNLknadsds");
 
         SmartDashboard.putBoolean("stillshooting", stillShooting);
         SmartDashboard.putBoolean("prevShootRL", prevShootRL);

@@ -1,6 +1,6 @@
 // ====================================================================
 // FILE NAME: Potentiometer.java (Team 339 - Kilroy) (Renamed from RobotPotentiometer)
-// 
+//
 // CREATED ON: Sep 19, 2009
 // CREATED BY: Bob Brown
 // MODIFIED ON: June 24, 2019

@@ -45,8 +45,6 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
-
-
 /**
  * This class acts as a PID controller when regulating a motor's speed based on
  * the *rate* of the encoder instead of the distance. This is required because
@@ -58,7 +56,8 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
  * @author Noah Golmant
  * @written 11 Feb 2014
  */
-public class PIDVelocityController extends PIDSubsystem {
+public class PIDVelocityController extends PIDSubsystem
+    {
 
     // The motor that will be controlled by the PID controller & loop.
     private final SpeedController motor;
@@ -85,52 +84,66 @@ public class PIDVelocityController extends PIDSubsystem {
      * Initializes the PID controller, the output motor, and the input encoder
      * without a feedforward coefficient (Kf).
      *
-     * @param motor   motor to use as PID output
-     * @param encoder encoder to use as the PID rate input
-     * @param Kp      Proportional coefficient
-     * @param Ki      Integral coefficient
-     * @param Kd      Derivative coefficient
+     * @param motor
+     *                    motor to use as PID output
+     * @param encoder
+     *                    encoder to use as the PID rate input
+     * @param Kp
+     *                    Proportional coefficient
+     * @param Ki
+     *                    Integral coefficient
+     * @param Kd
+     *                    Derivative coefficient
      * @author Noah Golmant
      * @written 11 Feb 2014
      */
-    PIDVelocityController(final SpeedController motor, final Encoder encoder, double Kp, double Ki, double Kd) {
-        // Initialize the PIDController using the base PIDSubsystem constructor
-        super(Kp, Ki, Kd);
+    PIDVelocityController(final SpeedController motor, final Encoder encoder, double Kp, double Ki, double Kd)
+        {
+            // Initialize the PIDController using the base PIDSubsystem constructor
+            super(Kp, Ki, Kd);
 
-        // Set the PID input, output, and initial speed.
-        this.motor = motor;
-        this.encoder = encoder;
-        this.setSpeed = motor.get();
-    }
+            // Set the PID input, output, and initial speed.
+            this.motor = motor;
+            this.encoder = encoder;
+            this.setSpeed = motor.get();
+        }
 
     /**
      * Initializes the PID controller, the output motor, and the input encoder with
      * a feedforward coefficent.
      *
-     * @param motor   motor to use as PID output
-     * @param encoder encoder to use as the PID rate input
-     * @param Kp      Proportional coefficient
-     * @param Ki      Integral coefficient
-     * @param Kd      Derivative coefficient
-     * @param Kf      Feedforward coefficient
+     * @param motor
+     *                    motor to use as PID output
+     * @param encoder
+     *                    encoder to use as the PID rate input
+     * @param Kp
+     *                    Proportional coefficient
+     * @param Ki
+     *                    Integral coefficient
+     * @param Kd
+     *                    Derivative coefficient
+     * @param Kf
+     *                    Feedforward coefficient
      * @author Noah Golmant
      * @written 11 Feb 2014
      */
     public PIDVelocityController(final SpeedController motor, final Encoder encoder, double Kp, double Ki, double Kd,
-            double Kf) {
-        super(Kp, Ki, Kd);
-        this.getPIDController().setPID(Kp, Ki, Kd, Kf);
-        this.motor = motor;
-        this.encoder = encoder;
-        this.setSpeed = motor.get();
-    }
+            double Kf)
+        {
+            super(Kp, Ki, Kd);
+            this.getPIDController().setPID(Kp, Ki, Kd, Kf);
+            this.motor = motor;
+            this.encoder = encoder;
+            this.setSpeed = motor.get();
+        }
 
     /**
      * Gets the speed we're setting the motor to based on our output
      *
      * @return the current set speed
      */
-    public double getSetSpeed() {
+    public double getSetSpeed()
+    {
         return this.setSpeed;
     }
 
@@ -142,7 +155,8 @@ public class PIDVelocityController extends PIDSubsystem {
      * @written 11 Feb 2014
      */
     @Override
-    protected void initDefaultCommand() {
+    protected void initDefaultCommand()
+    {
     }
 
     /**
@@ -152,13 +166,17 @@ public class PIDVelocityController extends PIDSubsystem {
      * @author Noah Golmant
      * @date Aug 19 2014
      */
-    protected double limit(double output) {
+    protected double limit(double output)
+    {
         double limitedOutput = output;
-        if (output < -this.maxOutputDelta) {
+        if (output < -this.maxOutputDelta)
+            {
             limitedOutput = -this.maxOutputDelta;
-        } else if (output > this.maxOutputDelta) {
+            }
+        else if (output > this.maxOutputDelta)
+            {
             limitedOutput = this.maxOutputDelta;
-        }
+            }
 
         return limitedOutput;
     }
@@ -169,7 +187,8 @@ public class PIDVelocityController extends PIDSubsystem {
      * @author Noah Golmant
      * @written 11 Feb 2014
      */
-    public void reset() {
+    public void reset()
+    {
         this.getPIDController().reset();
     }
 
@@ -182,44 +201,55 @@ public class PIDVelocityController extends PIDSubsystem {
      * @written 11 Feb 2014
      */
     @Override
-    protected double returnPIDInput() {
+    protected double returnPIDInput()
+    {
         return this.encoder.getRate();
     }
 
     /**
      * Sets the maximum change we can send to the motors
      *
-     * @param maxDelta maximum change we can send
+     * @param maxDelta
+     *                     maximum change we can send
      * @author Noah Golmant
      * @date Aug 19 2014
      */
-    public void setMaxOutputDelta(double maxDelta) {
+    public void setMaxOutputDelta(double maxDelta)
+    {
         this.maxOutputDelta = maxDelta;
     }
 
     /**
      * Sets whether or not we have to inverse the motor when setting the speed
      *
-     * @param isReversed whether or not we are reversed
+     * @param isReversed
+     *                       whether or not we are reversed
      */
-    public void setMotorReversed(boolean isReversed) {
-        if (isReversed == true) {
+    public void setMotorReversed(boolean isReversed)
+    {
+        if (isReversed == true)
+            {
             // this.motorDirection = -1.0;
-        } else {
+            }
+        else
+            {
             // this.motorDirection = 1.0;
-        }
+            }
     }
 
     /**
      * Set the output range of the PID controller and our output.
      *
-     * @param minRange minimum motor value to send
-     * @param maxRange maximum motor value to send
+     * @param minRange
+     *                     minimum motor value to send
+     * @param maxRange
+     *                     maximum motor value to send
      * @author Noah Golmant
      * @written 11 Feb 2014
      */
     @Override
-    public void setOutputRange(double minRange, double maxRange) {
+    public void setOutputRange(double minRange, double maxRange)
+    {
         this.minRange = minRange;
         this.maxRange = maxRange;
     }
@@ -228,28 +258,34 @@ public class PIDVelocityController extends PIDSubsystem {
      * Overrides the pidWrite method of our controller's output. Sets the output
      * with the calculated PID output value.
      *
-     * @param output The output of the PIDController calculations
+     * @param output
+     *                   The output of the PIDController calculations
      * @see PIDController calculate()
      * @author Noah Golmant
      * @written 11 Feb 2014
      */
     @Override
-    protected void usePIDOutput(double output) {
+    protected void usePIDOutput(double output)
+    {
         // Add the error speed to the motor controller.
 
         this.setSpeed = this.motor.get() + this.limit(output);
 
-        System.out.println("MOTOR.GET " + this.motor.get() + " / " + "OUT: " + output);
+        // System.out.println("MOTOR.GET " + this.motor.get() + " / " + "OUT: " +
+        // output);
         // Check against our max and min motor voltages
-        if (this.setSpeed > this.maxRange) {
+        if (this.setSpeed > this.maxRange)
+            {
             this.setSpeed = this.maxRange;
-        } else if (this.setSpeed < this.minRange) {
+            }
+        else if (this.setSpeed < this.minRange)
+            {
             this.setSpeed = this.minRange;
-        }
+            }
 
         // this.setSpeed *= this.motorDirection;
-        System.out.println("SETSPEED: " + this.setSpeed);
+        // System.out.println("SETSPEED: " + this.setSpeed);
         this.motor.set(this.setSpeed);
     }
 
-}
+    }
