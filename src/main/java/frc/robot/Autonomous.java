@@ -67,8 +67,7 @@ public class Autonomous
         Hardware.drive.setGear(4);
 
         /*
-         * 2 pos switch Auto Swtich determines wether we will or will not run auto:
-         * if
+         * 2 pos switch Auto Swtich determines wether we will or will not run auto: if
          * position is off: dont run auto if position is on: auto will run
          */
         if (Hardware.autoSwitch.isOn() == false)
@@ -326,21 +325,21 @@ public class Autonomous
     private static void choosePath()
     {
         // Statements to determine sates:
-        System.out.println("choose path");
+        // System.out.println("choose path");
         switch (shootingPlan)
             {
             case CLOSE:
-                System.out.println("close");
+                // System.out.println("close");
                 path = Path.SHOOT_CLOSE;
                 Hardware.launcher.prepareToShoot();
                 break;
             case FAR:
-                System.out.println("far");
+                // System.out.println("far");
                 path = Path.SHOOT_FAR;
                 Hardware.launcher.prepareToShoot();
                 break;
             case NOTHING:
-                System.out.println("nothing");
+                // System.out.println("nothing");
                 path = Path.NOTHING;
                 autoState = State.FINISH;
                 break;
@@ -460,7 +459,7 @@ public class Autonomous
                     {
                     if (shootClose())
                         {
-                        System.out.println("finished shoot close");
+                        // System.out.println("finished shoot close");
                         hasShot = true;
                         }
                     }
@@ -581,7 +580,7 @@ public class Autonomous
                 break;
 
             case TURN_AND_FIRE:
-                System.out.println("IN TURN AND FIRE");
+                // System.out.println("IN TURN AND FIRE");
                 // final attempt to turn and shoot more balls from trench
                 if (turnFire())
                     {
@@ -651,7 +650,7 @@ public class Autonomous
 
                 break;
             case SHOOT:
-                System.out.println("Shooting");
+                // System.out.println("Shooting");
                 if (Hardware.launcher.shootBallsAuto(false))
                     {
                     turnAndFire = TurnAndFireState.FINISH;
@@ -692,13 +691,13 @@ public class Autonomous
     private static boolean pickupTrench()
     {
         // drive forward along balls picking them up
-        System.out.println("pickup trench");
+        // System.out.println("pickup trench");
         switch (pickup)
             {
             case DRIVE_FORWARD:
 
                 // drive for balls
-                System.out.println("picking up balls");
+                // System.out.println("picking up balls");
                 Hardware.visionInterface.setPipeline(2);
 
                 Hardware.cameraServo.setCameraAngleDown();
@@ -732,7 +731,7 @@ public class Autonomous
      */
     private static boolean alignTrench()
     {
-        System.out.println("Trench State: " + trench);
+        // System.out.println("Trench State: " + trench);
         // System.out.println("shootingPlan: " +
         // Hardware.shootingPlan.getPosition());
         // System.out.println("Position: " + position);
@@ -844,7 +843,7 @@ public class Autonomous
     private static boolean getOut()
     {
         Hardware.launcher.unchargeShooter();
-        System.out.println("out state: " + out);
+        // System.out.println("out state: " + out);
         switch (out)
             {
             case TURN:
@@ -871,7 +870,7 @@ public class Autonomous
                     }
                 break;
             case FINAL_DRIVE:
-                System.out.println("position thing: " + position);
+                // System.out.println("position thing: " + position);
                 switch (position)
                     {
                     case RIGHT:

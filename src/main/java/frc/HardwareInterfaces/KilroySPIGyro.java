@@ -26,132 +26,131 @@ import edu.wpi.first.wpilibj.GyroBase;
  *
  */
 public class KilroySPIGyro extends GyroBase
-{
-private final ADXRS450_Gyro gyro;
+    {
+    private final ADXRS450_Gyro gyro;
 
-public boolean hasGyro;
+    public boolean hasGyro;
 
-/**
- * Creates the Gyro object. If we input that the gyro is not connected, then do
- * not create it to avoid errors, and set the methods to avoid
- * nullPointerExceptions.
- *
- * @param hasGyro
- *                    Whether or not the gyro is connected.
- */
-public KilroySPIGyro (boolean hasGyro)
-{
-    this.hasGyro = hasGyro;
-    if (hasGyro)
+    /**
+     * Creates the Gyro object. If we input that the gyro is not connected, then do
+     * not create it to avoid errors, and set the methods to avoid
+     * nullPointerExceptions.
+     *
+     * @param hasGyro
+     *                    Whether or not the gyro is connected.
+     */
+    public KilroySPIGyro(boolean hasGyro)
         {
-        this.gyro = new ADXRS450_Gyro();
-        }
-    else
-        {
-        System.out.println("***Gyro is NOT enabled!***");
-        this.gyro = null;
-        }
-}
-
-/**
- * calibration of the gyro
- */
-public void calibrate ()
-{
-    // if we do not have a gyro
-    if (this.hasGyro() == false)
-        {
-        System.out.println("***Gyro is NOT enabled!***");
-        return;
-        }
-    // then calibrate gyro
-    this.gyro.calibrate();
-}
-
-/**
- * resets the gyro
- */
-
-public void reset ()
-{
-    // if we do not have a gyro
-    if (this.hasGyro() == false)
-        {
-        System.out.println("***Gyro is NOT enabled!***");
-        return;
-        }
-    // then reset the gyro
-    this.gyro.reset();
-}
-
-/**
- * will return the gyro angle in degrees
- *
- * @return
- *         return gyro angle
- */
-
-public double getAngle ()
-{
-    // if we don't have a gyro
-    if (this.hasGyro() == false)
-        {
-        System.out.println("***Gyro is NOT enabled!***");
-        return 0;
-        }
-    // return the angle of the gyro in degrees
-    return this.gyro.getAngle();
-
-}
-
-public boolean isGyroConnected ()
-{
-    return this.gyro.isConnected();
-}
-
-/**
- * returns the rate of rotation for the gyro
- *
- * @return
- *         return rate of rotation
- */
-
-public double getRate ()
-{
-    // if we don't have a gyro
-    if (this.hasGyro() == false)
-        {
-        System.out.println("***Gyro is NOT enabled!***");
-        return 0;
-        }
-    // return the rate of rotation of the gyro
-    return this.gyro.getRate();
-}
-
-/**
- * @return Whether or not the gyro is enabled in the code.
- */
-public boolean hasGyro ()
-{
-    return this.hasGyro;
-}
-
-@Override
-/**
- * Free the gyro object from memory, since it is called through a JNI.
- */
-public void close()
-{
-    if (this.hasGyro() == false)
-        {
-        System.out.println("***Gyro is NOT enabled!***");
-        return;
+            this.hasGyro = hasGyro;
+            if (hasGyro)
+                {
+                this.gyro = new ADXRS450_Gyro();
+                }
+            else
+                {
+                // System.out.println("***Gyro is NOT enabled!***");
+                this.gyro = null;
+                }
         }
 
-    //Intentionally do nothing, as wpilib has not yet immplemented a close() function.
-    //Therefore calling this next line *might* result in a recursive loop. -McGee
+    /**
+     * calibration of the gyro
+     */
+    public void calibrate()
+    {
+        // if we do not have a gyro
+        if (this.hasGyro() == false)
+            {
+            // System.out.println("***Gyro is NOT enabled!***");
+            return;
+            }
+        // then calibrate gyro
+        this.gyro.calibrate();
+    }
 
-    //this.gyro.close();
-}
+    /**
+     * resets the gyro
+     */
 
-}
+    public void reset()
+    {
+        // if we do not have a gyro
+        if (this.hasGyro() == false)
+            {
+            // System.out.println("***Gyro is NOT enabled!***");
+            return;
+            }
+        // then reset the gyro
+        this.gyro.reset();
+    }
+
+    /**
+     * will return the gyro angle in degrees
+     *
+     * @return return gyro angle
+     */
+
+    public double getAngle()
+    {
+        // if we don't have a gyro
+        if (this.hasGyro() == false)
+            {
+            // System.out.println("***Gyro is NOT enabled!***");
+            return 0;
+            }
+        // return the angle of the gyro in degrees
+        return this.gyro.getAngle();
+
+    }
+
+    public boolean isGyroConnected()
+    {
+        return this.gyro.isConnected();
+    }
+
+    /**
+     * returns the rate of rotation for the gyro
+     *
+     * @return return rate of rotation
+     */
+
+    public double getRate()
+    {
+        // if we don't have a gyro
+        if (this.hasGyro() == false)
+            {
+            // System.out.println("***Gyro is NOT enabled!***");
+            return 0;
+            }
+        // return the rate of rotation of the gyro
+        return this.gyro.getRate();
+    }
+
+    /**
+     * @return Whether or not the gyro is enabled in the code.
+     */
+    public boolean hasGyro()
+    {
+        return this.hasGyro;
+    }
+
+    @Override
+    /**
+     * Free the gyro object from memory, since it is called through a JNI.
+     */
+    public void close()
+    {
+        if (this.hasGyro() == false)
+            {
+            // System.out.println("***Gyro is NOT enabled!***");
+            return;
+            }
+
+        // Intentionally do nothing, as wpilib has not yet immplemented a close()
+        // function.
+        // Therefore calling this next line *might* result in a recursive loop. -McGee
+
+        // this.gyro.close();
+    }
+
+    }

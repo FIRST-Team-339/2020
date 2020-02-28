@@ -32,6 +32,7 @@ import frc.Utils.*;
 import frc.Utils.HoodControl;
 import frc.Utils.drive.Drive;
 import frc.Utils.Telemetry;
+import frc.Utils.Climb;
 import frc.HardwareInterfaces.Transmission.TankTransmission;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -94,7 +95,7 @@ public class Hardware
         };
 
     // ============Which Year===================
-    public static yearIdentifier robotIdentity = yearIdentifier.PrevYear;
+    public static yearIdentifier robotIdentity = yearIdentifier.CurrentYear;
 
     // ==============Servo==============
     public static Servo rotateServo = new Servo(0);
@@ -103,14 +104,13 @@ public class Hardware
 
     public static KilroyServo climbServo = new KilroyServo(2, 180);
 
-    
     /**********************************************
-    * initializePrevYear() function initializes all Hardware items that are
-    * REQUIRED for this year
-    *
-    * @author R. Brown
-    * @date 1/25/2020
-    *********************************************/
+     * initializePrevYear() function initializes all Hardware items that are
+     * REQUIRED for this year
+     *
+     * @author R. Brown
+     * @date 1/25/2020
+     *********************************************/
     public static void initializeCurrentYear() // 2020
     {
 
@@ -154,20 +154,21 @@ public class Hardware
 
         wheelSpinnerMotor = new WPI_TalonSRX(25);
 
-        climbMotorR = new WPI_TalonSRX(29);
+        climbMotorR = new WPI_TalonSRX(10);
 
-        //climbMotorL = new WPI_TalonSRX(28);
+        climbMotorL = new WPI_TalonSRX(24);
 
-        climbMotorGroup = new SpeedControllerGroup(climbMotorR/*, climbMotorL*/);
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR, climbMotorL);
 
         // ==============DIO INIT=============
 
         launcherMotorEncoder = new KilroyEncoder((CANSparkMax) launcherMotor2);
         wheelSpinnerEncoder = new KilroyEncoder((WPI_TalonSRX) wheelSpinnerMotor);
 
-        // climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorL);
+        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorR);
 
-        // climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
+        climbEncoder.setDistancePerPulse(268);
+        climbEncoder.setReverseDirection(true);
 
         // ============ANALOG INIT============
 
@@ -196,6 +197,7 @@ public class Hardware
 
         colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
 
+        climb = new Climb(climbMotorGroup, climbServo, climbEncoder);
     } // end initiaizeCurrentYear()
 
     /**********************************************
@@ -240,9 +242,13 @@ public class Hardware
 
         climbMotorR = new WPI_TalonSRX(29);
 
-        //climbMotorL = new WPI_TalonSRX(28);
+        // climbMotorL = new WPI_TalonSRX(28);
 
-        climbMotorGroup = new SpeedControllerGroup(climbMotorR/*, climbMotorL*/);
+        climbMotorGroup = new SpeedControllerGroup(climbMotorR /* , climbMotorL */);
+
+        climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorR);
+
+        climbEncoder.setDistancePerPulse(CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR);
 
         // ==============DIO INIT=============
 
@@ -298,6 +304,8 @@ public class Hardware
         ballCounter = new BallCounter(ballButtonTimer);
 
         colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
+
+        climb = new Climb(climbMotorGroup, climbServo, climbEncoder);
 
     } // end initizliePrevYear()
 
@@ -473,7 +481,8 @@ public class Hardware
     // Buttons
     // **********************************************************
 
-    //public static JoystickButton climbReverseButton = new JoystickButton(Hardware.leftDriver, 7 + 8);
+    // public static JoystickButton climbReverseButton = new
+    // JoystickButton(Hardware.leftDriver, 7 + 8);
 
     public static MomentarySwitch publishVisionSwitch = new MomentarySwitch(leftOperator, 11, false);
 
@@ -575,6 +584,8 @@ public class Hardware
 
     public static ColorWheel colorWheel = null;
 
+    public static Climb climb = null;
+
     // ------------------------------------------
     // Vision stuff
     // ----------------------------
@@ -589,7 +600,7 @@ public class Hardware
 
     public final static double PREV_YEAR_WHEEL_SPINNER_DISTANCE_PER_TICK = 0.0024305403;
 
-    public final static double CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR = 0.0;
+    public final static double CURRENT_YEAR_DISTANCE_PER_TICK_CLIMB_MOTOR = 1.0;
 
     // -------------------
     // Subassemblies

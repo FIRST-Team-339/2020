@@ -29,6 +29,8 @@
 // ====================================================================
 package frc.robot;
 
+import java.util.Arrays;
+
 //import frc.HardwareInterfaces.KilroyColorSensor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
@@ -111,13 +113,12 @@ public class Teleop
     public static void periodic()
     {
 
-        Hardware.cameraServo.setCameraAngleDown();
-
-        // SmartDashboard.putNumber("six position", Hardware.autoSixPosSwitch.getPosition());
-        System.out.println("intake RL " + Hardware.intakeRL.isOn());
-        System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
-        System.out.println("upper RL " + Hardware.upStoreRL.isOn());
-        System.out.println("firing RL " + Hardware.firingRL.isOn());
+        // SmartDashboard.putNumber("six position",
+        // // Hardware.autoSixPosSwitch.getPosition());
+        // System.out.println("intake RL " + Hardware.intakeRL.isOn());
+        // System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
+        // System.out.println("upper RL " + Hardware.upStoreRL.isOn());
+        // System.out.println("firing RL " + Hardware.firingRL.isOn());
 
         if (secondRun == true)
             {
@@ -135,6 +136,10 @@ public class Teleop
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
+        Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
+        Hardware.climb.climb(Hardware.climbMotorDownButton);
+        SmartDashboard.putString("Climb State: ", Hardware.climb.climbState.toString());
+        SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
 
         // end control loops ==========================
 
@@ -185,27 +190,28 @@ public class Teleop
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
         // Hardware.launcherMotorGroup.set(.4);
         // if (Hardware.launchButton.get())
-        //     {
-        //     testRPM = 3001;
+        // {
+        // testRPM = 3001;
         // if (testRPM == 5000)
-        //     {
-        //     testRPM = 500;
-        //     }
+        // {
+        // testRPM = 500;
+        // }
         // }
         // Hardware.launcherMotorEncoder.setRPM(testRPM, Hardware.launcherMotorGroup);
         // System.out.println("RPM: " + Hardware.launcherMotorEncoder.getRPM());
         // System.out.println("wanted RPM: " + testRPM);
         // System.out.println("motor 1: " + Hardware.launcherMotor1.get());
         // System.out.println("motor 2: " + Hardware.launcherMotor2.get());
-        // // System.out.println("motor ticks " + Hardware.launcherMotorEncoder.getRPM());
+        // // System.out.println("motor ticks " +
+        // Hardware.launcherMotorEncoder.getRPM());
 
         // shoot balls
         Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
-        //pick up balls with vision
+        // pick up balls with vision
         Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
 
-        //intake controls
+        // intake controls
         if (Hardware.intake.usingVisionIntake == false || !Hardware.pickupBallVisionButton.get())
             {
             // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
@@ -220,36 +226,18 @@ public class Teleop
             Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton, Hardware.launchButton);
             }
 
-        //ball counter code==============================
+        // ball counter code==============================
         // subtract ball
         Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
         // add ball
         Hardware.ballCounter.addBall(Hardware.addBallButton);
         // sets count to 0
         Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
-        //end ball counter code===================
+        // end ball counter code===================
 
-        //switch usb cameras
+        // switch usb cameras
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
 
-        // TODO uncomment this line
-        // if (Hardware.climbMotorUpButton.get() == true && Hardware.climbEncoder.getDistance() <= LIFT_TRAVEL_DISTANCE)
-        //     {
-        //     Hardware.climbMotorGroup.set(.5); // Start motor
-        //     }
-        // if (Hardware.climbEncoder.getDistance() >= LIFT_TRAVEL_DISTANCE)
-        //     {
-        //     Hardware.climbMotorGroup.set(0.0);
-        //     }
-        // if (Hardware.climbMotorDownButton.get() == true)
-        //     {
-        //     Hardware.climbMotorGroup.set(-.5);
-        //     Hardware.climbServo.set(Robot.SERVO_START_VALUE + SERVO_TURN_VALUE);
-        //     }
-        // if (Hardware.climbMotorDownButton.get() == false)
-        //     {
-        //     Hardware.climbMotorGroup.set(0);
-        //     }
         if (!disableTeleOpDrive)
             {
             teleopDrive();
@@ -310,7 +298,7 @@ public class Teleop
         // people test functions
         // connerTest();
         // craigTest();
-        //chrisTest();
+        // chrisTest();
         // dionTest();
         chrisTest();
         // dionTest();
@@ -329,7 +317,7 @@ public class Teleop
     {
         // System.out.println("Distance: " +
         // Hardware.frontUltraSonic.getDistanceFromNearestBumper());
-        System.out.println("Delay: " + Hardware.delayPot.getValue());
+        // System.out.println("Delay: " + Hardware.delayPot.getValue());
 
         // System.out.println("TESTINGGGGGGG");
         // momentary settup
@@ -479,32 +467,40 @@ public class Teleop
         // ---------- DIGITAL ----------
         // encoders:
         // Encoder Distances
-        // Hardware.telemetry.printToShuffleboard("L encoder ticks", "" + Hardware.leftDriveEncoder.get());
+        // Hardware.telemetry.printToShuffleboard("L encoder ticks", "" +
+        // Hardware.leftDriveEncoder.get());
         // Hardware.telemetry.printToConsole("L. Encoder Dist: " +
         // Hardware.leftDriveEncoder.getDistance());
         // Hardware.telemetry.printToConsole("L. Encoder Raw: " +
         // Hardware.leftDriveEncoder.getRaw());
-        // Hardware.telemetry.printToShuffleboard("R encoder ticks", "" + Hardware.rightDriveEncoder.get());
+        // Hardware.telemetry.printToShuffleboard("R encoder ticks", "" +
+        // Hardware.rightDriveEncoder.get());
         // Hardware.telemetry.printToConsole("R. Encoder Dist: " +
         // Hardware.rightDriveEncoder.getDistance());
         // Hardware.telemetry.printToConsole("R. Encoder Raw: " +
         // Hardware.rightDriveEncoder.getRaw());
         // Hardware.telemetry.printToConsole("launch encoder: " +
         // Hardware.launcherMotorEncoder.get());
-        // Hardware.telemetry.printToConsole("wheel spin encoder: " + Hardware.wheelSpinnerEncoder.get());
+        // Hardware.telemetry.printToConsole("wheel spin encoder: " +
+        // Hardware.wheelSpinnerEncoder.get());
         // Hardware.telemetry.printToConsole("hood adjust encoder: " +
         // Hardware.hoodAdjustmentMotorEncoder.get());
         // Encoder Raw Values
         // Hardware.telemetry.printToConsole("launch encoder raw: " +
         // Hardware.launcherMotorEncoder.getRaw());
-        // Hardware.telemetry.printToConsole("wheel spin encoder raw: " + Hardware.wheelSpinnerEncoder.getRaw());
+        // Hardware.telemetry.printToConsole("wheel spin encoder raw: " +
+        // Hardware.wheelSpinnerEncoder.getRaw());
         // Hardware.telemetry
-        //         .printToConsole("Wheel spin distance per pulse: " + Hardware.wheelSpinnerEncoder.getDistancePerPulse());
-        // Hardware.telemetry.printToConsole("wheel spin distance: " + Hardware.wheelSpinnerEncoder.getDistance());
-        // Hardware.telemetry.printToConsole("Circumference: " + Hardware.colorWheel.getCircumference());
+        // .printToConsole("Wheel spin distance per pulse: " +
+        // Hardware.wheelSpinnerEncoder.getDistancePerPulse());
+        // Hardware.telemetry.printToConsole("wheel spin distance: " +
+        // Hardware.wheelSpinnerEncoder.getDistance());
+        // Hardware.telemetry.printToConsole("Circumference: " +
+        // Hardware.colorWheel.getCircumference());
         // Hardware.telemetry.printToConsole("hood adjust encoder raw: " +
         // Hardware.hoodAdjustmentMotorEncoder.getRaw());
-        // System.out.println("Launch motor rpm: " + Hardware.launcherMotorEncoder.getRPM());
+        // System.out.println("Launch motor rpm: " +
+        // Hardware.launcherMotorEncoder.getRPM());
 
         // System.out.println("launch motor 1: " + Hardware.launcherMotor1.get());
         // System.out.println("launch motor 2: " + Hardware.launcherMotor2.get());

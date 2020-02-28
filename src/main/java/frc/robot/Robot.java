@@ -34,13 +34,15 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
-        System.out.println("Started robotInit()");
+        // System.out.println("Started robotInit()");
         // ---------------------------------------
         // start setup - tell the user we are beginning
         // setup
         // ---------------------------------------
 
         Hardware.initialize();
+
+        Hardware.climbServo.setAngle(Hardware.climb.unlachedDegree);
 
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
@@ -64,7 +66,7 @@ public class Robot extends TimedRobot
         // Servo initial starting position
         // Hardware.rotateServo.setAngle(90);
         Hardware.cameraServo.setCameraAngleUp();
-        //Hardware.hoodServo.setAngle(SERVO_START_VALUE);
+        // Hardware.hoodServo.setAngle(SERVO_START_VALUE);
         Hardware.climbServo.setAngle(SERVO_START_VALUE);
 
         // Clearing TalonFX motor ticks
@@ -80,7 +82,7 @@ public class Robot extends TimedRobot
 
         // Hardware.frontUltraSonic.setOffsetDistanceFromNearestBumper(3);
 
-        Hardware.launcherMotorEncoder.setTicksPerRevolution(44.1); //5175
+        Hardware.launcherMotorEncoder.setTicksPerRevolution(44.1); // 5175
 
         // ---------------------------------------
         // done setup - tell the user we are complete
@@ -118,7 +120,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        System.out.println("Started AutonousInit().");
+        // System.out.println("Started AutonousInit().");
         // ---------------------------------------
         // start setup - tell the user we are beginning
         // setup
@@ -130,7 +132,7 @@ public class Robot extends TimedRobot
         // done setup - tell the user we are complete
         // setup
         // ---------------------------------------
-        System.out.println("Completed AutonousInit().");
+        // System.out.println("Completed AutonousInit().");
     } // end autonomousInit()
 
     /**
@@ -163,7 +165,7 @@ public class Robot extends TimedRobot
     @Override
     public void disabledInit()
     {
-        System.out.println("Started DisabledInit().");
+        // System.out.println("Started DisabledInit().");
         // ---------------------------------------
         // start setup - tell the user we are beginning
         // setup
@@ -182,7 +184,7 @@ public class Robot extends TimedRobot
         // done setup - tell the user we are complete
         // setup
         // ---------------------------------------
-        System.out.println("Completed DisabledInit().");
+        // System.out.println("Completed DisabledInit().");
     } // end disabledInit()
 
     /**
@@ -213,7 +215,7 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
-        System.out.println("Started teleopInit().");
+        // System.out.println("Started teleopInit().");
         // ---------------------------------------
         // start setup - tell the user we are beginning
         // setup
@@ -225,7 +227,7 @@ public class Robot extends TimedRobot
         // done setup - tell the user we are complete
         // setup
         // ---------------------------------------
-        System.out.println("Completed TeleopInit().");
+        // System.out.println("Completed TeleopInit().");
     } // end teleopInit()
 
     /**

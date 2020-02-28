@@ -46,9 +46,9 @@ public class LimelightDriveWithVision
                 }
             }
         // if (!Hardware.visionInterface.getHasTargets())
-        //     {
-        //     return true;
-        //     }
+        // {
+        // return true;
+        // }
 
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
@@ -115,7 +115,7 @@ public class LimelightDriveWithVision
         double adjustmentValueRight = 0;
         // right move speed
         double adjustmentValueLeft = 0;
-        System.out.println("Target: " + Hardware.visionInterface.getHasTargets());
+        // System.out.println("Target: " + Hardware.visionInterface.getHasTargets());
 
         if (Hardware.visionInterface.getHasTargets())
             {
@@ -161,7 +161,7 @@ public class LimelightDriveWithVision
      */
     public boolean alignToTarget()
     {
-        System.out.println("aligning");
+        // System.out.println("aligning");
         Hardware.visionInterface.takePicture();
         double offness = Hardware.visionInterface.getXOffSet();
 
