@@ -145,8 +145,8 @@ public class Teleop
         Hardware.storage.storageControlState();
         Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
         Hardware.climb.climb(Hardware.climbMotorDownButton);
-        SmartDashboard.putString("Climb State: ", Hardware.climb.climbState.toString());
-        SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
+        // SmartDashboard.putString("Climb State: ", Hardware.climb.climbState.toString());
+        // SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
 
         // end control loops ==========================
 
@@ -247,34 +247,12 @@ public class Teleop
         // switch usb cameras
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
 
-<<<<<<< HEAD
-=======
-        // TODO uncomment this line
-        // if (Hardware.climbMotorUpButton.get() == true && Hardware.climbEncoder.getDistance() <= LIFT_TRAVEL_DISTANCE)
-        //     {
-        //     Hardware.climbMotorGroup.set(.5); // Start motor
-        //     }
-        // if (Hardware.climbEncoder.getDistance() >= LIFT_TRAVEL_DISTANCE)
-        //     {
-        //     Hardware.climbMotorGroup.set(0.0);
-        //     }
-        // if (Hardware.climbMotorDownButton.get() == true)
-        //     {
-        //     Hardware.climbMotorGroup.set(-.5);
-        //     Hardware.climbServo.set(Robot.SERVO_START_VALUE + SERVO_TURN_VALUE);
-        //     }
-        // if (Hardware.climbMotorDownButton.get() == false)
-        //     {
-        //     Hardware.climbMotorGroup.set(0);
-        //     }
-
->>>>>>> f97723922eaa04a3bf5aece3cc8d838368e3b7db
         if (!disableTeleOpDrive)
             {
             teleopDrive();
             }
 
-        individualTest();
+       // individualTest();
         // printStatements();
     } // end Periodic()
 
