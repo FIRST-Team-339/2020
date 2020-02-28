@@ -60,7 +60,7 @@ public class Teleop
             {
             Hardware.drive.setGearPercentage(0, PREV_YEAR_FIRST_GEAR);
             Hardware.drive.setGearPercentage(1, PREV_YEAR_SECOND_GEAR);
-            Hardware.drive.setGearPercentage(2, FORBIDDEN_GEAR_OUTSIDE_OF_TIME_AND_SPACE);
+            Hardware.drive.setGearPercentage(2, SO_YOU_EVER_HEAR_OF_SONIC);
             Hardware.launcherMotorEncoder.reset();
             }
         else
@@ -111,13 +111,12 @@ public class Teleop
     public static void periodic()
     {
 
-        Hardware.cameraServo.setCameraAngleDown();
-
         // SmartDashboard.putNumber("six position", Hardware.autoSixPosSwitch.getPosition());
-        System.out.println("intake RL " + Hardware.intakeRL.isOn());
-        System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
-        System.out.println("upper RL " + Hardware.upStoreRL.isOn());
-        System.out.println("firing RL " + Hardware.firingRL.isOn());
+
+        // SmartDashboard.putBoolean("lowerget  RL ", Hardware.lowStoreRL.get());
+        // SmartDashboard.putBoolean("lower is on RL ", Hardware.lowStoreRL.isOn());
+
+        // SmartDashboard.putBoolean("firing RL ", Hardware.firingRL.isOn());
 
         if (secondRun == true)
             {
@@ -130,7 +129,7 @@ public class Teleop
             firstRun = false;
             }
         // =============== AUTOMATED SUBSYSTEMS ===============
-
+        // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
@@ -250,6 +249,7 @@ public class Teleop
         //     {
         //     Hardware.climbMotorGroup.set(0);
         //     }
+
         if (!disableTeleOpDrive)
             {
             teleopDrive();
@@ -634,6 +634,6 @@ public class Teleop
 
     private final static double CURRENT_YEAR_SECOND_GEAR = .5;
 
-    private final static double FORBIDDEN_GEAR_OUTSIDE_OF_TIME_AND_SPACE = .9;
+    private final static double SO_YOU_EVER_HEAR_OF_SONIC = .9;
 
     } // end class
