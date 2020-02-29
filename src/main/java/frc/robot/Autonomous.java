@@ -650,7 +650,7 @@ public class Autonomous
 
                 break;
             case SHOOT:
-               // System.out.println("Shooting");
+                // System.out.println("Shooting");
                 if (Hardware.launcher.shootBallsAuto())
                     {
                     turnAndFire = TurnAndFireState.FINISH;
@@ -940,6 +940,8 @@ public class Autonomous
 
     }
 
+    private static boolean drivenToTarget = false;
+
     /**
      * Description: Executes the function to drive forward and shoot
      *
@@ -950,13 +952,19 @@ public class Autonomous
      */
     private static boolean shootClose()
     {
-
-        if (Hardware.visionDriving.driveToTarget(45, true, .3))
+        if (!drivenToTarget)
+            {
+            if (Hardware.visionDriving.driveToTarget(55, true, .3))
+                {
+                drivenToTarget = true;
+                }
+            }
+        if (drivenToTarget)
             {
             if (Hardware.launcher.shootBallsAuto())
                 {
                 StorageControl.setStorageControlState(ControlState.PASSIVE);
-                Hardware.launcher.unchargeShooter();
+                // Hardware.launcher.unchargeShooter();
                 return true;
                 }
             }

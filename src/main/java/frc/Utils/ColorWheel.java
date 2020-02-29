@@ -192,6 +192,16 @@ public class ColorWheel
         timeToStopColorAlign = false;
     }
 
+    public boolean getTimeToStopColorAlign()
+    {
+        return timeToStopColorAlign;
+    }
+
+    public boolean setTimeToStopColorAlign(boolean set)
+    {
+        return (timeToStopColorAlign = set);
+    }
+
     /**
      * This method will align the specified color from the FMS under the sensor.
      * @method spinControlPanelToColor

@@ -10,6 +10,7 @@ package frc.HardwareInterfaces;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -119,6 +120,7 @@ public class KilroyUSBCamera
             // Declares and sets values for two cameras
             this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
             this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+
             CameraServer.getInstance().removeServer("serve_usb1");
             this.server = CameraServer.getInstance().getServer("serve_usb0");
             setCameraValues(width, height, FPS, compression, 2);
@@ -186,6 +188,7 @@ public class KilroyUSBCamera
             // Declares and sets values for two cameras
             this.cam0 = CameraServer.getInstance().startAutomaticCapture("usb0", 0);
             this.cam1 = CameraServer.getInstance().startAutomaticCapture("usb1", 1);
+
             CameraServer.getInstance().removeServer("serve_usb1");
             this.server = CameraServer.getInstance().getServer("serve_usb0");
             setCameraValues(2);
@@ -446,6 +449,8 @@ public class KilroyUSBCamera
     private UsbCamera cam0 = null;
 
     private UsbCamera cam1 = null;
+
+    private NetworkTableEntry limelight = null;
 
     private VideoSink server;
 

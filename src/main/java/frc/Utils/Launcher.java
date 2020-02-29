@@ -108,18 +108,24 @@ public class Launcher
                     // SmartDashboard.putBoolean("position: ", positionReadyTemp);
                     // SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (positionReadyTemp || moveRobotToPosition(targetPosition))
+                    if (positionReadyTemp || moveRobotToPosition(Position.CLOSE/* targetPosition */))//TODO
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
                         }
                     if (targetPosition == Position.CLOSE)
                         {
-                        Hardware.hoodControl.setAngle(Hardware.hoodControl.CLOSE_ANGLE);
+                        // if (Hardware.hoodControl.lowerHood())
+                        //     {
+                        //     hoodReadyTemp = true;
+                        //     }
                         }
                     else
                         {
-                        Hardware.hoodControl.setAngle(Hardware.hoodControl.FAR_ANGLE);
+                        // if (Hardware.hoodControl.raiseHood())
+                        //     {
+                        //     hoodReadyTemp = true;
+                        //     }
                         }
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
@@ -161,9 +167,11 @@ public class Launcher
         else
             {
             // override fire methods
+            Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
             Hardware.storage.conveyorUpShoot();
             this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
                     this.firingMotors);
+
             }
 
     }
@@ -206,10 +214,10 @@ public class Launcher
     public boolean shootBallsAuto()
     {
         // System.out.println("Balls: " + Hardware.ballcounter.getBallCount());
-        SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
-        SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
-        SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
-        SmartDashboard.putBoolean("load ready", loadReadyTemp);
+        // SmartDashboard.putString("shootStateAuto: ", shootStateAuto.toString());
+        // SmartDashboard.putBoolean("launcer Ready", launcherReadyTemp);
+        // SmartDashboard.putBoolean("conveyor ready", conveyorReadyTemp);
+        // SmartDashboard.putBoolean("load ready", loadReadyTemp);
 
         // if more than 0 balls
         if (Hardware.ballCounter.getBallCount() > 0)

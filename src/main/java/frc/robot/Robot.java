@@ -42,8 +42,6 @@ public class Robot extends TimedRobot
 
         Hardware.initialize();
 
-        Hardware.climbServo.setAngle(Hardware.climb.unlatchedDegree);
-
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
             Hardware.visionInterface.setCameraHeight(PREV_YEAR_CAMERA_HEIGHT);
@@ -66,8 +64,8 @@ public class Robot extends TimedRobot
         // Servo initial starting position
         // Hardware.rotateServo.setAngle(90);
         Hardware.cameraServo.setCameraAngleUp();
+        Hardware.climbServo.setAngle(Hardware.climb.unlatchedDegree);
         // Hardware.hoodServo.setAngle(SERVO_START_VALUE);
-        Hardware.climbServo.setAngle(SERVO_START_VALUE);
 
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();

@@ -1,8 +1,11 @@
 package frc.Utils;
 
+import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.KilroyServo;
 import frc.HardwareInterfaces.Potentiometer;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * code to control the angle of the launcher or the 2020 season
@@ -20,82 +23,78 @@ public class HoodControl
             this.pot = hoodPot;
         }
 
-    /**
-     * sets the angle based off of input
-     * @return at angle
-     */
-    public boolean setAngle(double angle)
+    Timer timer = new Timer();
+    private boolean firstRun = true;
+
+    public boolean raiseHood()
     {
-        //make sure we dont go above or below the min/max angles
-        if (angle > MAX_ANGLE)
+        if (firstRun)
             {
-            targetAngle = MAX_ANGLE;
+            firstRun = false;
+            this.timer.start();
             }
-        else if (angle < MIN_ANGLE)
+        if (this.timer.get() < UP_TIME)
             {
-            targetAngle = MIN_ANGLE;
+            this.servo.setSpeed(UP_SPEED);
             }
         else
             {
-            targetAngle = angle;
-            }
-
-        adjusting = true;
-        //if to big
-        servo.set(targetAngle);
-        if (servo.getAngle() == targetAngle)
-            {
+            this.servo.setSpeed(0);
+            this.timer.stop();
+            this.timer.reset();
+            firstRun = true;
             return true;
             }
-
         return false;
     }
 
-    //adjust the angle based off of the joystick
-    public void setAngle(Joystick joystick)
+    public boolean lowerHood()
     {
-        //if with the range
-        if (this.getAngle() <= MAX_ANGLE && this.getAngle() >= MIN_ANGLE)
+        if (firstRun)
             {
-            if (adjusting == false)
-                {
-                if (joystick.getY() > JOYSTICK_DEADZONE)
-                    {
-                    this.servo.set(this.servo.getAngle() + 1);
-                    }
-                if (joystick.getY() < -JOYSTICK_DEADZONE)
-                    {
-                    this.servo.set(this.servo.getAngle() - 1);
-                    }
-                }
-
+            firstRun = false;
+            this.timer.start();
             }
+        if (this.timer.get() < DOWN_TIME)
+            {
+            this.servo.setSpeed(DOWN_SPEED);
+            }
+        else
+            {
+            firstRun = true;
+            this.servo.setSpeed(0.0);
+            this.timer.stop();
+            this.timer.reset();
+            return true;
+            }
+        return false;
     }
 
-    /**
-     * gives the current angle of the hood
-     * @return current angle
-     */
-    public double getAngle()
+    public void testHood()
     {
-        return this.servo.getAngle();
+        if (firstRun)
+            {
+            firstRun = false;
+            this.timer.start();
+            }
+        if (Hardware.rightDriver.getRawButton(10))
+            {
+            System.out.println("time: " + this.timer.get());
+            this.servo.setSpeed(UP_SPEED);
+            }
+        else
+            {
+            this.servo.setSpeed(0);
+            firstRun = true;
+            }
+        System.out.println(timer.get());
     }
 
-    private double targetAngle = 0;
-
-    private boolean adjusting = false;
-
-    private final double JOYSTICK_DEADZONE = .2;
-
-    //MINIMUM angle
-    private final double MIN_ANGLE = 30;
-    //MAXIMUM angle
-    private final double MAX_ANGLE = 70;
-
-    //angle for shooting close
-    public final double CLOSE_ANGLE = 37;
-
-    //angle for shooting far
-    public final double FAR_ANGLE = 58;
-
+    // public boolean set
+    final double FAR_ANGLE = 58;
+    final double CLOSE_ANGLE = 37;
+    final double UP_TIME = 0;
+    final double DOWN_TIME = 0;
+    final double UP_SPEED = .2;
+    final double DOWN_SPEED = .2;
     }

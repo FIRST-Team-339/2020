@@ -43,6 +43,8 @@ public class StorageControl
 
     private static ControlState state = ControlState.INIT;
 
+    private boolean prevShootRLCounting = false;
+
     /**
      * state updated for the conveyor belt. This should always be running in teleop
      */
@@ -60,6 +62,7 @@ public class StorageControl
         // System.out.println("storage state: " + state);
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
+
         if (this.intakeRL.isOn() && prevRL == false)
             {
             prevRL = true;
@@ -74,9 +77,22 @@ public class StorageControl
                 Hardware.ballCounter.subtractBall();
                 }
             }
+
+        if (this.shootRL.isOn() && prevShootRLCounting == false)
+            {
+            prevShootRLCounting = true;
+            if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
+                {
+                Hardware.ballCounter.subtractBall();
+                }
+            }
         if (!this.intakeRL.isOn())
             {
             prevRL = false;
+            }
+        if (!this.shootRL.isOn())
+            {
+            prevShootRLCounting = false;
             }
 
         // System.out.println("conveyor state: " + state);
@@ -95,6 +111,10 @@ public class StorageControl
                     {
                     this.conveyorMotors.set(HOLDING_SPEED);
                     // Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
+                    }
+                if (!Hardware.launchButton.get() && !Hardware.launchOverrideButton.get())
+                    {
+                    this.resetLoadValues();
                     }
 
                 // gets data from the inake Redlight to add or subtract balls from our internal
@@ -377,6 +397,7 @@ public class StorageControl
                 shotBall = true;
                 stillShooting = false;
                 prevShootRL = false;
+                // Hardware.ballCounter.subtractBall();
                 }
             }
         if (Hardware.ballCounter.getBallCount() > 0)
@@ -388,14 +409,14 @@ public class StorageControl
                 // if ball is proprer shoot position this is a second check
                 if (this.shootRL.isOn() || prevShootRL == true)
                     {
-                    prevShootRL = true;
+
                     // System.out.println("shooting ball");
                     // move ball up into the launcher
                     setStorageControlState(ControlState.UP);
                     if (!stillShooting)
                         {
                         // System.out.println("subtract in load to fire");
-                        Hardware.ballCounter.subtractBall();
+                        //   Hardware.ballCounter.subtractBall();
                         // extra check to see if there are balls left to continue the further states
                         if (Hardware.ballCounter.getBallCount() == 0)
                             {
@@ -406,8 +427,9 @@ public class StorageControl
                         }
                     stillShooting = true;
                     }
-                else if (shotBall)
+                if (shotBall)
                     {
+                    //  Hardware.ballCounter.subtractBall();
                     // if we shot a ball we are not shoot
                     // reset shotBall info
                     stillShooting = false;
@@ -431,6 +453,11 @@ public class StorageControl
                     setStorageControlState(ControlState.UP);
                     }
                 }
+            // if (this.shootRL.isOn() == true && prevShootRL == true)
+            //     {
+            //     prevShootRL = false;
+            //     Hardware.ballCounter.subtractBall();
+            //     }
             }
         else
             {
@@ -498,10 +525,10 @@ public class StorageControl
     // dont move conveyor speed
     final double HOLDING_SPEED = 0;
     // move up speed
-    final double UP_SPEED = .12;
-    final double UP_SPEED_SHOOT = .25;
+    final double UP_SPEED = .22;//.11
+    final double UP_SPEED_SHOOT = .7;//.25
     // move down speed
-    final double DOWN_SPEED = -.2;
+    final double DOWN_SPEED = -.45;//-.3
     // amount needed to move JOYSTICK to override
     private final double JOYSTICK_DEADBAND_STORAGE = .3;
 

@@ -112,10 +112,25 @@ public class Teleop
 
     private static boolean firstRun = true;
     private static boolean secondRun = false;
+    static int prevAngle = 0;
 
     public static void periodic()
     {
 
+        // System.out.println("fire rl: " + Hardware.firingRL.isOn());
+        //  System.out.println("position: " + Hardware.climbServo.getPosition());
+        // System.out.println("angle: " + Hardware.climbServo.getAngle());
+        // System.out.println("raw: " + Hardware.climbServo.getRaw());
+
+        if (Hardware.leftDriver.getRawButton(10))
+            {
+            Hardware.climbServo.setAngle(60);
+            }
+        if (Hardware.leftDriver.getRawButton(9))
+            {
+            Hardware.climbServo.setAngle(135);
+            }
+        // System.out.println("climp distance: " + Hardware.climbEncoder.getDistance());
         // SmartDashboard.putNumber("six position",
         // // Hardware.autoSixPosSwitch.getPosition());
         // System.out.println("intake RL " + Hardware.intakeRL.isOn());
@@ -141,10 +156,11 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
-        System.out.println("distance" + Hardware.climbEncoder.getDistance());
+        // System.out.println("distance" + Hardware.climbEncoder.getDistance());
+
         Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
         Hardware.climb.climb(Hardware.climbMotorDownButton);
         // SmartDashboard.putString("Climb State: ", Hardware.climb.climbState.toString());
@@ -185,7 +201,11 @@ public class Teleop
 
         // Will align the given color with the field sensor. Gets the color
         // automatically
-        if (Hardware.spinWheelColorButton.get() == true)
+        if (Hardware.spinWheelButton.get() && Hardware.colorWheel.getTimeToStopColorAlign() == false)
+            {
+            Hardware.colorWheel.setTimeToStopColorAlign(true);
+            }
+        else if (Hardware.spinWheelColorButton.get() == true)
             {
             // To change the speed
             Hardware.colorWheel.setSpeed(.4);
@@ -193,6 +213,7 @@ public class Teleop
             // To enable spinControlPanelToColor to start
             Hardware.colorWheel.colorStart();
             }
+
         Hardware.colorWheel.spinControlPanelToColor();
 
         // ================== DRIVER CONTROLS =================
@@ -311,7 +332,7 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-        chrisTest();
+        //chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();

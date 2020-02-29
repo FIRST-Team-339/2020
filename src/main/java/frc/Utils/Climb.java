@@ -22,7 +22,7 @@ public class Climb
 
     public void prepareToClimb(JoystickButton prepareButton)
     {
-
+        Hardware.visionInterface.setPipeline(3);
         if (prepareButton.get())
             {
             this.climbServo.set(unlatchedDegree);
@@ -31,8 +31,8 @@ public class Climb
         else
 
             // System.out.println("Distance: " + this.climbEncoder.getDistance());
-            //this.climbServo.set(unlachedDegree);
-            if (reachedTop && !Hardware.climbMotorDownButton.get())
+            this.climbServo.set(this.unlatchedDegree);
+        if (reachedTop && !Hardware.climbMotorDownButton.get())
             {
             this.climbMotors.set(0);
             }
@@ -84,7 +84,7 @@ public class Climb
             dogo = true;
             this.climbServo.set(latchedDegree);
             // bring motors down
-            if (this.climbEncoder.getDistance() > 0)
+            if (this.climbEncoder.getDistance() > 1)
                 {
                 dogo = false;
                 //System.out.println("climb set -");
@@ -110,8 +110,8 @@ public class Climb
     private boolean reachedTop = false;
     private int EncoderTopLimit = 27;
     // private int EncoderBotLimit = 0;
-    private double latchedDegree = 50;
-    public double unlatchedDegree = 0;
+    private double latchedDegree = 60;
+    public double unlatchedDegree = 135;
     private SpeedControllerGroup climbMotors = null;
     private Servo climbServo = null;
     private KilroyEncoder climbEncoder = null;
