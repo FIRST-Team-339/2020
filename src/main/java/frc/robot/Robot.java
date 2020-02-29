@@ -42,7 +42,7 @@ public class Robot extends TimedRobot
 
         Hardware.initialize();
 
-        Hardware.climbServo.setAngle(Hardware.climb.unlachedDegree);
+        Hardware.climbServo.setAngle(Hardware.climb.unlatchedDegree);
 
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {

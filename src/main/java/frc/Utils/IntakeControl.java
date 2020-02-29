@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.Hardware.*;
 import frc.HardwareInterfaces.DoubleSolenoid;
 import frc.robot.Teleop;
+import frc.vision.LimelightInterface.LedMode;
 
 /**
  * Code to control the 2020 seasons intake machanism. Includes code control the
@@ -317,6 +318,7 @@ public class IntakeControl
             {
             usingVisionIntake = true;
             Teleop.setDisableTeleOpDrive(true);
+            Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
             // set pipe
             Hardware.visionInterface.setPipeline(BALL_VISION_PIPE);
             Hardware.cameraServo.setCameraAngleDown();
@@ -340,6 +342,7 @@ public class IntakeControl
             if (Hardware.launcher.shootingBalls == false)
                 {
                 Teleop.setDisableTeleOpDrive(false);
+                Hardware.visionInterface.setLedMode(LedMode.OFF);
                 }
             }
 

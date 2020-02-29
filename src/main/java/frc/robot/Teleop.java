@@ -37,6 +37,7 @@ import frc.Hardware.Hardware;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
 // import com.revrobotics.ColorSensorV3;
+import frc.vision.LimelightInterface.LedMode;
 
 /**
  * This class contains all of the user code for the Autonomous part of the
@@ -85,6 +86,7 @@ public class Teleop
 
         Hardware.cameraServo.setCameraAngleUp();
         Hardware.storage.shooting = false;
+        Hardware.visionInterface.setLedMode(LedMode.OFF);
 
     } // end Init
 
@@ -114,14 +116,12 @@ public class Teleop
     public static void periodic()
     {
 
-
         // SmartDashboard.putNumber("six position",
         // // Hardware.autoSixPosSwitch.getPosition());
         // System.out.println("intake RL " + Hardware.intakeRL.isOn());
         // System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
         // System.out.println("upper RL " + Hardware.upStoreRL.isOn());
         // System.out.println("firing RL " + Hardware.firingRL.isOn());
-
 
         // SmartDashboard.putBoolean("lowerget  RL ", Hardware.lowStoreRL.get());
         // SmartDashboard.putBoolean("lower is on RL ", Hardware.lowStoreRL.isOn());
@@ -144,6 +144,7 @@ public class Teleop
         Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
+        System.out.println("distance" + Hardware.climbEncoder.getDistance());
         Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
         Hardware.climb.climb(Hardware.climbMotorDownButton);
         // SmartDashboard.putString("Climb State: ", Hardware.climb.climbState.toString());
@@ -253,7 +254,7 @@ public class Teleop
             teleopDrive();
             }
 
-       // individualTest();
+        // individualTest();
         // printStatements();
     } // end Periodic()
 

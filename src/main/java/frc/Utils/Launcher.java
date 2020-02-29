@@ -4,6 +4,7 @@ import frc.Hardware.Hardware;
 import frc.Hardware.Hardware.yearIdentifier;
 import frc.HardwareInterfaces.KilroyEncoder;
 import frc.robot.Teleop;
+import frc.vision.LimelightInterface.LedMode;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,6 +74,7 @@ public class Launcher
                     if (Hardware.intake.usingVisionIntake == false)
                         {
                         Teleop.setDisableTeleOpDrive(false);
+                        Hardware.visionInterface.setLedMode(LedMode.OFF);
                         }
                     // until shoot button dont shoo t
                     // must be held down to shoot multiple balls
@@ -80,6 +82,7 @@ public class Launcher
                         {
                         shootingBalls = true;
                         Teleop.setDisableTeleOpDrive(true);
+                        Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
                         Hardware.cameraServo.setCameraAngleUp();
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         // {
@@ -98,11 +101,12 @@ public class Launcher
                 case CHARGE:
                     Hardware.storage.shooting = true;
                     Teleop.setDisableTeleOpDrive(true);
-                    SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
-                    SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
-                    SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
-                    SmartDashboard.putBoolean("position: ", positionReadyTemp);
-                    SmartDashboard.putString("wanted position: ", targetPosition.toString());
+                    Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
+                    // SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
+                    // SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
+                    // SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
+                    // SmartDashboard.putBoolean("position: ", positionReadyTemp);
+                    // SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
                     if (positionReadyTemp || moveRobotToPosition(targetPosition))
                         {

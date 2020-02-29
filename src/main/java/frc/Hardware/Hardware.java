@@ -167,7 +167,7 @@ public class Hardware
 
         climbEncoder = new KilroyEncoder((WPI_TalonSRX) climbMotorR);
 
-        climbEncoder.setDistancePerPulse(268);
+        climbEncoder.setDistancePerPulse(.004507692);
         climbEncoder.setReverseDirection(true);
 
         // ============ANALOG INIT============

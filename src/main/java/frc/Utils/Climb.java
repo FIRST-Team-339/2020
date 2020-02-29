@@ -9,12 +9,6 @@ import frc.HardwareInterfaces.KilroyServo;
 
 public class Climb
     {
-    public enum upDown
-        {
-        UP, DOWN, NEIN
-        }
-
-    public upDown climbState = upDown.NEIN;
 
     public Climb(SpeedControllerGroup climbMotors, KilroyServo climbServo, KilroyEncoder climbEncoder)
         {
@@ -31,20 +25,37 @@ public class Climb
 
         if (prepareButton.get())
             {
-            System.out.println("Distance: " + this.climbEncoder.getDistance());
-            this.climbServo.set(unlachedDegree);
-            climbState = upDown.UP;
+            this.climbServo.set(unlatchedDegree);
             dogo = true;
+            }
+        else
+
+            // System.out.println("Distance: " + this.climbEncoder.getDistance());
+            //this.climbServo.set(unlachedDegree);
+            if (reachedTop && !Hardware.climbMotorDownButton.get())
+            {
+            this.climbMotors.set(0);
+            }
+
+        if (dogo == true)
+            {
             // System.out.println("Preparing to Climb");
 
-            if (this.climbEncoder.getDistance() < EncoderTopLimit)
+            if (this.climbEncoder.getDistance() < EncoderTopLimit && reachedTop == false)
                 {
+
+                // System.out.println("climb set +");
                 this.climbMotors.set(.3);
+                }
+            else if (this.climbEncoder.getDistance() >= EncoderTopLimit)
+                {
+                reachedTop = true;
                 }
             else
                 {
                 dogo = false;
-                climbState = upDown.NEIN;
+
+                // System.out.println("climb set 0");
                 this.climbMotors.set(0);
 
                 }
@@ -53,11 +64,10 @@ public class Climb
         else
             {
             // set motors to not move
-            if (!dogo)
-                {
-                this.climbMotors.set(0);
-                }
 
+            // System.out.println("climb set 0");
+            this.climbMotors.set(0);
+            this.climbServo.set(latchedDegree);
             // ensure unlatch servo
 
             }
@@ -68,14 +78,16 @@ public class Climb
 
     public void climb(JoystickButton climbDown)
     {
+
         if (climbDown.get())
             {
-            climbState = upDown.DOWN;
-
+            dogo = true;
             this.climbServo.set(latchedDegree);
             // bring motors down
             if (this.climbEncoder.getDistance() > 0)
                 {
+                dogo = false;
+                //System.out.println("climb set -");
                 this.climbMotors.set(-.3);
                 }
             // latch servo
@@ -83,9 +95,11 @@ public class Climb
             }
         else
             {
+
             if (!dogo)
                 {
-                climbState = upDown.NEIN;
+                //System.out.println("climb set 0");
+
                 this.climbMotors.set(0);
                 }
             }
@@ -93,10 +107,11 @@ public class Climb
     }
 
     private boolean dogo = false;
-    private int EncoderTopLimit = 26;
+    private boolean reachedTop = false;
+    private int EncoderTopLimit = 27;
     // private int EncoderBotLimit = 0;
     private double latchedDegree = 50;
-    public double unlachedDegree = 0;
+    public double unlatchedDegree = 0;
     private SpeedControllerGroup climbMotors = null;
     private Servo climbServo = null;
     private KilroyEncoder climbEncoder = null;

@@ -195,10 +195,6 @@ public class StorageControl
                 {
                 // if intake is is false and ball has hit lower stop moving
                 // System.out.println("ball hit lower setting passive, not prev if");
-<<<<<<< HEAD
-=======
-                prevLowerRL = true;
->>>>>>> f97723922eaa04a3bf5aece3cc8d838368e3b7db
                 setStorageControlState(ControlState.PASSIVE);
                 this.setPrevIntakeRL(false);
                 }
