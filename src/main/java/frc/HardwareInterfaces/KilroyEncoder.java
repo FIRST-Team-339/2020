@@ -629,7 +629,7 @@ public class KilroyEncoder implements PIDSource
 
     private PIDSourceType sourceType = PIDSourceType.kDisplacement;
 
-    private static final double DEADAND_SCALE_RPM = 0;// .02;
+    private static final double DEADAND_SCALE_RPM = .03;// .02;
 
     private static final double RPM_PROP = .000005;
 

@@ -3,9 +3,12 @@ package frc.Utils;
 import frc.Hardware.Hardware;
 import frc.Hardware.Hardware.yearIdentifier;
 import frc.HardwareInterfaces.KilroyEncoder;
+import frc.Utils.StorageControl.ControlState;
 import frc.robot.Teleop;
 import frc.vision.LimelightInterface.LedMode;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -43,6 +46,8 @@ public class Launcher
     private Position targetPosition = Position.NULL;
 
     public boolean shootingBalls = false;
+
+    public boolean isUp = true;
 
     /**
      * in case you could not guess this function will shoot balls at whatever you
@@ -86,7 +91,7 @@ public class Launcher
                         Hardware.cameraServo.setCameraAngleUp();
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         // {
-                        targetPosition = this.getClosestPosition();
+                        targetPosition = Position.CLOSE;/* this.getClosestPosition(); */
                         this.shootState = ShootState.CHARGE;
                         // }
                         }
@@ -102,31 +107,26 @@ public class Launcher
                     Hardware.storage.shooting = true;
                     Teleop.setDisableTeleOpDrive(true);
                     Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
+                    Hardware.visionInterface.setPipeline(0);
                     // SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
                     // SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
                     // SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
                     // SmartDashboard.putBoolean("position: ", positionReadyTemp);
                     // SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (positionReadyTemp || moveRobotToPosition(Position.CLOSE/* targetPosition */))//TODO
+                    if (positionReadyTemp || moveRobotToPosition(/* Position.FAR */ targetPosition))//TODO
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
                         }
-                    if (targetPosition == Position.CLOSE)
-                        {
-                        // if (Hardware.hoodControl.lowerHood())
-                        //     {
-                        //     hoodReadyTemp = true;
-                        //     }
-                        }
-                    else
-                        {
-                        // if (Hardware.hoodControl.raiseHood())
-                        //     {
-                        //     hoodReadyTemp = true;
-                        //     }
-                        }
+
+                    // if (targetPosition == Position.FAR)
+                    //     {
+                    //     if (!hoodReadyTemp && Hardware.hoodControl.raiseHood())
+                    //         {
+                    //         }
+                    //     }
+
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
                     // launcherReadyTemp = true;
@@ -141,7 +141,7 @@ public class Launcher
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
-                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp)
+                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp /* && hoodReadyTemp */)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
@@ -168,7 +168,7 @@ public class Launcher
             {
             // override fire methods
             Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
-            Hardware.storage.conveyorUpShoot();
+            StorageControl.setStorageControlState(ControlState.UP);
             this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
                     this.firingMotors);
 
@@ -199,6 +199,8 @@ public class Launcher
         }
 
     public ShootStateAuto shootStateAuto = ShootStateAuto.CHARGE;
+    boolean movedHood = false;
+    Timer jankyTimer = new Timer();
 
     /**
      *
@@ -230,6 +232,20 @@ public class Launcher
                     Hardware.storage.shooting = true;
                     Hardware.visionDriving.alignToTarget();
 
+                    // if (Hardware.shootingPlan.getPosition() == Value.kForward)
+                    //     {
+                    //     if (Hardware.hoodControl.getIsUp() == false)
+                    //         {
+
+                    //         jankyTimer.start();
+                    //         if (movedHood || Hardware.hoodControl.raiseHood() || jankyTimer.get() > 2.5)
+                    //             {
+                    //             Hardware.hoodControl.setIsUp(true);
+                    //             movedHood = true;
+                    //             }
+                    //         }
+                    //     }
+
                     if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
                         {
                         if (this.encoder.setRPM(
@@ -243,15 +259,18 @@ public class Launcher
                         {
                         launcherReadyTemp = true;
                         }
+
                     // prepares the balls in the storage system
-                    if (conveyorReadyTemp || Hardware.storage.prepareToShoot()
-                            || Hardware.ballCounter.getBallCount() == 0)
-                        {
-                        // System.out.println("prepared to shoot");
-                        conveyorReadyTemp = true;
-                        }
+                    // if (conveyorReadyTemp || Hardware.storage.prepareToShoot()
+                    //         || Hardware.ballCounter.getBallCount() == 0)
+                    //     {
+
+                    //     // System.out.println("prepared to shoot");
+                    //     conveyorReadyTemp = true;
+                    //     }
+
                     // both a launcher and storage are ready
-                    if (launcherReadyTemp && conveyorReadyTemp)
+                    if (launcherReadyTemp/*  && conveyorReadyTemp */)
                         {
                         launcherReadyTemp = false;
                         conveyorReadyTemp = false;
@@ -267,6 +286,7 @@ public class Launcher
                         // keeps launcher moving at speed
                         this.prepareToShoot();
                         // loads a ball into shooter
+
                         if (Hardware.storage.loadToFire())
                             {
                             loadReadyTemp = true;
@@ -656,7 +676,7 @@ public class Launcher
         INIT, DRIVE, ALIGN
         }
 
-    MoveState moveState = MoveState.ALIGN;
+    MoveState moveState = MoveState.INIT;
 
     double distanceFromTarget;
 
@@ -668,7 +688,7 @@ public class Launcher
      */
     public boolean moveRobotToPosition(Position position)
     {
-
+        // System.out.println(position.toString());
         //  System.out.println("move state: " + moveState);
         switch (moveState)
             {

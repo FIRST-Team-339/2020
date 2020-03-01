@@ -5,7 +5,9 @@ import frc.HardwareInterfaces.KilroyServo;
 import frc.HardwareInterfaces.Potentiometer;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * code to control the angle of the launcher or the 2020 season
@@ -14,87 +16,173 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class HoodControl
     {
-    KilroyServo servo = null;
+    Servo servo = null;
     Potentiometer pot = null;
 
-    public HoodControl(KilroyServo servo, Potentiometer hoodPot)
+    public HoodControl(Servo servo)
         {
             this.servo = servo;
-            this.pot = hoodPot;
+
         }
 
     Timer timer = new Timer();
-    private boolean firstRun = true;
+    boolean raising = false;
+    boolean lowering = false;
+    public boolean isUp = false;
+
+    public void raiseHood(JoystickButton button)
+    {
+        System.out.println("time: " + timer.get());
+        if (button.get() && !raising)
+            {
+            timer.stop();
+            timer.reset();
+            raising = true;
+            timer.start();
+            }
+        if (raising)
+            {
+            if (timer.get() < UP_TIME)
+                {
+                this.servo.set(.2);
+                }
+            else
+                {
+                timer.stop();
+                timer.reset();
+                raising = false;
+                }
+            }
+        else if (!lowering && !raising)
+            {
+            this.servo.set(.5);
+            }
+    }
+
+    boolean firstRunRaise = true;
 
     public boolean raiseHood()
     {
-        if (firstRun)
+
+        System.out.println("time: " + timer.get());
+        if (firstRunRaise && !raising)
             {
-            firstRun = false;
-            this.timer.start();
+            timer.stop();
+            timer.reset();
+            raising = true;
+            firstRunRaise = false;
+            timer.start();
             }
-        if (this.timer.get() < UP_TIME)
+        if (raising)
             {
-            this.servo.setSpeed(UP_SPEED);
+            if (timer.get() < UP_TIME)
+                {
+                this.servo.set(.2);
+                }
+            else
+                {
+                isUp = true;
+                firstRunRaise = true;
+                timer.stop();
+                timer.reset();
+                raising = false;
+                return true;
+                }
             }
-        else
+        else if (!lowering && !raising)
             {
-            this.servo.setSpeed(0);
-            this.timer.stop();
-            this.timer.reset();
-            firstRun = true;
-            return true;
+            this.servo.set(.5);
             }
         return false;
     }
+
+    public void lowerHood(JoystickButton button)
+    {
+
+        System.out.println("time: " + timer.get());
+        if (button.get() && !lowering)
+            {
+            timer.stop();
+            timer.reset();
+            lowering = true;
+            timer.start();
+            }
+        if (lowering)
+            {
+            if (timer.get() < DOWN_TIME)
+                {
+                this.servo.set(.8);
+                }
+            else
+                {
+                timer.stop();
+                timer.reset();
+
+                lowering = false;
+                }
+            }
+        else if (!raising && !lowering)
+            {
+            timer.stop();
+            timer.reset();
+            this.servo.set(.5);
+            }
+    }
+
+    boolean firstRunDown = true;
 
     public boolean lowerHood()
     {
-        if (firstRun)
+
+        System.out.println("time: " + timer.get());
+        if (firstRunDown && !lowering)
             {
-            firstRun = false;
-            this.timer.start();
+            timer.stop();
+            timer.reset();
+            firstRunDown = false;
+            lowering = true;
+            timer.start();
             }
-        if (this.timer.get() < DOWN_TIME)
+        if (lowering)
             {
-            this.servo.setSpeed(DOWN_SPEED);
+            if (timer.get() < DOWN_TIME)
+                {
+                this.servo.set(.8);
+                }
+            else
+                {
+                isUp = false;
+                firstRunDown = true;
+                timer.stop();
+                timer.reset();
+                lowering = false;
+                return true;
+                }
             }
-        else
+        else if (!raising && !lowering)
             {
-            firstRun = true;
-            this.servo.setSpeed(0.0);
-            this.timer.stop();
-            this.timer.reset();
-            return true;
+            timer.stop();
+            timer.reset();
+            this.servo.set(.5);
             }
         return false;
     }
 
-    public void testHood()
+    public boolean getIsUp()
     {
-        if (firstRun)
-            {
-            firstRun = false;
-            this.timer.start();
-            }
-        if (Hardware.rightDriver.getRawButton(10))
-            {
-            System.out.println("time: " + this.timer.get());
-            this.servo.setSpeed(UP_SPEED);
-            }
-        else
-            {
-            this.servo.setSpeed(0);
-            firstRun = true;
-            }
-        System.out.println(timer.get());
+        return isUp;
+    }
+
+    public void setIsUp(boolean value)
+    {
+        isUp = value;
     }
 
     // public boolean set
     final double FAR_ANGLE = 58;
     final double CLOSE_ANGLE = 37;
-    final double UP_TIME = 0;
-    final double DOWN_TIME = 0;
+    final double UP_TIME = 2.5;
+    final double DOWN_TIME = 2.5;
     final double UP_SPEED = .2;
-    final double DOWN_SPEED = .2;
+    final double DOWN_SPEED = .8;
     }

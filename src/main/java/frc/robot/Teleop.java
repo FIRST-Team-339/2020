@@ -34,6 +34,7 @@ import java.util.Arrays;
 //import frc.HardwareInterfaces.KilroyColorSensor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
+import frc.Utils.Launcher;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
 // import com.revrobotics.ColorSensorV3;
@@ -116,20 +117,16 @@ public class Teleop
 
     public static void periodic()
     {
-
+        // System.out.println("Distane: " + Hardware.climbEncoder.getDistance());
         // System.out.println("fire rl: " + Hardware.firingRL.isOn());
         //  System.out.println("position: " + Hardware.climbServo.getPosition());
         // System.out.println("angle: " + Hardware.climbServo.getAngle());
         // System.out.println("raw: " + Hardware.climbServo.getRaw());
 
-        if (Hardware.leftDriver.getRawButton(10))
-            {
-            Hardware.climbServo.setAngle(60);
-            }
-        if (Hardware.leftDriver.getRawButton(9))
-            {
-            Hardware.climbServo.setAngle(135);
-            }
+        // Hardware.hoodControl.lowerHood(Hardware.hoodDownButton);
+
+        // Hardware.hoodControl.raiseHood(Hardware.hoodUpButton);
+
         // System.out.println("climp distance: " + Hardware.climbEncoder.getDistance());
         // SmartDashboard.putNumber("six position",
         // // Hardware.autoSixPosSwitch.getPosition());

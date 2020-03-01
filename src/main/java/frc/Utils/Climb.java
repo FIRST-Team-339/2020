@@ -22,9 +22,10 @@ public class Climb
 
     public void prepareToClimb(JoystickButton prepareButton)
     {
-        Hardware.visionInterface.setPipeline(3);
+
         if (prepareButton.get())
             {
+            //Hardware.visionInterface.setPipeline(3);
             this.climbServo.set(unlatchedDegree);
             dogo = true;
             }

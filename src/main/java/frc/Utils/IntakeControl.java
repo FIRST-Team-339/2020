@@ -159,6 +159,8 @@ public class IntakeControl
             }
     }
 
+    boolean prevIntakeRL = false;
+
     /**
      * intakes balls based of joystick input
      *
@@ -168,8 +170,16 @@ public class IntakeControl
     public void intake(JoystickButton intakeButton, JoystickButton overrideButton)
     {
 
+        if (Hardware.intakeRL.isOn() == true)
+            {
+            prevIntakeRL = true;
+            }
+        if (Hardware.lowStoreRL.isOn() == true || overrideButton.get())
+            {
+            prevIntakeRL = false;
+            }
         // dont intake al there is already 5 balls stored unless override button pressed
-        if (Hardware.ballCounter.getBallCount() < 5 || overrideButton.get())
+        if (Hardware.ballCounter.getBallCount() < 5/*  && prevIntakeRL == false) */ || overrideButton.get())
             {
             intaking = true;
             // if intake deployed
@@ -186,10 +196,12 @@ public class IntakeControl
             else
                 {
                 intaking = false;
+                //prevIntakeRL = false;
                 }
             }
         else if (outtaking == false)
             {
+            // prevIntakeRL = false;
             intaking = false;
             }
 
@@ -339,7 +351,7 @@ public class IntakeControl
             usingVisionIntake = false;
             Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
             Hardware.cameraServo.setCameraAngleUp();
-            if (Hardware.launcher.shootingBalls == false)
+            if (Hardware.launcher.shootingBalls == false && !Hardware.launchOverrideButton.get())
                 {
                 Teleop.setDisableTeleOpDrive(false);
                 Hardware.visionInterface.setLedMode(LedMode.OFF);

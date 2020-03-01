@@ -39,7 +39,7 @@ public class LimelightDriveWithVision
         double adjustmentValueLeft = 0;
         if (overrideUltrasonic)
             {
-            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < 20)
+            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < 15)
                 {
                 this.timer.stop();
                 return true;
@@ -53,7 +53,7 @@ public class LimelightDriveWithVision
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
-            if (offness < 0)
+            if (offness < -3)
                 {
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
@@ -63,7 +63,7 @@ public class LimelightDriveWithVision
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
 
-            else if (offness > 0)
+            else if (offness > 3)
                 {
 
                 adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
@@ -208,7 +208,7 @@ public class LimelightDriveWithVision
     // randomly plugging in number until it works
     final double ADJUST_PROPORTION_2019 = .015;// 0.03
 
-    final double ADJUST_PROPORTION_2019_ALIGN = .023;
+    final double ADJUST_PROPORTION_2019_ALIGN = .025;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PROPORTION_2020 = .015;// TODO

@@ -33,8 +33,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Relay;
 import frc.Hardware.Hardware;
+import frc.Utils.Launcher;
 import frc.Utils.StorageControl;
+import frc.Utils.Launcher.Position;
 import frc.Utils.StorageControl.ControlState;
+import frc.vision.LimelightInterface.LedMode;
 
 /**
  * An Autonomous class. This class <b>beautifully</b> uses state machines in
@@ -167,6 +170,7 @@ public class Autonomous
             }
 
         Hardware.cameraServo.setCameraAngleUp();
+        Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
         Hardware.launcher.resetShootTemps();
 
     } // end Init
@@ -243,8 +247,8 @@ public class Autonomous
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
         Hardware.intake.makePassive();
-        Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-
+        //  Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        //System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
         switch (autoState)
             {
 
@@ -954,7 +958,7 @@ public class Autonomous
     {
         if (!drivenToTarget)
             {
-            if (Hardware.visionDriving.driveToTarget(55, true, .3))
+            if (Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE))
                 {
                 drivenToTarget = true;
                 }

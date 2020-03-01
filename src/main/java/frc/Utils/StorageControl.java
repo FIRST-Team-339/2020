@@ -107,7 +107,7 @@ public class StorageControl
             case PASSIVE:
                 // if moving the conveyor is not being called set the motor to the holding speed
                 // System.out.println("passive");
-                if (!override)
+                if (!override && !Hardware.launchOverrideButton.get())
                     {
                     this.conveyorMotors.set(HOLDING_SPEED);
                     // Hardware.conveyorMotorGroup.set(HOLDING_SPEED);
@@ -136,7 +136,9 @@ public class StorageControl
             // move down towards intake
             case DOWN:
                 // System.out.println("down in Control State");
+
                 conveyorDown();
+
                 break;
             default:
                 setStorageControlState(ControlState.PASSIVE);
@@ -180,7 +182,7 @@ public class StorageControl
     {
         //System.out.println("intaking: " + Hardware.intake.intaking);
         // System.out.println(getStorageControlState());
-        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */)
+        if (Hardware.intake.intaking == true && this.shootRL.isOn() == false)
             {
 
             if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true))
@@ -296,6 +298,11 @@ public class StorageControl
                 override = false;
                 }
             }
+        else
+            {
+            // sets override boolean to false
+            override = false;
+            }
     }
 
     // ENUM for the prepare to shoot switch
@@ -327,11 +334,11 @@ public class StorageControl
                     // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
                     // moved into the rotating shooter
                     // System.out.println("shoot RL: " + this.shootRL.get());
-                    if (this.shootRL.isOn() && !preparedToFire)
+                    if (this.shootRL.isOn() && preparedToFire)
                         {
                         // System.out.println("got shoot rl");
                         // balls is ready to shoot
-                        preparedToFire = true;
+                        preparedToFire = false;
                         // stop conveyor
                         setStorageControlState(ControlState.PASSIVE);
                         // start waiting for the shooter to speed up
@@ -342,7 +349,7 @@ public class StorageControl
                         {
                         // System.out.println("moving conveyor up");
                         // ball not ready
-                        preparedToFire = false;
+                        preparedToFire = true;
                         // move ball until ready
                         // System.out.println("up in prepared to fired");
                         setStorageControlState(ControlState.UP);

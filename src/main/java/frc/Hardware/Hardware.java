@@ -102,6 +102,8 @@ public class Hardware
 
     public static KilroyServo hoodServo = new KilroyServo(1, 180);
 
+    public static Servo testServo = new Servo(3);
+
     public static KilroyServo climbServo = new KilroyServo(2, 180);
 
     /**********************************************
@@ -188,8 +190,6 @@ public class Hardware
 
         storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
 
-        hoodControl = new HoodControl(hoodServo, hoodPot);
-
         ballCounter = new BallCounter(ballButtonTimer);
 
         wheelSpinnerEncoder.setDistancePerPulse(WHEEL_ENCODER_DISTANCE_PER_TICK);
@@ -198,6 +198,7 @@ public class Hardware
         colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
 
         climb = new Climb(climbMotorGroup, climbServo, climbEncoder);
+        hoodControl = new HoodControl(hoodServo);//TODO
     } // end initiaizeCurrentYear()
 
     /**********************************************
@@ -299,7 +300,7 @@ public class Hardware
 
         storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
 
-        hoodControl = new HoodControl(hoodServo, hoodPot);
+        //hoodControl = new HoodControl(hoodServo);
 
         ballCounter = new BallCounter(ballButtonTimer);
 
@@ -546,6 +547,10 @@ public class Hardware
 
     public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);
 
+    public static JoystickButton hoodUpButton = new JoystickButton(Hardware.leftDriver, 10);
+
+    public static JoystickButton hoodDownButton = new JoystickButton(Hardware.leftDriver, 9);
+    // public static JoystickButton hoodUp = new
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
