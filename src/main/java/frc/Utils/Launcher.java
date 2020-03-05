@@ -56,6 +56,7 @@ public class Launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
+        System.out.println("postion: " + this.getClosestPosition());
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
@@ -91,7 +92,7 @@ public class Launcher
                         Hardware.cameraServo.setCameraAngleUp();
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         // {
-                        targetPosition = Position.CLOSE;/* this.getClosestPosition(); */
+                        targetPosition = this.getClosestPosition();
                         this.shootState = ShootState.CHARGE;
                         // }
                         }
@@ -114,18 +115,24 @@ public class Launcher
                     // SmartDashboard.putBoolean("position: ", positionReadyTemp);
                     // SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (positionReadyTemp || moveRobotToPosition(/* Position.FAR */ targetPosition))//TODO
+                    if (positionReadyTemp || moveRobotToPosition(targetPosition))//TODO
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
                         }
 
-                    // if (targetPosition == Position.FAR)
-                    //     {
-                    //     if (!hoodReadyTemp && Hardware.hoodControl.raiseHood())
-                    //         {
-                    //         }
-                    //     }
+                    if (targetPosition == Position.FAR)
+                        {
+                        if (!hoodReadyTemp && Hardware.hoodControl.raiseHood() && !isUp)
+                            {
+                            }
+                        }
+                    else if (targetPosition == Position.CLOSE)
+                        {
+                        if (!hoodReadyTemp && Hardware.hoodControl.lowerHood() && isUp)
+                            {
+                            }
+                        }
 
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
@@ -224,59 +231,31 @@ public class Launcher
         // if more than 0 balls
         if (Hardware.ballCounter.getBallCount() > 0)
             {
-            // System.out.println("Shoot State Launcher: " + shootStateAuto);
+            System.out.println("Shoot State Launcher: " + shootStateAuto);
             switch (shootStateAuto)
                 {
                 case CHARGE:
-                    // sets the RPM and makes sure that the conveyor is correct
+
                     Hardware.storage.shooting = true;
                     Hardware.visionDriving.alignToTarget();
 
-                    // if (Hardware.shootingPlan.getPosition() == Value.kForward)
-                    //     {
-                    //     if (Hardware.hoodControl.getIsUp() == false)
-                    //         {
-
-                    //         jankyTimer.start();
-                    //         if (movedHood || Hardware.hoodControl.raiseHood() || jankyTimer.get() > 2.5)
-                    //             {
-                    //             Hardware.hoodControl.setIsUp(true);
-                    //             movedHood = true;
-                    //             }
-                    //         }
-                    //     }
-
-                    if (Hardware.robotIdentity == yearIdentifier.CurrentYear)
-                        {
-                        if (this.encoder.setRPM(
-                                this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()), firingMotors))
-                            {
-                            // System.out.println("Setting Launcher");
-                            launcherReadyTemp = true;
-                            }
-                        }
-                    else
+                    if (this.prepareToShoot())
                         {
                         launcherReadyTemp = true;
                         }
 
-                    // prepares the balls in the storage system
-                    // if (conveyorReadyTemp || Hardware.storage.prepareToShoot()
-                    //         || Hardware.ballCounter.getBallCount() == 0)
-                    //     {
-
-                    //     // System.out.println("prepared to shoot");
-                    //     conveyorReadyTemp = true;
-                    //     }
-
-                    // both a launcher and storage are ready
-                    if (launcherReadyTemp/*  && conveyorReadyTemp */)
+                    if (Hardware.storage.prepareToShoot())
                         {
-                        launcherReadyTemp = false;
+                        conveyorReadyTemp = true;
+                        }
+                    // if both are prepared
+                    if (conveyorReadyTemp && launcherReadyTemp)
+                        {
                         conveyorReadyTemp = false;
-
-                        shootStateAuto = ShootStateAuto.LAUNCH;
-                        // System.out.println("State Launch");
+                        hoodReadyTemp = false;
+                        launcherReadyTemp = false;
+                        positionReadyTemp = false;
+                        this.shootStateAuto = ShootStateAuto.LAUNCH;
                         }
                     break;
                 case LAUNCH:

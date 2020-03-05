@@ -199,6 +199,7 @@ public class Hardware
 
         climb = new Climb(climbMotorGroup, climbServo, climbEncoder);
         hoodControl = new HoodControl(hoodServo);//TODO
+
     } // end initiaizeCurrentYear()
 
     /**********************************************
