@@ -295,6 +295,7 @@ public class IntakeControl
             {
             startBallCount = Hardware.ballCounter.getBallCount();
             pickUpBallsFirstTime = false;
+
             }
         // set pipe
         Hardware.visionInterface.setPipeline(BALL_VISION_PIPE);

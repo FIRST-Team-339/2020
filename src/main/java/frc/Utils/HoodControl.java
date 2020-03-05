@@ -40,11 +40,12 @@ public class HoodControl
             raising = true;
             timer.start();
             }
-        if (raising)
+        if (raising && !isUp)
             {
             if (timer.get() < UP_TIME)
                 {
                 this.servo.set(.2);
+                isUp = false;
                 }
             else
                 {
@@ -73,10 +74,11 @@ public class HoodControl
             firstRunRaise = false;
             timer.start();
             }
-        if (raising)
+        if (raising && !isUp)
             {
             if (timer.get() < UP_TIME)
                 {
+
                 this.servo.set(.2);
                 }
             else
@@ -143,10 +145,11 @@ public class HoodControl
             lowering = true;
             timer.start();
             }
-        if (lowering)
+        if (lowering && isUp)
             {
             if (timer.get() < DOWN_TIME)
                 {
+
                 this.servo.set(.8);
                 }
             else

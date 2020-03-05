@@ -182,10 +182,10 @@ public class StorageControl
     {
         //System.out.println("intaking: " + Hardware.intake.intaking);
         // System.out.println(getStorageControlState());
-        if (Hardware.intake.intaking == true && this.shootRL.isOn() == false)
+        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */)
             {
 
-            if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true))
+            if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true) && this.shootRL.isOn() == false)
                 {
                 // if the intake Rl
                 // is true or the previous intake was true
