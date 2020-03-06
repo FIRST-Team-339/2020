@@ -47,8 +47,6 @@ public class Launcher
 
     public boolean shootingBalls = false;
 
-    public boolean isUp = true;
-
     /**
      * in case you could not guess this function will shoot balls at whatever you
      * desire. whether it be the target or pesky those builders who have yet to
@@ -91,9 +89,11 @@ public class Launcher
                         Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
                         Hardware.cameraServo.setCameraAngleUp();
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
-                        // {
-                        targetPosition = this.getClosestPosition();
-                        this.shootState = ShootState.CHARGE;
+                        if (Hardware.visionInterface.getHasTargets())
+                            {
+                            targetPosition = this.getClosestPosition();
+                            this.shootState = ShootState.CHARGE;
+                            }
                         // }
                         }
                     else
@@ -123,14 +123,22 @@ public class Launcher
 
                     if (targetPosition == Position.FAR)
                         {
-                        if (!hoodReadyTemp && Hardware.hoodControl.raiseHood() && !isUp)
+                        if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
                             {
+                            if (Hardware.hoodControl.raiseHood())
+                                {
+                                hoodReadyTemp = true;
+                                }
                             }
                         }
                     else if (targetPosition == Position.CLOSE)
                         {
-                        if (!hoodReadyTemp && Hardware.hoodControl.lowerHood() && isUp)
+                        if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
                             {
+                            if (Hardware.hoodControl.lowerHood())
+                                {
+                                hoodReadyTemp = true;
+                                }
                             }
                         }
 
@@ -148,7 +156,7 @@ public class Launcher
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
-                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp /* && hoodReadyTemp */)
+                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp && hoodReadyTemp)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
@@ -158,6 +166,7 @@ public class Launcher
                         }
                     break;
                 case LAUNCH:
+                    this.prepareToShoot();
                     // loads a ball and shoots it
                     if (Hardware.storage.loadToFire())
                         {
@@ -456,12 +465,6 @@ public class Launcher
                 spedUp = false;
                 return true;
                 }
-            }
-        else
-            {
-            aligned = false;
-            spedUp = false;
-            return true;
             }
         return false;
     }
