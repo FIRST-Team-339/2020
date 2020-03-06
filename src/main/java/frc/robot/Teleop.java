@@ -117,28 +117,6 @@ public class Teleop
 
     public static void periodic()
     {
-        // System.out.println("Distane: " + Hardware.climbEncoder.getDistance());
-        // System.out.println("fire rl: " + Hardware.firingRL.isOn());
-        //  System.out.println("position: " + Hardware.climbServo.getPosition());
-        // System.out.println("angle: " + Hardware.climbServo.getAngle());
-        // System.out.println("raw: " + Hardware.climbServo.getRaw());
-
-        Hardware.hoodControl.lowerHood(Hardware.hoodDownButton);
-
-        Hardware.hoodControl.raiseHood(Hardware.hoodUpButton);
-
-        // System.out.println("climp distance: " + Hardware.climbEncoder.getDistance());
-        // SmartDashboard.putNumber("six position",
-        // // Hardware.autoSixPosSwitch.getPosition());
-        // System.out.println("intake RL " + Hardware.intakeRL.isOn());
-        // System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
-        // System.out.println("upper RL " + Hardware.upStoreRL.isOn());
-        // System.out.println("firing RL " + Hardware.firingRL.isOn());
-
-        // SmartDashboard.putBoolean("lowerget  RL ", Hardware.lowStoreRL.get());
-        // SmartDashboard.putBoolean("lower is on RL ", Hardware.lowStoreRL.isOn());
-
-        // SmartDashboard.putBoolean("firing RL ", Hardware.firingRL.isOn());
 
         if (secondRun == true)
             {
@@ -153,6 +131,7 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
+        Hardware.hoodControl.stopHoodMotor();
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();

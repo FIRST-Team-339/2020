@@ -32,7 +32,7 @@ public class HoodControl
 
     public void raiseHood(JoystickButton button)
     {
-        System.out.println("time: " + timer.get());
+        //System.out.println("time: " + timer.get());
         if (button.get() && !raising)
             {
             timer.stop();
@@ -64,10 +64,12 @@ public class HoodControl
 
     public boolean raiseHood()
     {
-
         System.out.println("time: " + timer.get());
+        System.out.println("raising");
+        System.out.println("is up: " + isUp);
         if (firstRunRaise && !raising)
             {
+            System.out.println("first running");
             timer.stop();
             timer.reset();
             raising = true;
@@ -78,7 +80,7 @@ public class HoodControl
             {
             if (timer.get() < UP_TIME)
                 {
-
+                System.out.println("riasing rasinsing");
                 this.servo.set(.2);
                 }
             else
@@ -101,7 +103,7 @@ public class HoodControl
     public void lowerHood(JoystickButton button)
     {
 
-        System.out.println("time: " + timer.get());
+        //System.out.println("time: " + timer.get());
         if (button.get() && !lowering)
             {
             timer.stop();
@@ -131,12 +133,20 @@ public class HoodControl
             }
     }
 
+    public void stopHoodMotor()
+    {
+        if (!raising && !lowering)
+            {
+            this.servo.set(.5);
+            }
+    }
+
     boolean firstRunDown = true;
 
     public boolean lowerHood()
     {
-
-        System.out.println("time: " + timer.get());
+        System.out.println("loweing");
+        System.out.println("is up: " + isUp);
         if (firstRunDown && !lowering)
             {
             timer.stop();

@@ -334,7 +334,7 @@ public class StorageControl
                     // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
                     // moved into the rotating shooter
                     // System.out.println("shoot RL: " + this.shootRL.get());
-                    if (this.shootRL.isOn() && preparedToFire)
+                    if (this.shootRL.isOn())
                         {
                         // System.out.println("got shoot rl");
                         // balls is ready to shoot
@@ -349,7 +349,6 @@ public class StorageControl
                         {
                         // System.out.println("moving conveyor up");
                         // ball not ready
-                        preparedToFire = true;
                         // move ball until ready
                         // System.out.println("up in prepared to fired");
                         setStorageControlState(ControlState.UP);
@@ -412,7 +411,7 @@ public class StorageControl
             // if prepared to fire as notified true
             if (preparedToFire)
                 {
-                // System.out.println("loading");
+                System.out.println("loading");
                 // if ball is proprer shoot position this is a second check
                 if (this.shootRL.isOn() || prevShootRL == true)
                     {
