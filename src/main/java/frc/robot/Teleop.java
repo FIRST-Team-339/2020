@@ -117,28 +117,6 @@ public class Teleop
 
     public static void periodic()
     {
-        // System.out.println("Distane: " + Hardware.climbEncoder.getDistance());
-        // System.out.println("fire rl: " + Hardware.firingRL.isOn());
-        //  System.out.println("position: " + Hardware.climbServo.getPosition());
-        // System.out.println("angle: " + Hardware.climbServo.getAngle());
-        // System.out.println("raw: " + Hardware.climbServo.getRaw());
-
-        Hardware.hoodControl.lowerHood(Hardware.hoodDownButton);
-
-        Hardware.hoodControl.raiseHood(Hardware.hoodUpButton);
-
-        // System.out.println("climp distance: " + Hardware.climbEncoder.getDistance());
-        // SmartDashboard.putNumber("six position",
-        // // Hardware.autoSixPosSwitch.getPosition());
-        // System.out.println("intake RL " + Hardware.intakeRL.isOn());
-        // System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
-        // System.out.println("upper RL " + Hardware.upStoreRL.isOn());
-        // System.out.println("firing RL " + Hardware.firingRL.isOn());
-
-        // SmartDashboard.putBoolean("lowerget  RL ", Hardware.lowStoreRL.get());
-        // SmartDashboard.putBoolean("lower is on RL ", Hardware.lowStoreRL.isOn());
-
-        // SmartDashboard.putBoolean("firing RL ", Hardware.firingRL.isOn());
 
         if (secondRun == true)
             {
@@ -153,6 +131,7 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
+        Hardware.hoodControl.stopHoodMotor();
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
@@ -160,8 +139,9 @@ public class Teleop
 
         Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
         Hardware.climb.climb(Hardware.climbMotorDownButton);
-        // SmartDashboard.putString("Climb State: ", Hardware.climb.climbState.toString());
-        // SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
+        // SmartDashboard.putString("Climb State: ",
+        // Hardware.climb.climbState.toString());
+        SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
 
         // end control loops ==========================
 
@@ -170,7 +150,7 @@ public class Teleop
         // ================= COLORWHEEL CONTROLS ==============
         // Press Right Operator button 4 to start manual spin. Press again to stop
         // manual spin
-        // System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
+        //System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
         // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
         if (Hardware.wheelManualSpinButton.get())
@@ -198,11 +178,7 @@ public class Teleop
 
         // Will align the given color with the field sensor. Gets the color
         // automatically
-        if (Hardware.spinWheelButton.get() && Hardware.colorWheel.getTimeToStopColorAlign() == false)
-            {
-            Hardware.colorWheel.setTimeToStopColorAlign(true);
-            }
-        else if (Hardware.spinWheelColorButton.get() == true)
+        if (Hardware.spinWheelColorButton.get())
             {
             // To change the speed
             Hardware.colorWheel.setSpeed(.4);
@@ -210,9 +186,7 @@ public class Teleop
             // To enable spinControlPanelToColor to start
             Hardware.colorWheel.colorStart();
             }
-
         Hardware.colorWheel.spinControlPanelToColor();
-
         // ================== DRIVER CONTROLS =================
 
         // override convyor movement
@@ -329,7 +303,7 @@ public class Teleop
         // craigTest();
         // chrisTest();
         // dionTest();
-        //chrisTest();
+        // chrisTest();
         // dionTest();
         // patrickTest();
         // colourTest();

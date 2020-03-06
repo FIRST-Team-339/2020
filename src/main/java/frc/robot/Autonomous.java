@@ -972,8 +972,16 @@ public class Autonomous
                 if (Hardware.visionInterface.getHasTargets())
                     {
 
-                    if (Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE))
+                    if (
+                    /*
+                     * Hardware.visionDriving.driveToTarget(45, true, DRIVE_SPEED)
+                     */
+
+                    Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE)
+
+                    )
                         {
+
                         close = closeState.SHOOT;
 
                         }
@@ -1028,8 +1036,10 @@ public class Autonomous
 
                     if (Hardware.launcher.moveRobotToPosition(Launcher.Position.FAR))
                         {
-                        far = farState.SHOOT;
-
+                        if (Hardware.hoodControl.raiseHood())
+                            {
+                            far = farState.SHOOT;
+                            }
                         }
                     }
                 else

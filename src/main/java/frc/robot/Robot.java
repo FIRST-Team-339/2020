@@ -103,7 +103,24 @@ public class Robot extends TimedRobot
     @Override
     public void robotPeriodic()
     {
+        craigsShuffleBoard();
     } // end robotPeriodic()
+
+    public void craigsShuffleBoard()
+    {
+        // SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
+        // SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
+        // SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
+        // SmartDashboard.putBoolean("position: ", positionReadyTemp);
+        // SmartDashboard.putString("wanted position: ", targetPosition.toString());
+        // System.out.println("climp distance: " + Hardware.climbEncoder.getDistance());
+        // SmartDashboard.putNumber("six position",
+        // Hardware.autoSixPosSwitch.getPosition());
+        // System.out.println("intake RL " + Hardware.intakeRL.isOn());
+        // System.out.println("lower RL " + Hardware.lowStoreRL.isOn());
+        // System.out.println("upper RL " + Hardware.upStoreRL.isOn());
+        // System.out.println("firing RL " + Hardware.firingRL.isOn());
+    }
 
     /**
      * ------------------------------------------------------- Initialization code

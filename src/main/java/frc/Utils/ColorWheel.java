@@ -95,9 +95,7 @@ public class ColorWheel
     }
 
     /**
-     * This method gets the FMS data for the shield 3 generator spin color. (What
-     * color we need to align with the field sensor)
-     *
+     * This method gets the FMS data for the shield 3 generator spin color. (What color we need to align with the field sensor)
      * @method getSpinColor
      * @author Guido Visioni
      * @written January 30, 2020
@@ -172,7 +170,6 @@ public class ColorWheel
                 this.motor.set(this.speed);
                 }
             }
-
     }
 
     /**
@@ -246,16 +243,22 @@ public class ColorWheel
 
         if (timeToStopColorAlign == false)
             {
-            // Check to see if the color under the field sensor is the same as the FMS color data
             if (colorString == "U")
                 {
+                timeToStopColorAlign = true;
                 this.motor.set(0);
                 }
+            // Check to see if the color under the field sensor is the same as the FMS color data
             if (colorString == spinColor)
                 {
                 this.motor.set(0);
                 timeToStopColorAlign = true;
                 return true;
+                }
+            else if (colorString == "U")
+                {
+                timeToStopColorAlign = true;
+                this.motor.set(0);
                 }
             else
                 {

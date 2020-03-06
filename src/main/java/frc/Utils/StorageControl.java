@@ -180,9 +180,9 @@ public class StorageControl
      */
     public void intakeStorageControl()
     {
-        //System.out.println("intaking: " + Hardware.intake.intaking);
+        // System.out.println("intaking: " + Hardware.intake.intaking);
         // System.out.println(getStorageControlState());
-        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */)
+        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */ && !doingATHninginLoad)
             {
 
             if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true) && this.shootRL.isOn() == false)
@@ -191,7 +191,7 @@ public class StorageControl
                 // is true or the previous intake was true
                 this.setPrevIntakeRL(true);
                 //
-                //System.out.println("going up in intakeStorageControl");
+                // System.out.println("going up in intakeStorageControl");
                 setStorageControlState(ControlState.UP);
                 }
 
@@ -334,7 +334,7 @@ public class StorageControl
                     // moves the balls up to the shootRL(or maybe upperRL) in preparation to be
                     // moved into the rotating shooter
                     // System.out.println("shoot RL: " + this.shootRL.get());
-                    if (this.shootRL.isOn() && preparedToFire)
+                    if (this.shootRL.isOn())
                         {
                         // System.out.println("got shoot rl");
                         // balls is ready to shoot
@@ -349,7 +349,6 @@ public class StorageControl
                         {
                         // System.out.println("moving conveyor up");
                         // ball not ready
-                        preparedToFire = true;
                         // move ball until ready
                         // System.out.println("up in prepared to fired");
                         setStorageControlState(ControlState.UP);
@@ -375,6 +374,9 @@ public class StorageControl
     // if a balls has been shot
     private static boolean shotBall = false;
 
+    private boolean doingATHninginLoad = false;
+    private boolean tellOtherTHingwearedoingTHing = true;
+
     public void resetLoadValues()
     {
         stillShooting = false;
@@ -390,7 +392,10 @@ public class StorageControl
     public boolean loadToFire()
     {
         // System.out.println("loading balls aokfasklsDFSKNLknadsds");
-
+        if (tellOtherTHingwearedoingTHing)
+            {
+            doingATHninginLoad = true;
+            }
         SmartDashboard.putBoolean("stillshooting", stillShooting);
         SmartDashboard.putBoolean("prevShootRL", prevShootRL);
         SmartDashboard.putBoolean("shotball", shotBall);
@@ -410,25 +415,27 @@ public class StorageControl
         if (Hardware.ballCounter.getBallCount() > 0)
             {
             // if prepared to fire as notified true
-            if (preparedToFire)
+            if (preparedToFire || this.shootRL.isOn())
                 {
-                // System.out.println("loading");
+                System.out.println("loading");
                 // if ball is proprer shoot position this is a second check
                 if (this.shootRL.isOn() || prevShootRL == true)
                     {
-
+                    this.prevShootRL = true;
                     // System.out.println("shooting ball");
                     // move ball up into the launcher
                     setStorageControlState(ControlState.UP);
                     if (!stillShooting)
                         {
                         // System.out.println("subtract in load to fire");
-                        //   Hardware.ballCounter.subtractBall();
+                        // Hardware.ballCounter.subtractBall();
                         // extra check to see if there are balls left to continue the further states
                         if (Hardware.ballCounter.getBallCount() == 0)
                             {
                             prevShootRL = false;
                             setStorageControlState(ControlState.PASSIVE);
+                            doingATHninginLoad = false;
+                            tellOtherTHingwearedoingTHing = true;
                             return true;
                             }
                         }
@@ -436,7 +443,7 @@ public class StorageControl
                     }
                 if (shotBall)
                     {
-                    //  Hardware.ballCounter.subtractBall();
+                    // Hardware.ballCounter.subtractBall();
                     // if we shot a ball we are not shoot
                     // reset shotBall info
                     stillShooting = false;
@@ -461,10 +468,10 @@ public class StorageControl
                     }
                 }
             // if (this.shootRL.isOn() == true && prevShootRL == true)
-            //     {
-            //     prevShootRL = false;
-            //     Hardware.ballCounter.subtractBall();
-            //     }
+            // {
+            // prevShootRL = false;
+            // Hardware.ballCounter.subtractBall();
+            // }
             }
         else
             {
@@ -532,10 +539,10 @@ public class StorageControl
     // dont move conveyor speed
     final double HOLDING_SPEED = 0;
     // move up speed
-    final double UP_SPEED = .22;//.11
-    final double UP_SPEED_SHOOT = .7;//.25
+    final double UP_SPEED = .22;// .11
+    final double UP_SPEED_SHOOT = .7;// .25
     // move down speed
-    final double DOWN_SPEED = -.45;//-.3
+    final double DOWN_SPEED = -.45;// -.3
     // amount needed to move JOYSTICK to override
     private final double JOYSTICK_DEADBAND_STORAGE = .3;
 
