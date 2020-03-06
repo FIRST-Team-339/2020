@@ -53,7 +53,7 @@ public class LimelightDriveWithVision
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
-            if (offness < -3)
+            if (offness < -ACCEPTABLE_OFFNESS)
                 {
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
@@ -63,7 +63,7 @@ public class LimelightDriveWithVision
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
 
-            else if (offness > 3)
+            else if (offness > ACCEPTABLE_OFFNESS)
                 {
 
                 adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
@@ -120,7 +120,7 @@ public class LimelightDriveWithVision
         if (Hardware.visionInterface.getHasTargets())
             {
 
-            if (offness < 0)
+            if (offness < -ACCEPTABLE_OFFNESS)
                 {
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
@@ -130,7 +130,7 @@ public class LimelightDriveWithVision
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
 
-            else if (offness > 0)
+            else if (offness > ACCEPTABLE_OFFNESS)
                 {
 
                 adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
@@ -148,7 +148,7 @@ public class LimelightDriveWithVision
             {
             Hardware.transmission.drive(0, 0);
             // this.timer.stop();
-            // return true;
+            return true;
             }
         return false;
 
@@ -170,7 +170,7 @@ public class LimelightDriveWithVision
         // right move speed
         double adjustmentValueLeft = 0;
 
-        if (offness < -3)
+        if (offness < -ACCEPTABLE_OFFNESS)
             {
             // adjust the speed for the left and right motors based off their offness and a
             // preset proportional value
@@ -181,7 +181,7 @@ public class LimelightDriveWithVision
             Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
 
-        else if (offness > 3)
+        else if (offness > ACCEPTABLE_OFFNESS)
             {
 
             adjustmentValueLeft = (Math.abs(offness) * ADJUST_PROPORTION_2019_ALIGN);
@@ -218,4 +218,6 @@ public class LimelightDriveWithVision
     // distance away from the target that the robot will stop at
     final double STOP_DISTANCE_TEST = 50;// TODO
     final int ULTRA_OVERRIDE = 20;
+
+    final double ACCEPTABLE_OFFNESS = 3;
     }

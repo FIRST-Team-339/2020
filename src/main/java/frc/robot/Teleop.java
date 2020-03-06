@@ -123,9 +123,9 @@ public class Teleop
         // System.out.println("angle: " + Hardware.climbServo.getAngle());
         // System.out.println("raw: " + Hardware.climbServo.getRaw());
 
-        // Hardware.hoodControl.lowerHood(Hardware.hoodDownButton);
+        Hardware.hoodControl.lowerHood(Hardware.hoodDownButton);
 
-        // Hardware.hoodControl.raiseHood(Hardware.hoodUpButton);
+        Hardware.hoodControl.raiseHood(Hardware.hoodUpButton);
 
         // System.out.println("climp distance: " + Hardware.climbEncoder.getDistance());
         // SmartDashboard.putNumber("six position",
@@ -235,7 +235,6 @@ public class Teleop
         // Hardware.launcherMotorEncoder.getRPM());
 
         // shoot balls
-        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
 
         // pick up balls with vision
         Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
@@ -243,6 +242,7 @@ public class Teleop
         // intake controls
         if (Hardware.intake.usingVisionIntake == false || !Hardware.pickupBallVisionButton.get())
             {
+            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
             // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
             // intake
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
