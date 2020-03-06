@@ -247,8 +247,8 @@ public class Autonomous
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
         Hardware.intake.makePassive();
-        //  Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
-        //System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
+        // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
+        // System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
         switch (autoState)
             {
 
@@ -394,8 +394,8 @@ public class Autonomous
      */
     public static boolean runAuto()
     {
-        // System.out.println("Exit: " + exit);
-        // System.out.println("Path: " + path);
+        System.out.println("Exit: " + exit);
+        System.out.println("Path: " + path);
         // System.out.println("Location: " + position);
         // System.out.println("6 Location: " + sixLocation);
 
@@ -946,6 +946,13 @@ public class Autonomous
 
     private static boolean drivenToTarget = false;
 
+    public static enum closeState
+        {
+        ALIGN, SHOOT, FINISH
+        }
+
+    public static closeState close = closeState.ALIGN;
+
     /**
      * Description: Executes the function to drive forward and shoot
      *
@@ -956,31 +963,49 @@ public class Autonomous
      */
     private static boolean shootClose()
     {
-        if (!drivenToTarget)
+
+        System.out.println("Shoot State: " + close);
+        switch (close)
             {
-            if (Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE))
-                {
-                drivenToTarget = true;
-                }
-            }
-        if (drivenToTarget)
-            {
-            if (Hardware.launcher.shootBallsAuto())
-                {
-                StorageControl.setStorageControlState(ControlState.PASSIVE);
-                // Hardware.launcher.unchargeShooter();
+            case ALIGN:
+
+                if (Hardware.visionInterface.getHasTargets())
+                    {
+
+                    if (Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE))
+                        {
+                        close = closeState.SHOOT;
+
+                        }
+                    }
+                else
+                    {
+                    path = Path.NOTHING;
+
+                    }
+                break;
+            case SHOOT:
+                if (Hardware.launcher.shootBallsAuto())
+                    {
+
+                    close = closeState.FINISH;
+                    }
+                break;
+
+            case FINISH:
+
                 return true;
-                }
+
             }
         return false;
     }
 
     public static enum farState
         {
-        DRIVE_BACK, ALIGN, SHOOT, FINISH
+        ALIGN, SHOOT, FINISH
         }
 
-    public static farState far = farState.DRIVE_BACK;
+    public static farState far = farState.ALIGN;
 
     /**
      * Description: handles the functions to shoot far
@@ -996,20 +1021,12 @@ public class Autonomous
         switch (far)
             {
 
-            case DRIVE_BACK:
-                if (Hardware.drive.driveStraightInches(SHOOT_FAR_DRIVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION, true))
-                    {
-                    Hardware.autoTimer.start();
-                    far = farState.ALIGN;
-                    }
-
-                break;
             case ALIGN:
 
                 if (Hardware.visionInterface.getHasTargets())
                     {
 
-                    if (Hardware.visionDriving.alignToTarget())
+                    if (Hardware.launcher.moveRobotToPosition(Launcher.Position.FAR))
                         {
                         far = farState.SHOOT;
 
