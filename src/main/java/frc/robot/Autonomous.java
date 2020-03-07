@@ -394,8 +394,8 @@ public class Autonomous
      */
     public static boolean runAuto()
     {
-        System.out.println("Exit: " + exit);
-        System.out.println("Path: " + path);
+        // System.out.println("Exit: " + exit);
+        // System.out.println("Path: " + path);
         // System.out.println("Location: " + position);
         // System.out.println("6 Location: " + sixLocation);
 
@@ -964,7 +964,7 @@ public class Autonomous
     private static boolean shootClose()
     {
 
-        System.out.println("Shoot State: " + close);
+        // System.out.println("Shoot State: " + close);
         switch (close)
             {
             case ALIGN:
