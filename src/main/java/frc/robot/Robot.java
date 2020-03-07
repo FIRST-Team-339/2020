@@ -296,9 +296,9 @@ public class Robot extends TimedRobot
     private final double PREV_YEAR_TARGET_HEIGHT = 83.7;
     private final double PREV_YEAR_MOUNTING_ANGLE = 35;
 
-    private final double _CURRENT_YEAR_CAMERA_HEIGHT = 34.25;
+    private final double _CURRENT_YEAR_CAMERA_HEIGHT = 38;
     private final double CURRENT_YEAR_TARGET_HEIGHT = 83.7;
-    private final double CURRENT_YEAR_MOUNTING_ANGLE = 35;
+    private final double CURRENT_YEAR_MOUNTING_ANGLE = 30;
 
     public static final int SERVO_START_VALUE = 25;
     }

@@ -54,7 +54,7 @@ public class Launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
-        System.out.println("postion: " + this.getClosestPosition());
+        // System.out.println("postion: " + this.getClosestPosition());
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))

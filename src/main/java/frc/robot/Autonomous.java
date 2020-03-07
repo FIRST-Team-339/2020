@@ -247,6 +247,7 @@ public class Autonomous
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
         Hardware.intake.makePassive();
+        System.out.println("Distance: " + Hardware.visionInterface.getDistanceFromTarget());
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         // System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
         switch (autoState)
