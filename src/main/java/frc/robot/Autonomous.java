@@ -247,6 +247,8 @@ public class Autonomous
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
         Hardware.intake.makePassive();
+        System.out.println("Blobs: " + Hardware.visionInterface.getHasTargets());
+        System.out.println("Distance: " + Hardware.visionInterface.getDistanceFromTarget());
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         // System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
         switch (autoState)
@@ -394,8 +396,8 @@ public class Autonomous
      */
     public static boolean runAuto()
     {
-        System.out.println("Exit: " + exit);
-        System.out.println("Path: " + path);
+        // System.out.println("Exit: " + exit);
+        // System.out.println("Path: " + path);
         // System.out.println("Location: " + position);
         // System.out.println("6 Location: " + sixLocation);
 
@@ -972,12 +974,7 @@ public class Autonomous
                 if (Hardware.visionInterface.getHasTargets())
                     {
 
-                    if (
-                    /*
-                     * Hardware.visionDriving.driveToTarget(45, true, DRIVE_SPEED)
-                     */
-
-                    Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE)
+                    if (Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE)
 
                     )
                         {

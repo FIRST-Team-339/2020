@@ -37,6 +37,7 @@ import frc.Hardware.Hardware;
 import frc.Utils.Launcher;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
+import frc.vision.LimelightInterface.CamMode;
 // import com.revrobotics.ColorSensorV3;
 import frc.vision.LimelightInterface.LedMode;
 
@@ -132,6 +133,7 @@ public class Teleop
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
         Hardware.hoodControl.stopHoodMotor();
+        Hardware.hoodControl.toggleHood(Hardware.launchButton);
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
@@ -187,6 +189,12 @@ public class Teleop
         Hardware.colorWheel.spinControlPanelToColor();
         // ================== DRIVER CONTROLS =================
 
+        if (Hardware.rightDriver.getRawButton(9))
+            {
+            Hardware.visionInterface.setCamMode(CamMode.CAMERA);
+            Hardware.kilroyUSBCamera.setLimelight();
+            }
+
         // override convyor movement
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
         // Hardware.launcherMotorGroup.set(.4);
@@ -212,7 +220,7 @@ public class Teleop
         Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
 
         // intake controls
-        if (Hardware.intake.usingVisionIntake == false || !Hardware.pickupBallVisionButton.get())
+        if (/* Hardware.intake.usingVisionIntake == false || */ !Hardware.pickupBallVisionButton.get())
             {
             Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
             // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
@@ -238,14 +246,14 @@ public class Teleop
 
         // switch usb cameras
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
-
+        System.out.println(getDisableTeleOpDrive());
         if (!disableTeleOpDrive)
             {
             teleopDrive();
             }
 
         // individualTest();
-        // printStatements();
+        printStatements();
     } // end Periodic()
 
     /**
@@ -267,7 +275,7 @@ public class Teleop
 
     public static void teleopDrive()
     {
-        // System.out.println("teleop drive");
+        System.out.println("teleop drive");
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
@@ -518,8 +526,7 @@ public class Teleop
         // Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
-        // Hardware.telemetry.printToConsole("lowStoreRL: " +
-        // Hardware.lowStoreRL.isOn());
+        Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
         // Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
         // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
 

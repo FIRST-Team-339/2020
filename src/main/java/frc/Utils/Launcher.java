@@ -55,6 +55,7 @@ public class Launcher
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
         System.out.println("postion: " + this.getClosestPosition());
+        System.out.println("state: " + shootState);
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
@@ -115,37 +116,12 @@ public class Launcher
                     SmartDashboard.putBoolean("position: ", positionReadyTemp);
                     SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (positionReadyTemp || moveRobotToPosition(targetPosition))// TODO
+                    if (positionReadyTemp || moveRobotToPosition(targetPosition))
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
                         }
 
-                    if (targetPosition == Position.FAR)
-                        {
-                        if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
-                            {
-                            if (Hardware.hoodControl.raiseHood())
-                                {
-                                hoodReadyTemp = true;
-                                }
-                            }
-                        }
-                    else if (targetPosition == Position.CLOSE)
-                        {
-                        if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
-                            {
-                            if (Hardware.hoodControl.lowerHood())
-                                {
-                                hoodReadyTemp = true;
-                                }
-                            }
-                        }
-
-                    // if (this.prepareToShoot(this.getClosestPosition(), teleop))
-                    // {
-                    // launcherReadyTemp = true;
-                    // }
                     if (this.prepareToShoot())
                         {
                         launcherReadyTemp = true;
@@ -156,7 +132,7 @@ public class Launcher
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
-                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp && hoodReadyTemp)
+                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp /* && hoodReadyTemp */)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
@@ -670,7 +646,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
         // System.out.println(position.toString());
-        // System.out.println("move state: " + moveState);
+        System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:
@@ -686,12 +662,27 @@ public class Launcher
                 farOffset = distanceFromTarget - FAR_DISTANCE;
                 closeOffset = distanceFromTarget - CLOSE_DISTANCE;
 
-                if (Math.abs(farOffset) < MOVE_DISTANCE_DEADBAND || Math.abs(closeOffset) < MOVE_DISTANCE_DEADBAND)
+                if (position == Position.FAR)
                     {
-                    this.moveState = MoveState.INIT;
-                    Hardware.drive.drive(0, 0);
-                    return true;
+                    if (Math.abs(farOffset) < MOVE_DISTANCE_DEADBAND)
+                        {
+                        this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
+                        System.out.println("%%%%%%%%%%%%%%%%%%%%%");
+                        return true;
+                        }
                     }
+                if (position == Position.CLOSE)
+                    {
+                    if (Math.abs(closeOffset) < MOVE_DISTANCE_DEADBAND)
+                        {
+                        this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
+                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
+                        return true;
+                        }
+                    }
+
                 // SmartDashboard.putNumber("distance from target",
                 // Hardware.visionInterface.getDistanceFromTarget());
 
@@ -714,6 +705,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        System.out.println("################################");
                         return true;
                         }
                     }
@@ -731,6 +723,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         return true;
                         }
                     }

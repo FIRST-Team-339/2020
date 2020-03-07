@@ -78,21 +78,21 @@ public class StorageControl
                 }
             }
 
-        if (this.shootRL.isOn() && prevShootRLCounting == false)
+        if (!this.shootRL.isOn() && prevShootRLCounting == true)
             {
             prevShootRLCounting = true;
-            if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
-                {
-                Hardware.ballCounter.subtractBall();
-                }
+            // if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
+            // {
+            Hardware.ballCounter.subtractBall();
+            // }
             }
         if (!this.intakeRL.isOn())
             {
             prevRL = false;
             }
-        if (!this.shootRL.isOn())
+        if (this.shootRL.isOn())
             {
-            prevShootRLCounting = false;
+            prevShootRLCounting = true;
             }
 
         // System.out.println("conveyor state: " + state);
@@ -182,7 +182,7 @@ public class StorageControl
     {
         // System.out.println("intaking: " + Hardware.intake.intaking);
         // System.out.println(getStorageControlState());
-        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */ && !doingATHninginLoad)
+        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */ /* && !doingATHninginLoad */)
             {
 
             if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true) && this.shootRL.isOn() == false)
@@ -191,7 +191,7 @@ public class StorageControl
                 // is true or the previous intake was true
                 this.setPrevIntakeRL(true);
                 //
-                // System.out.println("going up in intakeStorageControl");
+                System.out.println("going up in intakeStorageControl");
                 setStorageControlState(ControlState.UP);
                 }
 
@@ -392,94 +392,106 @@ public class StorageControl
     public boolean loadToFire()
     {
         // System.out.println("loading balls aokfasklsDFSKNLknadsds");
-        if (tellOtherTHingwearedoingTHing)
+        if (Hardware.ballCounter.getBallCount() == 0)
             {
-            doingATHninginLoad = true;
-            }
-        SmartDashboard.putBoolean("stillshooting", stillShooting);
-        SmartDashboard.putBoolean("prevShootRL", prevShootRL);
-        SmartDashboard.putBoolean("shotball", shotBall);
-        if (stillShooting)
-            {
-            // if the ball is not longer in the conveyor system
-            if (this.shootRL.isOn() == false && prevShootRL == true)
-                {
-                // we have shot a ball and are no longer shooting
-
-                shotBall = true;
-                stillShooting = false;
-                prevShootRL = false;
-                // Hardware.ballCounter.subtractBall();
-                }
-            }
-        if (Hardware.ballCounter.getBallCount() > 0)
-            {
-            // if prepared to fire as notified true
-            if (preparedToFire || this.shootRL.isOn())
-                {
-                System.out.println("loading");
-                // if ball is proprer shoot position this is a second check
-                if (this.shootRL.isOn() || prevShootRL == true)
-                    {
-                    this.prevShootRL = true;
-                    // System.out.println("shooting ball");
-                    // move ball up into the launcher
-                    setStorageControlState(ControlState.UP);
-                    if (!stillShooting)
-                        {
-                        // System.out.println("subtract in load to fire");
-                        // Hardware.ballCounter.subtractBall();
-                        // extra check to see if there are balls left to continue the further states
-                        if (Hardware.ballCounter.getBallCount() == 0)
-                            {
-                            prevShootRL = false;
-                            setStorageControlState(ControlState.PASSIVE);
-                            doingATHninginLoad = false;
-                            tellOtherTHingwearedoingTHing = true;
-                            return true;
-                            }
-                        }
-                    stillShooting = true;
-                    }
-                if (shotBall)
-                    {
-                    // Hardware.ballCounter.subtractBall();
-                    // if we shot a ball we are not shoot
-                    // reset shotBall info
-                    stillShooting = false;
-                    shotBall = false;
-                    prevShootRL = false;
-                    // stop moving conveyor
-                    setStorageControlState(ControlState.PASSIVE);
-                    // if we still have balls
-                    if (Hardware.ballCounter.getBallCount() > 0)
-                        {
-                        // System.out.println(" preparing again");
-                        // prepared the next ball
-                        prepareToShoot();
-                        return true;
-                        }
-                    }
-                else if (Hardware.ballCounter.getBallCount() > 0 && this.shootRL.isOn() == false
-                        && stillShooting == false)
-                    ;
-                    {
-                    setStorageControlState(ControlState.UP);
-                    }
-                }
-            // if (this.shootRL.isOn() == true && prevShootRL == true)
-            // {
-            // prevShootRL = false;
-            // Hardware.ballCounter.subtractBall();
-            // }
+            setStorageControlState(ControlState.PASSIVE);
+            return true;
             }
         else
             {
-            // if 0 balls stop moving conveyor
-            state = ControlState.PASSIVE;
-            return true;
+            setStorageControlState(ControlState.UP);
             }
+
         return false;
+        // if (tellOtherTHingwearedoingTHing)
+        // {
+        // doingATHninginLoad = true;
+        // }
+        // SmartDashboard.putBoolean("stillshooting", stillShooting);
+        // SmartDashboard.putBoolean("prevShootRL", prevShootRL);
+        // SmartDashboard.putBoolean("shotball", shotBall);
+        // if (stillShooting)
+        // {
+        // // if the ball is not longer in the conveyor system
+        // if (this.shootRL.isOn() == false && prevShootRL == true)
+        // {
+        // // we have shot a ball and are no longer shooting
+
+        // shotBall = true;
+        // stillShooting = false;
+        // prevShootRL = false;
+        // // Hardware.ballCounter.subtractBall();
+        // }
+        // }
+        // if (Hardware.ballCounter.getBallCount() > 0)
+        // {
+        // // if prepared to fire as notified true
+        // if (preparedToFire || this.shootRL.isOn())
+        // {
+        // System.out.println("loading");
+        // // if ball is proprer shoot position this is a second check
+        // if (this.shootRL.isOn() || prevShootRL == true)
+        // {
+        // this.prevShootRL = true;
+        // // System.out.println("shooting ball");
+        // // move ball up into the launcher
+        // setStorageControlState(ControlState.UP);
+        // if (!stillShooting)
+        // {
+        // // System.out.println("subtract in load to fire");
+        // // Hardware.ballCounter.subtractBall();
+        // // extra check to see if there are balls left to continue the further states
+        // if (Hardware.ballCounter.getBallCount() == 0)
+        // {
+        // prevShootRL = false;
+        // setStorageControlState(ControlState.PASSIVE);
+        // doingATHninginLoad = false;
+        // tellOtherTHingwearedoingTHing = true;
+        // return true;
+        // }
+        // }
+        // stillShooting = true;
+        // }
+        // if (shotBall)
+        // {
+        // // Hardware.ballCounter.subtractBall();
+        // // if we shot a ball we are not shoot
+        // // reset shotBall info
+        // stillShooting = false;
+        // shotBall = false;
+        // prevShootRL = false;
+        // // stop moving conveyor
+        // setStorageControlState(ControlState.PASSIVE);
+        // // if we still have balls
+        // if (Hardware.ballCounter.getBallCount() > 0)
+        // {
+        // // System.out.println(" preparing again");
+        // // prepared the next ball
+        // prepareToShoot();
+        // return true;
+        // }
+        // }
+        // else if (Hardware.ballCounter.getBallCount() > 0 && this.shootRL.isOn() ==
+        // false
+        // && stillShooting == false)
+        // ;
+        // {
+        // setStorageControlState(ControlState.UP);
+        // }
+        // }
+        // // if (this.shootRL.isOn() == true && prevShootRL == true)
+        // // {
+        // // prevShootRL = false;
+        // // Hardware.ballCounter.subtractBall();
+        // // }
+        // }
+        // else
+        // {
+        // // if 0 balls stop moving conveyor
+        // state = ControlState.PASSIVE;
+        // return true;
+        // }
+        // return false;
     }
 
     /**

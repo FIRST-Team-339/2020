@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.Hardware.Hardware;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
+import frc.vision.LimelightInterface.CamMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -51,7 +52,7 @@ public class Robot extends TimedRobot
             }
         else if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.CurrentYear))
             {
-            Hardware.visionInterface.setCameraHeight(_CURRENT_YEAR_CAMERA_HEIGHT);
+            Hardware.visionInterface.setCameraHeight(CURRENT_YEAR_CAMERA_HEIGHT);
             Hardware.visionInterface.setTargetHeight(CURRENT_YEAR_TARGET_HEIGHT);
             Hardware.visionInterface.setMountingAngle(CURRENT_YEAR_MOUNTING_ANGLE);
             Hardware.conveyorMotor1.setInverted(false);
@@ -70,7 +71,6 @@ public class Robot extends TimedRobot
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
-
         // AIR
         // Hardware.compressor.start();
 
@@ -82,6 +82,9 @@ public class Robot extends TimedRobot
 
         Hardware.launcherMotorEncoder.setTicksPerRevolution(44.1); // 5175
 
+        Hardware.visionInterface.setCamMode(CamMode.PROCESSOR);
+        Hardware.kilroyUSBCamera.setCamera(0);
+
         // ---------------------------------------
         // done setup - tell the user we are complete
         // setup
@@ -89,6 +92,7 @@ public class Robot extends TimedRobot
 
         System.out
                 .println("Kilroy " + Hardware.robotIdentity.toString() + " has started.  All hardware items created.");
+
     } // end robotInit()
 
     /**
@@ -296,9 +300,9 @@ public class Robot extends TimedRobot
     private final double PREV_YEAR_TARGET_HEIGHT = 83.7;
     private final double PREV_YEAR_MOUNTING_ANGLE = 35;
 
-    private final double _CURRENT_YEAR_CAMERA_HEIGHT = 34.25;
+    private final double CURRENT_YEAR_CAMERA_HEIGHT = 38;
     private final double CURRENT_YEAR_TARGET_HEIGHT = 83.7;
-    private final double CURRENT_YEAR_MOUNTING_ANGLE = 35;
+    private final double CURRENT_YEAR_MOUNTING_ANGLE = 30;
 
     public static final int SERVO_START_VALUE = 25;
     }
