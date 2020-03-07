@@ -17,6 +17,7 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.HardwareInterfaces.KilroyEncoder;
 
@@ -121,7 +122,7 @@ public class ColorWheel
                 case 'Y':
                     return "Y";
                 default:
-                    return "";
+                    return "U";
                 }
             }
         // Returns blank if FMS data not detected
@@ -210,7 +211,7 @@ public class ColorWheel
     {
         this.spinColor = this.getSpinColor();
         Color detectedColor = this.colorSensor.getColor();
-        String colorString = "";
+        String colorString = "U";
 
         // Adds color targets to the colorMatcher
         colorMatcher.addColorMatch(kBlueTarget);
@@ -220,6 +221,7 @@ public class ColorWheel
 
         this.match = colorMatcher.matchClosestColor(detectedColor);
         // When the sensor detects a color it returns a string that represents the color under the control panel sensor. Sets colorString equal to 1 of the 4 colors.
+
         if (match.color == kBlueTarget)
             {
             colorString = "Y";
@@ -243,26 +245,25 @@ public class ColorWheel
 
         if (timeToStopColorAlign == false)
             {
-            if (colorString == "U")
-                {
-                timeToStopColorAlign = true;
-                this.motor.set(0);
-                }
-            // Check to see if the color under the field sensor is the same as the FMS color data
-            if (colorString == spinColor)
+            if (!inRange())
                 {
                 this.motor.set(0);
                 timeToStopColorAlign = true;
                 return true;
                 }
-            else if (colorString == "U")
+
+            // Check to see if the color under the field sensor is the same as the FMS color data
+            if (colorString.equals(spinColor))
                 {
-                timeToStopColorAlign = true;
                 this.motor.set(0);
+                timeToStopColorAlign = true;
+                SmartDashboard.putString("colorString", colorString);
+                return true;
                 }
             else
                 {
                 // Spin motor until specified distance has been reached
+                SmartDashboard.putString("colorString", colorString);
                 this.motor.set(this.speed);
                 }
             }
