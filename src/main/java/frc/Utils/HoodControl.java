@@ -22,7 +22,6 @@ public class HoodControl
     public HoodControl(Servo servo)
         {
             this.servo = servo;
-
         }
 
     Timer timer = new Timer();

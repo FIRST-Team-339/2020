@@ -686,12 +686,25 @@ public class Launcher
                 farOffset = distanceFromTarget - FAR_DISTANCE;
                 closeOffset = distanceFromTarget - CLOSE_DISTANCE;
 
-                if (Math.abs(farOffset) < MOVE_DISTANCE_DEADBAND || Math.abs(closeOffset) < MOVE_DISTANCE_DEADBAND)
+                if (position == Position.FAR)
                     {
-                    this.moveState = MoveState.INIT;
-                    Hardware.drive.drive(0, 0);
-                    return true;
+                    if (Math.abs(farOffset) < MOVE_DISTANCE_DEADBAND)
+                        {
+                        this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
+                        return true;
+                        }
                     }
+                if (position == Position.CLOSE)
+                    {
+                    if (Math.abs(closeOffset) < MOVE_DISTANCE_DEADBAND)
+                        {
+                        this.moveState = MoveState.INIT;
+                        Hardware.drive.drive(0, 0);
+                        return true;
+                        }
+                    }
+
                 // SmartDashboard.putNumber("distance from target",
                 // Hardware.visionInterface.getDistanceFromTarget());
 
