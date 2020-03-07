@@ -122,25 +122,25 @@ public class Launcher
                         }
 
                     // if (targetPosition == Position.FAR)
-                    //     {
-                    //     if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
-                    //         {
-                    //         if (Hardware.hoodControl.raiseHood())
-                    //             {
-                    //             hoodReadyTemp = true;
-                    //             }
-                    //         }
-                    //     }
+                    // {
+                    // if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
+                    // {
+                    // if (Hardware.hoodControl.raiseHood())
+                    // {
+                    // hoodReadyTemp = true;
+                    // }
+                    // }
+                    // }
                     // else if (targetPosition == Position.CLOSE)
-                    //     {
-                    //     if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
-                    //         {
-                    //         if (Hardware.hoodControl.lowerHood())
-                    //             {
-                    //             hoodReadyTemp = true;
-                    //             }
-                    //         }
-                    //     }
+                    // {
+                    // if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
+                    // {
+                    // if (Hardware.hoodControl.lowerHood())
+                    // {
+                    // hoodReadyTemp = true;
+                    // }
+                    // }
+                    // }
 
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
@@ -670,7 +670,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
         // System.out.println(position.toString());
-        // System.out.println("move state: " + moveState);
+        System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:

@@ -965,7 +965,7 @@ public class Autonomous
     private static boolean shootClose()
     {
 
-        // System.out.println("Shoot State: " + close);
+        System.out.println("Shoot State: " + close);
         switch (close)
             {
             case ALIGN:
@@ -973,12 +973,7 @@ public class Autonomous
                 if (Hardware.visionInterface.getHasTargets())
                     {
 
-                    if (
-                    /*
-                     * Hardware.visionDriving.driveToTarget(45, true, DRIVE_SPEED)
-                     */
-
-                    Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE)
+                    if (Hardware.launcher.moveRobotToPosition(Launcher.Position.CLOSE)
 
                     )
                         {

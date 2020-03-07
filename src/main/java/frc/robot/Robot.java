@@ -70,7 +70,6 @@ public class Robot extends TimedRobot
         // Clearing TalonFX motor ticks
         Hardware.leftDriveEncoder.reset();
         Hardware.rightDriveEncoder.reset();
-
         // AIR
         // Hardware.compressor.start();
 
