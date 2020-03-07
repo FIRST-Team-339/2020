@@ -692,6 +692,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        System.out.println("%%%%%%%%%%%%%%%%%%%%%");
                         return true;
                         }
                     }
@@ -701,6 +702,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
                         return true;
                         }
                     }
@@ -727,6 +729,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        System.out.println("################################");
                         return true;
                         }
                     }
@@ -744,6 +747,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         return true;
                         }
                     }
