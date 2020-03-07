@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.Hardware.Hardware;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
+import frc.vision.LimelightInterface.CamMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -82,6 +83,9 @@ public class Robot extends TimedRobot
 
         Hardware.launcherMotorEncoder.setTicksPerRevolution(44.1); // 5175
 
+        Hardware.visionInterface.setCamMode(CamMode.PROCESSOR);
+        Hardware.kilroyUSBCamera.setCamera(0);
+
         // ---------------------------------------
         // done setup - tell the user we are complete
         // setup
@@ -89,6 +93,7 @@ public class Robot extends TimedRobot
 
         System.out
                 .println("Kilroy " + Hardware.robotIdentity.toString() + " has started.  All hardware items created.");
+
     } // end robotInit()
 
     /**

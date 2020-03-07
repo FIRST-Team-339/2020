@@ -39,6 +39,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.cscore.HttpCamera;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -555,6 +557,7 @@ public class Hardware
     // **********************************************************
     // Kilroy's Ancillary classes
     // **********************************************************
+    public static HttpCamera limelightPreview = new HttpCamera("LimeLight Preview", "http://limelight.local:5800/");
     public static KilroyUSBCamera kilroyUSBCamera = new KilroyUSBCamera(cameraSwitchButton1, cameraSwitchButton2);
 
     // ------------------------------------
