@@ -132,6 +132,7 @@ public class Teleop
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
         Hardware.hoodControl.stopHoodMotor();
+        Hardware.hoodControl.toggleHood(Hardware.launchButton);
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
@@ -214,7 +215,7 @@ public class Teleop
         Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
 
         // intake controls
-        if (Hardware.intake.usingVisionIntake == false || !Hardware.pickupBallVisionButton.get())
+        if (/* Hardware.intake.usingVisionIntake == false || */ !Hardware.pickupBallVisionButton.get())
             {
             Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
             // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
@@ -240,7 +241,7 @@ public class Teleop
 
         // switch usb cameras
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
-
+        System.out.println(getDisableTeleOpDrive());
         if (!disableTeleOpDrive)
             {
             teleopDrive();
@@ -269,7 +270,7 @@ public class Teleop
 
     public static void teleopDrive()
     {
-        // System.out.println("teleop drive");
+        System.out.println("teleop drive");
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
