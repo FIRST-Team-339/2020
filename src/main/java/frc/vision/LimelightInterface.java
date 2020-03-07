@@ -342,12 +342,10 @@ public class LimelightInterface
     /**
      * enum to control the camera mode of the limelight
      */
-    private enum CamMode
+    public enum CamMode
         {
         PROCESSOR, CAMERA
         }
-
-    private CamMode camMode = CamMode.PROCESSOR;
 
     // TODO make enum
     // 0 vision processor
@@ -361,9 +359,9 @@ public class LimelightInterface
      * @param mode
      *                 0 = vision processor 1 = driver camera
      */
-    public void setCamMode(int mode)
+    public void setCamMode(CamMode mode)
     {
-        switch (this.camMode)
+        switch (mode)
             {
             case PROCESSOR:
                 limelight.getEntry("camMode").setNumber(0);

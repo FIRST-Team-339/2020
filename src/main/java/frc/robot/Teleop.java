@@ -37,6 +37,7 @@ import frc.Hardware.Hardware;
 import frc.Utils.Launcher;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
+import frc.vision.LimelightInterface.CamMode;
 // import com.revrobotics.ColorSensorV3;
 import frc.vision.LimelightInterface.LedMode;
 
@@ -188,6 +189,12 @@ public class Teleop
             }
         Hardware.colorWheel.spinControlPanelToColor();
         // ================== DRIVER CONTROLS =================
+
+        if (Hardware.rightDriver.getRawButton(9))
+            {
+            Hardware.visionInterface.setCamMode(CamMode.CAMERA);
+            Hardware.kilroyUSBCamera.setLimelight();
+            }
 
         // override convyor movement
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
@@ -520,8 +527,7 @@ public class Teleop
         // Hardware.autoLocation.getPosition());
         // red lights
         // Hardware.telemetry.printToConsole("intake RL: " + Hardware.intakeRL.isOn());
-        Hardware.telemetry.printToConsole("lowStoreRL: " +
-        Hardware.lowStoreRL.isOn());
+        Hardware.telemetry.printToConsole("lowStoreRL: " + Hardware.lowStoreRL.isOn());
         // Hardware.telemetry.printToConsole("upStoreRL: " + Hardware.upStoreRL.isOn());
         // Hardware.telemetry.printToConsole("firingRL: " + Hardware.firingRL.isOn());
 

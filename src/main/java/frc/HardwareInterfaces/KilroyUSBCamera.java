@@ -7,10 +7,10 @@
 
 package frc.HardwareInterfaces;
 
+import edu.wpi.cscore.HttpCamera;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -444,13 +444,21 @@ public class KilroyUSBCamera
             }
     }
 
+    /**
+     * Sets the limelight as the server source
+     */
+    public void setLimelight()
+    {
+        server.setSource(limelight);
+    }
+
     // Variables
 
     private UsbCamera cam0 = null;
 
     private UsbCamera cam1 = null;
 
-    private NetworkTableEntry limelight = null;
+    private HttpCamera limelight = new HttpCamera("Limelight Preveiw", "http://limelight.local:5800/");
 
     private VideoSink server;
 
