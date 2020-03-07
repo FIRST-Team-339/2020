@@ -646,7 +646,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
         // System.out.println(position.toString());
-        // System.out.println("move state: " + moveState);
+        System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:
