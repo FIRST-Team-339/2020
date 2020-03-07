@@ -55,6 +55,7 @@ public class Launcher
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
         System.out.println("postion: " + this.getClosestPosition());
+        System.out.println("state: " + shootState);
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
@@ -115,37 +116,12 @@ public class Launcher
                     SmartDashboard.putBoolean("position: ", positionReadyTemp);
                     SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (positionReadyTemp || moveRobotToPosition(targetPosition))// TODO
+                    if (positionReadyTemp || moveRobotToPosition(targetPosition))
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
                         }
 
-                    // if (targetPosition == Position.FAR)
-                    //     {
-                    //     if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
-                    //         {
-                    //         if (Hardware.hoodControl.raiseHood())
-                    //             {
-                    //             hoodReadyTemp = true;
-                    //             }
-                    //         }
-                    //     }
-                    // else if (targetPosition == Position.CLOSE)
-                    //     {
-                    //     if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
-                    //         {
-                    //         if (Hardware.hoodControl.lowerHood())
-                    //             {
-                    //             hoodReadyTemp = true;
-                    //             }
-                    //         }
-                    //     }
-
-                    // if (this.prepareToShoot(this.getClosestPosition(), teleop))
-                    // {
-                    // launcherReadyTemp = true;
-                    // }
                     if (this.prepareToShoot())
                         {
                         launcherReadyTemp = true;
