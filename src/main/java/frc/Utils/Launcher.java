@@ -121,26 +121,26 @@ public class Launcher
                         positionReadyTemp = true;
                         }
 
-                    if (targetPosition == Position.FAR)
-                        {
-                        if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
-                            {
-                            if (Hardware.hoodControl.raiseHood())
-                                {
-                                hoodReadyTemp = true;
-                                }
-                            }
-                        }
-                    else if (targetPosition == Position.CLOSE)
-                        {
-                        if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
-                            {
-                            if (Hardware.hoodControl.lowerHood())
-                                {
-                                hoodReadyTemp = true;
-                                }
-                            }
-                        }
+                    // if (targetPosition == Position.FAR)
+                    //     {
+                    //     if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
+                    //         {
+                    //         if (Hardware.hoodControl.raiseHood())
+                    //             {
+                    //             hoodReadyTemp = true;
+                    //             }
+                    //         }
+                    //     }
+                    // else if (targetPosition == Position.CLOSE)
+                    //     {
+                    //     if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
+                    //         {
+                    //         if (Hardware.hoodControl.lowerHood())
+                    //             {
+                    //             hoodReadyTemp = true;
+                    //             }
+                    //         }
+                    //     }
 
                     // if (this.prepareToShoot(this.getClosestPosition(), teleop))
                     // {
@@ -156,7 +156,7 @@ public class Launcher
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
-                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp && hoodReadyTemp)
+                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp /* && hoodReadyTemp */)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;

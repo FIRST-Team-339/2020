@@ -3,7 +3,7 @@ package frc.Utils;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.KilroyServo;
 import frc.HardwareInterfaces.Potentiometer;
-
+import frc.Utils.Launcher.Position;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
@@ -138,6 +138,44 @@ public class HoodControl
             {
             this.servo.set(.5);
             }
+    }
+
+    private boolean allowToggle = false;
+
+    public void toggleHood(JoystickButton button)
+    {
+        if (button.get())
+            {
+            allowToggle = true;
+            }
+
+        if ((Hardware.launcher.getClosestPosition() == Position.CLOSE && !isUp)
+                || (Hardware.launcher.getClosestPosition() == Position.FAR && isUp))
+            {
+            allowToggle = false;
+            }
+        if (allowToggle)
+            {
+            if (isUp)
+                {
+                if (lowerHood())
+                    {
+                    allowToggle = false;
+                    }
+                }
+            if (!isUp)
+                {
+                if (raiseHood())
+                    {
+                    allowToggle = false;
+                    }
+                }
+            }
+        else
+            {
+            this.servo.set(.5);
+            }
+
     }
 
     boolean firstRunDown = true;

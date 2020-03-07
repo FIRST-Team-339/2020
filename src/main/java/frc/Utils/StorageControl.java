@@ -182,7 +182,7 @@ public class StorageControl
     {
         // System.out.println("intaking: " + Hardware.intake.intaking);
         // System.out.println(getStorageControlState());
-        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */ && !doingATHninginLoad)
+        if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */ /* && !doingATHninginLoad */)
             {
 
             if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true) && this.shootRL.isOn() == false)
