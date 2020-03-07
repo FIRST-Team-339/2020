@@ -78,7 +78,7 @@ public class StorageControl
                 }
             }
 
-        if (this.shootRL.isOn() && prevShootRLCounting == false)
+        if (!this.shootRL.isOn() && prevShootRLCounting == true)
             {
             prevShootRLCounting = true;
             // if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
@@ -90,9 +90,9 @@ public class StorageControl
             {
             prevRL = false;
             }
-        if (!this.shootRL.isOn())
+        if (this.shootRL.isOn())
             {
-            prevShootRLCounting = false;
+            prevShootRLCounting = true;
             }
 
         // System.out.println("conveyor state: " + state);
@@ -191,7 +191,7 @@ public class StorageControl
                 // is true or the previous intake was true
                 this.setPrevIntakeRL(true);
                 //
-                // System.out.println("going up in intakeStorageControl");
+                System.out.println("going up in intakeStorageControl");
                 setStorageControlState(ControlState.UP);
                 }
 
