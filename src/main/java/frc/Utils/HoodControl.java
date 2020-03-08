@@ -24,61 +24,33 @@ public class HoodControl
             this.servo = servo;
         }
 
-    Timer timer = new Timer();
+    Timer upTimer = new Timer();
+    Timer downTimer = new Timer();
     boolean raising = false;
     boolean lowering = false;
-    public boolean isUp = false;
-
-    public void raiseHood(JoystickButton button)
-    {
-        //System.out.println("time: " + timer.get());
-        if (button.get() && !raising)
-            {
-            timer.stop();
-            timer.reset();
-            raising = true;
-            timer.start();
-            }
-        if (raising && !isUp)
-            {
-            if (timer.get() < UP_TIME)
-                {
-                this.servo.set(.2);
-                isUp = false;
-                }
-            else
-                {
-                timer.stop();
-                timer.reset();
-                raising = false;
-                }
-            }
-        else if (!lowering && !raising)
-            {
-            this.servo.set(.5);
-            }
-    }
+    boolean isUp = false;
 
     boolean firstRunRaise = true;
 
     public boolean raiseHood()
     {
-        System.out.println("time: " + timer.get());
-        System.out.println("raising");
-        System.out.println("is up: " + isUp);
+        // System.out.println("time: " + timer.get());
+        // System.out.println("raising");
+        // System.out.println("is up: " + isUp);
         if (firstRunRaise && !raising)
             {
-            System.out.println("first running");
-            timer.stop();
-            timer.reset();
+            // System.out.println("first running");
+            upTimer.stop();
+            upTimer.reset();
             raising = true;
             firstRunRaise = false;
-            timer.start();
+            upTimer.start();
             }
         if (raising && !isUp)
             {
-            if (timer.get() < UP_TIME)
+            if (upTimer.get() < UP_TIME)
                 {
+                raising = true;
                 System.out.println("riasing rasinsing");
                 this.servo.set(.2);
                 }
@@ -86,56 +58,31 @@ public class HoodControl
                 {
                 isUp = true;
                 firstRunRaise = true;
-                timer.stop();
-                timer.reset();
+                upTimer.stop();
+                upTimer.reset();
                 raising = false;
+                if (!lowering && !raising)
+                    {
+                    this.servo.set(.5);
+                    }
                 return true;
                 }
             }
-        else if (!lowering && !raising)
-            {
-            this.servo.set(.5);
-            }
+
         return false;
-    }
-
-    public void lowerHood(JoystickButton button)
-    {
-
-        //System.out.println("time: " + timer.get());
-        if (button.get() && !lowering)
-            {
-            timer.stop();
-            timer.reset();
-            lowering = true;
-            timer.start();
-            }
-        if (lowering)
-            {
-            if (timer.get() < DOWN_TIME)
-                {
-                this.servo.set(.8);
-                }
-            else
-                {
-                timer.stop();
-                timer.reset();
-
-                lowering = false;
-                }
-            }
-        else if (!raising && !lowering)
-            {
-            timer.stop();
-            timer.reset();
-            this.servo.set(.5);
-            }
     }
 
     public void stopHoodMotor()
     {
-        if (!raising && !lowering)
+        if (!raising && !lowering && !Hardware.launchButton.get())
             {
+            // System.out.println("kjdabkljsdskjldffkjldfsfsn");
+            firstRunDown = true;
+            firstRunRaise = true;
+            downTimer.stop();
+            downTimer.reset();
+            upTimer.stop();
+            upTimer.reset();
             this.servo.set(.5);
             }
     }
@@ -144,36 +91,51 @@ public class HoodControl
 
     public void toggleHood(JoystickButton button)
     {
-        if (button.get())
+        System.out.println("raise timer: " + upTimer.get());
+        System.out.println("down timer: " + downTimer.get());
+        System.out.println("is up: " + isUp);
+        if (button.get() && !allowToggle)
             {
+            Hardware.visionInterface.updateValues();
             allowToggle = true;
             }
+        // System.out.println("hood target position: " + Hardware.launcher.targetPosition.toString());
+        if (Hardware.visionInterface.getHasTargets())
+            {
+            if (Hardware.launcher.targetPosition == Position.CLOSE && !isUp)
+                {
+                System.out.println("not allow close");
+                allowToggle = false;
+                }
+            if (Hardware.launcher.targetPosition == Position.FAR && isUp)
+                {
+                System.out.println("not allow far");
+                allowToggle = false;
+                }
 
-        if ((Hardware.launcher.getClosestPosition() == Position.CLOSE && !isUp)
-                || (Hardware.launcher.getClosestPosition() == Position.FAR && isUp))
-            {
-            allowToggle = false;
-            }
-        if (allowToggle)
-            {
-            if (isUp)
+            if (allowToggle)
                 {
-                if (lowerHood())
+                if (isUp)
                     {
-                    allowToggle = false;
+                    System.out.println("lowering hood");
+                    if (lowerHood())
+                        {
+                        allowToggle = false;
+                        }
+                    }
+                if (!isUp)
+                    {
+                    System.out.println("raising hood");
+                    if (raiseHood())
+                        {
+                        allowToggle = false;
+                        }
                     }
                 }
-            if (!isUp)
+            else
                 {
-                if (raiseHood())
-                    {
-                    allowToggle = false;
-                    }
+                this.servo.set(.5);
                 }
-            }
-        else
-            {
-            this.servo.set(.5);
             }
 
     }
@@ -182,39 +144,39 @@ public class HoodControl
 
     public boolean lowerHood()
     {
-        System.out.println("loweing");
-        System.out.println("is up: " + isUp);
+
         if (firstRunDown && !lowering)
             {
-            timer.stop();
-            timer.reset();
+            downTimer.stop();
+            downTimer.reset();
             firstRunDown = false;
             lowering = true;
-            timer.start();
+            downTimer.start();
             }
         if (lowering && isUp)
             {
-            if (timer.get() < DOWN_TIME)
+            if (downTimer.get() < DOWN_TIME)
                 {
-
+                lowering = true;
+                System.out.println("lowering");
                 this.servo.set(.8);
                 }
             else
                 {
+                System.out.println("lowered");
                 isUp = false;
                 firstRunDown = true;
-                timer.stop();
-                timer.reset();
+                downTimer.stop();
+                downTimer.reset();
                 lowering = false;
+                if (!lowering && !raising)
+                    {
+                    this.servo.set(.5);
+                    }
                 return true;
                 }
             }
-        else if (!raising && !lowering)
-            {
-            timer.stop();
-            timer.reset();
-            this.servo.set(.5);
-            }
+
         return false;
     }
 

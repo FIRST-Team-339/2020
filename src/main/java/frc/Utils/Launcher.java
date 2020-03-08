@@ -43,7 +43,7 @@ public class Launcher
 
     public ShootState shootState = ShootState.PASSIVE;
 
-    private Position targetPosition = Position.NULL;
+    public Position targetPosition = Position.NULL;
 
     public boolean shootingBalls = false;
 
@@ -54,7 +54,8 @@ public class Launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
-        // System.out.println("postion: " + this.getClosestPosition());
+
+        //System.out.println("state: " + shootState);
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
@@ -84,6 +85,7 @@ public class Launcher
                     // must be held down to shoot multiple balls
                     if (shootButton.get())
                         {
+
                         shootingBalls = true;
                         Teleop.setDisableTeleOpDrive(true);
                         Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
@@ -91,6 +93,7 @@ public class Launcher
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         if (Hardware.visionInterface.getHasTargets())
                             {
+                            // System.out.println("postion: " + this.getClosestPosition());
                             targetPosition = this.getClosestPosition();
                             this.shootState = ShootState.CHARGE;
                             }
@@ -109,43 +112,18 @@ public class Launcher
                     Teleop.setDisableTeleOpDrive(true);
                     Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
                     Hardware.visionInterface.setPipeline(0);
-                    SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
-                    SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
-                    SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
-                    SmartDashboard.putBoolean("position: ", positionReadyTemp);
-                    SmartDashboard.putString("wanted position: ", targetPosition.toString());
+                    // SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
+                    // SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
+                    // SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
+                    // SmartDashboard.putBoolean("position: ", positionReadyTemp);
+                    // SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (positionReadyTemp || moveRobotToPosition(targetPosition))// TODO
+                    if (moveRobotToPosition(targetPosition))
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
                         }
 
-                    // if (targetPosition == Position.FAR)
-                    // {
-                    // if (!hoodReadyTemp && !Hardware.hoodControl.getIsUp())
-                    // {
-                    // if (Hardware.hoodControl.raiseHood())
-                    // {
-                    // hoodReadyTemp = true;
-                    // }
-                    // }
-                    // }
-                    // else if (targetPosition == Position.CLOSE)
-                    // {
-                    // if (!hoodReadyTemp && Hardware.hoodControl.getIsUp())
-                    // {
-                    // if (Hardware.hoodControl.lowerHood())
-                    // {
-                    // hoodReadyTemp = true;
-                    // }
-                    // }
-                    // }
-
-                    // if (this.prepareToShoot(this.getClosestPosition(), teleop))
-                    // {
-                    // launcherReadyTemp = true;
-                    // }
                     if (this.prepareToShoot())
                         {
                         launcherReadyTemp = true;
@@ -166,6 +144,7 @@ public class Launcher
                         }
                     break;
                 case LAUNCH:
+                    Hardware.visionDriving.alignToTarget();
                     this.prepareToShoot();
                     // loads a ball and shoots it
                     if (Hardware.storage.loadToFire())
@@ -250,11 +229,13 @@ public class Launcher
 
                     if (this.prepareToShoot())
                         {
+                        System.out.println("&&&&&&&&&");
                         launcherReadyTemp = true;
                         }
 
                     if (Hardware.storage.prepareToShoot())
                         {
+                        System.out.println("###########");
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
@@ -296,6 +277,10 @@ public class Launcher
                 default:
                     break;
                 }
+            }
+        else
+            {
+            return true;
             }
         return false;
     }
@@ -670,7 +655,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
         // System.out.println(position.toString());
-        System.out.println("move state: " + moveState);
+        // System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:
@@ -692,6 +677,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        //  System.out.println("%%%%%%%%%%%%%%%%%%%%%");
                         return true;
                         }
                     }
@@ -701,6 +687,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        //System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
                         return true;
                         }
                     }
@@ -727,6 +714,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        // System.out.println("################################");
                         return true;
                         }
                     }
@@ -744,6 +732,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
+                        // System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         return true;
                         }
                     }

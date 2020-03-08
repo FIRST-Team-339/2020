@@ -133,8 +133,7 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
-        Hardware.hoodControl.stopHoodMotor();
-        Hardware.hoodControl.toggleHood(Hardware.launchButton);
+
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
@@ -145,14 +144,14 @@ public class Teleop
         // SmartDashboard.putString("Climb State: ",
         // Hardware.climb.climbState.toString());
         SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
+        Hardware.hoodControl.stopHoodMotor();
+        Hardware.hoodControl.toggleHood(Hardware.launchButton);
 
         // end control loops ==========================
 
         // ================= OPERATOR CONTROLS ================
 
         // ================= COLORWHEEL CONTROLS ==============
-        // Press Right Operator button 4 to start manual spin. Press again to stop
-        // manual spin
         //System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
         // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
@@ -256,14 +255,14 @@ public class Teleop
 
         // switch usb cameras
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
-        System.out.println(getDisableTeleOpDrive());
-        if (!disableTeleOpDrive)
+
+        if (!disableTeleOpDrive && !Hardware.pickupBallVisionButton.get())
             {
             teleopDrive();
             }
 
         // individualTest();
-        printStatements();
+        //printStatements();
     } // end Periodic()
 
     /**
@@ -285,7 +284,7 @@ public class Teleop
 
     public static void teleopDrive()
     {
-        System.out.println("teleop drive");
+
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());

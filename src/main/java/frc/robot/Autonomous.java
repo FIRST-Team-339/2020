@@ -247,6 +247,7 @@ public class Autonomous
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
         Hardware.intake.makePassive();
+        System.out.println("Blobs: " + Hardware.visionInterface.getHasTargets());
         System.out.println("Distance: " + Hardware.visionInterface.getDistanceFromTarget());
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         // System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
@@ -697,6 +698,7 @@ public class Autonomous
     {
         // drive forward along balls picking them up
         // System.out.println("pickup trench");
+        System.out.println("Pickup: " + pickup);
         switch (pickup)
             {
             case DRIVE_FORWARD:
@@ -736,7 +738,7 @@ public class Autonomous
      */
     private static boolean alignTrench()
     {
-        // System.out.println("Trench State: " + trench);
+        System.out.println("Trench State: " + trench);
         // System.out.println("shootingPlan: " +
         // Hardware.shootingPlan.getPosition());
         // System.out.println("Position: " + position);
@@ -1032,10 +1034,9 @@ public class Autonomous
 
                     if (Hardware.launcher.moveRobotToPosition(Launcher.Position.FAR))
                         {
-                        if (Hardware.hoodControl.raiseHood())
-                            {
-                            far = farState.SHOOT;
-                            }
+
+                        far = farState.SHOOT;
+
                         }
                     }
                 else
@@ -1097,7 +1098,7 @@ public class Autonomous
 
     private final static int ALIGN_TRENCH_RIGHT_DEGREES = -150;
 
-    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 24;
+    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 48;
 
     private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 96;
 
