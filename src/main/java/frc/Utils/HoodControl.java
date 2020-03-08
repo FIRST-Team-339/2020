@@ -61,13 +61,14 @@ public class HoodControl
                 upTimer.stop();
                 upTimer.reset();
                 raising = false;
+                if (!lowering && !raising)
+                    {
+                    this.servo.set(.5);
+                    }
                 return true;
                 }
             }
-        else if (!lowering && !raising)
-            {
-            this.servo.set(.5);
-            }
+
         return false;
     }
 
@@ -90,6 +91,8 @@ public class HoodControl
 
     public void toggleHood(JoystickButton button)
     {
+        System.out.println("raise timer: " + upTimer.get());
+        System.out.println("down timer: " + downTimer.get());
         System.out.println("is up: " + isUp);
         if (button.get() && !allowToggle)
             {
@@ -166,12 +169,12 @@ public class HoodControl
                 downTimer.stop();
                 downTimer.reset();
                 lowering = false;
+                if (!lowering && !raising)
+                    {
+                    this.servo.set(.5);
+                    }
                 return true;
                 }
-            }
-        else if (!lowering && !raising)
-            {
-            this.servo.set(.5);
             }
 
         return false;

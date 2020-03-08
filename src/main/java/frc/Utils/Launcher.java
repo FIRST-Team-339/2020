@@ -276,6 +276,10 @@ public class Launcher
                     break;
                 }
             }
+        else
+            {
+            return true;
+            }
         return false;
     }
 
@@ -649,7 +653,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
         // System.out.println(position.toString());
-        System.out.println("move state: " + moveState);
+        // System.out.println("move state: " + moveState);
         switch (moveState)
             {
             case INIT:
@@ -671,7 +675,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        System.out.println("%%%%%%%%%%%%%%%%%%%%%");
+                        //  System.out.println("%%%%%%%%%%%%%%%%%%%%%");
                         return true;
                         }
                     }
@@ -681,7 +685,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
+                        //System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
                         return true;
                         }
                     }
@@ -708,7 +712,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        System.out.println("################################");
+                        // System.out.println("################################");
                         return true;
                         }
                     }
@@ -726,7 +730,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                        // System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         return true;
                         }
                     }

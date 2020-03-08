@@ -1046,6 +1046,7 @@ public class Autonomous
                     }
                 break;
             case SHOOT:
+
                 if (Hardware.launcher.shootBallsAuto())
                     {
 
