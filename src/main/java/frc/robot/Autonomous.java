@@ -1046,10 +1046,6 @@ public class Autonomous
                     }
                 break;
             case SHOOT:
-                if (Hardware.ballCounter.getBallCount() == 0)
-                    {
-                    far = farState.FINISH;
-                    }
                 if (Hardware.launcher.shootBallsAuto())
                     {
 
