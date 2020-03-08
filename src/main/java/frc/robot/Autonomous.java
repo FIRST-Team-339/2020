@@ -247,8 +247,9 @@ public class Autonomous
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
         Hardware.intake.makePassive();
-        System.out.println("Blobs: " + Hardware.visionInterface.getHasTargets());
-        System.out.println("Distance: " + Hardware.visionInterface.getDistanceFromTarget());
+        // System.out.println("Blobs: " + Hardware.visionInterface.getHasTargets());
+        // System.out.println("Distance: " +
+        // Hardware.visionInterface.getDistanceFromTarget());
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         // System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
         switch (autoState)
@@ -738,7 +739,7 @@ public class Autonomous
      */
     private static boolean alignTrench()
     {
-        // System.out.println("Trench State: " + trench);
+        System.out.println("Trench State: " + trench);
         // System.out.println("shootingPlan: " +
         // Hardware.shootingPlan.getPosition());
         // System.out.println("Position: " + position);
@@ -758,6 +759,7 @@ public class Autonomous
                     break;
                 case FINAL_DRIVE:
                     // drive up to trench
+
                     if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
                             true))
                         {
