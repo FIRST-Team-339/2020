@@ -1033,10 +1033,9 @@ public class Autonomous
 
                     if (Hardware.launcher.moveRobotToPosition(Launcher.Position.FAR))
                         {
-                        if (Hardware.hoodControl.raiseHood())
-                            {
-                            far = farState.SHOOT;
-                            }
+
+                        far = farState.SHOOT;
+
                         }
                     }
                 else
@@ -1046,7 +1045,6 @@ public class Autonomous
                     }
                 break;
             case SHOOT:
-
                 if (Hardware.launcher.shootBallsAuto())
                     {
 
@@ -1099,7 +1097,7 @@ public class Autonomous
 
     private final static int ALIGN_TRENCH_RIGHT_DEGREES = -150;
 
-    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 24;
+    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 48;
 
     private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 96;
 

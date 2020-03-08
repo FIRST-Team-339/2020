@@ -229,11 +229,13 @@ public class Launcher
 
                     if (this.prepareToShoot())
                         {
+                        System.out.println("&&&&&&&&&");
                         launcherReadyTemp = true;
                         }
 
                     if (Hardware.storage.prepareToShoot())
                         {
+                        System.out.println("###########");
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
