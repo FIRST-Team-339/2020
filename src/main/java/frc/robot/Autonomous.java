@@ -698,6 +698,7 @@ public class Autonomous
     {
         // drive forward along balls picking them up
         // System.out.println("pickup trench");
+        System.out.println("Pickup: " + pickup);
         switch (pickup)
             {
             case DRIVE_FORWARD:
@@ -737,7 +738,7 @@ public class Autonomous
      */
     private static boolean alignTrench()
     {
-        // System.out.println("Trench State: " + trench);
+        System.out.println("Trench State: " + trench);
         // System.out.println("shootingPlan: " +
         // Hardware.shootingPlan.getPosition());
         // System.out.println("Position: " + position);
