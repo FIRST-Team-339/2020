@@ -63,7 +63,7 @@ public class StorageControl
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
 
-        if (this.intakeRL.isOn() && prevRL == false)
+        if (this.intakeRL.isOn() && prevRL == false && Hardware.intake.intaking == true)
             {
             prevRL = true;
             if (Hardware.intake.intaking)

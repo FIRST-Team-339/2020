@@ -806,7 +806,7 @@ public class Launcher
     private static final double RPM_CLOSE_2019 = 100;
 
     // speed to drive straight
-    private static final double DRIVE_STRAIGHT_SPEED = .35;// TODO
+    private static final double DRIVE_STRAIGHT_SPEED = .28;// TODO
 
     // max RPM the drivers are allowed to change the RPM
     private static final double DRIVER_CHANGE_ALLOWANCE = 100;

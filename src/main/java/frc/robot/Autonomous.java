@@ -698,15 +698,16 @@ public class Autonomous
     {
         // drive forward along balls picking them up
         // System.out.println("pickup trench");
+        Hardware.visionInterface.setPipeline(2);
+
+        Hardware.cameraServo.setCameraAngleDown();
         switch (pickup)
             {
             case DRIVE_FORWARD:
 
                 // drive for balls
                 // System.out.println("picking up balls");
-                Hardware.visionInterface.setPipeline(2);
 
-                Hardware.cameraServo.setCameraAngleDown();
                 if (Hardware.intake.pickUpBallsVision())
                     {
                     Hardware.visionInterface.setPipeline(0);
@@ -760,6 +761,7 @@ public class Autonomous
                     if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
                             true))
                         {
+                        System.out.println("drove 48");
                         trench = AlignTrenchState.FINISH;
                         }
 
@@ -1012,6 +1014,10 @@ public class Autonomous
 
     public static farState far = farState.ALIGN;
 
+    private static boolean farAligned = false;
+
+    private static boolean farHood = false;
+
     /**
      * Description: handles the functions to shoot far
      *
@@ -1033,9 +1039,15 @@ public class Autonomous
 
                     if (Hardware.launcher.moveRobotToPosition(Launcher.Position.FAR))
                         {
-
+                        farAligned = true;
+                        }
+                    if (Hardware.hoodControl.raiseHood())
+                        {
+                        farHood = true;
+                        }
+                    if (farHood && farAligned)
+                        {
                         far = farState.SHOOT;
-
                         }
                     }
                 else
@@ -1097,7 +1109,7 @@ public class Autonomous
 
     private final static int ALIGN_TRENCH_RIGHT_DEGREES = -150;
 
-    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 48;
+    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 35;
 
     private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 96;
 
