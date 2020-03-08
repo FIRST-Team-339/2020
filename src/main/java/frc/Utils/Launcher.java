@@ -43,7 +43,7 @@ public class Launcher
 
     public ShootState shootState = ShootState.PASSIVE;
 
-    private Position targetPosition = Position.NULL;
+    public Position targetPosition = Position.NULL;
 
     public boolean shootingBalls = false;
 
@@ -54,8 +54,8 @@ public class Launcher
      */
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
-        System.out.println("postion: " + this.getClosestPosition());
-        System.out.println("state: " + shootState);
+
+        //System.out.println("state: " + shootState);
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
@@ -85,6 +85,7 @@ public class Launcher
                     // must be held down to shoot multiple balls
                     if (shootButton.get())
                         {
+
                         shootingBalls = true;
                         Teleop.setDisableTeleOpDrive(true);
                         Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
@@ -92,6 +93,7 @@ public class Launcher
                         // if (this.moveRobotToPosition(this.getClosestPosition()))
                         if (Hardware.visionInterface.getHasTargets())
                             {
+                            // System.out.println("postion: " + this.getClosestPosition());
                             targetPosition = this.getClosestPosition();
                             this.shootState = ShootState.CHARGE;
                             }
@@ -110,13 +112,13 @@ public class Launcher
                     Teleop.setDisableTeleOpDrive(true);
                     Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
                     Hardware.visionInterface.setPipeline(0);
-                    SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
-                    SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
-                    SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
-                    SmartDashboard.putBoolean("position: ", positionReadyTemp);
-                    SmartDashboard.putString("wanted position: ", targetPosition.toString());
+                    // SmartDashboard.putBoolean("conveyor: ", conveyorReadyTemp);
+                    // SmartDashboard.putBoolean("hood: ", hoodReadyTemp);
+                    // SmartDashboard.putBoolean("launcher: ", launcherReadyTemp);
+                    // SmartDashboard.putBoolean("position: ", positionReadyTemp);
+                    // SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (positionReadyTemp || moveRobotToPosition(targetPosition))
+                    if (moveRobotToPosition(targetPosition))
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
@@ -142,6 +144,7 @@ public class Launcher
                         }
                     break;
                 case LAUNCH:
+                    Hardware.visionDriving.alignToTarget();
                     this.prepareToShoot();
                     // loads a ball and shoots it
                     if (Hardware.storage.loadToFire())

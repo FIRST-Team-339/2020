@@ -80,7 +80,7 @@ public class StorageControl
 
         if (!this.shootRL.isOn() && prevShootRLCounting == true)
             {
-            prevShootRLCounting = true;
+            prevShootRLCounting = false;
             // if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
             // {
             Hardware.ballCounter.subtractBall();
