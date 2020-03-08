@@ -1033,10 +1033,9 @@ public class Autonomous
 
                     if (Hardware.launcher.moveRobotToPosition(Launcher.Position.FAR))
                         {
-                        if (Hardware.hoodControl.raiseHood())
-                            {
-                            far = farState.SHOOT;
-                            }
+
+                        far = farState.SHOOT;
+
                         }
                     }
                 else
@@ -1046,6 +1045,10 @@ public class Autonomous
                     }
                 break;
             case SHOOT:
+                if (Hardware.ballCounter.getBallCount() == 0)
+                    {
+                    far = farState.FINISH;
+                    }
                 if (Hardware.launcher.shootBallsAuto())
                     {
 

@@ -226,11 +226,13 @@ public class Launcher
 
                     if (this.prepareToShoot())
                         {
+                        System.out.println("&&&&&&&&&");
                         launcherReadyTemp = true;
                         }
 
                     if (Hardware.storage.prepareToShoot())
                         {
+                        System.out.println("###########");
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
@@ -646,6 +648,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
         // System.out.println(position.toString());
+        Hardware.visionInterface.takePicture();
         System.out.println("move state: " + moveState);
         switch (moveState)
             {
