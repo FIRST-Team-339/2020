@@ -153,6 +153,8 @@ public class Teleop
         //System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
         // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
+
+        //When holding wheelManualSpinButton the wheel will spin at a slower speed for finer adjustments
         if (Hardware.wheelManualSpinButton.get())
             {
             wheelManualSpinBoolean = true;
@@ -164,7 +166,7 @@ public class Teleop
             Hardware.wheelSpinnerMotor.set(0);
             }
 
-        // will spin the control panel setNumberofSpins() amount of times.
+        // Will spin the control panel setNumberofSpins() amount of times.
         if (Hardware.spinWheelButton.get() == true)
             {
             // To change the number of spins.

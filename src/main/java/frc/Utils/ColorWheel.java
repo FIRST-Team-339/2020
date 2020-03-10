@@ -39,9 +39,16 @@ public class ColorWheel
     private KilroyEncoder motorEncoder = null;
     private ColorSensorV3 colorSensor = null;
 
+    /** Constructor for ColorWheel class
+     *
+     * @author Guido Visioni
+     * @written March 3, 2020
+     * @param motor - wheelSpinnerMotor
+     * @param motorEncoder - wheelSpinnerMotorEncoder
+     * @param colorSensor - colorSensor
+     */
     public ColorWheel(SpeedController motor, KilroyEncoder motorEncoder, ColorSensorV3 colorSensor)
         {
-
             this.motor = motor;
             this.motorEncoder = motorEncoder;
             this.colorSensor = colorSensor;
@@ -83,9 +90,13 @@ public class ColorWheel
         this.circumference = c;
     }
 
-    // Takes the range of the proximity sensor 0 (far) - through 2047 (close) and
-    // decides if the sensor is in range or out of range.
-    // Max Stable distance detected is 3.5 inches
+    /**
+    * Takes the range of the proximity sensor 0 (far) - through 2047 (close) and
+    * decides if the sensor is in range or out of range.
+    * Max Stable distance detected is 3.5 inches
+    * @author Guido Visioni
+    * @written January 30, 2020
+    */
     public boolean inRange()
     {
         if (this.colorSensor.getProximity() >= 230)
@@ -130,7 +141,7 @@ public class ColorWheel
     }
 
     /**
-    *This method is used with a button to allow the motor to be spun manual
+    *This method is used with a button to allow the motor to be spun manually
     * @method manualSpin
     * @author Guido Visioni
     * @written February 25, 2020
@@ -176,8 +187,8 @@ public class ColorWheel
     /**
      * This method will reset the motor encoder and set a boolean to true that will allow the wheel to start spinning
      *
-     * @Author Dion Marchant
-     * @Written February 25, 2020
+     * @author Dion Marchant
+     * @written February 25, 2020
      */
     public void start()
     {
@@ -185,16 +196,23 @@ public class ColorWheel
         firstIteration = true;
     }
 
+    /**
+    * This method will reset the motor encoder and set a boolean to true that will allow the spin to color wheel to start
+    * @author Guido Visioni
+    * @written March 3, 2020
+    */
     public void colorStart()
     {
         timeToStopColorAlign = false;
     }
 
+    //Returns what states timeToStopColorAlign is in
     public boolean getTimeToStopColorAlign()
     {
         return timeToStopColorAlign;
     }
 
+    //Sets the states of timeToStopColorAlign
     public boolean setTimeToStopColorAlign(boolean set)
     {
         return (timeToStopColorAlign = set);
