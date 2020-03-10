@@ -166,11 +166,11 @@ public class KilroyEncoder implements PIDSource
             case FALC_ENC:
                 if (this.talonMotor.getInverted())
                     {
-                    return -(int) (this.sensorCollection.getIntegratedSensorPosition());
+                    return -(int) (this.talonMotor.getSelectedSensorPosition());
                     }
                 else
                     {
-                    return (int) (this.sensorCollection.getIntegratedSensorPosition());
+                    return (int) (this.talonMotor.getSelectedSensorPosition());
                     }
             default:
                 return 0;
@@ -550,9 +550,7 @@ public class KilroyEncoder implements PIDSource
                 talonSensor.setSelectedSensorPosition(0, 0, 0);
                 break;
             case FALC_ENC:
-                sensorCollection.setIntegratedSensorPosition(0, 0);
-                System.out.println("reset encoder: " + sensorCollection.getIntegratedSensorPosition());
-
+                talonMotor.setSelectedSensorPosition(0, 0, 0);
                 break;
             default:
                 return;
