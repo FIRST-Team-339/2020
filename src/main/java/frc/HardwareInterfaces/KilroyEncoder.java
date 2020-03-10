@@ -543,13 +543,16 @@ public class KilroyEncoder implements PIDSource
                 dioSensor.reset();
                 break;
             case REV_CAN:
-                savedPosition = canEncoder.getEncoder().getPosition();
+                savedPosition = canEncoder.getEncoder().getPosition();//TODO
+
                 break;
             case CAN_HAT:
                 talonSensor.setSelectedSensorPosition(0, 0, 0);
                 break;
             case FALC_ENC:
                 sensorCollection.setIntegratedSensorPosition(0, 0);
+                System.out.println("reset encoder: " + sensorCollection.getIntegratedSensorPosition());
+
                 break;
             default:
                 return;

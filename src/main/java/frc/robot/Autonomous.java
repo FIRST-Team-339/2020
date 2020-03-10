@@ -126,7 +126,7 @@ public class Autonomous
          */
         if (Hardware.ballStart.isOn())
             {
-            Hardware.ballCounter.setBallCount(3);
+            Hardware.ballCounter.setBallCount(1);
             }
         else
             {
@@ -760,8 +760,7 @@ public class Autonomous
                 case FINAL_DRIVE:
                     // drive up to trench
 
-                    if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
-                            true))
+                    if (Hardware.drive.driveInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED))
                         {
                         System.out.println("drove 48");
                         trench = AlignTrenchState.FINISH;
@@ -802,6 +801,7 @@ public class Autonomous
             switch (square)
                 {
                 case DRIVE_BACK:
+
                     if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_MOVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION,
                             true))
                         {
@@ -819,6 +819,7 @@ public class Autonomous
                     break;
                 case ALIGN:
                     // drive away from tower
+
                     if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
                         {
 
@@ -1043,7 +1044,7 @@ public class Autonomous
                         {
                         farAligned = true;
                         }
-                    if (Hardware.hoodControl.raiseHood())
+                    if (true/* Hardware.hoodControl.raiseHood() */)
                         {
                         farHood = true;
                         }

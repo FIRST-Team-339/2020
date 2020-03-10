@@ -840,8 +840,11 @@ public class Drive
     public boolean driveInches(int distance, double speed)
     {
         // Reset encoders on initialization.
+
         if (this.driveInchesInit == true)
             {
+            System.out.println("drive init:" + this.driveInchesInit);
+
             this.resetEncoders();
             this.driveInchesInit = false;
             }

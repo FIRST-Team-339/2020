@@ -304,7 +304,7 @@ public class IntakeControl
 
         this.intake();
         // drive to balls
-        Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS);
+        Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS, true);
         // if pickup all the balls in trench
         if ((Hardware.ballCounter.getBallCount() >= startBallCount + BALLS_IN_TRENCH)
                 || (Hardware.ballCounter.getBallCount() == 5))
@@ -339,7 +339,7 @@ public class IntakeControl
 
             this.intake();
             // drive to balls
-            Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS);
+            Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS, true);
             // if pickup all the balls in trench
             if ((Hardware.ballCounter.getBallCount() == 5))
                 {

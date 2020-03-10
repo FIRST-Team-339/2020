@@ -91,9 +91,9 @@ public class HoodControl
 
     public void toggleHood(JoystickButton button)
     {
-        System.out.println("raise timer: " + upTimer.get());
-        System.out.println("down timer: " + downTimer.get());
-        System.out.println("is up: " + isUp);
+        // System.out.println("raise timer: " + upTimer.get());
+        // System.out.println("down timer: " + downTimer.get());
+        // System.out.println("is up: " + isUp);
         if (button.get() && !allowToggle)
             {
             Hardware.visionInterface.updateValues();
