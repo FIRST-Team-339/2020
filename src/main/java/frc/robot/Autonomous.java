@@ -728,6 +728,8 @@ public class Autonomous
 
     public static AlignTrenchState trench = AlignTrenchState.TURN1;
 
+    public static boolean trenchFlag = true;
+
     /**
      * Description: handles the functions and states of aligning to the trench in
      * auto
@@ -759,6 +761,12 @@ public class Autonomous
                     break;
                 case FINAL_DRIVE:
                     // drive up to trench
+                    if (trenchFlag)
+                        {
+                        Hardware.leftDriveEncoder.reset();
+                        Hardware.rightDriveEncoder.reset();
+                        trenchFlag = !trenchFlag;
+                        }
 
                     if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
                             true))

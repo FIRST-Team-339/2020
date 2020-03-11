@@ -55,7 +55,7 @@ public class Launcher
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
 
-        //System.out.println("state: " + shootState);
+        // System.out.println("state: " + shootState);
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
@@ -71,7 +71,7 @@ public class Launcher
             // }
             }
         // System.out.println("shootState: " + shootState);
-        if (!overrideButton.get())
+        if (false)
             {
             switch (shootState)
                 {
@@ -162,6 +162,9 @@ public class Launcher
         else
             {
             // override fire methods
+            if (overrideButton.get())
+                {
+                }
             Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
             StorageControl.setStorageControlState(ControlState.UP);
             this.encoder.setRPM(this.getRPMPerDistance(Hardware.visionInterface.getDistanceFromTarget()),
@@ -677,7 +680,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        //  System.out.println("%%%%%%%%%%%%%%%%%%%%%");
+                        // System.out.println("%%%%%%%%%%%%%%%%%%%%%");
                         return true;
                         }
                     }
@@ -687,7 +690,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        //System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
+                        // System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
                         return true;
                         }
                     }

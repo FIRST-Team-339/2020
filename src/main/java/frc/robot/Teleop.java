@@ -120,30 +120,31 @@ public class Teleop
     public static void periodic()
     {
 
-        if (secondRun == true)
-            {
-            Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
-            secondRun = false;
-            }
-        if (firstRun == true)
-            {
-            secondRun = true;
-            firstRun = false;
-            }
+        // if (secondRun == true)
+        // {
+        // Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
+        // secondRun = false;
+        // }
+        // if (firstRun == true)
+        // {
+        secondRun = true;
+        firstRun = false;
+        // }
         // =============== AUTOMATED SUBSYSTEMS ===============
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
-        Hardware.visionInterface.updateValues();
+        // Hardware.visionInterface.updateValues();
 
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
         // System.out.println("distance" + Hardware.climbEncoder.getDistance());
 
-        Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
-        Hardware.climb.climb(Hardware.climbMotorDownButton);
+        // Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
+        // Hardware.climb.climb(Hardware.climbMotorDownButton);
         // SmartDashboard.putString("Climb State: ",
         // Hardware.climb.climbState.toString());
-        SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
+        // SmartDashboard.putNumber("Climb Distance",
+        // //Hardware.climbEncoder.getDistance());
         Hardware.hoodControl.stopHoodMotor();
         Hardware.hoodControl.toggleHood(Hardware.launchButton);
 
@@ -152,57 +153,58 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================= COLORWHEEL CONTROLS ==============
-        //System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
+        // System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
         // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
-        if (Hardware.wheelManualSpinButton.get())
-            {
-            wheelManualSpinBoolean = true;
-            Hardware.colorWheel.manualSpin();
-            }
-        if (Hardware.wheelManualSpinButton.get() == false && wheelManualSpinBoolean)
-            {
-            wheelManualSpinBoolean = !wheelManualSpinBoolean;
-            Hardware.wheelSpinnerMotor.set(0);
-            }
+        // if (Hardware.wheelManualSpinButton.get())
+        // {
+        // wheelManualSpinBoolean = true;
+        // Hardware.colorWheel.manualSpin();
+        // }
+        // if (Hardware.wheelManualSpinButton.get() == false && wheelManualSpinBoolean)
+        // {
+        // wheelManualSpinBoolean = !wheelManualSpinBoolean;
+        // Hardware.wheelSpinnerMotor.set(0);
+        // }
 
-        // will spin the control panel setNumberofSpins() amount of times.
-        if (Hardware.spinWheelButton.get() == true)
-            {
-            // To change the number of spins.
-            Hardware.colorWheel.setNumberOfSpins(4);
-            // To change the speed
-            Hardware.colorWheel.setSpeed(.65);
-            // To enable spinControlPanel to start
-            Hardware.colorWheel.start();
-            }
-        Hardware.colorWheel.spinControlPanel();
+        // // will spin the control panel setNumberofSpins() amount of times.
+        // if (Hardware.spinWheelButton.get() == true)
+        // {
+        // // To change the number of spins.
+        // Hardware.colorWheel.setNumberOfSpins(4);
+        // // To change the speed
+        // Hardware.colorWheel.setSpeed(.65);
+        // // To enable spinControlPanel to start
+        // Hardware.colorWheel.start();
+        // }
+        // Hardware.colorWheel.spinControlPanel();
 
         // Will align the given color with the field sensor. Gets the color
         // automatically
-        if (Hardware.spinWheelColorButton.get())
-            {
-            // To change the speed
-            Hardware.colorWheel.setSpeed(.4);
+        // if (Hardware.spinWheelColorButton.get())
+        // {
+        // // To change the speed
+        // Hardware.colorWheel.setSpeed(.4);
 
-            // To enable spinControlPanelToColor to start
-            Hardware.colorWheel.colorStart();
-            }
-        Hardware.colorWheel.spinControlPanelToColor();
+        // // To enable spinControlPanelToColor to start
+        // Hardware.colorWheel.colorStart();
+        // }
+        // Hardware.colorWheel.spinControlPanelToColor();
         // ================== DRIVER CONTROLS =================
 
-        if (Hardware.limelightButton.get())
-            {
-            Hardware.intake.setVisionForClimb = true;
-            Hardware.visionInterface.setPipeline(3);
-            Hardware.kilroyUSBCamera.setLimelight();
-            }
-        else if (Hardware.cameraSwitchButton1Raw.get() || Hardware.cameraSwitchButton2Raw.get())
+        // if (Hardware.limelightButton.get())
+        // {
+        // Hardware.intake.setVisionForClimb = true;
+        // Hardware.visionInterface.setPipeline(3);
+        // Hardware.kilroyUSBCamera.setLimelight();
+        // }
+        // else if (Hardware.cameraSwitchButton1Raw.get() ||
+        // Hardware.cameraSwitchButton2Raw.get())
 
-            {
-            Hardware.intake.setVisionForClimb = false;
-            Hardware.visionInterface.setPipeline(0);
-            }
+        // {
+        // Hardware.intake.setVisionForClimb = false;
+        // Hardware.visionInterface.setPipeline(0);
+        // }
 
         // override convyor movement
         Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
@@ -226,43 +228,45 @@ public class Teleop
         // shoot balls
 
         // pick up balls with vision
-        Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
+        // Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
 
         // intake controls
-        if (/* Hardware.intake.usingVisionIntake == false || */ !Hardware.pickupBallVisionButton.get())
-            {
-            Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
-            // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
-            // intake
-            Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
+        // if (/* Hardware.intake.usingVisionIntake == false || */
+        // !Hardware.pickupBallVisionButton.get())
+        // {
+        Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
+        // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
+        // intake
+        Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
-            Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
+        Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
 
-            // this is necessary becuase I organized the code wrong and its too late to
-            // rewrite intake
-            // makes conveyor stop if not intakeing or outtaking
-            Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton, Hardware.launchButton);
-            }
+        // this is necessary becuase I organized the code wrong and its too late to
+        // rewrite intake
+        // makes conveyor stop if not intakeing or outtaking
+        Hardware.intake.makePassive(Hardware.intakeButton, Hardware.outtakeButton, Hardware.launchButton);
+        // }
 
         // ball counter code==============================
         // subtract ball
-        Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
-        // add ball
-        Hardware.ballCounter.addBall(Hardware.addBallButton);
-        // sets count to 0
-        Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
+        // Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
+        // // add ball
+        // Hardware.ballCounter.addBall(Hardware.addBallButton);
+        // // sets count to 0
+        // Hardware.ballCounter.clearCount(Hardware.subtractBallButton,
+        // Hardware.addBallButton);
         // end ball counter code===================
 
         // switch usb cameras
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
 
-        if (!disableTeleOpDrive && !Hardware.pickupBallVisionButton.get())
+        if (!disableTeleOpDrive)// && !Hardware.pickupBallVisionButton.get())
             {
             teleopDrive();
             }
 
         // individualTest();
-        //printStatements();
+        // printStatements();
     } // end Periodic()
 
     /**
@@ -639,13 +643,13 @@ public class Teleop
 
     private final static int CURRENT_YEAR_MAX_GEAR_NUMBER = 2;
 
-    private final static double PREV_YEAR_FIRST_GEAR = .3;
+    private final static double PREV_YEAR_FIRST_GEAR = .2;
 
-    private final static double PREV_YEAR_SECOND_GEAR = .5;
+    private final static double PREV_YEAR_SECOND_GEAR = .2;
 
-    private final static double CURRENT_YEAR_FIRST_GEAR = .3;
+    private final static double CURRENT_YEAR_FIRST_GEAR = .2;
 
-    private final static double CURRENT_YEAR_SECOND_GEAR = .5;
+    private final static double CURRENT_YEAR_SECOND_GEAR = .2;
 
     private final static double SO_YOU_EVER_HEAR_OF_SONIC = .9;
 

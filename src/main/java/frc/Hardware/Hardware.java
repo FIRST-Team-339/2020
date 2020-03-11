@@ -200,7 +200,7 @@ public class Hardware
         colorWheel = new ColorWheel(wheelSpinnerMotor, wheelSpinnerEncoder, colorSensor);
 
         climb = new Climb(climbMotorGroup, climbServo, climbEncoder);
-        hoodControl = new HoodControl(hoodServo);//TODO
+        hoodControl = new HoodControl(hoodServo);// TODO
 
     } // end initiaizeCurrentYear()
 
@@ -303,7 +303,7 @@ public class Hardware
 
         storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
 
-        //hoodControl = new HoodControl(hoodServo);
+        // hoodControl = new HoodControl(hoodServo);
 
         ballCounter = new BallCounter(ballButtonTimer);
 
