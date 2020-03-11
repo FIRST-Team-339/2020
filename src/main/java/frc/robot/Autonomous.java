@@ -33,6 +33,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Relay;
 import frc.Hardware.Hardware;
+import frc.HardwareInterfaces.Transmission.TransmissionBase.MotorPosition;
 import frc.Utils.Launcher;
 import frc.Utils.StorageControl;
 import frc.Utils.Launcher.Position;
@@ -728,6 +729,9 @@ public class Autonomous
 
     public static AlignTrenchState trench = AlignTrenchState.TURN1;
 
+    private static double startDistance = 0;
+    private static boolean firstRun = true;
+
     /**
      * Description: handles the functions and states of aligning to the trench in
      * auto
@@ -737,6 +741,7 @@ public class Autonomous
      * @author Craig Kimball
      * @written 2/17/2020
      */
+
     private static boolean alignTrench()
     {
         System.out.println("Trench State: " + trench);
@@ -760,7 +765,14 @@ public class Autonomous
                 case FINAL_DRIVE:
                     // drive up to trench
 
-                    if (Hardware.drive.driveInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED))
+                    if (firstRun)
+                        {
+                        startDistance = Hardware.drive.getEncoderDistanceAverage(MotorPosition.ALL);
+                        firstRun = false;
+                        }
+                    if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION, true)
+                            && ((Hardware.drive.getEncoderDistanceAverage(MotorPosition.ALL)
+                                    - startDistance) > ALIGN_TRENCH_RIGHT_DISTANCE))
                         {
                         System.out.println("drove 48");
                         trench = AlignTrenchState.FINISH;
