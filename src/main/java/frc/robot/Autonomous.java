@@ -126,7 +126,7 @@ public class Autonomous
          */
         if (Hardware.ballStart.isOn())
             {
-            Hardware.ballCounter.setBallCount(3);
+            Hardware.ballCounter.setBallCount(1);
             }
         else
             {
@@ -247,8 +247,9 @@ public class Autonomous
         Hardware.storage.storageControlState();
         Hardware.storage.intakeStorageControl();
         Hardware.intake.makePassive();
-        System.out.println("Blobs: " + Hardware.visionInterface.getHasTargets());
-        System.out.println("Distance: " + Hardware.visionInterface.getDistanceFromTarget());
+        // System.out.println("Blobs: " + Hardware.visionInterface.getHasTargets());
+        // System.out.println("Distance: " +
+        // Hardware.visionInterface.getDistanceFromTarget());
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         // System.out.println("rpm: " + Hardware.launcherMotorEncoder.getRPM());
         switch (autoState)
@@ -698,15 +699,16 @@ public class Autonomous
     {
         // drive forward along balls picking them up
         // System.out.println("pickup trench");
+        Hardware.visionInterface.setPipeline(2);
+
+        Hardware.cameraServo.setCameraAngleDown();
         switch (pickup)
             {
             case DRIVE_FORWARD:
 
                 // drive for balls
                 // System.out.println("picking up balls");
-                Hardware.visionInterface.setPipeline(2);
 
-                Hardware.cameraServo.setCameraAngleDown();
                 if (Hardware.intake.pickUpBallsVision())
                     {
                     Hardware.visionInterface.setPipeline(0);
@@ -737,7 +739,7 @@ public class Autonomous
      */
     private static boolean alignTrench()
     {
-        // System.out.println("Trench State: " + trench);
+        System.out.println("Trench State: " + trench);
         // System.out.println("shootingPlan: " +
         // Hardware.shootingPlan.getPosition());
         // System.out.println("Position: " + position);
@@ -757,9 +759,10 @@ public class Autonomous
                     break;
                 case FINAL_DRIVE:
                     // drive up to trench
-                    if (Hardware.drive.driveStraightInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED, ACCELERATION,
-                            true))
+
+                    if (Hardware.drive.driveInches(ALIGN_TRENCH_RIGHT_DISTANCE, DRIVE_SPEED))
                         {
+                        System.out.println("drove 48");
                         trench = AlignTrenchState.FINISH;
                         }
 
@@ -798,6 +801,7 @@ public class Autonomous
             switch (square)
                 {
                 case DRIVE_BACK:
+
                     if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_MOVE_BACK_DISTANCE, -DRIVE_SPEED, ACCELERATION,
                             true))
                         {
@@ -815,6 +819,7 @@ public class Autonomous
                     break;
                 case ALIGN:
                     // drive away from tower
+
                     if (Hardware.drive.driveStraightInches(ALIGN_SQUARE_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
                         {
 
@@ -1012,6 +1017,10 @@ public class Autonomous
 
     public static farState far = farState.ALIGN;
 
+    private static boolean farAligned = false;
+
+    private static boolean farHood = false;
+
     /**
      * Description: handles the functions to shoot far
      *
@@ -1033,10 +1042,15 @@ public class Autonomous
 
                     if (Hardware.launcher.moveRobotToPosition(Launcher.Position.FAR))
                         {
-                        if (Hardware.hoodControl.raiseHood())
-                            {
-                            far = farState.SHOOT;
-                            }
+                        farAligned = true;
+                        }
+                    if (true/* Hardware.hoodControl.raiseHood() */)
+                        {
+                        farHood = true;
+                        }
+                    if (farHood && farAligned)
+                        {
+                        far = farState.SHOOT;
                         }
                     }
                 else
@@ -1098,7 +1112,7 @@ public class Autonomous
 
     private final static int ALIGN_TRENCH_RIGHT_DEGREES = -150;
 
-    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 24;
+    private final static int ALIGN_TRENCH_RIGHT_DISTANCE = 35;
 
     private final static int TURN_AND_FIRE_GO_BACK_DISTANCE = 96;
 

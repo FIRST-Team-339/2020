@@ -9,6 +9,7 @@ package frc.HardwareInterfaces;
 
 import edu.wpi.cscore.HttpCamera;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoProperty;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -450,6 +451,8 @@ public class KilroyUSBCamera
     public void setLimelight()
     {
         server.setSource(limelight);
+        for (VideoProperty x : server.enumerateProperties())
+            System.out.println("Name: " + x.getName() + "Val: " + x.get());
     }
 
     // Variables

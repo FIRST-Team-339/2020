@@ -39,7 +39,7 @@ public class LimelightDriveWithVision
         double adjustmentValueLeft = 0;
         if (overrideUltrasonic)
             {
-            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < 15)
+            if (Hardware.frontUltraSonic.getDistanceFromNearestBumper() < OVERRIDE_ULTRASONIC_DISTANCE_LONG)
                 {
                 this.timer.stop();
                 return true;
@@ -53,7 +53,7 @@ public class LimelightDriveWithVision
         if (Hardware.visionInterface.getDistanceFromTarget() >= distance)
             {
 
-            if (offness < -ACCEPTABLE_OFFNESS)
+            if (offness < -ACCEPTABLE_OFFNESS_ONE)
                 {
                 // adjust the speed for the left and right motors based off their offness and a
                 // preset proportional value
@@ -63,7 +63,7 @@ public class LimelightDriveWithVision
                 Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
                 }
 
-            else if (offness > ACCEPTABLE_OFFNESS)
+            else if (offness > ACCEPTABLE_OFFNESS_ONE)
                 {
 
                 adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
@@ -99,8 +99,9 @@ public class LimelightDriveWithVision
      * @return
      */
 
-    public boolean driveToTargetNoDistance(double speed)
+    public boolean driveToTargetNoDistance(double speed, boolean overrideUltrasonic)
     {
+        System.out.println("ultrasonic: " + Hardware.frontUltraSonic.getDistanceFromNearestBumper());
         this.timer.start();
         // System.out.println(this.timer.get() * 10000);
         if (this.timer.get() * 100000 > 4)
@@ -119,29 +120,37 @@ public class LimelightDriveWithVision
 
         if (Hardware.visionInterface.getHasTargets())
             {
-
-            if (offness < -ACCEPTABLE_OFFNESS)
+            if ((overrideUltrasonic
+                    && Hardware.frontUltraSonic.getDistanceFromNearestBumper() > OVERRIDE_ULTRASONIC_DISTANCE_SHORT)
+                    || !overrideUltrasonic)
                 {
-                // adjust the speed for the left and right motors based off their offness and a
-                // preset proportional value
-                adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
-                adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
-                // drive raw so that we dont have to write addition gearing code in teleop
-                Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
-                }
+                if (offness < -ACCEPTABLE_OFFNESS_ONE)
+                    {
+                    // adjust the speed for the left and right motors based off their offness and a
+                    // preset proportional value
+                    adjustmentValueLeft = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                    adjustmentValueRight = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                    // drive raw so that we dont have to write addition gearing code in teleop
+                    Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                    }
 
-            else if (offness > ACCEPTABLE_OFFNESS)
-                {
+                else if (offness > ACCEPTABLE_OFFNESS_ONE)
+                    {
 
-                adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
-                adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                    adjustmentValueLeft = speed + (Math.abs(offness) * ADJUST_PROPORTION_2019);
+                    adjustmentValueRight = speed - (Math.abs(offness) * ADJUST_PROPORTION_2019);
 
-                Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                    Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                    }
+                else
+                    {
+                    // drive raw at speed after aligning
+                    Hardware.transmission.driveRaw(DRIVE_AFTER_ALIGN, DRIVE_AFTER_ALIGN);
+                    }
                 }
             else
                 {
-                // drive raw at speed after aligning
-                Hardware.transmission.driveRaw(DRIVE_AFTER_ALIGN, DRIVE_AFTER_ALIGN);
+                Hardware.transmission.drive(0, 0);
                 }
             }
         else
@@ -170,7 +179,7 @@ public class LimelightDriveWithVision
         // right move speed
         double adjustmentValueLeft = 0;
 
-        if (offness < -ACCEPTABLE_OFFNESS)
+        if (offness < -ACCEPTABLE_OFFNESS_ONE)
             {
             // adjust the speed for the left and right motors based off their offness and a
             // preset proportional value
@@ -181,7 +190,7 @@ public class LimelightDriveWithVision
             Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
             }
 
-        else if (offness > ACCEPTABLE_OFFNESS)
+        else if (offness > ACCEPTABLE_OFFNESS_ONE)
             {
 
             adjustmentValueLeft = (Math.abs(offness) * ADJUST_PROPORTION_2019_ALIGN);
@@ -192,8 +201,31 @@ public class LimelightDriveWithVision
             }
         else
             {
+            if (offness < -ACCEPTABLE_OFFNESS_TWO)
+                {
+                // adjust the speed for the left and right motors based off their offness and a
+                // preset proportional value
+                adjustmentValueLeft = -(Math.abs(offness) * ADJUST_PROPORTION_LOW_DISTANCE);
 
-            return true;
+                adjustmentValueRight = (Math.abs(offness) * ADJUST_PROPORTION_LOW_DISTANCE);
+                // drive raw so that we dont have to write addition gearing code in teleop
+                Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                }
+
+            else if (offness > ACCEPTABLE_OFFNESS_TWO)
+                {
+
+                adjustmentValueLeft = (Math.abs(offness) * ADJUST_PROPORTION_LOW_DISTANCE);
+
+                adjustmentValueRight = -(Math.abs(offness) * ADJUST_PROPORTION_LOW_DISTANCE);
+
+                Hardware.transmission.driveRaw(adjustmentValueLeft, adjustmentValueRight);
+                }
+            else
+                {
+                return true;
+                }
+
             }
 
         return false;
@@ -208,7 +240,8 @@ public class LimelightDriveWithVision
     // randomly plugging in number until it works
     final double ADJUST_PROPORTION_2019 = .015;// 0.03
 
-    final double ADJUST_PROPORTION_2019_ALIGN = .015;
+    final double ADJUST_PROPORTION_LOW_DISTANCE = .032;
+    final double ADJUST_PROPORTION_2019_ALIGN = .025;
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PROPORTION_2020 = .015;// TODO
@@ -219,5 +252,10 @@ public class LimelightDriveWithVision
     final double STOP_DISTANCE_TEST = 50;// TODO
     final int ULTRA_OVERRIDE = 20;
 
-    final double ACCEPTABLE_OFFNESS = 3;
+    final double OVERRIDE_ULTRASONIC_DISTANCE_LONG = 15;
+
+    final double OVERRIDE_ULTRASONIC_DISTANCE_SHORT = 10;
+    final double ACCEPTABLE_OFFNESS_ONE = 3;
+
+    final double ACCEPTABLE_OFFNESS_TWO = 5;
     }

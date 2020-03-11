@@ -82,7 +82,7 @@ public class Robot extends TimedRobot
 
         Hardware.launcherMotorEncoder.setTicksPerRevolution(44.1); // 5175
 
-        Hardware.visionInterface.setCamMode(CamMode.PROCESSOR);
+        Hardware.visionInterface.setPipeline(0);
         Hardware.kilroyUSBCamera.setCamera(0);
 
         // ---------------------------------------

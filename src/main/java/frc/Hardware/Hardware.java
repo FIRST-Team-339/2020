@@ -502,6 +502,10 @@ public class Hardware
 
     public static MomentarySwitch cameraSwitchButton2 = new MomentarySwitch(rightDriver, 11, false);
 
+    public static JoystickButton limelightButton = new JoystickButton(rightDriver, 9);
+
+    public static JoystickButton cameraSwitchButton2Raw = new JoystickButton(rightDriver, 11);
+
     // ----------------------------------------------------------
     // buttons - for left operator
     // ----------------------------------------------------------
@@ -547,6 +551,8 @@ public class Hardware
     public static JoystickButton addBallButton = new JoystickButton(Hardware.rightOperator, 9);
 
     public static MomentarySwitch cameraSwitchButton1 = new MomentarySwitch(rightOperator, 10, false);
+
+    public static JoystickButton cameraSwitchButton1Raw = new JoystickButton(rightOperator, 10);
 
     public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);
 

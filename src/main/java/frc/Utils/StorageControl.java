@@ -63,7 +63,7 @@ public class StorageControl
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
 
-        if (this.intakeRL.isOn() && prevRL == false)
+        if (this.intakeRL.isOn() && prevRL == false && Hardware.intake.intaking == true)
             {
             prevRL = true;
             if (Hardware.intake.intaking)
@@ -80,7 +80,7 @@ public class StorageControl
 
         if (!this.shootRL.isOn() && prevShootRLCounting == true)
             {
-            prevShootRLCounting = true;
+            prevShootRLCounting = false;
             // if (Hardware.launchButton.get() || Hardware.launchOverrideButton.get())
             // {
             Hardware.ballCounter.subtractBall();

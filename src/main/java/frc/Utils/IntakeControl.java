@@ -304,7 +304,7 @@ public class IntakeControl
 
         this.intake();
         // drive to balls
-        Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS);
+        Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS, true);
         // if pickup all the balls in trench
         if ((Hardware.ballCounter.getBallCount() >= startBallCount + BALLS_IN_TRENCH)
                 || (Hardware.ballCounter.getBallCount() == 5))
@@ -339,7 +339,7 @@ public class IntakeControl
 
             this.intake();
             // drive to balls
-            Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS);
+            Hardware.visionDriving.driveToTargetNoDistance(VISION_SPEED_BALLS, true);
             // if pickup all the balls in trench
             if ((Hardware.ballCounter.getBallCount() == 5))
                 {
@@ -347,7 +347,7 @@ public class IntakeControl
                 Hardware.cameraServo.setCameraAngleUp();
                 }
             }
-        else
+        else if (!setVisionForClimb)
             {
             usingVisionIntake = false;
             Hardware.visionInterface.setPipeline(TARGET_VISION_PIPE);
@@ -369,6 +369,8 @@ public class IntakeControl
 
     //if if we are using vision to intake
     public boolean usingVisionIntake = false;
+
+    public boolean setVisionForClimb = false;
 
     // the pipe line to chase balls
     private final int BALL_VISION_PIPE = 2;

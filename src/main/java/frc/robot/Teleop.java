@@ -34,6 +34,7 @@ import java.util.Arrays;
 //import frc.HardwareInterfaces.KilroyColorSensor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
+import frc.Utils.IntakeControl;
 import frc.Utils.Launcher;
 import frc.Utils.StorageControl;
 import frc.Utils.StorageControl.ControlState;
@@ -132,8 +133,7 @@ public class Teleop
         // =============== AUTOMATED SUBSYSTEMS ===============
         // System.out.println("RPM" + Hardware.launcherMotorEncoder.getRPM());
         Hardware.visionInterface.updateValues();
-        Hardware.hoodControl.stopHoodMotor();
-        Hardware.hoodControl.toggleHood(Hardware.launchButton);
+
         // Hardware.visionInterface.publishValues(Hardware.publishVisionSwitch);
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
@@ -144,6 +144,8 @@ public class Teleop
         // SmartDashboard.putString("Climb State: ",
         // Hardware.climb.climbState.toString());
         SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
+        Hardware.hoodControl.stopHoodMotor();
+        Hardware.hoodControl.toggleHood(Hardware.launchButton);
 
         // end control loops ==========================
 
@@ -191,10 +193,17 @@ public class Teleop
         Hardware.colorWheel.spinControlPanelToColor();
         // ================== DRIVER CONTROLS =================
 
-        if (Hardware.rightDriver.getRawButton(9))
+        if (Hardware.limelightButton.get())
             {
-            Hardware.visionInterface.setCamMode(CamMode.CAMERA);
+            Hardware.intake.setVisionForClimb = true;
+            Hardware.visionInterface.setPipeline(3);
             Hardware.kilroyUSBCamera.setLimelight();
+            }
+        else if (Hardware.cameraSwitchButton1Raw.get() || Hardware.cameraSwitchButton2Raw.get())
+
+            {
+            Hardware.intake.setVisionForClimb = false;
+            Hardware.visionInterface.setPipeline(0);
             }
 
         // override convyor movement
@@ -248,14 +257,14 @@ public class Teleop
 
         // switch usb cameras
         Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
-        System.out.println(getDisableTeleOpDrive());
-        if (!disableTeleOpDrive)
+
+        if (!disableTeleOpDrive && !Hardware.pickupBallVisionButton.get())
             {
             teleopDrive();
             }
 
         // individualTest();
-        printStatements();
+        //printStatements();
     } // end Periodic()
 
     /**
@@ -277,7 +286,7 @@ public class Teleop
 
     public static void teleopDrive()
     {
-        System.out.println("teleop drive");
+
         Hardware.drive.drive(Hardware.leftDriver, Hardware.rightDriver);
 
         // System.out.println("Speed levels: leftDriver" + Hardware.leftDriver.getY());
