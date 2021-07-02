@@ -509,13 +509,13 @@ public class Hardware
     // ----------------------------------------------------------
     // buttons - for left operator
     // ----------------------------------------------------------
-    public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1);
+    public static JoystickButton intakeButton = new JoystickButton(Hardware.leftOperator, 1); //this one
 
-    public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2);
+    public static JoystickButton outtakeButton = new JoystickButton(Hardware.leftOperator, 2); //this one
 
     public static JoystickButton pickupBallVisionButton = new JoystickButton(Hardware.leftOperator, 4);
 
-    public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5);
+    public static JoystickButton intakeOverrideButton = new JoystickButton(Hardware.leftOperator, 5); //this one
 
     public static JoystickButton spinWheelButton = new JoystickButton(Hardware.leftOperator, 6);
 

@@ -236,6 +236,8 @@ public class Teleop
             Hardware.launcher.shootBalls(Hardware.launchButton, Hardware.launchOverrideButton);
             // System.out.println("conveyor motor: " + Hardware.conveyorMotorGroup.get());
             // intake
+
+            //@TODO ANE 
             Hardware.intake.intake(Hardware.intakeButton, Hardware.intakeOverrideButton);
 
             Hardware.intake.outtake(Hardware.outtakeButton, Hardware.intakeOverrideButton);
@@ -264,7 +266,8 @@ public class Teleop
             }
 
         // individualTest();
-        //printStatements();
+        printStatements();
+        System.out.println("The light is " + Hardware.lowStoreRL.get());
     } // end Periodic()
 
     /**
@@ -530,7 +533,7 @@ public class Teleop
         // Hardware.ballStart.isOn()));
         // Hardware.telemetry.printToConsole("Auto Switch: " +
         // Hardware.autoSwitch.isOn());
-        Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
+        // Hardware.telemetry.printToConsole("Six Pos Sw: " + Hardware.autoSixPosSwitch.getPosition());
         // Hardware.telemetry.printToConsole("shoot switch: " +
         // Hardware.shootingPlan.getPosition());
         // Hardware.telemetry.printToConsole("autoLo cation: " +

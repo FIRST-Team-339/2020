@@ -19,11 +19,6 @@ public class HoodControl
     Servo servo = null;
     Potentiometer pot = null;
 
-    public HoodControl(Servo servo)
-        {
-            this.servo = servo;
-        }
-
     Timer upTimer = new Timer();
     Timer downTimer = new Timer();
     boolean raising = false;
@@ -31,6 +26,15 @@ public class HoodControl
     boolean isUp = false;
 
     boolean firstRunRaise = true;
+
+
+    
+    public HoodControl(Servo servo)
+        {
+            this.servo = servo;
+        }
+
+
 
     public boolean raiseHood()
     {
