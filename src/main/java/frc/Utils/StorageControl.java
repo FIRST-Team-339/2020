@@ -78,7 +78,7 @@ public class StorageControl
         if (this.intakeRL.isOn() && prevRL == false && Hardware.intake.intaking == true)
             {
             prevRL = true;
-            if ((Hardware.intake.intaking)// && addBallFirstTry))// || (Hardware.intake.intaking && this.addBallTimer.get() > .5))
+            if ((Hardware.intake.intaking))// && addBallFirstTry))// || (Hardware.intake.intaking && this.addBallTimer.get() > .5))
                 {
                 // System.out.println("adding");
                 Hardware.ballCounter.addBall();
