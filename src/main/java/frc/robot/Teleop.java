@@ -267,7 +267,7 @@ public class Teleop
 
         // individualTest();
         printStatements();
-        System.out.println("The light is " + Hardware.lowStoreRL.get());
+        //System.out.println("The light is " + Hardware.lowStoreRL.get());
     } // end Periodic()
 
     /**
