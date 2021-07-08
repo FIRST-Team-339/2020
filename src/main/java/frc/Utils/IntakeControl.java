@@ -23,6 +23,10 @@ public class IntakeControl
     SpeedController intakeMotor = null;
     DoubleSolenoid solenoid = null;
 
+ 
+
+
+
     public IntakeControl(Timer timer, DoubleSolenoid solenoid, SpeedController intakeMotor)
         {
             this.timer = timer;
@@ -32,8 +36,7 @@ public class IntakeControl
 
         }
 
-    private boolean released = true;
-
+   private boolean released = true;
     /**
      * toggles the intake deployed state via a button
      *
@@ -162,7 +165,7 @@ public class IntakeControl
     boolean prevIntakeRL = false;
 
     /**
-     * intakes balls based of joystick input
+     * intakes balls based off joystick input
      *
      * @param intakeButton
      * @param overrideButton
@@ -385,10 +388,14 @@ public class IntakeControl
     private final int BALLS_IN_TRENCH = 3;
 
     // intake motor power
+<<<<<<< HEAD
     private final double INTAKE_SPEED = 0.88; // TODO
+=======
+    private final double INTAKE_SPEED = 0.88;
+>>>>>>> 99bf9f62aae6054769b93d2cdd39c6ec88d00c0f
 
     // outtake motor power
-    private final double OUTTAKE_SPEED = .88;
+    private final double OUTTAKE_SPEED = -.88;
 
     // no intake or outtake speed
     private final double PASSIVE_SPEED = 0;
