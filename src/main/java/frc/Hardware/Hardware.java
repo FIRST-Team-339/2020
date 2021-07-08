@@ -190,7 +190,7 @@ public class Hardware
 
         launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
 
-        storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
+        storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup, addBallTimer);
 
         ballCounter = new BallCounter(ballButtonTimer);
 
@@ -301,7 +301,7 @@ public class Hardware
 
         launcher = new Launcher(launcherMotorGroup, launcherMotorEncoder);
 
-        storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup);
+        storage = new StorageControl(intakeRL, lowStoreRL, upStoreRL, firingRL, conveyorMotorGroup, addBallTimer);
 
         //hoodControl = new HoodControl(hoodServo);
 
@@ -578,6 +578,9 @@ public class Hardware
     public static Timer launchTimer = new Timer();
 
     public static Timer ballButtonTimer = new Timer();
+
+    public static Timer addBallTimer = new Timer();
+
 
     public static Telemetry telemetry = new Telemetry(driverStation);
 

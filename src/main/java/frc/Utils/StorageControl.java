@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.Hardware.Hardware;
 import frc.HardwareInterfaces.LightSensor;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * code for controlling the conveyor storage system and moving the conveyor to
@@ -20,17 +21,19 @@ public class StorageControl
     LightSensor lowerRL = null;
     LightSensor upperRL = null;
     LightSensor shootRL = null;
+    Timer addBallTimer = null;
 
     SpeedControllerGroup conveyorMotors = null;
 
     public StorageControl(LightSensor intakeRL, LightSensor lowerRL, LightSensor upperRL, LightSensor shootRL,
-            SpeedControllerGroup conveyorMotors)
+            SpeedControllerGroup conveyorMotors, Timer addBallTimer)
         {
             this.intakeRL = intakeRL;
             this.lowerRL = lowerRL;
             this.upperRL = upperRL;
             this.shootRL = shootRL;
             this.conveyorMotors = conveyorMotors;
+            this.addBallTimer = addBallTimer;
         }
 
     // control state to update what the conveyor should b doing
@@ -44,6 +47,8 @@ public class StorageControl
     private static ControlState state = ControlState.INIT;
 
     private boolean prevShootRLCounting = false;
+
+    private boolean addBallFirstTry = true;
 
     /**
      * state updated for the conveyor belt. This should always be running in teleop
@@ -62,14 +67,24 @@ public class StorageControl
         // System.out.println("storage state: " + state);
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
+        // if (this.addBallTimer.get() > 1.0)
+        // {
+        //     addBallFirstTry = true;
+        //     this.addBallTimer.reset();
+        // }
+
+
 
         if (this.intakeRL.isOn() && prevRL == false && Hardware.intake.intaking == true)
             {
             prevRL = true;
-            if (Hardware.intake.intaking)
+            if ((Hardware.intake.intaking))// && addBallFirstTry))// || (Hardware.intake.intaking && this.addBallTimer.get() > .5))
                 {
                 // System.out.println("adding");
                 Hardware.ballCounter.addBall();
+                // addBallFirstTry = false;
+                // this.addBallTimer.reset();
+                // this.addBallTimer.start();
                 }
             else if (Hardware.intake.outtaking)
                 {
@@ -86,6 +101,9 @@ public class StorageControl
             Hardware.ballCounter.subtractBall();
             // }
             }
+
+
+
         if (!this.intakeRL.isOn())
             {
             prevRL = false;
