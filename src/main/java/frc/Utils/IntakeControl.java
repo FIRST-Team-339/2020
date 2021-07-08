@@ -385,7 +385,7 @@ public class IntakeControl
     private final int BALLS_IN_TRENCH = 3;
 
     // intake motor power
-    private final double INTAKE_SPEED = 0.88;
+    private final double INTAKE_SPEED = .75;//0.88;
 
     // outtake motor power
     private final double OUTTAKE_SPEED = -.88;

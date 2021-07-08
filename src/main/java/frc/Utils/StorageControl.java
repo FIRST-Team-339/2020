@@ -50,6 +50,8 @@ public class StorageControl
 
     private boolean addBallFirstTry = true;
 
+    private double timeToDelayBeforeCountNewBall = .75;
+
     /**
      * state updated for the conveyor belt. This should always be running in teleop
      */
@@ -67,24 +69,26 @@ public class StorageControl
         // System.out.println("storage state: " + state);
         // takes the current intake RL and previous intake RL states to add or subtract
         // balls when triggered
-        // if (this.addBallTimer.get() > 1.0)
-        // {
-        //     addBallFirstTry = true;
-        //     this.addBallTimer.reset();
-        // }
+
+        //time check to switch addBallFirstTry back to true to allow for another bal to be counted
+        if (this.addBallTimer.get() > timeToDelayBeforeCountNewBall)
+        {
+            addBallFirstTry = true;
+            this.addBallTimer.reset();
+        }
 
 
 
         if (this.intakeRL.isOn() && prevRL == false && Hardware.intake.intaking == true)
             {
             prevRL = true;
-            if ((Hardware.intake.intaking))// && addBallFirstTry))// || (Hardware.intake.intaking && this.addBallTimer.get() > .5))
+            if ((Hardware.intake.intaking && addBallFirstTry))// || (Hardware.intake.intaking && this.addBallTimer.get() > .5))
                 {
                 // System.out.println("adding");
                 Hardware.ballCounter.addBall();
-                // addBallFirstTry = false;
-                // this.addBallTimer.reset();
-                // this.addBallTimer.start();
+                addBallFirstTry = false;
+                this.addBallTimer.reset();
+                this.addBallTimer.start();
                 }
             else if (Hardware.intake.outtaking)
                 {
@@ -223,6 +227,17 @@ public class StorageControl
                 setStorageControlState(ControlState.DOWN);
 
                 }
+
+            //     //@ANE fix?
+            // if (this.intakeRL.isOn() == true && this.getPrevIntakeRL() == false && this.lowerRL.isOn() == true)
+            // {
+            //     prevLowerRL = true;
+            //     this.setPrevIntakeRL(true);
+            //     setStorageControlState(ControlState.UP);
+            // }
+
+
+                //@TODO @ANE TRUE TRUE TRUE not covered 
             if (this.intakeRL.isOn() == false && this.getPrevIntakeRL() == false && this.lowerRL.isOn() == true)
                 {
                 prevLowerRL = true;
@@ -231,6 +246,9 @@ public class StorageControl
                 setStorageControlState(ControlState.PASSIVE);
                 this.setPrevIntakeRL(false);
                 }
+
+
+
             if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == true)
                 {
                 // if intake is is false and ball has hit lower stop moving
@@ -569,8 +587,8 @@ public class StorageControl
     // dont move conveyor speed
     final double HOLDING_SPEED = 0;
     // move up speed
-    final double UP_SPEED = .22;// .11
-    final double UP_SPEED_SHOOT = .7;// .25
+    final double UP_SPEED = .5;//.22;// .11 @ANE
+    final double UP_SPEED_SHOOT = 1.0;//.7;// .25
     // move down speed
     final double DOWN_SPEED = -.45;// -.3
     // amount needed to move JOYSTICK to override
