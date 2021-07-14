@@ -117,9 +117,20 @@ public class Teleop
     private static boolean secondRun = false;
     static int prevAngle = 0;
 
+    private static boolean demoSwitchState = false;
+
     public static void periodic()
     {
-
+        demoSwitchState = Hardware.ballStart.isOn();
+        if (demoSwitchState == true)
+            {
+            double demoSpeedLimit = Hardware.delayPot.get() / DELAY_POT_MAX_VALUE;
+            Hardware.drive.setSpeedLimit(demoSpeedLimit);
+            }
+        else
+            {
+            Hardware.drive.setSpeedLimit(1.0);
+            }
         if (secondRun == true)
             {
             Hardware.ballCounter.setBallCount(Robot.endAutoBallCount);
@@ -138,14 +149,19 @@ public class Teleop
         Hardware.storage.intakeStorageControl();
         Hardware.storage.storageControlState();
         // System.out.println("distance" + Hardware.climbEncoder.getDistance());
-
-        Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
-        Hardware.climb.climb(Hardware.climbMotorDownButton);
+        if (demoSwitchState == false)
+            {
+            Hardware.climb.prepareToClimb(Hardware.climbMotorUpButton);
+            Hardware.climb.climb(Hardware.climbMotorDownButton);
+            }
         // SmartDashboard.putString("Climb State: ",
         // Hardware.climb.climbState.toString());
         SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
         Hardware.hoodControl.stopHoodMotor();
-        Hardware.hoodControl.toggleHood(Hardware.launchButton);
+        if (demoSwitchState == false)
+            {
+            Hardware.hoodControl.toggleHood(Hardware.launchButton);
+            }
 
         // end control loops ==========================
 
@@ -157,57 +173,68 @@ public class Teleop
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
 
         //When holding wheelManualSpinButton the wheel will spin at a slower speed for finer adjustments
-        if (Hardware.wheelManualSpinButton.get())
+        if (demoSwitchState == false)
             {
-            wheelManualSpinBoolean = true;
-            Hardware.colorWheel.manualSpin();
+            if (Hardware.wheelManualSpinButton.get())
+                {
+                wheelManualSpinBoolean = true;
+                Hardware.colorWheel.manualSpin();
+                }
+            if (Hardware.wheelManualSpinButton.get() == false && wheelManualSpinBoolean)
+                {
+                wheelManualSpinBoolean = !wheelManualSpinBoolean;
+                Hardware.wheelSpinnerMotor.set(0);
+                }
             }
-        if (Hardware.wheelManualSpinButton.get() == false && wheelManualSpinBoolean)
-            {
-            wheelManualSpinBoolean = !wheelManualSpinBoolean;
-            Hardware.wheelSpinnerMotor.set(0);
-            }
-
         // Will spin the control panel setNumberofSpins() amount of times.
-        if (Hardware.spinWheelButton.get() == true)
+        if (demoSwitchState == false)
             {
-            // To change the number of spins.
-            Hardware.colorWheel.setNumberOfSpins(4);
-            // To change the speed
-            Hardware.colorWheel.setSpeed(.65);
-            // To enable spinControlPanel to start
-            Hardware.colorWheel.start();
+            if (Hardware.spinWheelButton.get() == true)
+                {
+                // To change the number of spins.
+                Hardware.colorWheel.setNumberOfSpins(4);
+                // To change the speed
+                Hardware.colorWheel.setSpeed(.65);
+                // To enable spinControlPanel to start
+                Hardware.colorWheel.start();
+                }
+            Hardware.colorWheel.spinControlPanel();
             }
-        Hardware.colorWheel.spinControlPanel();
-
         // Will align the given color with the field sensor. Gets the color
         // automatically
-        if (Hardware.spinWheelColorButton.get())
+        if (demoSwitchState == false)
             {
-            // To change the speed
-            Hardware.colorWheel.setSpeed(.4);
+            if (Hardware.spinWheelColorButton.get())
+                {
+                // To change the speed
+                Hardware.colorWheel.setSpeed(.4);
 
-            // To enable spinControlPanelToColor to start
-            Hardware.colorWheel.colorStart();
+                // To enable spinControlPanelToColor to start
+                Hardware.colorWheel.colorStart();
+                }
+            Hardware.colorWheel.spinControlPanelToColor();
             }
-        Hardware.colorWheel.spinControlPanelToColor();
         // ================== DRIVER CONTROLS =================
-
-        if (Hardware.limelightButton.get())
+        if (demoSwitchState == false)
             {
-            Hardware.intake.setVisionForClimb = true;
-            Hardware.visionInterface.setPipeline(3);
-            Hardware.kilroyUSBCamera.setLimelight();
-            }
-        else if (Hardware.cameraSwitchButton1Raw.get() || Hardware.cameraSwitchButton2Raw.get())
+            if (Hardware.limelightButton.get())
+                {
+                Hardware.intake.setVisionForClimb = true;
+                Hardware.visionInterface.setPipeline(3);
+                Hardware.kilroyUSBCamera.setLimelight();
+                }
+            else if (Hardware.cameraSwitchButton1Raw.get() || Hardware.cameraSwitchButton2Raw.get())
 
-            {
-            Hardware.intake.setVisionForClimb = false;
-            Hardware.visionInterface.setPipeline(0);
+                {
+                Hardware.intake.setVisionForClimb = false;
+                Hardware.visionInterface.setPipeline(0);
+                }
             }
-
         // override convyor movement
-        Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
+        if (demoSwitchState == false)
+            {
+            Hardware.storage.overrideConveyor(Hardware.leftOperator, Hardware.conveyorOverrideButton);
+            }
         // Hardware.launcherMotorGroup.set(.4);
         // if (Hardware.launchButton.get())
         // {
@@ -228,8 +255,10 @@ public class Teleop
         // shoot balls
 
         // pick up balls with vision
-        Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
-
+        if (demoSwitchState == false)
+            {
+            Hardware.intake.pickUpBallsVisionTeleop(Hardware.pickupBallVisionButton);
+            }
         // intake controls
         if (/* Hardware.intake.usingVisionIntake == false || */ !Hardware.pickupBallVisionButton.get())
             {
@@ -248,16 +277,21 @@ public class Teleop
 
         // ball counter code==============================
         // subtract ball
-        Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
-        // add ball
-        Hardware.ballCounter.addBall(Hardware.addBallButton);
-        // sets count to 0
-        Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
+        if (demoSwitchState == false)
+            {
+            Hardware.ballCounter.subtractBall(Hardware.subtractBallButton);
+            // add ball
+            Hardware.ballCounter.addBall(Hardware.addBallButton);
+            // sets count to 0
+            Hardware.ballCounter.clearCount(Hardware.subtractBallButton, Hardware.addBallButton);
+            }
         // end ball counter code===================
 
         // switch usb cameras
-        Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
-
+        if (demoSwitchState == false)
+            {
+            Hardware.kilroyUSBCamera.switchCameras(Hardware.cameraSwitchButton1, Hardware.cameraSwitchButton2);
+            }
         if (!disableTeleOpDrive && !Hardware.pickupBallVisionButton.get())
             {
             teleopDrive();
@@ -293,9 +327,10 @@ public class Teleop
         // System.out.println("Speed levels: rightDriver" +
         // Hardware.rightDriver.getY());
         // System.out.println("Curent Gear" + Hardware.drive.getCurrentGear());
-
-        Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
-
+        if (demoSwitchState == false)
+            {
+            Hardware.drive.shiftGears(Hardware.gearUp.get(), Hardware.gearDown.get());
+            }
         if (Hardware.robotIdentity == Hardware.yearIdentifier.PrevYear)
             {
             if (Hardware.drive.getCurrentGear() >= PREV_YEAR_MAX_GEAR_NUMBER)
@@ -440,7 +475,10 @@ public class Teleop
 
     public static void dionTest()
     {
-
+        // System.out.println("DemoSwitch: " + Hardware.ballStart.isOn());
+        // System.out.println("Delaypot: " + Hardware.delayPot.get());
+        // Demo gear = delayPot/max(delayPot)
+        // Max(delayPot) = 265
     }
 
     public static void chrisTest()
@@ -650,5 +688,7 @@ public class Teleop
     private final static double CURRENT_YEAR_SECOND_GEAR = .5;
 
     private final static double SO_YOU_EVER_HEAR_OF_SONIC = .9;
+
+    private final static double DELAY_POT_MAX_VALUE = 265.0;
 
     } // end class

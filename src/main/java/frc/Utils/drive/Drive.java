@@ -756,23 +756,23 @@ public class Drive
      * Drives the robot with the use of two values, for Tank drive. This DOES use
      * gear ratios and joystick deadbands.
      *
-     * @param leftVal  The left side joystick, controls the left side of the robot
+     * @param leftJoystick  The left side joystick, controls the left side of the robot
      *                 From -1.0 (backwards) to 1.0 (forwards)
-     * @param rightVal The right side joystick, controls the right side of the robot
+     * @param rightJoystick The right side joystick, controls the right side of the robot
      *                 From -1.0 (backwards) to 1.0 (forwards)
      */
-    public void drive(double leftVal, double rightVal)
+    public void drive(double leftJoystick, double rightJoystick)
     {
         // If the transmission input into Drive is of type Tank, then use it.
         if (transmission instanceof TankTransmission)
-            ((TankTransmission) transmission).drive(leftVal, rightVal);
+            ((TankTransmission) transmission).drive(leftJoystick, rightJoystick);
         // If the transmission input into Drive is some sort of Omni-Directional,
         // then use tank drive on it.
         else if (transmission.getType() == TransmissionType.OMNI_DIR)
             {
             double direction = 0;
-            double magnitude = (leftVal + rightVal) / 2.0;
-            double rotation = (leftVal - rightVal) / 2.0;
+            double magnitude = (leftJoystick + rightJoystick) / 2.0;
+            double rotation = (leftJoystick - rightJoystick) / 2.0;
 
             if (magnitude < 0)
                 direction = 180;
@@ -1508,6 +1508,21 @@ public class Drive
     public void setGearPercentage(int gear, double percent)
     {
         this.transmission.setGearPercentage(gear, percent);
+    }
+
+    public double getSpeedLimit()
+    {
+        return this.transmission.getSpeedLimit();
+    }
+
+    /**
+     * Sets the max speed of the robot from 0 to 1
+     *
+     * @param newSpeedLimit
+     */
+    public void setSpeedLimit(double newSpeedLimit)
+    {
+        this.transmission.setSpeedLimit(newSpeedLimit);
     }
 
     /**

@@ -444,6 +444,8 @@ public class Hardware
     public static SingleThrowSwitch rightAuto = new SingleThrowSwitch(12);
     public static DoubleThrowSwitch autoLocation = new DoubleThrowSwitch(leftAuto, rightAuto);
 
+    public static SingleThrowSwitch demoSwitch = new SingleThrowSwitch(27);
+
     // public static SingleThrowSwitch autoZeroBallsIn = new SingleThrowSwitch(24);
     // public static SingleThrowSwitch autoThreeBallsIn = new SingleThrowSwitch(25);
     // public static DoubleThrowSwitch autoTwoBalls = new
@@ -580,7 +582,6 @@ public class Hardware
     public static Timer ballButtonTimer = new Timer();
 
     public static Timer addBallTimer = new Timer();
-
 
     public static Telemetry telemetry = new Telemetry(driverStation);
 
