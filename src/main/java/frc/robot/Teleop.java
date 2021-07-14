@@ -168,7 +168,7 @@ public class Teleop
         // ================= OPERATOR CONTROLS ================
 
         // ================= COLORWHEEL CONTROLS ==============
-        //System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
+        // System.out.println("Distance" + Hardware.wheelSpinnerEncoder.getDistance());
         // System.out.println("Color Spin" + Hardware.spinWheelColorButton.get());
         // System.out.println("Spin" + Hardware.spinWheelButton.get());
 
@@ -298,7 +298,7 @@ public class Teleop
             }
 
         // individualTest();
-        //printStatements();
+        // printStatements();
     } // end Periodic()
 
     /**

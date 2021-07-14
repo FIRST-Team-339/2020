@@ -414,8 +414,9 @@ public class LimelightInterface
             // if both buttons are pressed and they aren't already pressed,this takes a
             // picture and registers that the buttons have been pressed so that way they
             // won't take another picture
-            if (leftOp1.get() && leftOp2.get() && this.buttonHasBeenPressed && !this.hasButtonBeenPressed)
+            if (leftOp1.get() && leftOp2.get() && !this.hasButtonBeenPressed)
                 {
+                this.setLedMode(LedMode.ON);
                 this.hasButtonBeenPressed = true;
                 this.takePicture();
                 }
@@ -431,6 +432,7 @@ public class LimelightInterface
                 {
                 this.buttonHasBeenPressed = false;
                 this.hasButtonBeenPressed = false;
+                // this.setLedMode(LedMode.OFF);
                 }
             }
     }
@@ -441,10 +443,10 @@ public class LimelightInterface
     public void takePicture()
     {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
-        // System.out.println("Picture has been taken");
+        System.out.println("Picture has been taken");
     }
 
-    // TODO implement a class the returns the oordinates of all the points and can
+    // TODO implement a class the returns the coordinates of all the points and can
     // give our 3d position on the field NOTE: this would probably get us an award
     // and would be kinda cool
 

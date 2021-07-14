@@ -58,7 +58,7 @@ public class StorageControl
     public void storageControlState()
     {
 
-        // these puts are not test code. Send important robot data to the robot for the
+        // these puts are not test code. Send important robot drjata to the robot for the
         // drivers to see
         SmartDashboard.putNumber("", Hardware.ballCounter.getBallCount());
 
@@ -590,7 +590,7 @@ public class StorageControl
     final double UP_SPEED = .5;//.22;// .11 @ANE
     final double UP_SPEED_SHOOT = 1.0;//.7;// .25
     // move down speed
-    final double DOWN_SPEED = -.45;// -.3
+    final double DOWN_SPEED = -.6;//-.45;// -.3
     // amount needed to move JOYSTICK to override
     private final double JOYSTICK_DEADBAND_STORAGE = .3;
 

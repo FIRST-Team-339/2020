@@ -55,7 +55,7 @@ public class Launcher
     public void shootBalls(JoystickButton shootButton, JoystickButton overrideButton)
     {
 
-        //System.out.println("state: " + shootState);
+        // System.out.println("state: " + shootState);
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
@@ -134,7 +134,8 @@ public class Launcher
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
-                    if (conveyorReadyTemp && launcherReadyTemp && positionReadyTemp /* && hoodReadyTemp */)
+                    // TODO hood
+                    if (conveyorReadyTemp && positionReadyTemp && launcherReadyTemp /* && hoodReadyTemp */)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
@@ -152,6 +153,7 @@ public class Launcher
                         // back to passive
                         Hardware.storage.shooting = false;
                         this.shootState = ShootState.PASSIVE;
+
                         }
                     break;
                 default:
@@ -229,13 +231,13 @@ public class Launcher
 
                     if (this.prepareToShoot())
                         {
-                        System.out.println("&&&&&&&&&");
+                        // System.out.println("&&&&&&&&&");
                         launcherReadyTemp = true;
                         }
 
                     if (Hardware.storage.prepareToShoot())
                         {
-                        System.out.println("###########");
+                        // System.out.println("###########");
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
@@ -456,7 +458,7 @@ public class Launcher
 
     /**
      * prepares the launcher motor to shoot by settingthe RPM to either the close
-     * value or the far value
+     * value or the far value via vision
      *
      * @param isClose
      *                    shoot close
@@ -677,7 +679,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        //  System.out.println("%%%%%%%%%%%%%%%%%%%%%");
+                        // System.out.println("%%%%%%%%%%%%%%%%%%%%%");
                         return true;
                         }
                     }
@@ -687,7 +689,7 @@ public class Launcher
                         {
                         this.moveState = MoveState.INIT;
                         Hardware.drive.drive(0, 0);
-                        //System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
+                        // System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&");
                         return true;
                         }
                     }

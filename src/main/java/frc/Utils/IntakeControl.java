@@ -179,13 +179,13 @@ public class IntakeControl
             prevIntakeRL = false;
             }
         // dont intake al there is already 5 balls stored unless override button pressed
-        if (Hardware.ballCounter.getBallCount() < 5/*  && prevIntakeRL == false) */ || overrideButton.get())
+        if (Hardware.ballCounter.getBallCount() < 5/* && prevIntakeRL == false) */ || overrideButton.get())
             {
             intaking = true;
             // if intake deployed
 
             // if got button
-            if (intakeButton.get())
+            if (intakeButton.get() || overrideButton.get())
                 {
 
                 this.deployIntake();
@@ -196,7 +196,7 @@ public class IntakeControl
             else
                 {
                 intaking = false;
-                //prevIntakeRL = false;
+                // prevIntakeRL = false;
                 }
             }
         else if (outtaking == false)
@@ -319,11 +319,11 @@ public class IntakeControl
     }
 
     /**
-    * chases and picks up balls in auto.Runs until the storage is full or picked up
-    * all 3 balls in the trench
-    *
-    * @return picked up all ballsd
-    */
+     * chases and picks up balls in auto.Runs until the storage is full or picked up
+     * all 3 balls in the trench
+     *
+     * @return picked up all ballsd
+     */
     public void pickUpBallsVisionTeleop(JoystickButton button)
     {
 
@@ -367,7 +367,7 @@ public class IntakeControl
     // store if we are outtaking
     public boolean outtaking = false;
 
-    //if if we are using vision to intake
+    // if if we are using vision to intake
     public boolean usingVisionIntake = false;
 
     public boolean setVisionForClimb = false;
@@ -385,7 +385,7 @@ public class IntakeControl
     private final int BALLS_IN_TRENCH = 3;
 
     // intake motor power
-    private final double INTAKE_SPEED = .75;//0.88;
+    private final double INTAKE_SPEED = .75;// 0.88;
 
     // outtake motor power
     private final double OUTTAKE_SPEED = -.88;
