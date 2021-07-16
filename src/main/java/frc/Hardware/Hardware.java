@@ -534,7 +534,7 @@ public class Hardware
     // ----------------------------------------------------------
     // buttons - for right operator
     // ----------------------------------------------------------
-    public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);
+    public static JoystickButton launchButton = new JoystickButton(Hardware.rightOperator, 1);   //this one
 
     public static JoystickButton climbMotorDownButton = new JoystickButton(Hardware.rightOperator, 2);
 
@@ -542,11 +542,11 @@ public class Hardware
 
     public static JoystickButton wheelManualSpinButton = new JoystickButton(Hardware.rightOperator, 4);
 
-    public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);
+    public static JoystickButton launchOverrideButton = new JoystickButton(Hardware.rightOperator, 5);  //this one
 
-    public static JoystickButton launcherSpeedOneButton = new JoystickButton(Hardware.rightOperator, 6);
+    public static JoystickButton launcherSpeedOneButton = new JoystickButton(Hardware.rightOperator, 6); //this one 
 
-    public static JoystickButton launcherSpeedTwoButton = new JoystickButton(Hardware.rightOperator, 7);
+    public static JoystickButton launcherSpeedTwoButton = new JoystickButton(Hardware.rightOperator, 7);  //this one 
 
     public static JoystickButton subtractBallButton = new JoystickButton(Hardware.rightOperator, 8);
 
@@ -556,11 +556,11 @@ public class Hardware
 
     public static JoystickButton cameraSwitchButton1Raw = new JoystickButton(rightOperator, 10);
 
-    public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);
+    public static JoystickButton hoodOverideButton = new JoystickButton(Hardware.rightOperator, 11);  //this one
 
-    public static JoystickButton hoodUpButton = new JoystickButton(Hardware.leftDriver, 10);
+    public static JoystickButton hoodUpButton = new JoystickButton(Hardware.leftDriver, 10);  //this one 
 
-    public static JoystickButton hoodDownButton = new JoystickButton(Hardware.leftDriver, 9);
+    public static JoystickButton hoodDownButton = new JoystickButton(Hardware.leftDriver, 9);  // this one 
     // public static JoystickButton hoodUp = new
     // **********************************************************
     // Kilroy's Ancillary classes
