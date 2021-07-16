@@ -131,8 +131,8 @@ public class IntakeControl
     }
 
     /**
-     * makes the intake passive in not intaking or outtaking must be constantly
-     * called
+     * makes the intake passive, in not intaking or outtaking. must be constantly
+     * called.
      *
      * @param intakeButton
      * @param outtakeButton

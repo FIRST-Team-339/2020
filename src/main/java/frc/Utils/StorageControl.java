@@ -72,12 +72,10 @@ public class StorageControl
 
         //time check to switch addBallFirstTry back to true to allow for another bal to be counted
         if (this.addBallTimer.get() > timeToDelayBeforeCountNewBall)
-        {
+            {
             addBallFirstTry = true;
             this.addBallTimer.reset();
-        }
-
-
+            }
 
         if (this.intakeRL.isOn() && prevRL == false && Hardware.intake.intaking == true)
             {
@@ -105,8 +103,6 @@ public class StorageControl
             Hardware.ballCounter.subtractBall();
             // }
             }
-
-
 
         if (!this.intakeRL.isOn())
             {
@@ -196,6 +192,8 @@ public class StorageControl
 
     private boolean prevUpperRL = false;
 
+    boolean isMovingNewBall = false;
+
     /**
      * controls the conveyor belt if the robot is intaking balls. Note: Must be
      * called continuously in Teleop and auto
@@ -204,58 +202,98 @@ public class StorageControl
     {
         // System.out.println("intaking: " + Hardware.intake.intaking);
         // System.out.println(getStorageControlState());
+
+        //
+        // @TODO
+        // -McGee, 7/15/2021
+        // Whats wrong:
+        // Conveyor goes UP with no balls present, should be DOWN
+        // Conveyor goes DOWN when detecting first ball in intake, should go UP
+        // Maybe conveyor is reversed?
+
         if (Hardware.intake.intaking == true /* && this.shootRL.isOn() == false */ /* && !doingATHninginLoad */)
             {
 
-            if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true) && this.shootRL.isOn() == false)
+            // There are no balls in the lower conveyor
+            if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == false)
                 {
-                // if the intake Rl
-                // is true or the previous intake was true
-                this.setPrevIntakeRL(true);
-                //
-                System.out.println("going up in intakeStorageControl");
-                setStorageControlState(ControlState.UP);
-                }
-
-            if (this.intakeRL.isOn() == false && this.getPrevIntakeRL() == false
-                    && this.lowerRL.isOn() == false /* && prevLowerRL == false && prevUpperRL == false */)
-                {
-                // is all false go down
-                prevLowerRL = false;
-                this.setPrevIntakeRL(false);
-                // System.out.println("down in intakeStorageControl");
                 setStorageControlState(ControlState.DOWN);
+                }
+            // there is a ball in the lower conveyor
+            else if (this.lowerRL.isOn() == true)
+                {
+                if (isMovingNewBall)
+                    isMovingNewBall = false;
+                // A new ball is available, while we have a ball now
+                if (this.intakeRL.isOn() == true)
+                    {
+                    setStorageControlState(ControlState.UP);
+                    isMovingNewBall = true;
+                    }
+                // A new ball is NOT available, keep the current ball where it is
+                else
+                    {
+                    setStorageControlState(ControlState.PASSIVE);
+                    }
+                }
+            // Intake RL has detected a new ball, and there is no ball in the lower conveyor
+            else if (this.intakeRL.isOn() == true)
+                {
+                setStorageControlState(ControlState.UP);
+                isMovingNewBall = true;
+                }
+            // Check if we were moving a new ball. If so, move it up. If not, run the intake "down" constantly
+            else
+                {
 
+                if (isMovingNewBall == true)
+                    {
+                    setStorageControlState(ControlState.UP);
+                    }
+                else
+                    {
+                    setStorageControlState(ControlState.DOWN);
+                    }
                 }
 
-            //     //@ANE fix?
-            // if (this.intakeRL.isOn() == true && this.getPrevIntakeRL() == false && this.lowerRL.isOn() == true)
-            // {
-            //     prevLowerRL = true;
+            // if ((this.intakeRL.isOn() == true || this.getPrevIntakeRL() == true) && this.shootRL.isOn() == false)
+            //     {
+            //     // if the intake Rl
+            //     // is true or the previous intake was true
             //     this.setPrevIntakeRL(true);
+            //     //
+            //     System.out.println("going up in intakeStorageControl");
             //     setStorageControlState(ControlState.UP);
-            // }
+            //     }
 
+            // if (this.intakeRL.isOn() == false && this.getPrevIntakeRL() == false
+            //         && this.lowerRL.isOn() == false /* && prevLowerRL == false && prevUpperRL == false */)
+            //     {
+            //     // is all false go down
+            //     prevLowerRL = false;
+            //     this.setPrevIntakeRL(false);
+            //     // System.out.println("down in intakeStorageControl");
+            //     setStorageControlState(ControlState.DOWN);
 
-                //@TODO @ANE TRUE TRUE TRUE not covered 
-            if (this.intakeRL.isOn() == false && this.getPrevIntakeRL() == false && this.lowerRL.isOn() == true)
-                {
-                prevLowerRL = true;
-                // if only the lower is true go passive
-                // System.out.println("ball hit lower setting passive");
-                setStorageControlState(ControlState.PASSIVE);
-                this.setPrevIntakeRL(false);
-                }
+            //     }
 
+            // //@TODO @ANE TRUE TRUE TRUE not covered
+            // if (this.intakeRL.isOn() == false && this.getPrevIntakeRL() == false && this.lowerRL.isOn() == true)
+            //     {
+            //     prevLowerRL = true;
+            //     // if only the lower is true go passive
+            //     // System.out.println("ball hit lower setting passive");
+            //     setStorageControlState(ControlState.PASSIVE);
+            //     this.setPrevIntakeRL(false);
+            //     }
 
-
-            if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == true)
-                {
-                // if intake is is false and ball has hit lower stop moving
-                // System.out.println("ball hit lower setting passive, not prev if");
-                setStorageControlState(ControlState.PASSIVE);
-                this.setPrevIntakeRL(false);
-                }
+            // if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == true)
+            //     {
+            //     // if intake is is false and ball has hit lower stop moving
+            //     // System.out.println("ball hit lower setting passive, not prev if");
+            //     setStorageControlState(ControlState.PASSIVE);
+            //     this.setPrevIntakeRL(false);
+            //     }
             }
         else if (Hardware.intake.outtaking == true)
             {
