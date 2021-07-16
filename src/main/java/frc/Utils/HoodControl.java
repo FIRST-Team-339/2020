@@ -21,8 +21,8 @@ public class HoodControl
 
     Timer upTimer = new Timer();
     Timer downTimer = new Timer();
-    boolean raising = false;
-    boolean lowering = false;
+    public boolean raising = false;
+    public boolean lowering = false;
     boolean isUp = false;
 
     boolean firstRunRaise = true;
@@ -55,7 +55,7 @@ public class HoodControl
             if (upTimer.get() < UP_TIME)
                 {
                 raising = true;
-                System.out.println("riasing rasinsing");
+                System.out.println("raising raising");
                 this.servo.set(.2);
                 }
             else
@@ -163,7 +163,7 @@ public class HoodControl
                 {
                 lowering = true;
                 System.out.println("lowering");
-                this.servo.set(.8);
+                this.servo.set(DOWN_SPEED);
                 }
             else
                 {
@@ -197,8 +197,8 @@ public class HoodControl
     // public boolean set
     final double FAR_ANGLE = 58;
     final double CLOSE_ANGLE = 37;
-    final double UP_TIME = 2.5;
-    final double DOWN_TIME = 2.5;
+    final double UP_TIME = 3.82;//2.5;
+    final double DOWN_TIME = 2.65;//2.5;
     final double UP_SPEED = .2;
-    final double DOWN_SPEED = .8;
+    final double DOWN_SPEED = .8;//1.0; was 1.0 but does not get flush
     }

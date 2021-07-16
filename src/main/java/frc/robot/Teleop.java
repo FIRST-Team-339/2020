@@ -119,6 +119,12 @@ public class Teleop
 
     private static boolean demoSwitchState = false;
 
+    private static boolean raisingHood = false;
+
+    private static boolean loweringHood = false;
+
+
+
     public static void periodic()
     {
         demoSwitchState = Hardware.ballStart.isOn();
@@ -157,10 +163,53 @@ public class Teleop
         // SmartDashboard.putString("Climb State: ",
         // Hardware.climb.climbState.toString());
         SmartDashboard.putNumber("Climb Distance", Hardware.climbEncoder.getDistance());
-        Hardware.hoodControl.stopHoodMotor();
+        //Hardware.hoodControl.stopHoodMotor();
         if (demoSwitchState == false)
             {
-            Hardware.hoodControl.toggleHood(Hardware.launchButton);
+            //Hardware.hoodControl.toggleHood(Hardware.launchButton);
+
+                if (Hardware.hoodUpButton.get() == true && Hardware.hoodDownButton.get() == false
+                 && !raisingHood && !loweringHood && Hardware.hoodControl.getIsUp() == false)
+                {
+                   
+                   raisingHood = true;
+                    
+                }
+
+                if (Hardware.hoodDownButton.get() == true && Hardware.hoodUpButton.get() == false 
+                && !raisingHood && !loweringHood && Hardware.hoodControl.getIsUp() == true)
+                {
+                    loweringHood = true;//Hardware.hoodControl.lowerHood();
+                }
+
+                if (raisingHood == true)
+                {
+                    System.out.println("RAISING HOOD @ANE");
+                }
+
+                if (loweringHood == true)
+                {
+                    System.out.println("LOWERING HOOD @ANE");
+                }
+            
+
+                if (raisingHood == true)
+                {
+                     if (Hardware.hoodControl.raiseHood() == true)
+                    {
+                        raisingHood = false;
+                    }                
+                }
+
+                if (loweringHood == true)
+                {
+                    if (Hardware.hoodControl.lowerHood() == true)
+                    {
+                        loweringHood = false;
+                    } 
+                }
+
+            
             }
 
         // end control loops ==========================
