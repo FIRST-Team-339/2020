@@ -60,11 +60,11 @@ public class HoodControl
                 }
             else
                 {
-                isUp = true;
                 firstRunRaise = true;
                 upTimer.stop();
                 upTimer.reset();
                 raising = false;
+                isUp = true;
                 if (!lowering && !raising)
                     {
                     this.servo.set(.5);
@@ -168,11 +168,11 @@ public class HoodControl
             else
                 {
                 System.out.println("lowered");
-                isUp = false;
                 firstRunDown = true;
                 downTimer.stop();
                 downTimer.reset();
                 lowering = false;
+                isUp = false;
                 if (!lowering && !raising)
                     {
                     this.servo.set(.5);
