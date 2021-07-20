@@ -308,6 +308,10 @@ public class Autonomous
                 break;
 
             case FINISH:
+                if (Hardware.hoodControl.getIsUp() == false)
+                {
+                    Hardware.hoodControl.raiseHood();
+                }
                 Hardware.launcher.unchargeShooter();
 
                 StorageControl.setStorageControlState(ControlState.PASSIVE);
@@ -402,6 +406,12 @@ public class Autonomous
         // System.out.println("Path: " + path);
         // System.out.println("Location: " + position);
         // System.out.println("6 Location: " + sixLocation);
+        if (Hardware.hoodControl.getIsUp() == false)
+        {
+            Hardware.hoodControl.raiseHood();
+        }
+
+
 
         // System.out.println(path);
         switch (path)
