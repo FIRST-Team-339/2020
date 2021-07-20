@@ -135,7 +135,7 @@ public class Launcher
                         }
                     // if both are prepared
                     // TODO hood
-                    if (conveyorReadyTemp && positionReadyTemp && launcherReadyTemp /* && hoodReadyTemp */)
+                    if (conveyorReadyTemp && positionReadyTemp && hoodReadyTemp && launcherReadyTemp)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
