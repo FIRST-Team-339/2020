@@ -62,10 +62,10 @@ public class Teleop
     public static void init()
     {
         if (Hardware.hoodControl.getIsUp() == false && Hardware.hoodControl.raising == true)
-        {
+            {
             Hardware.hoodControl.stopHoodMotor();
             hoodNotFinishedRaisingPostAuto = true;
-        }
+            }
 
         // Gear Inits
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
@@ -131,16 +131,8 @@ public class Teleop
 
     public static void periodic()
     {
-<<<<<<< HEAD
+
         // demoSwitchState = Hardware.ballStart.isOn();
-=======
-
-
-
-
-
-       // demoSwitchState = Hardware.ballStart.isOn();
->>>>>>> 2cbc4854ad67dacdad7c1384eaec8fcbd365546c
         if (demoSwitchState == true)
             {
             double demoSpeedLimit = Hardware.delayPot.get() / DELAY_POT_MAX_VALUE;
