@@ -241,7 +241,7 @@ public class LimelightDriveWithVision
     final double ADJUST_PROPORTION_2019 = .015;// 0.03
 
     final double ADJUST_PROPORTION_LOW_DISTANCE = .032;
-    final double ADJUST_PROPORTION_2019_ALIGN = .025;
+    final double ADJUST_PROPORTION_2019_ALIGN = .028;//.025 TODO
     // an adjustment proportional value. Found with the tried and true method of
     // randomly plugging in number until it works
     final double ADJUST_PROPORTION_2020 = .015;// TODO
