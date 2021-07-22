@@ -118,7 +118,7 @@ public class Launcher
                     // SmartDashboard.putBoolean("position: ", positionReadyTemp);
                     // SmartDashboard.putString("wanted position: ", targetPosition.toString());
                     // starts charging the launcher and prepares the balls in the conveyor
-                    if (moveRobotToPosition(targetPosition))
+                    if (moveRobotToPosition(targetPosition) /*&& Hardware.hoodControl.moveToPosition(targetPosition)*/)
                         {
                         Hardware.visionDriving.alignToTarget();
                         positionReadyTemp = true;
@@ -135,7 +135,7 @@ public class Launcher
                         }
                     // if both are prepared
                     // TODO hood
-                    if (conveyorReadyTemp && positionReadyTemp && Hardware.hoodControl.getIsUp() && launcherReadyTemp /* && hoodReadyTemp */)
+                    if (conveyorReadyTemp && positionReadyTemp && launcherReadyTemp)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
@@ -231,13 +231,13 @@ public class Launcher
 
                     if (this.prepareToShoot())
                         {
-                        // System.out.println("&&&&&&&&&");
+                        System.out.println("&&&&&&&&&");
                         launcherReadyTemp = true;
                         }
 
                     if (Hardware.storage.prepareToShoot())
                         {
-                        // System.out.println("###########");
+                        System.out.println("###########");
                         conveyorReadyTemp = true;
                         }
                     // if both are prepared
@@ -438,6 +438,7 @@ public class Launcher
             // has sped up
             spedUp = true;
             }
+
         // TODO
         // if (Hardware.visionDriving.alignToTarget())
         // {

@@ -62,10 +62,10 @@ public class Teleop
     public static void init()
     {
         if (Hardware.hoodControl.getIsUp() == false && Hardware.hoodControl.raising == true)
-        {
+            {
             Hardware.hoodControl.stopHoodMotor();
             hoodNotFinishedRaisingPostAuto = true;
-        }
+            }
 
         // Gear Inits
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
@@ -129,16 +129,10 @@ public class Teleop
 
     private static boolean loweringHood = false;
 
-
-
     public static void periodic()
     {
 
-
-
-
-
-       // demoSwitchState = Hardware.ballStart.isOn();
+        // demoSwitchState = Hardware.ballStart.isOn();
         if (demoSwitchState == true)
             {
             double demoSpeedLimit = Hardware.delayPot.get() / DELAY_POT_MAX_VALUE;
@@ -179,48 +173,46 @@ public class Teleop
             {
             //Hardware.hoodControl.toggleHood(Hardware.launchButton);
 
-                if (Hardware.hoodUpButton.get() == true && Hardware.hoodDownButton.get() == false
-                 && !raisingHood && !loweringHood && Hardware.hoodControl.getIsUp() == false)
+            if (Hardware.hoodUpButton.get() == true && Hardware.hoodDownButton.get() == false && !raisingHood
+                    && !loweringHood && Hardware.hoodControl.getIsUp() == false)
                 {
-                   
-                   raisingHood = true;
-                    
+
+                raisingHood = true;
+
                 }
 
-                if (Hardware.hoodDownButton.get() == true && Hardware.hoodUpButton.get() == false 
-                && !raisingHood && !loweringHood && Hardware.hoodControl.getIsUp() == true)
+            if (Hardware.hoodDownButton.get() == true && Hardware.hoodUpButton.get() == false && !raisingHood
+                    && !loweringHood && Hardware.hoodControl.getIsUp() == true)
                 {
-                    loweringHood = true;//Hardware.hoodControl.lowerHood();
+                loweringHood = true;//Hardware.hoodControl.lowerHood();
                 }
 
-                if (raisingHood == true)
+            if (raisingHood == true)
                 {
-                    System.out.println("RAISING HOOD @ANE");
+                System.out.println("RAISING HOOD @ANE");
                 }
 
-                if (loweringHood == true)
+            if (loweringHood == true)
                 {
-                    System.out.println("LOWERING HOOD @ANE");
+                System.out.println("LOWERING HOOD @ANE");
                 }
-            
 
-                if (raisingHood == true)
+            if (raisingHood == true)
                 {
-                     if (Hardware.hoodControl.raiseHood() == true)
+                if (Hardware.hoodControl.raiseHood() == true)
                     {
-                        raisingHood = false;
-                    }                
+                    raisingHood = false;
+                    }
                 }
 
-                if (loweringHood == true)
+            if (loweringHood == true)
                 {
-                    if (Hardware.hoodControl.lowerHood() == true)
+                if (Hardware.hoodControl.lowerHood() == true)
                     {
-                        loweringHood = false;
-                    } 
+                    loweringHood = false;
+                    }
                 }
 
-            
             }
 
         // end control loops ==========================

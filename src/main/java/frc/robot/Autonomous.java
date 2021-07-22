@@ -309,9 +309,9 @@ public class Autonomous
 
             case FINISH:
                 if (Hardware.hoodControl.getIsUp() == false)
-                {
+                    {
                     Hardware.hoodControl.raiseHood();
-                }
+                    }
                 Hardware.launcher.unchargeShooter();
 
                 StorageControl.setStorageControlState(ControlState.PASSIVE);
@@ -407,11 +407,9 @@ public class Autonomous
         // System.out.println("Location: " + position);
         // System.out.println("6 Location: " + sixLocation);
         if (Hardware.hoodControl.getIsUp() == false)
-        {
+            {
             Hardware.hoodControl.raiseHood();
-        }
-
-
+            }
 
         // System.out.println(path);
         switch (path)
@@ -429,45 +427,48 @@ public class Autonomous
                 // Hardware.launcher.prepareToShoot(false, true);
                 Hardware.launcher.prepareToShoot();
 
-
                 if (Hardware.hoodControl.getIsUp() == true)
-                {
-                if (!hasShot)
                     {
-                    if (shootFar())
+                    if (!hasShot)
                         {
-                        hasShot = true;
+                        if (shootFar())
+                            {
+                            hasShot = true;
+                            }
                         }
-                    }
-                if (hasShot)
-                    {
-                    if (exit == Exit.ALIGN_SQUARE)
+                    if (hasShot)
                         {
-                        // This is a function that works if the robot is aligned on
-                        // the left side
-                        path = Path.ALIGN_SQUARE;
-                        }
-                    else if (exit == Exit.ALIGN_TRENCH)
-                        {
-                        // this is a function that works if the robot is aligned
-                        // on the right side
-                        path = Path.ALIGN_TRENCH;
-                        }
-                    else if (exit == Exit.TURN_AND_FIRE)
-                        {
-                        // Continuation of Alinging trench, adding the
-                        // process of picking up those balls
-                        // and attepting to shoot, or alligning to shoot
-                        // again.
-                        path = Path.ALIGN_TRENCH;
-                        }
-                    else
-                        {
-                        path = Path.NOTHING;
-                        }
+                        if (exit == Exit.ALIGN_SQUARE)
+                            {
+                            // This is a function that works if the robot is aligned on
+                            // the left side
+                            path = Path.ALIGN_SQUARE;
+                            }
+                        else if (exit == Exit.GET_OUT)
+                            {
+                            path = Path.GET_OUT;
+                            }
+                        else if (exit == Exit.ALIGN_TRENCH)
+                            {
+                            // this is a function that works if the robot is aligned
+                            // on the right side
+                            path = Path.ALIGN_TRENCH;
+                            }
+                        else if (exit == Exit.TURN_AND_FIRE)
+                            {
+                            // Continuation of Alinging trench, adding the
+                            // process of picking up those balls
+                            // and attepting to shoot, or alligning to shoot
+                            // again.
+                            path = Path.ALIGN_TRENCH;
+                            }
+                        else
+                            {
+                            path = Path.NOTHING;
+                            }
 
+                        }
                     }
-                }
                 break;
 
             case SHOOT_CLOSE:
@@ -492,6 +493,10 @@ public class Autonomous
                         // This is a function that works if the robot is aligned on
                         // the left side
                         path = Path.ALIGN_SQUARE;
+                        }
+                    else if (exit == Exit.GET_OUT)
+                        {
+                        path = Path.GET_OUT;
                         }
                     else if (exit == Exit.ALIGN_TRENCH)
                         {
