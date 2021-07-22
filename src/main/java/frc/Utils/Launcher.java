@@ -135,7 +135,7 @@ public class Launcher
                         }
                     // if both are prepared
                     // TODO hood
-                    if (conveyorReadyTemp && positionReadyTemp && Hardware.hoodControl.getIsUp() &&launcherReadyTemp /* && hoodReadyTemp */)
+                    if (conveyorReadyTemp && positionReadyTemp && Hardware.hoodControl.getIsUp() && launcherReadyTemp /* && hoodReadyTemp */)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;

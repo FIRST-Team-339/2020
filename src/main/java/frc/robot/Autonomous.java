@@ -429,6 +429,9 @@ public class Autonomous
                 // Hardware.launcher.prepareToShoot(false, true);
                 Hardware.launcher.prepareToShoot();
 
+
+                if (Hardware.hoodControl.getIsUp() == true)
+                {
                 if (!hasShot)
                     {
                     if (shootFar())
@@ -464,7 +467,7 @@ public class Autonomous
                         }
 
                     }
-
+                }
                 break;
 
             case SHOOT_CLOSE:
