@@ -1085,6 +1085,7 @@ public class Autonomous
                     }
                 break;
             case SHOOT:
+                    System.out.println("Still in state to shoot");
                 if (Hardware.launcher.shootBallsAuto())
                     {
 
@@ -1093,7 +1094,7 @@ public class Autonomous
                 break;
 
             case FINISH:
-
+                    System.out.println("We have reached the FINISHED state");
                 return true;
 
             }
