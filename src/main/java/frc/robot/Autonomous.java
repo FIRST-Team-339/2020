@@ -406,7 +406,7 @@ public class Autonomous
         // System.out.println("Path: " + path);
         // System.out.println("Location: " + position);
         // System.out.println("6 Location: " + sixLocation);
-        if (Hardware.hoodControl.getIsUp() == false)
+        if (Hardware.hoodControl.getIsUp() == false && shootingPlan == ShootingPlan.FAR)
             {
             Hardware.hoodControl.raiseHood();
             }
@@ -883,6 +883,7 @@ public class Autonomous
      */
     private static boolean getOut()
     {
+
         Hardware.launcher.unchargeShooter();
         // System.out.println("out state: " + out);
         switch (out)
@@ -891,17 +892,18 @@ public class Autonomous
                 switch (position)
                     {
                     case RIGHT:
-                        if (Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                        out = GetOutState.FINAL_DRIVE;
+                        /* if (Hardware.drive.turnDegrees(GET_OUT_RIGHT_DEGREES, TURN_SPEED, ACCELERATION, true))
                             {
                             out = GetOutState.FINAL_DRIVE;
-                            }
+                            }*/
                         break;
                     case LEFT:
-
-                        if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
+                        out = GetOutState.FINAL_DRIVE;
+                        /*  if (Hardware.drive.turnDegrees(GET_OUT_LEFT_DEGREES, TURN_SPEED, ACCELERATION, true))
                             {
                             out = GetOutState.FINAL_DRIVE;
-                            }
+                            }*/
                         break;
 
                     case CENTER:
@@ -1090,7 +1092,7 @@ public class Autonomous
                     }
                 break;
             case SHOOT:
-                    System.out.println("Still in state to shoot");
+                System.out.println("Still in state to shoot");
                 if (Hardware.launcher.shootBallsAuto())
                     {
 
@@ -1099,7 +1101,7 @@ public class Autonomous
                 break;
 
             case FINISH:
-                    System.out.println("We have reached the FINISHED state");
+                System.out.println("We have reached the FINISHED state");
                 return true;
 
             }

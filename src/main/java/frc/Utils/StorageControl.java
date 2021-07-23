@@ -215,15 +215,19 @@ public class StorageControl
             {
 
             // There are no balls in the lower conveyor
-            if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == false)
+            if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == false && isMovingNewBall == false)
                 {
                 setStorageControlState(ControlState.DOWN);
                 }
             // there is a ball in the lower conveyor
             else if (this.lowerRL.isOn() == true)
                 {
-                if (isMovingNewBall)
+
+                if (isMovingNewBall && prevLowerRL == false)
+                    {
                     isMovingNewBall = false;
+                    }
+                prevLowerRL = true;
                 // A new ball is available, while we have a ball now
                 if (this.intakeRL.isOn() == true)
                     {
@@ -231,7 +235,7 @@ public class StorageControl
                     isMovingNewBall = true;
                     }
                 // A new ball is NOT available, keep the current ball where it is
-                else
+                else if (isMovingNewBall = false)
                     {
                     setStorageControlState(ControlState.PASSIVE);
                     }
@@ -245,14 +249,19 @@ public class StorageControl
             // Check if we were moving a new ball. If so, move it up. If not, run the intake "down" constantly
             else
                 {
+                prevLowerRL = false;
 
                 if (isMovingNewBall == true)
                     {
                     setStorageControlState(ControlState.UP);
                     }
-                else
+                else if (this.lowerRL.isOn() == false)
                     {
                     setStorageControlState(ControlState.DOWN);
+                    }
+                else
+                    {
+                    setStorageControlState(ControlState.PASSIVE);
                     }
                 }
 
@@ -394,7 +403,7 @@ public class StorageControl
     {
         // SmartDashboard.putString("prepare conveoyr", shootState.toString());
 
-        if (Hardware.ballCounter.getBallCount() > 0)
+        if (Hardware.ballCounter.getBallCount() > 0 || true)//TODO
             {
 
             switch (shootState)
@@ -463,18 +472,18 @@ public class StorageControl
      *
      * @return
      */
-    public boolean loadToFire()
+    public boolean loadToFire()//TODO intake
     {
         // System.out.println("loading balls aokfasklsDFSKNLknadsds");
-        if (Hardware.ballCounter.getBallCount() == 0)
-            {
-            setStorageControlState(ControlState.PASSIVE);
-            return true;
-            }
-        else
-            {
-            setStorageControlState(ControlState.UP);
-            }
+        //if (Hardware.ballCounter.getBallCount() == 0)
+        //   {
+        //   setStorageControlState(ControlState.PASSIVE);
+        //   return true;
+        //   }
+        // else
+        //     {
+        setStorageControlState(ControlState.UP);
+        //    }
 
         return false;
         // if (tellOtherTHingwearedoingTHing)
