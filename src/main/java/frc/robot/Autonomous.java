@@ -127,7 +127,7 @@ public class Autonomous
          */
         if (Hardware.ballStart.isOn())
             {
-            Hardware.ballCounter.setBallCount(1);
+            Hardware.ballCounter.setBallCount(3);
             }
         else
             {

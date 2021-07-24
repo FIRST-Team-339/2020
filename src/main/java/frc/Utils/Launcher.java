@@ -632,7 +632,7 @@ public class Launcher
         // not too close to close
         else
             {
-            return Position.CLOSE;
+            return Position.FAR;
             }
 
     }

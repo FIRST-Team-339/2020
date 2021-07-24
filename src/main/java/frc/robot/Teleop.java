@@ -172,7 +172,7 @@ public class Teleop
         if (demoSwitchState == false)
             {
             //Hardware.hoodControl.toggleHood(Hardware.launchButton);
-
+            // top of code that can be replaced with toggle hood code if it gets done
             if (Hardware.hoodUpButton.get() == true && Hardware.hoodDownButton.get() == false && !raisingHood
                     && !loweringHood && Hardware.hoodControl.getIsUp() == false)
                 {
@@ -212,6 +212,39 @@ public class Teleop
                     loweringHood = false;
                     }
                 }
+
+            // bottom of code that can be replaced with toggle hood code if it gets done
+
+            //code to replace above code
+            //    if (Hardware.hoodUpButton.get() == true && Hardware.hoodControl.raising == false && Hardware.hoodControl.lowering == false)
+            //    {
+            //    if (Hardware.hoodControl.getIsUp() == false)
+            //        {
+            //        raisingHood = true;
+            //        }
+            //    else
+            //        {
+            //        loweringHood = true;
+            //       }
+            //    }
+
+            //    if (raisingHood == true)
+            //    {
+            //        if (Hardware.hoodControl.raiseHood() == true)
+            //        {
+            //        raisingHood = false;
+            //       }
+            //    }
+
+            //if (loweringHood == true)
+            //    {
+            //        if (Hardware.hoodControl.lowerHood() == true)
+            //        {
+            //        loweringHood = false;
+            //        }
+            //    }
+
+            //end of code to replae above code
 
             }
 
@@ -739,7 +772,7 @@ public class Teleop
 
     private final static double CURRENT_YEAR_FIRST_GEAR = .3;
 
-    private final static double CURRENT_YEAR_SECOND_GEAR = .5;
+    private final static double CURRENT_YEAR_SECOND_GEAR = .7;
 
     private final static double SO_YOU_EVER_HEAR_OF_SONIC = .9;
 

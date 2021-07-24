@@ -27,14 +27,10 @@ public class HoodControl
 
     boolean firstRunRaise = true;
 
-
-    
     public HoodControl(Servo servo)
         {
             this.servo = servo;
         }
-
-
 
     public boolean raiseHood()
     {
@@ -197,8 +193,8 @@ public class HoodControl
     // public boolean set
     final double FAR_ANGLE = 58;
     final double CLOSE_ANGLE = 37;
-    final double UP_TIME = 3.82;//2.5;
-    final double DOWN_TIME = 2.7;//2.5;
+    final double UP_TIME = 3.82;
+    final double DOWN_TIME = 2.7;
     final double UP_SPEED = .2;
-    final double DOWN_SPEED = .87;//1.0; was 1.0 but does not get flush
+    final double DOWN_SPEED = .87;
     }

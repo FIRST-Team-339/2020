@@ -95,6 +95,8 @@ public class StorageControl
                 }
             }
 
+        //TODO @ANE if ballcount still broken look at upperRL and factor in
+        //when determining whether to subtract balls
         if (!this.shootRL.isOn() && prevShootRLCounting == true)
             {
             prevShootRLCounting = false;
@@ -229,6 +231,7 @@ public class StorageControl
                     }
                 prevLowerRL = true;
                 // A new ball is available, while we have a ball now
+                //@ANE if balls get stuck when intaking a thord ball look here first
                 if (this.intakeRL.isOn() == true)
                     {
                     setStorageControlState(ControlState.UP);
@@ -401,7 +404,7 @@ public class StorageControl
      */
     public boolean prepareToShoot()
     {
-        // SmartDashboard.putString("prepare conveoyr", shootState.toString());
+        // SmartDashboard.putString("prepare conveyor", shootState.toString());
 
         if (Hardware.ballCounter.getBallCount() > 0 || true)//TODO
             {
@@ -616,7 +619,7 @@ public class StorageControl
     }
 
     /**
-     * gets the State of the Storage COntrol controller
+     * gets the State of the Storage Control controller
      *
      * @return - the present State value
      */

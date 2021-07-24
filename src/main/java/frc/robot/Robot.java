@@ -83,7 +83,7 @@ public class Robot extends TimedRobot
         Hardware.launcherMotorEncoder.setTicksPerRevolution(44.1); // 5175
 
         Hardware.visionInterface.setPipeline(0);
-        Hardware.kilroyUSBCamera.setCamera(0);
+        Hardware.kilroyUSBCamera.setCamera(1);
 
         // ---------------------------------------
         // done setup - tell the user we are complete
