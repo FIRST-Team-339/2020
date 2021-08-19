@@ -71,14 +71,17 @@ public class Teleop
         if (Hardware.robotIdentity.equals(Hardware.yearIdentifier.PrevYear))
             {
             Hardware.drive.setGearPercentage(0, PREV_YEAR_FIRST_GEAR);
-            Hardware.drive.setGearPercentage(1, PREV_YEAR_SECOND_GEAR);
-            Hardware.drive.setGearPercentage(2, SO_YOU_EVER_HEAR_OF_SONIC);
+            Hardware.drive.setGearPercentage(1, CURRENT_YEAR_FIRST_AND_HALF_GEAR);
+            Hardware.drive.setGearPercentage(2, PREV_YEAR_SECOND_GEAR);
             Hardware.launcherMotorEncoder.reset();
             }
         else
             {
             Hardware.drive.setGearPercentage(0, CURRENT_YEAR_FIRST_GEAR);
-            Hardware.drive.setGearPercentage(1, CURRENT_YEAR_SECOND_GEAR);
+            Hardware.drive.setGearPercentage(1, CURRENT_YEAR_FIRST_AND_HALF_GEAR);
+            Hardware.drive.setGearPercentage(2, CURRENT_YEAR_SECOND_GEAR);
+
+            Hardware.drive.setGearPercentage(3, SO_YOU_EVER_HEAR_OF_SONIC);
             Hardware.drive.resetEncoders();
             }
 
@@ -764,7 +767,7 @@ public class Teleop
 
     private final static int PREV_YEAR_MAX_GEAR_NUMBER = 2;
 
-    private final static int CURRENT_YEAR_MAX_GEAR_NUMBER = 2;
+    private final static int CURRENT_YEAR_MAX_GEAR_NUMBER = 3;
 
     private final static double PREV_YEAR_FIRST_GEAR = .3;
 
@@ -772,9 +775,11 @@ public class Teleop
 
     private final static double CURRENT_YEAR_FIRST_GEAR = .3;
 
+    private final static double CURRENT_YEAR_FIRST_AND_HALF_GEAR = .5;
+
     private final static double CURRENT_YEAR_SECOND_GEAR = .7;
 
-    private final static double SO_YOU_EVER_HEAR_OF_SONIC = .9;
+    private final static double SO_YOU_EVER_HEAR_OF_SONIC = 1.0;
 
     private final static double DELAY_POT_MAX_VALUE = 265.0;
 

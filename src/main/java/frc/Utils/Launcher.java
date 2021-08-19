@@ -59,7 +59,8 @@ public class Launcher
         if (!shootButton.get() && !overrideButton.get())
             {
             // if (this.moveRobotToPosition(this.getClosestPosition()))
-            // { conveyorReadyTemp = false;
+            // {
+            conveyorReadyTemp = false;
             hoodReadyTemp = false;
             launcherReadyTemp = false;
             positionReadyTemp = false;
@@ -90,14 +91,15 @@ public class Launcher
                         Teleop.setDisableTeleOpDrive(true);
                         Hardware.visionInterface.setLedMode(LedMode.PIPELINE);
                         Hardware.cameraServo.setCameraAngleUp();
-                        // if (this.moveRobotToPosition(this.getClosestPosition()))
-                        if (Hardware.visionInterface.getHasTargets())
+                        if (this.moveRobotToPosition(this.getClosestPosition()))
                             {
+                            //if (Hardware.visionInterface.getHasTargets())
+                            // {
                             // System.out.println("postion: " + this.getClosestPosition());
                             targetPosition = this.getClosestPosition();
                             this.shootState = ShootState.CHARGE;
+                            // }
                             }
-                        // }
                         }
                     else
                         {
@@ -133,9 +135,11 @@ public class Launcher
                         {
                         conveyorReadyTemp = true;
                         }
-                    // if both are prepared
-                    // TODO hood
-                    if (conveyorReadyTemp && positionReadyTemp && launcherReadyTemp)
+                    if (this.moveHoodDistance(targetPosition))
+                        {
+                        hoodReadyTemp = true;
+                        }
+                    if (conveyorReadyTemp && positionReadyTemp && launcherReadyTemp && hoodReadyTemp)
                         {
                         conveyorReadyTemp = false;
                         hoodReadyTemp = false;
@@ -658,7 +662,7 @@ public class Launcher
     public boolean moveRobotToPosition(Position position)
     {
         // System.out.println(position.toString());
-        // System.out.println("move state: " + moveState);
+        System.out.println("jkhasdjlhad");
         switch (moveState)
             {
             case INIT:
@@ -753,6 +757,25 @@ public class Launcher
                 this.moveState = MoveState.INIT;
             }
 
+        return false;
+    }
+
+    public boolean moveHoodDistance(Position position)
+    {
+        if (position == Position.FAR)
+            {
+            if (Hardware.hoodControl.getIsUp() == true || Hardware.hoodControl.raiseHood())
+                {
+                return true;
+                }
+            }
+        else if (position == Position.CLOSE)
+            {
+            if (Hardware.hoodControl.getIsUp() == false || Hardware.hoodControl.lowerHood())
+                {
+                return true;
+                }
+            }
         return false;
     }
 

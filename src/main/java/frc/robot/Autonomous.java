@@ -913,7 +913,7 @@ public class Autonomous
                     }
                 break;
             case FINAL_DRIVE:
-                // System.out.println("position thing: " + position);
+                System.out.println("position thing: " + position);
                 switch (position)
                     {
                     case RIGHT:
@@ -925,6 +925,7 @@ public class Autonomous
                         break;
 
                     case LEFT:
+                        System.out.println("moving forward out");
                         if (Hardware.drive.driveStraightInches(GET_OUT_LEFT_DISTANCE, DRIVE_SPEED, ACCELERATION, true))
                             {
                             out = GetOutState.FINISH;
@@ -943,6 +944,7 @@ public class Autonomous
                 break;
             case FINISH:
                 return true;
+
             }
         return false;
     }

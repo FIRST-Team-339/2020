@@ -219,6 +219,7 @@ public class StorageControl
             // There are no balls in the lower conveyor
             if (this.intakeRL.isOn() == false && this.lowerRL.isOn() == false && isMovingNewBall == false)
                 {
+                System.out.println("down all false");
                 setStorageControlState(ControlState.DOWN);
                 }
             // there is a ball in the lower conveyor
@@ -238,7 +239,7 @@ public class StorageControl
                     isMovingNewBall = true;
                     }
                 // A new ball is NOT available, keep the current ball where it is
-                else if (isMovingNewBall = false)
+                else if (isMovingNewBall == false)
                     {
                     setStorageControlState(ControlState.PASSIVE);
                     }
