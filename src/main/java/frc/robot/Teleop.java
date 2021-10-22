@@ -100,6 +100,9 @@ public class Teleop
         Hardware.storage.shooting = false;
         Hardware.visionInterface.setLedMode(LedMode.OFF);
 
+        //TODO remove if staring from auto
+        Hardware.hoodControl.setIsUp(false);
+
     } // end Init
 
     /**
